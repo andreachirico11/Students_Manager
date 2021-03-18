@@ -4,16 +4,16 @@
             "id": "s_1",
             "name": "Gianni",
             "surname": "Gianno",
-            "class": "1b",
+            "schoolClass": "1b",
             "dateOfBirth": "2001-11-11",
-            "fiscal-code": "abcr",
+            "fiscalCode": "abcr",
             "address": "via gianni gianno",
             "parents": [
                 {
                     "name": "Mauro",
                     "surname": "Mauri",
                     "dateOfBirth": "110894",
-                    "fiscal-code": "abc"
+                    "fiscalCode": "abc"
                 }
             ],
             "notes": "deve morire",
@@ -23,16 +23,16 @@
             "id": "s_2",
             "name": "Giannino",
             "surname": "Giannoni",
-            "class": "1b",
+            "schoolClass": "1b",
             "dateOfBirth": "2001-11-11",
-            "fiscal-code": "abcr",
+            "fiscalCode": "abcr",
             "address": "via gianni gianno",
             "parents": [
                 {
                     "name": "Mauro",
                     "surname": "Mauri",
                     "dateOfBirth": "110894",
-                    "fiscal-code": "abc"
+                    "fiscalCode": "abc"
                 }
             ],
             "notes": "deve morire",
@@ -44,22 +44,22 @@
             "id": "s_3",
             "name": "ianni",
             "surname": "ianno",
-            "class": "1b",
+            "schoolClass": "1b",
             "dateOfBirth": "2001-11-11",
-            "fiscal-code": "abcr",
+            "fiscalCode": "abcr",
             "address": "via gianni gianno",
             "parents": [
                 {
                     "name": "Mauro",
                     "surname": "Mauri",
                     "dateOfBirth": "110894",
-                    "fiscal-code": "abc"
+                    "fiscalCode": "abc"
                 },
                 {
                     "name": "Maura",
                     "surname": "Mauri",
                     "dateOfBirth": "110894",
-                    "fiscal-code": "abc"
+                    "fiscalCode": "abc"
                 }
             ],
             "notes": "deve morire",
@@ -74,25 +74,25 @@
             "id": "r_1",
             "number": "asdfsadf",
             "amount": "12",
-            "emission-date": "2001-11-11",
-            "payment-date": "2001-11-11",
-            "type-of-payment": "2001-11-11"
+            "emissionDate": "2001-11-11",
+            "paymentDate": "2001-11-11",
+            "typeOfPayment": "Bancomat"
         },
         {
             "id": "r_2",
             "number": "asdfsadf",
             "amount": "12",
-            "emission-date": "2001-11-11",
-            "payment-date": "2001-11-11",
-            "type-of-payment": "2001-11-11"
+            "emissionDate": "2001-11-11",
+            "paymentDate": "2001-11-11",
+            "typeOfPayment": "Bonifico"
         },
         {
             "id": "r_3",
             "number": "asdfsadf",
             "amount": "12",
-            "emission-date": "2001-11-11",
-            "payment-date": "2001-11-11",
-            "type-of-payment": "2001-11-11"
+            "emissionDate": "2001-11-11",
+            "paymentDate": "2001-11-11",
+            "typeOfPayment": "Moneta"
         }
     ]
 }

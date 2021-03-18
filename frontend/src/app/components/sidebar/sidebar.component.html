@@ -1,0 +1,9 @@
+<mat-selection-list [multiple]="false">
+  <mat-list-option
+    *ngFor="let student of students | async"
+    [value]="student"
+    (click)="studentSelected.emit(student)"
+  >
+    {{ student.name }} {{ student.surname }}
+  </mat-list-option>
+</mat-selection-list>
