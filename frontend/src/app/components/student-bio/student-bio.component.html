@@ -1,1 +1,16 @@
-<p>student-bio works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{student.name}} {{student.surname}}</mat-card-title>
+    <mat-card-subtitle>{{student.dateOfBirth}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+        <mat-list-item>{{student.address}}</mat-list-item>
+        <mat-list-item>{{student.schoolClass}}</mat-list-item>
+    </mat-list>
+    <mat-form-field appearance="outline">
+        <mat-label>Note</mat-label>
+        <textarea matInput [(ngModel)]="note"></textarea>
+      </mat-form-field>
+  </mat-card-content>
+</mat-card>

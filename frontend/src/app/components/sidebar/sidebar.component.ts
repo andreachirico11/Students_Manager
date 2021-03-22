@@ -13,7 +13,7 @@ export class SidebarComponent implements OnInit {
   @Output()
   public studentSelected = new EventEmitter<Student>();
 
-  constructor(private dbService: DataService) {}
+  constructor(private dbService: DataService) { }
 
   ngOnInit(): void {
     this.students = this.dbService.getStudents();

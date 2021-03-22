@@ -1,12 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Student } from 'src/app/models/Student';
 
 @Component({
   selector: 'student-bio',
   templateUrl: './student-bio.component.html',
   styleUrls: ['./student-bio.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentBioComponent implements OnInit {
-  constructor() {}
+  @Input()
+  public student: Student
+  public note;
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.note = this.student.notes;
+  }
 }

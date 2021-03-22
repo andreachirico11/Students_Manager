@@ -7,14 +7,15 @@ import { Student } from './models/Student';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  private _selectedS: Student;
+  private _selectedS: Student = null
   get selectedS() {
     return this._selectedS;
   }
   set selectedS(newS: Student) {
-    if (this._selectedS.id === newS.id) {
+    if (this._selectedS && this._selectedS.id === newS.id) {
       this._selectedS = null;
+    } else {
+      this._selectedS = newS;
     }
-    this._selectedS = newS;
   }
 }

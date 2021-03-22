@@ -6,6 +6,6 @@
     <sidebar (studentSelected)="selectedS = $event"></sidebar>
   </mat-drawer>
   <mat-drawer-content>
-    <student-info *ngIf="selectedS" [student]="selectedS"></student-info>
+    <student-info  *ngIf="selectedS" [student]="selectedS"></student-info>
   </mat-drawer-content>
 </mat-drawer-container>
