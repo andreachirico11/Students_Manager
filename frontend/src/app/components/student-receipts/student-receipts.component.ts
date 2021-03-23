@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Receipt } from 'src/app/models/Receipts';
+import { Student } from 'src/app/models/Student';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'student-receipts',
@@ -6,7 +10,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./student-receipts.component.scss'],
 })
 export class StudentReceiptsComponent implements OnInit {
-  constructor() {}
+  @Input()
+  public student: Student;
 
-  ngOnInit(): void {}
+  public receipts: Observable<Receipt[]>;
+  public displayedColumns = ["number", "amount", "emissionDate", "paymentDate", "typeOfPayment"];
+
+  constructor(private dbService: DataService) { }
+
+  ngOnInit(): void {
+    this.receipts = this.dbService.getReceiptsForStudent(this.student.receiptsId);
+  }
 }

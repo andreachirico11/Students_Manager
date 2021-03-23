@@ -81,7 +81,7 @@
         {
             "id": "r_2",
             "number": "asdfsadf",
-            "amount": "12",
+            "amount": "13",
             "emissionDate": "2001-11-11",
             "paymentDate": "2001-11-11",
             "typeOfPayment": "Bonifico"
@@ -89,7 +89,7 @@
         {
             "id": "r_3",
             "number": "asdfsadf",
-            "amount": "12",
+            "amount": "14",
             "emissionDate": "2001-11-11",
             "paymentDate": "2001-11-11",
             "typeOfPayment": "Moneta"

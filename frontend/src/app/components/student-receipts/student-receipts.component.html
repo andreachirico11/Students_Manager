@@ -1,1 +1,33 @@
-<p>student-receipts works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Ricevute</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="receipts" class="mat-elevation-z1">
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let element"> {{element.number}} </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Totale </th>
+        <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+      </ng-container>
+      <ng-container matColumnDef="emissionDate">
+        <th mat-header-cell *matHeaderCellDef> Emissione </th>
+        <td mat-cell *matCellDef="let element"> {{element.emissionDate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="paymentDate">
+        <th mat-header-cell *matHeaderCellDef> Pagamento </th>
+        <td mat-cell *matCellDef="let element"> {{element.paymentDate}} </td>
+      </ng-container>
+      <ng-container matColumnDef="typeOfPayment">
+        <th mat-header-cell *matHeaderCellDef> Metodo </th>
+        <td mat-cell *matCellDef="let element"> {{element.typeOfPayment}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+  </mat-card-content>
+</mat-card>
