@@ -14,16 +14,20 @@ const app = express();
 // });
 
 mongoose
-  .connect('mongodb+srv://admin:adminadmin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    'mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority"',
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then((x) => {
-    // console.log('connected');
+    console.log('connected');
+
     // UserModelBuilder({ email: 'adfasfs', password: 'gianni', name: 'paolo' })
     //   .save()
     //   .then((boh) => console.log(boh));
   })
-  .catch(() => console.log('error in connection'));
+  .catch((e) => console.log('error in connection:', e));
 
 app.listen(3210);

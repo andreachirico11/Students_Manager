@@ -11,16 +11,16 @@ var app = express();
 //   });
 // });
 mongoose
-    .connect('mongodb+srv://admin:adminadmin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority', {
+    .connect('mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority"', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
     .then(function (x) {
-    // console.log('connected');
+    console.log('connected');
     // UserModelBuilder({ email: 'adfasfs', password: 'gianni', name: 'paolo' })
     //   .save()
     //   .then((boh) => console.log(boh));
 })
-    .catch(function () { return console.log('error in connection'); });
+    .catch(function (e) { return console.log('error in connection:', e); });
 app.listen(3210);
 //# sourceMappingURL=server.js.map
