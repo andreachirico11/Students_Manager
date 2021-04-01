@@ -2,25 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var mongoose = require("mongoose");
+var routes_1 = require("./routes");
 var app = express();
-// app.use((req, res, next) => {
-//   console.log('middle');
-//   UserModel.findOne().then((users) => {
-//     console.log(users);
-//     next();
-//   });
-// });
 mongoose
-    .connect('mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority"', {
+    .connect('mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true"', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
     .then(function (x) {
     console.log('connected');
-    // UserModelBuilder({ email: 'adfasfs', password: 'gianni', name: 'paolo' })
-    //   .save()
-    //   .then((boh) => console.log(boh));
 })
     .catch(function (e) { return console.log('error in connection:', e); });
+app.use('/api', routes_1.router);
 app.listen(3210);
 //# sourceMappingURL=server.js.map

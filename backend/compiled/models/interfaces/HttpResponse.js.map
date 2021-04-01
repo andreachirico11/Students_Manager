@@ -1,0 +1,1 @@
+{"version":3,"file":"HttpResponse.js","sourceRoot":"","sources":["../../../models/interfaces/HttpResponse.ts"],"names":[],"mappings":";;;AAAA;IACE,sBAAmB,OAAe,EAAS,OAAgB,EAAS,IAAU;QAA3D,YAAO,GAAP,OAAO,CAAQ;QAAS,YAAO,GAAP,OAAO,CAAS;QAAS,SAAI,GAAJ,IAAI,CAAM;IAAG,CAAC;IACpF,mBAAC;AAAD,CAAC,AAFD,IAEC;AAFY,oCAAY"}

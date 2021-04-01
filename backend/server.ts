@@ -1,21 +1,12 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose';
-import { UserModelBuilder, UserModel } from './models/userModel';
+import { router } from './routes';
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   console.log('middle');
-
-//   UserModel.findOne().then((users) => {
-//     console.log(users);
-//     next();
-//   });
-// });
-
 mongoose
   .connect(
-    'mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true&w=majority"',
+    'mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true"',
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -23,11 +14,9 @@ mongoose
   )
   .then((x) => {
     console.log('connected');
-
-    // UserModelBuilder({ email: 'adfasfs', password: 'gianni', name: 'paolo' })
-    //   .save()
-    //   .then((boh) => console.log(boh));
   })
   .catch((e) => console.log('error in connection:', e));
+
+app.use('/api', router);
 
 app.listen(3210);
