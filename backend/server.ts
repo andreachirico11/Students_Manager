@@ -1,3 +1,4 @@
+import bodyParser = require('body-parser');
 import * as express from 'express';
 import * as mongoose from 'mongoose';
 import { router } from './routes';
@@ -17,6 +18,8 @@ mongoose
   })
   .catch((e) => console.log('error in connection:', e));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', router);
 
 app.listen(3210);

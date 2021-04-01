@@ -1,3 +1,3 @@
 export class HttpResponse {
-  constructor(public message: string, public content?: string, public docs?: any) {}
+  constructor(public message: string, public docs?: any) {}
 }

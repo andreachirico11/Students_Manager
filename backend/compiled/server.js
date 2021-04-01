@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var bodyParser = require("body-parser");
 var express = require("express");
 var mongoose = require("mongoose");
 var routes_1 = require("./routes");
@@ -13,6 +14,8 @@ mongoose
     console.log('connected');
 })
     .catch(function (e) { return console.log('error in connection:', e); });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', routes_1.router);
 app.listen(3210);
 //# sourceMappingURL=server.js.map

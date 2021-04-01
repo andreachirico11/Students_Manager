@@ -17,7 +17,7 @@ exports.UserModel = mongoose_1.model('User', new mongoose_1.Schema({
     },
 }));
 function UserModelBuilder(user) {
-    return new exports.UserModel(user);
+    return exports.UserModel.create(user);
 }
 exports.UserModelBuilder = UserModelBuilder;
 //# sourceMappingURL=userModel.js.map

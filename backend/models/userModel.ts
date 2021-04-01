@@ -1,7 +1,7 @@
-import { model, Schema } from 'mongoose';
-import { IUser } from './interfaces/User';
+import { model, Schema, Model } from 'mongoose';
+import { IMongoUser, IUser } from './interfaces/User';
 
-export const UserModel = model(
+export const UserModel: Model<IMongoUser> = model(
   'User',
   new Schema({
     name: {
@@ -20,5 +20,5 @@ export const UserModel = model(
 );
 
 export function UserModelBuilder(user: IUser) {
-  return new UserModel(user);
+  return UserModel.create(user);
 }
