@@ -1,1 +1,1 @@
-{"version":3,"file":"Parent.js","sourceRoot":"","sources":["../../../models/interfaces/Parent.ts"],"names":[],"mappings":";;;AAAA;IACE,gBACS,IAAY,EACZ,OAAe,EACf,WAAiB,EACjB,UAAkB;QAHlB,SAAI,GAAJ,IAAI,CAAQ;QACZ,YAAO,GAAP,OAAO,CAAQ;QACf,gBAAW,GAAX,WAAW,CAAM;QACjB,eAAU,GAAV,UAAU,CAAQ;IACxB,CAAC;IACN,aAAC;AAAD,CAAC,AAPD,IAOC;AAPY,wBAAM"}
+{"version":3,"file":"Parent.js","sourceRoot":"","sources":["../../../models/interfaces/Parent.ts"],"names":[],"mappings":""}

@@ -4,6 +4,7 @@ import { HttpResponse } from '../models/interfaces/HttpResponse';
 import { IUserRequest } from '../models/interfaces/IUserRequest';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
+import { generateToken } from './webTokenController';
 
 const fail = (res: Response, code: number, title: string, err?: any) => {
   res.status(code).json(new HttpResponse(title, err));
@@ -23,8 +24,8 @@ export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
     UserModelBuilder(newUser)
       .then((u) => {
         u.save()
-          .then((result) => {
-            res.status(201).json(new HttpResponse('user_registred', result));
+          .then((created) => {
+            res.status(201).json(new HttpResponse('user_registred', generateToken(created)));
           })
           .catch((e) => fail(res, 500, 'save_error', e));
       })
@@ -50,7 +51,7 @@ export function getUser(req: IUserRequest, res: Response, nex: NextFunction) {
       if (!result) {
         return fail(res, 401, 'wrong_password');
       }
-      res.status(200).json(new HttpResponse('user_found', foundUser));
+      res.status(200).json(new HttpResponse('user_found', generateToken(foundUser)));
     })
     .catch((e) => fail(res, 404, 'user_not_found', e));
 }

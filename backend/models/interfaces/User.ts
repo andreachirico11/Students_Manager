@@ -6,4 +6,8 @@ export interface IUser {
   password: string;
 }
 
+export interface IFrontendUser extends IUser {
+  id: string;
+}
+
 export interface IMongoUser extends Document, IUser {}

@@ -1,8 +1,14 @@
-export class Parent {
-  constructor(
-    public name: string,
-    public surname: string,
-    public dateOfBirth: Date,
-    public fiscalCode: string
-  ) {}
+import { Document } from 'mongoose';
+
+export interface IParent {
+  name: string;
+  surname: string;
+  dateOfBirth: Date;
+  fiscalCode: string;
 }
+
+export interface IFrontendParent extends IParent {
+  id: string;
+}
+
+export interface IMongoParent extends Document, IParent {}

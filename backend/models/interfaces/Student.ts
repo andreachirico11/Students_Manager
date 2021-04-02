@@ -1,16 +1,20 @@
-import { Parent } from './Parent';
+import { Document } from 'mongoose';
+import { IParent } from './Parent';
 
-export class Student {
-  constructor(
-    public id: string,
-    public name: string,
-    public surname: string,
-    public schoolClass: string,
-    public dateOfBirth: Date,
-    public fiscalCode: string,
-    public address: string,
-    public parens: Parent[],
-    public receiptsId: string[],
-    public notes?: string
-  ) {}
+export interface IStudent {
+  name: string;
+  surname: string;
+  schoolClass: string;
+  dateOfBirth: Date;
+  fiscalCode: string;
+  address: string;
+  parents: IParent[];
+  receiptsId: string[];
+  notes?: string;
 }
+
+export interface IFrontendStudent extends IStudent {
+  id: string;
+}
+
+export interface IMongoStudent extends Document, IStudent {}
