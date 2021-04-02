@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.postUser = void 0;
 var bcrypt_1 = require("bcrypt");
-var HttpResponse_1 = require("../models/interfaces/responses/HttpResponse");
+var HttpResponse_1 = require("../models/interfaces/HttpResponse");
 var userModel_1 = require("../models/userModel");
 var webTokenController_1 = require("./webTokenController");
-var httpFailFunction_1 = require("../utils/httpFailFunction");
+var fail = function (res, code, title, err) {
+    res.status(code).json(new HttpResponse_1.HttpResponse(title, err));
+};
 function postUser(req, res, nex) {
     var newUser = {
         email: req.body.email,
@@ -13,7 +15,7 @@ function postUser(req, res, nex) {
         name: req.body.name || '',
     };
     if (!newUser.email || !newUser.password || !newUser.name) {
-        return httpFailFunction_1.fail(res, 500, 'signup_failed');
+        return fail(res, 500, 'signup_failed');
     }
     bcrypt_1.hash(newUser.password, 10).then(function (hashedPassword) {
         newUser.password = hashedPassword;
@@ -23,9 +25,9 @@ function postUser(req, res, nex) {
                 .then(function (created) {
                 res.status(201).json(new HttpResponse_1.HttpResponse('user_registred', webTokenController_1.generateToken(created)));
             })
-                .catch(function (e) { return httpFailFunction_1.fail(res, 500, 'save_error'); });
+                .catch(function (e) { return fail(res, 500, 'save_error', e); });
         })
-            .catch(function (e) { return httpFailFunction_1.fail(res, 500, 'hashing_fail'); });
+            .catch(function (e) { return fail(res, 500, 'hashing_fail', e); });
     });
 }
 exports.postUser = postUser;
@@ -33,7 +35,7 @@ function getUser(req, res, nex) {
     var foundUser;
     var _a = req.body, email = _a.email, password = _a.password;
     if (!password || !email) {
-        return httpFailFunction_1.fail(res, 404, 'no_credentials');
+        return fail(res, 404, 'no_credentials');
     }
     userModel_1.UserModel.findOne({ email: req.body.email })
         .then(function (found) {
@@ -45,11 +47,11 @@ function getUser(req, res, nex) {
     })
         .then(function (result) {
         if (!result) {
-            return httpFailFunction_1.fail(res, 401, 'wrong_password');
+            return fail(res, 401, 'wrong_password');
         }
         res.status(200).json(new HttpResponse_1.HttpResponse('user_found', webTokenController_1.generateToken(foundUser)));
     })
-        .catch(function (e) { return httpFailFunction_1.fail(res, 404, 'user_not_found'); });
+        .catch(function (e) { return fail(res, 404, 'user_not_found', e); });
 }
 exports.getUser = getUser;
-//# sourceMappingURL=userController.js.map
+//# sourceMappingURL=userController%20copy.js.map

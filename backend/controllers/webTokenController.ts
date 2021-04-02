@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-import { IUserResponse } from '../models/interfaces/IUserResponse';
+import { IUserResponse } from '../models/interfaces/responses/IUserResponse';
 import { IFrontendUser, IMongoUser } from '../models/interfaces/User';
 import { NextFunction, Response } from 'express';
 

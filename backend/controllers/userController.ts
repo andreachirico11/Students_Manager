@@ -1,14 +1,11 @@
 import { hash, compare } from 'bcrypt';
 import { NextFunction, Response } from 'express';
-import { HttpResponse } from '../models/interfaces/HttpResponse';
-import { IUserRequest } from '../models/interfaces/IUserRequest';
+import { HttpResponse } from '../models/interfaces/responses/HttpResponse';
+import { IUserRequest } from '../models/interfaces/requests/IUserRequest';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
 import { generateToken } from './webTokenController';
-
-const fail = (res: Response, code: number, title: string, err?: any) => {
-  res.status(code).json(new HttpResponse(title, err));
-};
+import { fail } from '../utils/httpFailFunction';
 
 export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
   const newUser: IUser = {
@@ -27,9 +24,9 @@ export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
           .then((created) => {
             res.status(201).json(new HttpResponse('user_registred', generateToken(created)));
           })
-          .catch((e) => fail(res, 500, 'save_error', e));
+          .catch((e) => fail(res, 500, 'save_error'));
       })
-      .catch((e) => fail(res, 500, 'hashing_fail', e));
+      .catch((e) => fail(res, 500, 'hashing_fail'));
   });
 }
 
@@ -53,5 +50,5 @@ export function getUser(req: IUserRequest, res: Response, nex: NextFunction) {
       }
       res.status(200).json(new HttpResponse('user_found', generateToken(foundUser)));
     })
-    .catch((e) => fail(res, 404, 'user_not_found', e));
+    .catch((e) => fail(res, 404, 'user_not_found'));
 }
