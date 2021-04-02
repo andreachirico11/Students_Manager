@@ -4,6 +4,9 @@ exports.getUser = exports.postUser = void 0;
 var bcrypt_1 = require("bcrypt");
 var HttpResponse_1 = require("../models/interfaces/HttpResponse");
 var userModel_1 = require("../models/userModel");
+var fail = function (res, code, title, err) {
+    res.status(code).json(new HttpResponse_1.HttpResponse(title, err));
+};
 function postUser(req, res, nex) {
     var newUser = {
         email: req.body.email,
@@ -11,7 +14,7 @@ function postUser(req, res, nex) {
         name: req.body.name || '',
     };
     if (!newUser.email || !newUser.password || !newUser.name) {
-        res.status(500).json(new HttpResponse_1.HttpResponse('signup_failed'));
+        return fail(res, 500, 'signup_failed');
     }
     bcrypt_1.hash(newUser.password, 10).then(function (hashedPassword) {
         newUser.password = hashedPassword;
@@ -21,32 +24,33 @@ function postUser(req, res, nex) {
                 .then(function (result) {
                 res.status(201).json(new HttpResponse_1.HttpResponse('user_registred', result));
             })
-                .catch(console.error);
+                .catch(function (e) { return fail(res, 500, 'save_error', e); });
         })
-            .catch(console.error);
+            .catch(function (e) { return fail(res, 500, 'hashing_fail', e); });
     });
 }
 exports.postUser = postUser;
 function getUser(req, res, nex) {
     var foundUser;
-    var fail = function (title, err) { return res.status(404).json(new HttpResponse_1.HttpResponse(title, err)); };
     var _a = req.body, email = _a.email, password = _a.password;
     if (!password || !email) {
-        return fail('no_credentials');
+        return fail(res, 404, 'no_credentials');
     }
     userModel_1.UserModel.findOne({ email: req.body.email })
         .then(function (found) {
         if (found) {
             foundUser = found;
-            return bcrypt_1.compare(found.password, req.body.password);
+            return bcrypt_1.compare(req.body.password, found.password);
         }
-        fail('user_not_found');
+        throw new Error('not_found_in_db');
     })
         .then(function (result) {
-        // sempre false
-        //   res.status(200).json(new HttpResponse('user_found', found));
+        if (!result) {
+            return fail(res, 401, 'wrong_password');
+        }
+        res.status(200).json(new HttpResponse_1.HttpResponse('user_found', foundUser));
     })
-        .catch(fail);
+        .catch(function (e) { return fail(res, 404, 'user_not_found', e); });
 }
 exports.getUser = getUser;
 //# sourceMappingURL=userController.js.map

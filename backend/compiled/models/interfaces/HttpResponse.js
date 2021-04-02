@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpResponse = void 0;
 var HttpResponse = /** @class */ (function () {
-    function HttpResponse(message, docs) {
+    function HttpResponse(message, payload) {
         this.message = message;
-        this.docs = docs;
+        this.payload = payload;
     }
     return HttpResponse;
 }());

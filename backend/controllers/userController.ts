@@ -1,9 +1,13 @@
-import { compare, hash } from 'bcrypt';
-import { NextFunction, Request, Response } from 'express';
+import { hash, compare } from 'bcrypt';
+import { NextFunction, Response } from 'express';
 import { HttpResponse } from '../models/interfaces/HttpResponse';
 import { IUserRequest } from '../models/interfaces/IUserRequest';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
+
+const fail = (res: Response, code: number, title: string, err?: any) => {
+  res.status(code).json(new HttpResponse(title, err));
+};
 
 export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
   const newUser: IUser = {
@@ -12,7 +16,7 @@ export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
     name: req.body.name || '',
   };
   if (!newUser.email || !newUser.password || !newUser.name) {
-    res.status(500).json(new HttpResponse('signup_failed'));
+    return fail(res, 500, 'signup_failed');
   }
   hash(newUser.password, 10).then((hashedPassword) => {
     newUser.password = hashedPassword;
@@ -22,30 +26,31 @@ export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
           .then((result) => {
             res.status(201).json(new HttpResponse('user_registred', result));
           })
-          .catch(console.error);
+          .catch((e) => fail(res, 500, 'save_error', e));
       })
-      .catch(console.error);
+      .catch((e) => fail(res, 500, 'hashing_fail', e));
   });
 }
 
 export function getUser(req: IUserRequest, res: Response, nex: NextFunction) {
   let foundUser: IMongoUser;
-  const fail = (title: string, err?: any) => res.status(404).json(new HttpResponse(title, err));
   const { email, password } = req.body;
   if (!password || !email) {
-    return fail('no_credentials');
+    return fail(res, 404, 'no_credentials');
   }
   UserModel.findOne({ email: req.body.email })
     .then((found) => {
       if (found) {
         foundUser = found;
-        return compare(found.password, req.body.password);
+        return compare(req.body.password, found.password);
       }
-      fail('user_not_found');
+      throw new Error('not_found_in_db');
     })
     .then((result) => {
-      // sempre false
-      //   res.status(200).json(new HttpResponse('user_found', found));
+      if (!result) {
+        return fail(res, 401, 'wrong_password');
+      }
+      res.status(200).json(new HttpResponse('user_found', foundUser));
     })
-    .catch(fail);
+    .catch((e) => fail(res, 404, 'user_not_found', e));
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"HttpResponse.js","sourceRoot":"","sources":["../../../models/interfaces/HttpResponse.ts"],"names":[],"mappings":";;;AAAA;IACE,sBAAmB,OAAe,EAAS,IAAU;QAAlC,YAAO,GAAP,OAAO,CAAQ;QAAS,SAAI,GAAJ,IAAI,CAAM;IAAG,CAAC;IAC3D,mBAAC;AAAD,CAAC,AAFD,IAEC;AAFY,oCAAY"}
+{"version":3,"file":"HttpResponse.js","sourceRoot":"","sources":["../../../models/interfaces/HttpResponse.ts"],"names":[],"mappings":";;;AAAA;IACE,sBAAmB,OAAe,EAAS,OAAa;QAArC,YAAO,GAAP,OAAO,CAAQ;QAAS,YAAO,GAAP,OAAO,CAAM;IAAG,CAAC;IAC9D,mBAAC;AAAD,CAAC,AAFD,IAEC;AAFY,oCAAY"}
