@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { IStudent } from '../Student';
 
-export interface IStudentRequest extends Request {
+export interface IStudentPostRequest extends Request {
   body: IStudent;
 }

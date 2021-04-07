@@ -43,6 +43,6 @@ export const StudentModel: Model<IMongoStudent> = model(
   })
 );
 
-export function StudentModelBuilder(Student: IStudent) {
-  return StudentModel.create(Student);
+export function StudentModelBuilder(Student: IStudent, id?: string) {
+  return StudentModel.create({ ...Student, id: id });
 }

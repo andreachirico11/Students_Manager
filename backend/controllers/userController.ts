@@ -1,13 +1,13 @@
 import { hash, compare } from 'bcrypt';
 import { NextFunction, Response } from 'express';
 import { HttpResponse } from '../models/interfaces/responses/HttpResponse';
-import { IUserRequest } from '../models/interfaces/requests/IUserRequest';
+import { IUserPostRequest } from '../models/interfaces/requests/IUserRequest';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
 import { generateToken } from './webTokenController';
 import { fail } from '../utils/httpFailFunction';
 
-export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
+export function postUser(req: IUserPostRequest, res: Response, nex: NextFunction) {
   const newUser: IUser = {
     email: req.body.email,
     password: req.body.password,
@@ -30,7 +30,7 @@ export function postUser(req: IUserRequest, res: Response, nex: NextFunction) {
   });
 }
 
-export function getUser(req: IUserRequest, res: Response, nex: NextFunction) {
+export function getUser(req: IUserPostRequest, res: Response, nex: NextFunction) {
   let foundUser: IMongoUser;
   const { email, password } = req.body;
   if (!password || !email) {

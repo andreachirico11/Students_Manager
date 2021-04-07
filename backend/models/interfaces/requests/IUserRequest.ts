@@ -1,11 +1,6 @@
 import { Request } from 'express';
+import { IUser } from '../User';
 
-export interface IUserRequest extends Request {
-  body: IReqBody;
-}
-
-interface IReqBody {
-  email: string;
-  password: string;
-  name?: string;
+export interface IUserPostRequest extends Request {
+  body: IUser;
 }

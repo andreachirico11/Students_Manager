@@ -5,16 +5,16 @@ var HttpResponse_1 = require("../models/interfaces/responses/HttpResponse");
 var studentModell_1 = require("../models/studentModell");
 var httpFailFunction_1 = require("../utils/httpFailFunction");
 function postStudent(req, res, nex) {
-    // const newStudent: IStudent = {
-    //   name: req.body.name,
-    //   surname: req.body.surname,
-    //   dateOfBirth: req.body.dateOfBirth,
-    //   address: req.body.address,
-    //   fiscalCode: req.body.fiscalCode,
-    //   schoolClass: req.body.schoolClass,
-    //   notes: req.body.notes,
-    // };
-    studentModell_1.StudentModelBuilder(req.body)
+    var newStudent = {
+        name: req.body.name,
+        surname: req.body.surname,
+        dateOfBirth: req.body.dateOfBirth,
+        address: req.body.address,
+        fiscalCode: req.body.fiscalCode,
+        schoolClass: req.body.schoolClass,
+        notes: req.body.notes,
+    };
+    studentModell_1.StudentModelBuilder(newStudent)
         .then(function (newS) { return res.status(201).json(new HttpResponse_1.HttpResponse('student_created', newS)); })
         .catch(function () { return httpFailFunction_1.fail(res, 500, 'student_creation_error'); });
 }
@@ -64,4 +64,4 @@ function deleteStudent(req, res, nex) {
         .catch(function () { return httpFailFunction_1.fail(res, 500, 'delete_fail'); });
 }
 exports.deleteStudent = deleteStudent;
-//# sourceMappingURL=studentController.js.map
+//# sourceMappingURL=studentController%20copy.js.map
