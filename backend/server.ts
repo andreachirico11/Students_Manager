@@ -1,6 +1,7 @@
 import bodyParser = require('body-parser');
 import * as express from 'express';
 import * as mongoose from 'mongoose';
+import { verifyToken } from './controllers/webTokenController';
 import { router } from './routes';
 
 const app = express();

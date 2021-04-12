@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fail = void 0;
+exports.generateHttpRes = void 0;
 var UserResponse_1 = require("../models/interfaces/UserResponse");
-var fail = function (res, code, title, err) {
-    res.status(code).json(new UserResponse_1.HttpResponse(title, err));
+var generateHttpRes = function (res, code, title, payload) {
+    res.status(code).json(new UserResponse_1.HttpResponse(title, payload));
 };
-exports.fail = fail;
+exports.generateHttpRes = generateHttpRes;
 //# sourceMappingURL=httpFailFunction.js.map

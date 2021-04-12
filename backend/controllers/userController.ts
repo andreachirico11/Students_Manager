@@ -4,7 +4,7 @@ import { IBackendRequest } from '../models/interfaces/IRequests';
 import { HttpResponse } from '../models/interfaces/UserResponse';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
-import { fail } from '../utils/httpFailFunction';
+import { generateHttpRes } from '../utils/httpFailFunction';
 import { generateToken } from './webTokenController';
 
 export function postUser(req: IBackendRequest<IUser>, res: Response) {
@@ -14,7 +14,7 @@ export function postUser(req: IBackendRequest<IUser>, res: Response) {
     name: req.body.name || '',
   };
   if (!newUser.email || !newUser.password || !newUser.name) {
-    return fail(res, 500, 'signup_failed');
+    return generateHttpRes(res, 500, 'signup_failed');
   }
   hash(newUser.password, 10).then((hashedPassword) => {
     newUser.password = hashedPassword;
@@ -22,11 +22,11 @@ export function postUser(req: IBackendRequest<IUser>, res: Response) {
       .then((u) => {
         u.save()
           .then((created) => {
-            res.status(201).json(new HttpResponse('user_registred', generateToken(created)));
+            return generateHttpRes(res, 200, 'user_registered', generateToken(created));
           })
-          .catch((e) => fail(res, 500, 'save_error'));
+          .catch((e) => generateHttpRes(res, 500, 'save_error'));
       })
-      .catch((e) => fail(res, 500, 'hashing_fail'));
+      .catch((e) => generateHttpRes(res, 500, 'hashing_fail'));
   });
 }
 
@@ -34,7 +34,7 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
   let foundUser: IMongoUser;
   const { email, password } = req.body;
   if (!password || !email) {
-    return fail(res, 404, 'no_credentials');
+    return generateHttpRes(res, 404, 'no_credentials');
   }
   UserModel.findOne({ email: req.body.email })
     .then((found) => {
@@ -46,9 +46,9 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
     })
     .then((result) => {
       if (!result) {
-        return fail(res, 401, 'wrong_password');
+        return generateHttpRes(res, 401, 'wrong_password');
       }
-      res.status(200).json(new HttpResponse('user_found', generateToken(foundUser)));
+      return generateHttpRes(res, 200, 'user_found', generateToken(foundUser));
     })
-    .catch((e) => fail(res, 404, 'user_not_found'));
+    .catch((e) => generateHttpRes(res, 404, 'user_not_found'));
 }

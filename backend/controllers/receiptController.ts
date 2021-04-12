@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import { IBackendRequest } from '../models/interfaces/IRequests';
-import { HttpResponse } from '../models/interfaces/UserResponse';
+import { Response } from 'express';
+import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IReceipt } from '../models/interfaces/Receipt';
+import { HttpResponse } from '../models/interfaces/UserResponse';
 import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
 import { StudentModel } from '../models/studentModell';
-import { fail } from '../utils/httpFailFunction';
+import { generateHttpRes } from '../utils/httpFailFunction';
 
 export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
   ReceiptModelBuilder(req.body)
@@ -17,8 +17,8 @@ export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       }
       throw new Error();
     })
-    .then((s) => res.status(200).json(new HttpResponse('student_updated_with_receipt', s)))
-    .catch(() => fail(res, 500, 'receipt_creation_fail'));
+    .then((s) => generateHttpRes(res, 200, 'student_updated_with_receipt', s))
+    .catch(() => generateHttpRes(res, 500, 'receipt_creation_fail'));
 }
 
 export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {
@@ -34,11 +34,11 @@ export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       }
       throw new Error();
     })
-    .then((r) => res.status(200).json(new HttpResponse('receipt_updated', r)))
-    .catch(() => fail(res, 500, 'update_fail'));
+    .then((r) => generateHttpRes(res, 200, 'receipt_updated', r))
+    .catch(() => generateHttpRes(res, 500, 'update_fail'));
 }
 
-export function deleteReceipt(req: Request, res: Response) {
+export function deleteReceipt(req: IRequest, res: Response) {
   const recId = req.params.id;
   StudentModel.findOne({ receiptIds: recId })
     .then((s) => {
@@ -52,9 +52,9 @@ export function deleteReceipt(req: Request, res: Response) {
     })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
-        return res.status(200).json(new HttpResponse('receipt_deleted'));
+        return generateHttpRes(res, 200, 'receipt_deleted');
       }
       throw new Error();
     })
-    .catch(() => fail(res, 500, 'delete_fail'));
+    .catch(() => generateHttpRes(res, 500, 'delete_fail'));
 }
