@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.postUser = void 0;
 var bcrypt_1 = require("bcrypt");
-var HttpResponse_1 = require("../models/interfaces/responses/HttpResponse");
+var UserResponse_1 = require("../models/interfaces/UserResponse");
 var userModel_1 = require("../models/userModel");
-var webTokenController_1 = require("./webTokenController");
 var httpFailFunction_1 = require("../utils/httpFailFunction");
-function postUser(req, res, nex) {
+var webTokenController_1 = require("./webTokenController");
+function postUser(req, res) {
     var newUser = {
         email: req.body.email,
         password: req.body.password,
@@ -21,7 +21,7 @@ function postUser(req, res, nex) {
             .then(function (u) {
             u.save()
                 .then(function (created) {
-                res.status(201).json(new HttpResponse_1.HttpResponse('user_registred', webTokenController_1.generateToken(created)));
+                res.status(201).json(new UserResponse_1.HttpResponse('user_registred', webTokenController_1.generateToken(created)));
             })
                 .catch(function (e) { return httpFailFunction_1.fail(res, 500, 'save_error'); });
         })
@@ -29,7 +29,7 @@ function postUser(req, res, nex) {
     });
 }
 exports.postUser = postUser;
-function getUser(req, res, nex) {
+function getUser(req, res) {
     var foundUser;
     var _a = req.body, email = _a.email, password = _a.password;
     if (!password || !email) {
@@ -47,7 +47,7 @@ function getUser(req, res, nex) {
         if (!result) {
             return httpFailFunction_1.fail(res, 401, 'wrong_password');
         }
-        res.status(200).json(new HttpResponse_1.HttpResponse('user_found', webTokenController_1.generateToken(foundUser)));
+        res.status(200).json(new UserResponse_1.HttpResponse('user_found', webTokenController_1.generateToken(foundUser)));
     })
         .catch(function (e) { return httpFailFunction_1.fail(res, 404, 'user_not_found'); });
 }

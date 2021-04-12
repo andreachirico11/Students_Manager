@@ -21,7 +21,7 @@ export const ReceiptModel: Model<IMongoReceipt> = model(
       required: true,
     },
     typeOfPayment: {
-      type: String,
+      type: Number,
       required: true,
     },
   })

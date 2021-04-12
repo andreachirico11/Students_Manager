@@ -1,12 +1,12 @@
 import { Document } from 'mongoose';
-import { PaymentType } from './PaymentType';
+import { TypeOfPayment } from './TypeOfPayment';
 
 export interface IReceipt {
   number: string;
   amount: number;
   emissionDate: Date;
   paymentDate: Date;
-  typeOfPayment: PaymentType;
+  typeOfPayment: TypeOfPayment;
 }
 
 export interface IFrontendReceipt extends IReceipt {

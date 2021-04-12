@@ -31,13 +31,15 @@ export const StudentModel: Model<IMongoStudent> = model(
     receiptIds: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Comment',
+        ref: 'Receipt',
       },
     ],
-    parentIds: [
+    parents: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Parent',
+        name: { type: String, required: true },
+        surname: { type: String, required: true },
+        dateOfBirth: { type: Date, required: true },
+        fiscalCode: { type: String, required: true },
       },
     ],
   })

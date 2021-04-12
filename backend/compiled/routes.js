@@ -14,5 +14,7 @@ router.delete('/students/:id', studentController_1.deleteStudent);
 router.post('/students', studentController_1.postStudent);
 router.get('/students/:id', studentController_1.getStudent);
 router.get('/students', studentController_1.getAllStudents);
-router.post('/receipts/:id', receiptController_1.postReceipt);
+router.post('/receipts/:studentId', receiptController_1.postReceipt);
+router.put('/receipts/:receiptId', receiptController_1.putReceipt);
+router.delete('/receipts/:id', receiptController_1.deleteReceipt);
 //# sourceMappingURL=routes.js.map

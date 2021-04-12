@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { postReceipt } from './controllers/receiptController';
+import { deleteReceipt, postReceipt, putReceipt } from './controllers/receiptController';
 import {
   deleteStudent,
   getAllStudents,
@@ -18,6 +18,8 @@ router.post('/students', postStudent);
 router.get('/students/:id', getStudent);
 router.get('/students', getAllStudents);
 
-router.post('/receipts/:id', postReceipt);
+router.post('/receipts/:studentId', postReceipt);
+router.put('/receipts/:receiptId', putReceipt);
+router.delete('/receipts/:id', deleteReceipt);
 
 export { router };

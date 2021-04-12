@@ -41,13 +41,15 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
     receiptIds: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Comment',
+            ref: 'Receipt',
         },
     ],
-    parentIds: [
+    parents: [
         {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: 'Parent',
+            name: { type: String, required: true },
+            surname: { type: String, required: true },
+            dateOfBirth: { type: Date, required: true },
+            fiscalCode: { type: String, required: true },
         },
     ],
 }));

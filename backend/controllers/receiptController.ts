@@ -1,17 +1,19 @@
-import { NextFunction, Request, Response } from 'express';
-import { IReceiptRequest } from '../models/interfaces/requests/IReceiptRequest';
-import { IStudentPostRequest } from '../models/interfaces/requests/IStudentRequest';
-import { HttpResponse } from '../models/interfaces/responses/HttpResponse';
-import { IStudent } from '../models/interfaces/Student';
-import { ReceiptModelBuilder } from '../models/receiptModel';
-import { StudentModel, StudentModelBuilder } from '../models/studentModell';
+import { Request, Response } from 'express';
+import { IBackendRequest } from '../models/interfaces/IRequests';
+import { HttpResponse } from '../models/interfaces/UserResponse';
+import { IReceipt } from '../models/interfaces/Receipt';
+import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
+import { StudentModel } from '../models/studentModell';
 import { fail } from '../utils/httpFailFunction';
 
-export function postReceipt(req: IReceiptRequest, res: Response, nex: NextFunction) {
+export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
   ReceiptModelBuilder(req.body)
     .then((receipt) => {
       if (receipt) {
-        return StudentModel.updateOne({ _id: req.params.id }, { receiptIds: receipt._id });
+        return StudentModel.updateOne(
+          { _id: req.params.studentId },
+          { $push: { receiptIds: receipt._id } }
+        );
       }
       throw new Error();
     })
@@ -19,63 +21,40 @@ export function postReceipt(req: IReceiptRequest, res: Response, nex: NextFuncti
     .catch(() => fail(res, 500, 'receipt_creation_fail'));
 }
 
-// export function postStudent(req: IStudentPostRequest, res: Response, nex: NextFunction) {
-//   const newStudent: IStudent = {
-//     name: req.body.name,
-//     surname: req.body.surname,
-//     dateOfBirth: req.body.dateOfBirth,
-//     address: req.body.address,
-//     fiscalCode: req.body.fiscalCode,
-//     schoolClass: req.body.schoolClass,
-//     notes: req.body.notes,
-//   };
-//   StudentModelBuilder(newStudent)
-//     .then((newS) => res.status(201).json(new HttpResponse('student_created', newS)))
-//     .catch(() => fail(res, 500, 'student_creation_error'));
-// }
+export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {
+  ReceiptModel.findById({ _id: req.params.receiptId })
+    .then((r) => {
+      if (r) {
+        r.number = req.body.number;
+        r.amount = req.body.amount;
+        r.emissionDate = req.body.emissionDate;
+        r.paymentDate = req.body.paymentDate;
+        r.typeOfPayment = req.body.typeOfPayment;
+        return r.save();
+      }
+      throw new Error();
+    })
+    .then((r) => res.status(200).json(new HttpResponse('receipt_updated', r)))
+    .catch(() => fail(res, 500, 'update_fail'));
+}
 
-// export function getStudent(req: Request, res: Response, nex: NextFunction) {
-//   StudentModel.findById({ _id: req.params.id })
-//     .then((found) => res.status(200).json(new HttpResponse('student_found', found)))
-//     .catch(() => fail(res, 404, 'student_not_found'));
-// }
-
-// export function getAllStudents(req: Request, res: Response, nex: NextFunction) {
-//   StudentModel.find()
-//     .then((allStudent) => res.status(200).json(new HttpResponse('student_found', allStudent)))
-//     .catch(() => fail(res, 404, 'fetch_students_error'));
-// }
-
-// export function putStudent(req: IStudentPostRequest, res: Response, nex: NextFunction) {
-//   StudentModel.findById({ _id: req.params.id })
-//     .then((s) => {
-//       if (s) {
-//         s.name = req.body.name;
-//         s.surname = req.body.surname;
-//         s.dateOfBirth = req.body.dateOfBirth;
-//         s.address = req.body.address;
-//         s.schoolClass = req.body.schoolClass;
-//         s.fiscalCode = req.body.fiscalCode;
-//         s.address = req.body.address;
-//         s.notes = req.body.notes;
-//         s.parentIds = req.body.parentIds;
-//         s.receiptIds = req.body.receiptIds;
-
-//         return s.save();
-//       }
-//       throw new Error();
-//     })
-//     .then((s) => res.status(200).json(new HttpResponse('student_updated', s)))
-//     .catch(() => fail(res, 500, 'update_fail'));
-// }
-
-// export function deleteStudent(req: IStudentPostRequest, res: Response, nex: NextFunction) {
-//   StudentModel.deleteOne({ _id: req.params.id })
-//     .then((r) => {
-//       if (r.deletedCount && r.deletedCount > 0) {
-//         return res.status(200).json(new HttpResponse('student_deleted'));
-//       }
-//       throw new Error();
-//     })
-//     .catch(() => fail(res, 500, 'delete_fail'));
-// }
+export function deleteReceipt(req: Request, res: Response) {
+  const recId = req.params.id;
+  StudentModel.findOne({ receiptIds: recId })
+    .then((s) => {
+      if (s && s.receiptIds) {
+        return s.updateOne({ $pull: { receiptIds: recId } });
+      }
+      return;
+    })
+    .then((s) => {
+      return ReceiptModel.deleteOne({ _id: recId });
+    })
+    .then((r) => {
+      if (r.deletedCount && r.deletedCount > 0) {
+        return res.status(200).json(new HttpResponse('receipt_deleted'));
+      }
+      throw new Error();
+    })
+    .catch(() => fail(res, 500, 'delete_fail'));
+}

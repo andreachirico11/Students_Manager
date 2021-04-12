@@ -1,6 +1,5 @@
 import { Document } from 'mongoose';
 import { IParent } from './Parent';
-import { IReceipt } from './Receipt';
 
 export interface IStudent {
   name: string;
@@ -10,8 +9,8 @@ export interface IStudent {
   fiscalCode?: string;
   address?: string;
   notes?: string;
-  parentIds?: IParent[];
-  receiptIds?: IReceipt[];
+  parents?: IParent[];
+  receiptIds?: string[];
 }
 
 export interface IFrontendStudent extends IStudent {

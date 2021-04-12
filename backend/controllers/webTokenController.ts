@@ -1,7 +1,6 @@
 import { sign } from 'jsonwebtoken';
-import { IUserResponse } from '../models/interfaces/responses/IUserResponse';
+import { IUserResponse } from '../models/interfaces/UserResponse';
 import { IFrontendUser, IMongoUser } from '../models/interfaces/User';
-import { NextFunction, Response } from 'express';
 
 const longString = process.env.SECRET_AUTH_STRING || 'SECRET_AUTH_STRING';
 
