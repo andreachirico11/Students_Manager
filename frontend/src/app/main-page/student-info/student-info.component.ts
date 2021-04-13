@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Student } from 'src/app/models/Student';
+import { Student } from 'src/app/shared/models/Student';
 
 @Component({
   selector: 'student-info',

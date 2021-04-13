@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Receipt } from 'src/app/models/Receipts';
-import { Student } from 'src/app/models/Student';
-import { DataService } from 'src/app/services/data.service';
+import { DataService } from 'src/app/shared/data-service/data.service';
+import { Receipt } from 'src/app/shared/models/Receipts';
+import { Student } from 'src/app/shared/models/Student';
 
 @Component({
   selector: 'student-receipts',
@@ -14,9 +14,9 @@ export class StudentReceiptsComponent implements OnInit {
   public student: Student;
 
   public receipts: Observable<Receipt[]>;
-  public displayedColumns = ["number", "amount", "emissionDate", "paymentDate", "typeOfPayment"];
+  public displayedColumns = ['number', 'amount', 'emissionDate', 'paymentDate', 'typeOfPayment'];
 
-  constructor(private dbService: DataService) { }
+  constructor(private dbService: DataService) {}
 
   ngOnInit(): void {
     this.receipts = this.dbService.getReceiptsForStudent(this.student.receiptsId);

@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import { Student } from './models/Student';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  private _selectedS: Student = null
-  get selectedS() {
-    return this._selectedS;
-  }
-  set selectedS(newS: Student) {
-    if (this._selectedS && this._selectedS.id === newS.id) {
-      this._selectedS = null;
-    } else {
-      this._selectedS = newS;
-    }
+export class AppComponent implements OnInit {
+  public isLogged: Observable<boolean>;
+  public loaded = true;
+  constructor(private auth: AuthService) {}
+
+  ngOnInit() {
+    this.loaded = false;
+    this.auth.autoLogin().subscribe(() => {
+      this.loaded = true;
+    });
   }
 }

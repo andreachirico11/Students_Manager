@@ -1,9 +1,14 @@
-mat-toolbar {
-  height: 10%;
+:host {
+    position: relative;
 }
-mat-drawer-container {
-  height: 90%;
-}
-mat-drawer {
-  width: 20%;
+
+::ng-deep .appComponentSpinner {
+    position: absolute;
+    width: 100px  !important;
+    height: 100px !important;
+    margin-top: -100px;
+    margin-left: -50px;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
 }

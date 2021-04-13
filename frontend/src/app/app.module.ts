@@ -1,40 +1,41 @@
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { StudentInfoComponent } from './components/student-info/student-info.component';
-import { StudentBioComponent } from './components/student-bio/student-bio.component';
-import { StudentReceiptsComponent } from './components/student-receipts/student-receipts.component';
-import { ReceiptFormComponent } from './components/receipt-form/receipt-form.component';
-import { StudentFormComponent } from './components/student-form/student-form.component';
-import { MaterialModule } from './material.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { AuthComponent } from './auth/auth.component';
+import { CanLoadGuard } from './shared/can-activate.guard';
+
+const routes: Routes = [
+  {
+    path: 'enter',
+    component: AuthComponent,
+  },
+  {
+    path: '',
+    loadChildren: () => import('./main-page/main-page.module').then((m) => m.MainPageModule),
+    canLoad: [CanLoadGuard],
+  },
+];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SidebarComponent,
-    LoginFormComponent,
-    StudentInfoComponent,
-    StudentBioComponent,
-    StudentReceiptsComponent,
-    ReceiptFormComponent,
-    StudentFormComponent,
-  ],
+  declarations: [AppComponent, AuthComponent],
   imports: [
     BrowserModule,
     CommonModule,
-    MaterialModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

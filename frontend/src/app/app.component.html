@@ -1,11 +1,7 @@
 <mat-toolbar color="primary">
   <span>Students Manager</span>
 </mat-toolbar>
-<mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>
-    <sidebar (studentSelected)="selectedS = $event"></sidebar>
-  </mat-drawer>
-  <mat-drawer-content>
-    <student-info  *ngIf="selectedS" [student]="selectedS"></student-info>
-  </mat-drawer-content>
-</mat-drawer-container>
+<router-outlet *ngIf="loaded; else loading"></router-outlet>
+<ng-template #loading>
+  <mat-spinner class="appComponentSpinner"></mat-spinner>
+</ng-template>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Student } from 'src/app/models/Student';
-import { DataService } from 'src/app/services/data.service';
+import { DataService } from 'src/app/shared/data-service/data.service';
+import { Student } from 'src/app/shared/models/Student';
 
 @Component({
   selector: 'sidebar',
@@ -13,7 +13,7 @@ export class SidebarComponent implements OnInit {
   @Output()
   public studentSelected = new EventEmitter<Student>();
 
-  constructor(private dbService: DataService) { }
+  constructor(private dbService: DataService) {}
 
   ngOnInit(): void {
     this.students = this.dbService.getStudents();
