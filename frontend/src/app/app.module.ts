@@ -14,6 +14,7 @@ import { CanLoadGuard } from './shared/can-activate.guard';
 const routes: Routes = [
   {
     path: 'enter',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     component: AuthComponent,
   },
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     CommonModule,

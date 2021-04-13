@@ -1,1 +1,69 @@
-<p>auth works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ isRegistering ? 'Register' : 'Login' }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="isRegistering; else loginForm">
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+      <mat-form-field appearance="fill" color="primary">
+        <mat-label>Name</mat-label>
+        <input matInput ngModel name="name" type="text" required />
+        <mat-error>Please Provide a Name</mat-error>
+        <mat-icon matSuffix color="primary">person</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="fill" color="primary">
+        <mat-label>Email</mat-label>
+        <input matInput ngModel name="email" type="email" required email />
+        <mat-error>Please Provide a Valid Email</mat-error>
+        <mat-icon matSuffix color="primary">mail</mat-icon>
+      </mat-form-field>
+      <mat-form-field appearance="fill" color="primary">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          ngModel
+          #password="ngModel"
+          name="password"
+          type="password"
+          required
+          minlength="6"
+          passwordValidator
+        />
+        <mat-icon matSuffix color="primary">lock</mat-icon>
+        <mat-error *ngIf="password.errors && password.touched">
+          <span *ngIf="password.errors.required">Password is Required</span>
+          <span *ngIf="password.errors.minlength">Password must be at least 6 characters</span>
+          <span *ngIf="!password.errors.required && !password.errors.minlength">
+            {{ pswService.getErrorsText(password.errors)[0] }}
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
+        {{ isRegistering ? 'Register' : 'Login' }}
+      </button>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <a mat-button (click)="isRegistering = !isRegistering">
+      {{ isRegistering ? 'Login' : 'Register' }}
+    </a>
+    <a mat-button disabled>Forgot Password?</a>
+  </mat-card-footer>
+</mat-card>
+
+<ng-template #loginForm>
+  <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+    <mat-form-field appearance="fill" color="primary">
+      <mat-label>Email</mat-label>
+      <input matInput ngModel name="email" type="email" required />
+      <mat-icon matSuffix color="primary">mail</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="fill" color="primary">
+      <mat-label>Password</mat-label>
+      <input matInput ngModel #password="ngModel" name="password" required />
+      <mat-icon matSuffix color="primary">lock</mat-icon>
+    </mat-form-field>
+    <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
+      Login
+    </button>
+  </form>
+</ng-template>

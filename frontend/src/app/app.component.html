@@ -1,7 +1,4 @@
 <mat-toolbar color="primary">
   <span>Students Manager</span>
 </mat-toolbar>
-<router-outlet *ngIf="loaded; else loading"></router-outlet>
-<ng-template #loading>
-  <mat-spinner class="appComponentSpinner"></mat-spinner>
-</ng-template>
+<router-outlet></router-outlet>
