@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private dbUrl = 'http://localhost:3000/';
+  private dbUrl = environment.dbUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -20,6 +21,6 @@ export class DataService {
   public getReceiptsForStudent(receiptIds: string[]): Observable<Receipt[]> {
     return this.http
       .get<Receipt[]>(this.dbUrl + 'receipts')
-      .pipe(map((receipts) => receipts.filter((r) => !receiptIds.find((id) => id === r.id))));
+      .pipe(map((receipts) => receipts.filter((r) => receiptIds.find((id) => id === r.id))));
   }
 }

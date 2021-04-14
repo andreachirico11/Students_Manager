@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PasswordErrors } from './passwordErrors';
 
 @Injectable({
   providedIn: 'root',
@@ -13,33 +14,30 @@ export class PasswordValidationService {
 
   constructor() {}
 
-  public getErrorsText(errs: { [key: string]: boolean }): string[] {
+  public getErrorsText(errs: PasswordErrors): string[] {
     const output: string[] = [];
-    let containsStr = 'Password should contain at least one ';
+    let baseStr = 'Password should contain at least one ';
     if (errs.symbols) {
-      output.push((containsStr += 'symbol'));
+      output.push(baseStr + 'symbol');
     }
     if (errs.lowercase) {
-      output.push((containsStr += 'lowercase letter'));
+      output.push(baseStr + 'lowercase letter');
     }
     if (errs.uppercase) {
-      output.push((containsStr += 'uppercase letter'));
+      output.push(baseStr + 'uppercase letter');
     }
     if (errs.numbers) {
-      output.push((containsStr += 'number'));
+      output.push(baseStr + 'number');
     }
-    return output.length > 0 ? output : ['Invalid password'];
+    return output;
   }
 
-  public validatePassword(psw: string): { [name: string]: boolean } {
-    const errors = {};
+  public validatePassword(psw: string): PasswordErrors {
+    const errors: PasswordErrors = {};
     for (const key in this.passwordRegexp) {
       if (!this.passwordRegexp[key].test(psw)) {
         errors[key] = true;
       }
-    }
-    if (psw.length < 6) {
-      errors['length'] = true;
     }
     return errors;
   }

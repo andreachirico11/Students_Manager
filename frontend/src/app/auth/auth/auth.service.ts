@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IUser } from '../shared/models/User';
+import { IUser } from 'src/app/shared/models/User';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private dbUrl = 'http://localhost:3000/';
+  private dbUrl = environment.dbUrl;
 
   get loggedUser(): IUser | null {
     return (JSON.parse(localStorage.getItem('loggedUser')) as IUser) || null;

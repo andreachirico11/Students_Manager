@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PasswordValidationService } from '../shared/password-validation.service';
-import { AuthService } from './auth.service';
+import { PasswordValidationService } from '../shared/passwordValidationService/password-validation.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-auth',

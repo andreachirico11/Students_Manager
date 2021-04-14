@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
-import { PasswordValidationService } from './password-validation.service';
+import { PasswordValidationService } from './passwordValidationService/password-validation.service';
 
 @Directive({
   selector: '[passwordValidator]',
