@@ -1,4 +1,5 @@
 import { Parent } from './Parent';
+import { Receipt } from './Receipts';
 
 export class Student {
   constructor(
@@ -10,7 +11,7 @@ export class Student {
     public fiscalCode: string,
     public address: string,
     public parens: Parent[],
-    public receiptsId: string[],
+    public receipts: Receipt[],
     public notes?: string
   ) {}
 }

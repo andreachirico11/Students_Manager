@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
@@ -7,18 +8,24 @@ import { Student } from 'src/app/shared/models/Student';
 import { MaterialModule } from '../../material.module';
 import { SidebarComponent } from './sidebar.component';
 
-describe('MainPageComponent', () => {
+@Directive({
+  selector: '[routerLink]',
+})
+export class FakeRouterLink {
+  @Input()
+  routerLink;
+}
+
+describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let dbService: DataService;
 
-  const fakeStudentsDb = [
-      new Student('1', 'gianni', 'gianno', '', new Date(), '', '', [], ['1', '14'], ''),
-    ],
+  const fakeStudentsDb = [new Student('1', 'gianni', 'gianno', '', new Date(), '', '', [], [], '')],
     getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
+      declarations: [SidebarComponent, FakeRouterLink],
       imports: [HttpClientTestingModule, MaterialModule],
     }).compileComponents();
   });
@@ -41,15 +48,5 @@ describe('MainPageComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     expect(getListOptions().length).toBe(1);
-  });
-
-  it('should emit the student on click ', () => {
-    component.studentSelected.subscribe((student) => {
-      expect(student).toEqual(fakeStudentsDb[0]);
-    });
-    spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
-    component.ngOnInit();
-    fixture.detectChanges();
-    getListOptions()[0].nativeNode.click();
   });
 });

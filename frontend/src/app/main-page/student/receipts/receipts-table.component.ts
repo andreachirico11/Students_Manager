@@ -19,6 +19,6 @@ export class StudentReceiptsComponent implements OnInit {
   constructor(private dbService: DataService) {}
 
   ngOnInit(): void {
-    this.receipts = this.dbService.getReceiptsForStudent(this.student.receiptsId);
+    // this.receipts = this.dbService.getReceiptsForStudent(this.student.receipts);
   }
 }

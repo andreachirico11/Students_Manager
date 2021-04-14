@@ -2,7 +2,7 @@
   <mat-list-option
     *ngFor="let student of students | async"
     [value]="student"
-    (click)="studentSelected.emit(student)"
+    [routerLink]="[student.id]"
   >
     {{ student.name }} {{ student.surname }}
   </mat-list-option>

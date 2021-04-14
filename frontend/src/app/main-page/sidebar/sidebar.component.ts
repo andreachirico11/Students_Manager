@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from 'src/app/shared/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
@@ -10,8 +10,6 @@ import { Student } from 'src/app/shared/models/Student';
 })
 export class SidebarComponent implements OnInit {
   public students: Observable<Student[]>;
-  @Output()
-  public studentSelected = new EventEmitter<Student>();
 
   constructor(private dbService: DataService) {}
 
