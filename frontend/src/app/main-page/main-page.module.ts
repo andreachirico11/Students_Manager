@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from '../material.module';
 import { MainPageComponent } from './main-page.component';
@@ -16,6 +15,7 @@ const routes: Routes = [{ path: '', component: MainPageComponent }];
 
 @NgModule({
   declarations: [
+    MainPageComponent,
     ReceiptFormComponent,
     StudentBioComponent,
     StudentFormComponent,
@@ -23,12 +23,6 @@ const routes: Routes = [{ path: '', component: MainPageComponent }];
     StudentReceiptsComponent,
     SidebarComponent,
   ],
-  imports: [
-    RouterModule.forChild(routes),
-    FormsModule,
-    MaterialModule,
-    CommonModule,
-    MatSidenavModule,
-  ],
+  imports: [RouterModule.forChild(routes), FormsModule, CommonModule, MaterialModule],
 })
 export class MainPageModule {}
