@@ -1,28 +1,35 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from '../material.module';
 import { MainPageComponent } from './main-page.component';
-import { ReceiptFormComponent } from './receipt-form/receipt-form.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { StudentBioComponent } from './student-bio/student-bio.component';
-import { StudentFormComponent } from './student-form/student-form.component';
-import { StudentInfoComponent } from './student-info/student-info.component';
-import { StudentReceiptsComponent } from './student-receipts/student-receipts.component';
+import { StudentComponent } from './student/student.component';
 
-const routes: Routes = [{ path: '', component: MainPageComponent }];
+const routes: Routes = [
+  {
+    path: '',
+    component: MainPageComponent,
+    children: [
+      {
+        path: ':id',
+        loadChildren: () => import('./student/student.module').then((m) => m.StudentModule),
+        component: StudentComponent,
+      },
+    ],
+  },
+];
 
 @NgModule({
-  declarations: [
-    MainPageComponent,
-    ReceiptFormComponent,
-    StudentBioComponent,
-    StudentFormComponent,
-    StudentInfoComponent,
-    StudentReceiptsComponent,
-    SidebarComponent,
+  declarations: [MainPageComponent, SidebarComponent],
+  imports: [
+    RouterModule.forChild(routes),
+    FormsModule,
+    MaterialModule,
+    HttpClientModule,
+    CommonModule,
   ],
-  imports: [RouterModule.forChild(routes), FormsModule, CommonModule, MaterialModule],
 })
 export class MainPageModule {}

@@ -6,8 +6,8 @@ import { Student } from 'src/app/shared/models/Student';
 
 @Component({
   selector: 'student-receipts',
-  templateUrl: './student-receipts.component.html',
-  styleUrls: ['./student-receipts.component.scss'],
+  templateUrl: './receipts-table.component.html',
+  styleUrls: ['./receipts-table.component.scss'],
 })
 export class StudentReceiptsComponent implements OnInit {
   @Input()
