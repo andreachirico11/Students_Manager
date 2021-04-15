@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from 'src/app/shared/data-service/data.service';
+import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -10,7 +10,7 @@ import { Student } from 'src/app/shared/models/Student';
 })
 export class StudentComponent implements OnInit {
   public student: Student;
-  public note;
+  // public note;
   public isBadgeOpen = false;
 
   constructor(
@@ -28,7 +28,7 @@ export class StudentComponent implements OnInit {
     this.dbService.getStudentWithReceipts(id).subscribe((student) => {
       if (student) {
         this.student = student;
-        this.note = student.notes || '';
+        // this.note = student.notes || '';
       }
     });
   }
@@ -42,7 +42,7 @@ export class StudentComponent implements OnInit {
   }
 
   public updateNote() {
-    this.dbService.updateStudentNote(this.student.id, this.note).subscribe((result) => {
+    this.dbService.updateStudent(this.student).subscribe((result) => {
       if (result) {
         this.isBadgeOpen = true;
         setTimeout(() => {

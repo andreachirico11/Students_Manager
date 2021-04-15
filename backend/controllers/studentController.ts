@@ -1,14 +1,13 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
-import { HttpResponse } from '../models/interfaces/UserResponse';
 import { IStudent } from '../models/interfaces/Student';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpFailFunction';
 
-export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
-  StudentModelBuilder(req.body)
-    .then((newS) => generateHttpRes(res, 201, 'student_created', newS))
-    .catch(() => generateHttpRes(res, 500, 'student_creation_error'));
+export function getAllStudents(req: IRequest, res: Response) {
+  StudentModel.find()
+    .then((allStudent) => generateHttpRes(res, 200, 'student_found', allStudent))
+    .catch(() => generateHttpRes(res, 404, 'fetch_students_error'));
 }
 
 export function getStudent(req: IRequest, res: Response) {
@@ -23,10 +22,10 @@ export function getStudent(req: IRequest, res: Response) {
     .catch(() => generateHttpRes(res, 404, 'student_not_found'));
 }
 
-export function getAllStudents(req: IRequest, res: Response) {
-  StudentModel.find()
-    .then((allStudent) => generateHttpRes(res, 200, 'student_found', allStudent))
-    .catch(() => generateHttpRes(res, 404, 'fetch_students_error'));
+export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
+  StudentModelBuilder(req.body)
+    .then((newS) => generateHttpRes(res, 201, 'student_created', newS))
+    .catch(() => generateHttpRes(res, 500, 'student_creation_error'));
 }
 
 export function putStudent(req: IBackendRequest<IStudent>, res: Response) {

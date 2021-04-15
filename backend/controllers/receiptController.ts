@@ -1,15 +1,16 @@
 import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IReceipt } from '../models/interfaces/Receipt';
-import { HttpResponse } from '../models/interfaces/UserResponse';
 import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
 import { StudentModel } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpFailFunction';
 
 export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
+  let receiptToSend: IReceipt;
   ReceiptModelBuilder(req.body)
     .then((receipt) => {
       if (receipt) {
+        receiptToSend = receipt;
         return StudentModel.updateOne(
           { _id: req.params.studentId },
           { $push: { receiptIds: receipt._id } }
@@ -17,7 +18,7 @@ export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       }
       throw new Error();
     })
-    .then((s) => generateHttpRes(res, 200, 'student_updated_with_receipt', s))
+    .then(() => generateHttpRes(res, 200, 'student_updated_with_receipt', receiptToSend))
     .catch(() => generateHttpRes(res, 500, 'receipt_creation_fail'));
 }
 

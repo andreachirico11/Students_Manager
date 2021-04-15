@@ -3,7 +3,6 @@ import { Receipt } from './Receipts';
 
 export class Student {
   constructor(
-    public id: string,
     public name: string,
     public surname: string,
     public schoolClass: string,
@@ -12,6 +11,7 @@ export class Student {
     public address: string,
     public parens: Parent[],
     public receipts: Receipt[],
-    public notes?: string
+    public notes?: string,
+    public id?: string
   ) {}
 }

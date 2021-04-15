@@ -3,7 +3,7 @@ import { Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { DataService } from 'src/app/shared/data-service/data.service';
+import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
 import { MaterialModule } from '../../material.module';
 import { SidebarComponent } from './sidebar.component';
@@ -21,7 +21,7 @@ describe('SidebarComponent', () => {
   let fixture: ComponentFixture<SidebarComponent>;
   let dbService: DataService;
 
-  const fakeStudentsDb = [new Student('1', 'gianni', 'gianno', '', new Date(), '', '', [], [], '')],
+  const fakeStudentsDb = [new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1')],
     getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
   beforeEach(async () => {
     await TestBed.configureTestingModule({

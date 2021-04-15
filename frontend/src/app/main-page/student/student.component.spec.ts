@@ -15,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
-import { DataService } from 'src/app/shared/data-service/data.service';
+import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { StudentComponent } from './student.component';
@@ -32,8 +32,8 @@ describe('StudentComponent', () => {
   let dbServiceSpy: jasmine.Spy;
   let router: Router;
 
-  const receipt = new Receipt('r1', '12345', 3, new Date(), new Date(), 'Bancomat'),
-    student = new Student('1', 'gianni', 'gianno', '', new Date(), '', '', [], [receipt], 'notes'),
+  const receipt = new Receipt('12345', 3, new Date(), new Date(), 'Bancomat', 'r1'),
+    student = new Student('gianni', 'gianno', '', new Date(), '', '', [], [receipt], 'notes', '1'),
     newNoteText = 'new note',
     getByCss = (css: string) => fixture.debugElement.query(By.css(css)),
     getButtons = () => fixture.debugElement.queryAll(By.css('button')),
@@ -109,16 +109,16 @@ describe('StudentComponent', () => {
     const textarea = getByCss('textarea').nativeElement;
     textarea.value = newNoteText;
     textarea.dispatchEvent(new Event('input'));
-    expect(component.note).toBe(newNoteText);
-    const updateMethod = spyOn(dbServ, 'updateStudentNote').and.returnValue(of(true));
+    expect(component.student.notes).toBe(newNoteText);
+    const updateMethod = spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
-    expect(updateMethod).toHaveBeenCalledOnceWith(student.id, newNoteText);
+    expect(updateMethod).toHaveBeenCalledOnceWith(component.student);
   });
 
   it('should open and automatically close the success badge', fakeAsync(() => {
     startSpyWithValue(student);
-    spyOn(dbServ, 'updateStudentNote').and.returnValue(of(true));
+    spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
     expect(getByCss('#successBadge')).toBeNull();
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
