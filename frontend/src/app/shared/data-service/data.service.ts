@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { environment } from 'src/environments/environment';
 
@@ -22,9 +20,19 @@ export class DataService {
     return of();
   }
 
-  // public getReceiptsForStudent(receiptIds: string[]): Observable<Receipt[]> {
-  //   return this.http
-  //     .get<Receipt[]>(this.dbUrl + 'receipts')
-  //     .pipe(map((receipts) => receipts.filter((r) => receiptIds.find((id) => id === r.id))));
-  // }
+  public addStudent(): Observable<Student> {
+    return of();
+  }
+
+  public updateStudentNote(id: string, newNote: string): Observable<boolean> {
+    return of();
+  }
+
+  public updateStudent(updated: Student): Observable<boolean> {
+    return of();
+  }
+
+  public deleteStudent(id: string): Observable<boolean> {
+    return of();
+  }
 }

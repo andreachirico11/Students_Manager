@@ -1,4 +1,4 @@
-<mat-card *ngIf="student">
+<mat-card *ngIf="student; else noStudent">
   <mat-card-header>
     <mat-card-title>{{ student.name }} {{ student.surname }}</mat-card-title>
     <mat-card-subtitle>{{ student.dateOfBirth }}</mat-card-subtitle>
@@ -12,8 +12,17 @@
     </mat-form-field>
   </mat-card-content>
   <mat-action-list>
-    <button mat-button>Remove Student</button>
+    <button mat-button (click)="updateNote()">Update notes</button>
     <button mat-button>Edit Student</button>
-    <button mat-button (click)="updatedNoteEvent.emit(note)">Update notes</button>
+    <button mat-button (click)="deleteStudent()">Remove Student</button>
   </mat-action-list>
 </mat-card>
+<ng-template #noStudent>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sorry...</mat-card-title>
+      <mat-card-subtitle>No student was found</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</ng-template>
+<p id="successBadge" *ngIf="isBadgeOpen">Updated</p>

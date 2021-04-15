@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { DataService } from 'src/app/shared/data-service/data.service';
@@ -23,10 +30,18 @@ describe('StudentComponent', () => {
   let fixture: ComponentFixture<StudentComponent>;
   let dbServ: DataService;
   let dbServiceSpy: jasmine.Spy;
+  let router: Router;
+
   const receipt = new Receipt('r1', '12345', 3, new Date(), new Date(), 'Bancomat'),
     student = new Student('1', 'gianni', 'gianno', '', new Date(), '', '', [], [receipt], 'notes'),
     newNoteText = 'new note',
-    getByCss = (css: string) => fixture.debugElement.query(By.css(css));
+    getByCss = (css: string) => fixture.debugElement.query(By.css(css)),
+    getButtons = () => fixture.debugElement.queryAll(By.css('button')),
+    startSpyWithValue = (value?: any) => {
+      dbServiceSpy = spyOn(dbServ, 'getStudentWithReceipts').and.returnValue(of(value));
+      component.ngOnInit();
+      fixture.detectChanges();
+    };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,6 +52,7 @@ describe('StudentComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
         HttpClientTestingModule,
+        RouterModule.forRoot([]),
       ],
       providers: [
         {
@@ -52,9 +68,8 @@ describe('StudentComponent', () => {
 
     fixture = TestBed.createComponent(StudentComponent);
     component = fixture.componentInstance;
-    component.student = student;
     dbServ = TestBed.inject(DataService);
-    dbServiceSpy = spyOn(dbServ, 'getStudentWithReceipts').and.returnValue(of(student));
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -63,30 +78,54 @@ describe('StudentComponent', () => {
   });
 
   it('can load a student from the id in the url', () => {
+    startSpyWithValue(student);
     expect(dbServiceSpy).toHaveBeenCalledOnceWith('s1');
     expect(component.student).toEqual(student);
   });
 
   it('it should render a student correctly', () => {
+    startSpyWithValue(student);
     expect(getByCss('mat-card-title').nativeElement.textContent).toBe(
       student.name + ' ' + student.surname
     );
   });
 
-  // it('it should send an updated note', () => {
-  //   const textarea = getByCss('textarea').nativeElement;
-  //   textarea.value = newNoteText;
-  //   textarea.dispatchEvent(new Event('input'));
-  //   expect(component.note).toBe('new note');
-  // });
+  it('should render the other template if no student is found', () => {
+    startSpyWithValue();
+    expect(getByCss('mat-card-title').nativeElement.textContent).toEqual('Sorry...');
+  });
 
-  // it('should send new notes outside', () => {
-  //   component.updatedNoteEvent.subscribe((newNotes) => {
-  //     expect(newNotes).toBe(newNoteText);
-  //   });
-  //   const textarea = getByCss('textarea').nativeElement;
-  //   textarea.value = newNoteText;
-  //   textarea.dispatchEvent(new Event('input'));
-  //   fixture.debugElement.queryAll(By.directive(MatButton))[2].nativeElement.click();
-  // });
+  it('should remove students', () => {
+    startSpyWithValue(student);
+    spyOn(dbServ, 'deleteStudent').and.returnValue(of(true));
+    const routerSpy = spyOn(router, 'navigate');
+    const deleteBtn = getButtons()[2].nativeElement;
+    deleteBtn.click();
+    expect(routerSpy).toHaveBeenCalledOnceWith(['']);
+  });
+
+  it('it should update note and send it to db', () => {
+    startSpyWithValue(student);
+    const textarea = getByCss('textarea').nativeElement;
+    textarea.value = newNoteText;
+    textarea.dispatchEvent(new Event('input'));
+    expect(component.note).toBe(newNoteText);
+    const updateMethod = spyOn(dbServ, 'updateStudentNote').and.returnValue(of(true));
+    const updateBtn = getButtons()[0].nativeElement;
+    updateBtn.click();
+    expect(updateMethod).toHaveBeenCalledOnceWith(student.id, newNoteText);
+  });
+
+  it('should open and automatically close the success badge', fakeAsync(() => {
+    startSpyWithValue(student);
+    spyOn(dbServ, 'updateStudentNote').and.returnValue(of(true));
+    expect(getByCss('#successBadge')).toBeNull();
+    const updateBtn = getButtons()[0].nativeElement;
+    updateBtn.click();
+    fixture.detectChanges();
+    expect(getByCss('#successBadge')).toBeTruthy();
+    tick(1000);
+    fixture.detectChanges();
+    expect(getByCss('#successBadge')).toBeNull();
+  }));
 });

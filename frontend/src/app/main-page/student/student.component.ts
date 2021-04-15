@@ -1,14 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/shared/data-service/data.service';
-import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -17,23 +9,15 @@ import { Student } from 'src/app/shared/models/Student';
   styleUrls: ['./student.component.scss'],
 })
 export class StudentComponent implements OnInit {
-  // @Input()
-  // public student: Student;
-  // public note;
-
-  // @Output()
-  // public updatedNoteEvent = new EventEmitter<string>();
-
-  // ngOnInit() {
-  //   if (this.student) {
-  //     this.note = this.student.notes || '';
-  //   }
-  // }
-
   public student: Student;
   public note;
+  public isBadgeOpen = false;
 
-  constructor(private route: ActivatedRoute, private dbService: DataService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private dbService: DataService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.params.id;
@@ -45,6 +29,27 @@ export class StudentComponent implements OnInit {
       if (student) {
         this.student = student;
         this.note = student.notes || '';
+      }
+    });
+  }
+
+  public deleteStudent() {
+    this.dbService.deleteStudent(this.student.id).subscribe((result) => {
+      if (result) {
+        this.router.navigate(['']);
+      }
+    });
+  }
+
+  public updateNote() {
+    this.dbService.updateStudentNote(this.student.id, this.note).subscribe((result) => {
+      if (result) {
+        this.isBadgeOpen = true;
+        setTimeout(() => {
+          this.isBadgeOpen = false;
+        }, 1000);
+      } else {
+        alert('Error Cannot Update');
       }
     });
   }
