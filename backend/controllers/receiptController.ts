@@ -3,7 +3,7 @@ import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IReceipt } from '../models/interfaces/Receipt';
 import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
 import { StudentModel } from '../models/studentModell';
-import { generateHttpRes } from '../utils/httpFailFunction';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
   let receiptToSend: IReceipt;

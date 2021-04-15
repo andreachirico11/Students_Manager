@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
 import { CanLoadGuard } from './shared/can-activate.guard';
+import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 
 const routes: Routes = [
   {
@@ -35,7 +36,7 @@ const routes: Routes = [
     MatToolbarModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

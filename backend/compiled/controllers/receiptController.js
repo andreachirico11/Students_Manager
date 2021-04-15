@@ -5,14 +5,16 @@ var receiptModel_1 = require("../models/receiptModel");
 var studentModell_1 = require("../models/studentModell");
 var httpFailFunction_1 = require("../utils/httpFailFunction");
 function postReceipt(req, res) {
+    var receiptToSend;
     receiptModel_1.ReceiptModelBuilder(req.body)
         .then(function (receipt) {
         if (receipt) {
+            receiptToSend = receipt;
             return studentModell_1.StudentModel.updateOne({ _id: req.params.studentId }, { $push: { receiptIds: receipt._id } });
         }
         throw new Error();
     })
-        .then(function (s) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_updated_with_receipt', s); })
+        .then(function () { return httpFailFunction_1.generateHttpRes(res, 200, 'student_updated_with_receipt', receiptToSend); })
         .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'receipt_creation_fail'); });
 }
 exports.postReceipt = postReceipt;

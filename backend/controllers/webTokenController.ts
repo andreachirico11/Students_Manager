@@ -2,12 +2,12 @@ import { NextFunction, Response } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 import { IRequest } from '../models/interfaces/IRequests';
 import { IFrontendUser, IMongoUser } from '../models/interfaces/User';
-import { IUserResponse } from '../models/interfaces/UserResponse';
-import { generateHttpRes } from '../utils/httpFailFunction';
+import { ILoginResponse } from '../models/interfaces/LoginrResponse';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 
 const longString = process.env.SECRET_AUTH_STRING || 'SECRET_AUTH_STRING';
 
-export function generateToken(user: IMongoUser): IUserResponse {
+export function generateToken(user: IMongoUser): ILoginResponse {
   const userToAttach: IFrontendUser = {
     email: user.email,
     id: user._id,

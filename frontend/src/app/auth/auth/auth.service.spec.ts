@@ -1,16 +1,20 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
-import { AuthService } from './auth.service';
-import { IUser } from '../../shared/models/User';
+import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
+import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 
-describe('AuthService', () => {
+fdescribe('AuthService', () => {
   let service: AuthService;
   let controller: HttpTestingController;
   const email = 'wella',
     password = '1234',
-    respObj: IUser[] = [{ email: 'wella', id: '', password: '1234', name: 'gianni' }],
+    respObj: IHttpResponse<IUserResponse> = {
+      message: '',
+      payload: { expiresIn: 3600, loggedUserId: '1', token: '1234' },
+    },
     dbUrl = environment.dbUrl;
 
   beforeEach(() => {
@@ -27,25 +31,34 @@ describe('AuthService', () => {
 
   it('should returns an observable of boolean', () => {
     service.login(email, password).subscribe((res) => {
-      expect(typeof res === 'boolean').toBeTruthy();
-      expect(res).toBeTrue();
+      expect(res).toBeTruthy();
     });
-    const request = controller.expectOne(dbUrl + 'users');
-    expect(request.request.method).toBe('GET');
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
     request.flush(respObj);
     controller.verify();
   });
 
   it('should store a user in the local storage', () => {
-    service.login(email, password).subscribe((res) => {
+    service.login(email, password).subscribe(() => {
       const loggedUser = service.loggedUser;
       expect(loggedUser).toBeTruthy();
-      expect(loggedUser.name).toBe(respObj[0].name);
+      expect(loggedUser.token).toBe(respObj.payload.token);
       expect(service.isUserLogged).toBeTrue();
     });
-    const request = controller.expectOne(dbUrl + 'users');
-    expect(request.request.method).toBe('GET');
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
     request.flush(respObj);
+    controller.verify();
+  });
+
+  it('should handle error and return false', () => {
+    service.login(email, password).subscribe((r) => {
+      expect(r).toBeFalse();
+    });
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
+    request.flush('no_user_found', { status: 404, statusText: 'error' });
     controller.verify();
   });
 });

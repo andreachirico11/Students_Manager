@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteStudent = exports.putStudent = exports.getAllStudents = exports.getStudent = exports.postStudent = void 0;
+exports.deleteStudent = exports.putStudent = exports.postStudent = exports.getStudent = exports.getAllStudents = void 0;
 var studentModell_1 = require("../models/studentModell");
 var httpFailFunction_1 = require("../utils/httpFailFunction");
-function postStudent(req, res) {
-    studentModell_1.StudentModelBuilder(req.body)
-        .then(function (newS) { return httpFailFunction_1.generateHttpRes(res, 201, 'student_created', newS); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'student_creation_error'); });
+function getAllStudents(req, res) {
+    studentModell_1.StudentModel.find()
+        .then(function (allStudent) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_found', allStudent); })
+        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 404, 'fetch_students_error'); });
 }
-exports.postStudent = postStudent;
+exports.getAllStudents = getAllStudents;
 function getStudent(req, res) {
     studentModell_1.StudentModel.findById({ _id: req.params.id })
         .populate('receiptIds')
@@ -21,12 +21,12 @@ function getStudent(req, res) {
         .catch(function () { return httpFailFunction_1.generateHttpRes(res, 404, 'student_not_found'); });
 }
 exports.getStudent = getStudent;
-function getAllStudents(req, res) {
-    studentModell_1.StudentModel.find()
-        .then(function (allStudent) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_found', allStudent); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 404, 'fetch_students_error'); });
+function postStudent(req, res) {
+    studentModell_1.StudentModelBuilder(req.body)
+        .then(function (newS) { return httpFailFunction_1.generateHttpRes(res, 201, 'student_created', newS); })
+        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'student_creation_error'); });
 }
-exports.getAllStudents = getAllStudents;
+exports.postStudent = postStudent;
 function putStudent(req, res) {
     studentModell_1.StudentModel.updateOne({ _id: req.params.id }, req.body)
         .then(function (s) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_updated', s); })

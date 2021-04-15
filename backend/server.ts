@@ -1,6 +1,7 @@
 import bodyParser = require('body-parser');
 import * as express from 'express';
 import * as mongoose from 'mongoose';
+import { corsController } from './controllers/corsController';
 import { verifyToken } from './controllers/webTokenController';
 import { router } from './routes';
 
@@ -21,6 +22,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(corsController);
 app.use('/api', router);
 
 app.listen(3210);

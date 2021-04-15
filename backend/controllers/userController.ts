@@ -1,10 +1,9 @@
 import { compare, hash } from 'bcrypt';
 import { Response } from 'express';
 import { IBackendRequest } from '../models/interfaces/IRequests';
-import { HttpResponse } from '../models/interfaces/UserResponse';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
-import { generateHttpRes } from '../utils/httpFailFunction';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 import { generateToken } from './webTokenController';
 
 export function postUser(req: IBackendRequest<IUser>, res: Response) {

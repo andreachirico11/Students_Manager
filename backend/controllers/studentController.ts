@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IStudent } from '../models/interfaces/Student';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
-import { generateHttpRes } from '../utils/httpFailFunction';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function getAllStudents(req: IRequest, res: Response) {
   StudentModel.find()

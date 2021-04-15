@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IUser } from 'src/app/shared/models/User';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
+import { IUser } from 'src/app/shared/models/IUser';
+import { IUserRequest } from 'src/app/shared/models/IUserRequest';
+import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,8 +14,8 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private dbUrl = environment.dbUrl;
 
-  get loggedUser(): IUser | null {
-    return (JSON.parse(localStorage.getItem('loggedUser')) as IUser) || null;
+  get loggedUser(): IUserResponse | null {
+    return (JSON.parse(localStorage.getItem('loggedUser')) as IUserResponse) || null;
   }
 
   get isUserLogged(): boolean {
@@ -22,14 +25,17 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<boolean> {
-    return this.http.get<IUser[]>(this.dbUrl + 'users').pipe(
-      map((users) => {
-        const found = users.find((u) => u.email === email && u.password === password);
-        if (found) {
-          localStorage.setItem('loggedUser', JSON.stringify(found));
-          return true;
-        }
-        return false;
+    const body: IUserRequest = {
+      email,
+      password,
+    };
+    return this.http.post<IHttpResponse<IUserResponse>>(this.dbUrl + 'user/login', body).pipe(
+      map((res) => {
+        localStorage.setItem('loggedUser', JSON.stringify(res.payload));
+        return true;
+      }),
+      catchError((err: HttpErrorResponse) => {
+        return of(false);
       })
     );
   }
