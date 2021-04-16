@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { studentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
 import { environment } from 'src/environments/environment';
 import { Receipt } from '../../shared/models/Receipts';
@@ -7,7 +8,7 @@ import { Student } from '../../shared/models/Student';
 
 import { DataService } from './data.service';
 
-fdescribe('DataService', () => {
+describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl,
     fakeStudent = new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1'),
@@ -45,14 +46,15 @@ fdescribe('DataService', () => {
   });
 
   it('should return a student with his receipts', () => {
-    service.getStudentWithReceipts(fakeStudentsDb[0].id).subscribe((s) => {
+    const id = FAKE_DB.students[1].id;
+    service.getStudentWithReceipts(id).subscribe((s) => {
       expect(s.receipts.length).toBe(2);
       expect(s.receipts[0].typeOfPayment).toBe('Bonifico');
     });
-    const req = controller.expectOne(dbUrl + 'students/1');
+    const req = controller.expectOne(dbUrl + 'students/' + id);
     const studentToReturn = fakeStudentsDb[0];
     studentToReturn.receipts = [...fakeReceiptsDb];
-    req.flush(studentFakeResponses.getStudent());
+    req.flush(studentFakeResponses.getStudent(id));
     controller.verify();
   });
 

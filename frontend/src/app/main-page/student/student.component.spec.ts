@@ -1,21 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive } from '@angular/core';
-import {
-  ComponentFixture,
-  fakeAsync,
-  flush,
-  TestBed,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { of } from 'rxjs';
-import { MaterialModule } from 'src/app/material.module';
+import { of, Subject } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { StudentComponent } from './student.component';
@@ -29,19 +22,27 @@ describe('StudentComponent', () => {
   let component: StudentComponent;
   let fixture: ComponentFixture<StudentComponent>;
   let dbServ: DataService;
-  let dbServiceSpy: jasmine.Spy;
   let router: Router;
 
   const receipt = new Receipt('12345', 3, new Date(), new Date(), 'Bancomat', 'r1'),
     student = new Student('gianni', 'gianno', '', new Date(), '', '', [], [receipt], 'notes', '1'),
     newNoteText = 'new note',
+    params = {
+      id: 's1',
+      get(_: string) {
+        return this.id;
+      },
+    },
+    paramsSubject = new Subject(),
     getByCss = (css: string) => fixture.debugElement.query(By.css(css)),
     getButtons = () => fixture.debugElement.queryAll(By.css('button')),
-    startSpyWithValue = (value?: any) => {
-      dbServiceSpy = spyOn(dbServ, 'getStudentWithReceipts').and.returnValue(of(value));
+    createGetStSpy = (valueToReturn) =>
+      spyOn(dbServ, 'getStudentWithReceipts').and.returnValue(of(valueToReturn)),
+    updateComponent = () => {
       component.ngOnInit();
       fixture.detectChanges();
-    };
+    },
+    getMatTitle = () => getByCss('mat-card-title').nativeElement.textContent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -58,9 +59,7 @@ describe('StudentComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: {
-              params: { id: 's1' },
-            },
+            paramMap: paramsSubject.asObservable(),
           },
         },
       ],
@@ -78,25 +77,60 @@ describe('StudentComponent', () => {
   });
 
   it('can load a student from the id in the url', () => {
-    startSpyWithValue(student);
+    const dbServiceSpy = createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
     expect(dbServiceSpy).toHaveBeenCalledOnceWith('s1');
     expect(component.student).toEqual(student);
   });
 
   it('it should render a student correctly', () => {
-    startSpyWithValue(student);
-    expect(getByCss('mat-card-title').nativeElement.textContent).toBe(
-      student.name + ' ' + student.surname
-    );
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    expect(getMatTitle()).toBe(student.name + ' ' + student.surname);
+  });
+
+  it('change internal student according to url change', () => {
+    let studentToReturn: Student = { ...student };
+    const dbServiceSpy = createGetStSpy(studentToReturn);
+    updateComponent();
+    paramsSubject.next(params);
+    expect(dbServiceSpy).toHaveBeenCalledWith('s1');
+    expect(component.student).toEqual(studentToReturn);
+    const newId = 's_2';
+    studentToReturn.id = newId;
+    paramsSubject.next({ ...params, id: newId });
+    expect(dbServiceSpy).toHaveBeenCalledWith(newId);
+    expect(component.student).toEqual(studentToReturn);
+  });
+
+  it('change rendered student according to url change', () => {
+    let studentToReturn: Student = { ...student };
+    createGetStSpy(studentToReturn);
+    paramsSubject.next(params);
+    updateComponent();
+    expect(getMatTitle()).toBe(studentToReturn.name + ' ' + studentToReturn.surname);
+    const newId = 's_2',
+      newName = 'Carlo';
+    studentToReturn.id = newId;
+    studentToReturn.name = newName;
+    paramsSubject.next({ ...params, id: newId });
+    updateComponent();
+    expect(getMatTitle()).toBe(studentToReturn.name + ' ' + studentToReturn.surname);
   });
 
   it('should render the other template if no student is found', () => {
-    startSpyWithValue();
+    createGetStSpy(null);
+    paramsSubject.next(params);
+    updateComponent();
     expect(getByCss('mat-card-title').nativeElement.textContent).toEqual('Sorry...');
   });
 
   it('should remove students', () => {
-    startSpyWithValue(student);
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
     spyOn(dbServ, 'deleteStudent').and.returnValue(of(true));
     const routerSpy = spyOn(router, 'navigate');
     const deleteBtn = getButtons()[2].nativeElement;
@@ -105,7 +139,9 @@ describe('StudentComponent', () => {
   });
 
   it('it should update note and send it to db', () => {
-    startSpyWithValue(student);
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
     const textarea = getByCss('textarea').nativeElement;
     textarea.value = newNoteText;
     textarea.dispatchEvent(new Event('input'));
@@ -117,7 +153,9 @@ describe('StudentComponent', () => {
   });
 
   it('should open and automatically close the success badge', fakeAsync(() => {
-    startSpyWithValue(student);
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
     spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
     expect(getByCss('#successBadge')).toBeNull();
     const updateBtn = getButtons()[0].nativeElement;

@@ -11,10 +11,10 @@ export const studentFakeResponses = {
     };
   },
 
-  getStudent(): IHttpResponse<Student> {
+  getStudent(id: string): IHttpResponse<Student> {
     return {
       message: StudentMessages.student_found,
-      payload: FAKE_DB.students[1],
+      payload: FAKE_DB.students.find((s) => s.id === id),
     };
   },
 
