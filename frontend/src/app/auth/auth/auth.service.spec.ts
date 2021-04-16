@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
@@ -6,7 +5,7 @@ import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 
-fdescribe('AuthService', () => {
+describe('AuthService', () => {
   let service: AuthService;
   let controller: HttpTestingController;
   const email = 'wella',

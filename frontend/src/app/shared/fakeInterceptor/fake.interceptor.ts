@@ -1,18 +1,17 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
   HttpEvent,
+  HttpHandler,
   HttpInterceptor,
+  HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
 import { IUserResponse } from '../models/IUserResponse';
-import { Student } from '../models/Student';
-import { environment } from 'src/environments/environment';
-import { StudentMessages, UserMessages } from '../models/MessageEnums';
-import { FAKE_DB } from './fakeDb';
+import { UserMessages } from '../models/MessageEnums';
+import { studentFakeResponses } from './fakeStudentsRespObj';
 
 @Injectable()
 export class FakeInterceptor implements HttpInterceptor {
@@ -26,16 +25,16 @@ export class FakeInterceptor implements HttpInterceptor {
     if (/students/.test(request.url)) {
       if (request.method === 'GET') {
         if (request.url === this.baseUrl + 'students') {
-          return this.getHttpRes(200, this.getAllStudents());
+          return this.getHttpRes(200, studentFakeResponses.getAllStudents());
         } else {
-          return this.getHttpRes(200, this.getStudent());
+          return this.getHttpRes(200, studentFakeResponses.getStudent());
         }
       } else if (request.method === 'POST') {
-        return this.getHttpRes(201, this.postStudent());
+        return this.getHttpRes(201, studentFakeResponses.postStudent());
       } else if (request.method === 'PUT') {
-        return this.getHttpRes(200, this.putStudent());
+        return this.getHttpRes(200, studentFakeResponses.putStudent());
       } else if (request.method === 'DELETE') {
-        return this.getHttpRes(200, this.deleteStudent());
+        return this.getHttpRes(200, studentFakeResponses.deleteStudent());
       } else {
         console.error('wrong request from interceptor');
       }
@@ -58,41 +57,6 @@ export class FakeInterceptor implements HttpInterceptor {
         token: 'asdfasfasdfa',
         loggedUserId: '1',
       },
-    };
-  }
-
-  private getAllStudents(): IHttpResponse<Student[]> {
-    return {
-      message: StudentMessages.student_found,
-      payload: FAKE_DB.students,
-    };
-  }
-
-  private getStudent(): IHttpResponse<Student> {
-    return {
-      message: StudentMessages.student_found,
-      payload: FAKE_DB.students[0],
-    };
-  }
-
-  private postStudent(): IHttpResponse<Student> {
-    return {
-      message: StudentMessages.student_created,
-      payload: FAKE_DB.students[0],
-    };
-  }
-
-  private putStudent(): IHttpResponse<Student> {
-    return {
-      message: StudentMessages.student_updated,
-      payload: FAKE_DB.students[0],
-    };
-  }
-
-  private deleteStudent(): IHttpResponse<null> {
-    return {
-      message: StudentMessages.student_deleted,
-      payload: null,
     };
   }
 }

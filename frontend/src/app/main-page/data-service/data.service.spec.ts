@@ -1,12 +1,13 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { studentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
 import { environment } from 'src/environments/environment';
 import { Receipt } from '../../shared/models/Receipts';
 import { Student } from '../../shared/models/Student';
 
 import { DataService } from './data.service';
 
-describe('DataService', () => {
+fdescribe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl,
     fakeStudent = new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1'),
@@ -35,46 +36,44 @@ describe('DataService', () => {
 
   it('should return an array of students', () => {
     service.getStudents().subscribe((db) => {
-      expect(db.length).toBe(4);
-      expect(db[0].name).toBe('gianni');
+      expect(db.length).toBe(3);
+      expect(db[0].name).toBe('Gianni');
     });
     const req = controller.expectOne(dbUrl + 'students');
-    req.flush(fakeStudentsDb);
+    req.flush(studentFakeResponses.getAllStudents());
     controller.verify();
   });
 
   it('should return a student with his receipts', () => {
     service.getStudentWithReceipts(fakeStudentsDb[0].id).subscribe((s) => {
-      expect(s.receipts.length).toBe(3);
-      expect(s.receipts[0].typeOfPayment).toBe('Bancomat');
+      expect(s.receipts.length).toBe(2);
+      expect(s.receipts[0].typeOfPayment).toBe('Bonifico');
     });
     const req = controller.expectOne(dbUrl + 'students/1');
     const studentToReturn = fakeStudentsDb[0];
     studentToReturn.receipts = [...fakeReceiptsDb];
-    req.flush(studentToReturn);
+    req.flush(studentFakeResponses.getStudent());
     controller.verify();
   });
 
   it('should add a new student', () => {
-    const studentToAdd: Student = { ...fakeStudent, id: null },
-      studentResponse: Student = { ...studentToAdd, id: '5' };
+    const studentToAdd: Student = { ...studentFakeResponses.postStudent().payload, id: null };
     service.addStudent(studentToAdd).subscribe((resultStudent) => {
       expect(studentToAdd.name).toEqual(resultStudent.name);
     });
     const req = controller.expectOne(dbUrl + 'students');
-    req.flush(studentResponse);
+    req.flush(studentFakeResponses.postStudent());
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
   it('should update the student', () => {
-    const notes = 'new note',
-      studentWithUpdate: Student = { ...fakeStudent, notes };
+    const studentWithUpdate = studentFakeResponses.putStudent().payload;
     service.updateStudent(studentWithUpdate).subscribe((answer) => {
       expect(answer).toEqual(studentWithUpdate);
     });
     const req = controller.expectOne(dbUrl + 'students/' + studentWithUpdate.id);
-    req.flush(studentWithUpdate);
+    req.flush(studentFakeResponses.putStudent());
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });
@@ -84,12 +83,12 @@ describe('DataService', () => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students/1');
-    req.flush(true);
+    req.flush(studentFakeResponses.deleteStudent());
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });
 
-  it('should add a new receipt', () => {
+  xit('should add a new receipt', () => {
     service.addReceipt(fakeStudent.id, fakeReceipt).subscribe((r) => {
       expect(r).toEqual(fakeReceipt);
     });
@@ -99,7 +98,7 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  it('should update the receipt', () => {
+  xit('should update the receipt', () => {
     service.updateReceipt(fakeReceipt).subscribe((answer) => {
       expect(answer).toEqual(fakeReceipt);
     });
@@ -109,7 +108,7 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  it('should delete the receipt', () => {
+  xit('should delete the receipt', () => {
     service.deleteReceipt('1').subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
