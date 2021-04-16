@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteStudent = exports.putStudent = exports.postStudent = exports.getStudent = exports.getAllStudents = void 0;
+var messageEnums_1 = require("../models/messageEnums");
 var studentModell_1 = require("../models/studentModell");
-var httpFailFunction_1 = require("../utils/httpFailFunction");
+var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function getAllStudents(req, res) {
     studentModell_1.StudentModel.find()
-        .then(function (allStudent) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_found', allStudent); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 404, 'fetch_students_error'); });
+        .then(function (allStudent) { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, allStudent); })
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 404, messageEnums_1.StudentMessages.student_not_found); });
 }
 exports.getAllStudents = getAllStudents;
 function getStudent(req, res) {
@@ -14,34 +15,34 @@ function getStudent(req, res) {
         .populate('receiptIds')
         .then(function (found) {
         if (found) {
-            return httpFailFunction_1.generateHttpRes(res, 200, 'student_found', found);
+            return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, found);
         }
         throw new Error();
     })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 404, 'student_not_found'); });
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 404, messageEnums_1.StudentMessages.student_not_found); });
 }
 exports.getStudent = getStudent;
 function postStudent(req, res) {
     studentModell_1.StudentModelBuilder(req.body)
-        .then(function (newS) { return httpFailFunction_1.generateHttpRes(res, 201, 'student_created', newS); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'student_creation_error'); });
+        .then(function (newS) { return httpRespGenerator_1.generateHttpRes(res, 201, messageEnums_1.StudentMessages.student_created, newS); })
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
 }
 exports.postStudent = postStudent;
 function putStudent(req, res) {
     studentModell_1.StudentModel.updateOne({ _id: req.params.id }, req.body)
-        .then(function (s) { return httpFailFunction_1.generateHttpRes(res, 200, 'student_updated', s); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'update_fail'); });
+        .then(function (s) { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_updated, s); })
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.update_error); });
 }
 exports.putStudent = putStudent;
 function deleteStudent(req, res) {
     studentModell_1.StudentModel.deleteOne({ _id: req.params.id })
         .then(function (r) {
         if (r.deletedCount && r.deletedCount > 0) {
-            return httpFailFunction_1.generateHttpRes(res, 200, 'student_deleted');
+            return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_deleted);
         }
         throw new Error();
     })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'delete_fail'); });
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.delete_error); });
 }
 exports.deleteStudent = deleteStudent;
 //# sourceMappingURL=studentController.js.map

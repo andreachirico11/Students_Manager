@@ -1,5 +1,6 @@
 import { compare, hash } from 'bcrypt';
 import { Response } from 'express';
+import { ServerMessages, UserMessages } from '../models/messageEnums';
 import { IBackendRequest } from '../models/interfaces/IRequests';
 import { IMongoUser, IUser } from '../models/interfaces/User';
 import { UserModel, UserModelBuilder } from '../models/userModel';
@@ -13,7 +14,7 @@ export function postUser(req: IBackendRequest<IUser>, res: Response) {
     name: req.body.name || '',
   };
   if (!newUser.email || !newUser.password || !newUser.name) {
-    return generateHttpRes(res, 500, 'signup_failed');
+    return generateHttpRes(res, 500, ServerMessages.creation_error);
   }
   hash(newUser.password, 10).then((hashedPassword) => {
     newUser.password = hashedPassword;
@@ -21,11 +22,11 @@ export function postUser(req: IBackendRequest<IUser>, res: Response) {
       .then((u) => {
         u.save()
           .then((created) => {
-            return generateHttpRes(res, 200, 'user_registered', generateToken(created));
+            return generateHttpRes(res, 200, UserMessages.user_registered, generateToken(created));
           })
-          .catch((e) => generateHttpRes(res, 500, 'save_error'));
+          .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
       })
-      .catch((e) => generateHttpRes(res, 500, 'hashing_fail'));
+      .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
   });
 }
 
@@ -33,7 +34,7 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
   let foundUser: IMongoUser;
   const { email, password } = req.body;
   if (!password || !email) {
-    return generateHttpRes(res, 404, 'no_credentials');
+    return generateHttpRes(res, 404, UserMessages.wrong_credentials);
   }
   UserModel.findOne({ email: req.body.email })
     .then((found) => {
@@ -41,13 +42,13 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
         foundUser = found;
         return compare(req.body.password, found.password);
       }
-      throw new Error('not_found_in_db');
+      throw new Error(UserMessages.user_not_found);
     })
     .then((result) => {
       if (!result) {
-        return generateHttpRes(res, 401, 'wrong_password');
+        return generateHttpRes(res, 401, UserMessages.wrong_credentials);
       }
-      return generateHttpRes(res, 200, 'user_found', generateToken(foundUser));
+      return generateHttpRes(res, 200, UserMessages.user_found, generateToken(foundUser));
     })
-    .catch((e) => generateHttpRes(res, 404, 'user_not_found'));
+    .catch((e) => generateHttpRes(res, 404, UserMessages.user_not_found));
 }

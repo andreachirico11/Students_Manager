@@ -4,6 +4,7 @@ import { IRequest } from '../models/interfaces/IRequests';
 import { IFrontendUser, IMongoUser } from '../models/interfaces/User';
 import { ILoginResponse } from '../models/interfaces/LoginrResponse';
 import { generateHttpRes } from '../utils/httpRespGenerator';
+import { TokenErrors } from '../models/messageEnums';
 
 const longString = process.env.SECRET_AUTH_STRING || 'SECRET_AUTH_STRING';
 
@@ -22,11 +23,11 @@ export function generateToken(user: IMongoUser): ILoginResponse {
 }
 
 export function verifyToken(req: IRequest, res: Response, next: NextFunction) {
-  let errorMsg = 'invalid_token';
+  let errorMsg = TokenErrors.Invalid_token;
   try {
     const token = req.headers['auth-token'];
     if (!token) {
-      errorMsg = 'Token_not_found';
+      errorMsg = TokenErrors.Token_not_found;
       throw new Error();
     }
     const verifiedToken = verify(token, longString);

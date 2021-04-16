@@ -9,7 +9,7 @@ export class Student {
     public dateOfBirth: Date,
     public fiscalCode: string,
     public address: string,
-    public parens: Parent[],
+    public parents: Parent[],
     public receipts: Receipt[],
     public notes?: string,
     public id?: string

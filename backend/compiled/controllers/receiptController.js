@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteReceipt = exports.putReceipt = exports.postReceipt = void 0;
+var messageEnums_1 = require("../models/messageEnums");
 var receiptModel_1 = require("../models/receiptModel");
 var studentModell_1 = require("../models/studentModell");
-var httpFailFunction_1 = require("../utils/httpFailFunction");
+var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function postReceipt(req, res) {
     var receiptToSend;
     receiptModel_1.ReceiptModelBuilder(req.body)
@@ -14,8 +15,8 @@ function postReceipt(req, res) {
         }
         throw new Error();
     })
-        .then(function () { return httpFailFunction_1.generateHttpRes(res, 200, 'student_updated_with_receipt', receiptToSend); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'receipt_creation_fail'); });
+        .then(function () { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.ReceiptMessages.receipt_created, receiptToSend); })
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
 }
 exports.postReceipt = postReceipt;
 function putReceipt(req, res) {
@@ -31,8 +32,8 @@ function putReceipt(req, res) {
         }
         throw new Error();
     })
-        .then(function (r) { return httpFailFunction_1.generateHttpRes(res, 200, 'receipt_updated', r); })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'update_fail'); });
+        .then(function (r) { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.ReceiptMessages.receipt_updated, r); })
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.update_error); });
 }
 exports.putReceipt = putReceipt;
 function deleteReceipt(req, res) {
@@ -49,11 +50,11 @@ function deleteReceipt(req, res) {
     })
         .then(function (r) {
         if (r.deletedCount && r.deletedCount > 0) {
-            return httpFailFunction_1.generateHttpRes(res, 200, 'receipt_deleted');
+            return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.ReceiptMessages.receipt_deleted);
         }
         throw new Error();
     })
-        .catch(function () { return httpFailFunction_1.generateHttpRes(res, 500, 'delete_fail'); });
+        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.delete_error); });
 }
 exports.deleteReceipt = deleteReceipt;
 //# sourceMappingURL=receiptController.js.map

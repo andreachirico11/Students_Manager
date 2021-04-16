@@ -1,13 +1,14 @@
 import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IStudent } from '../models/interfaces/Student';
+import { ServerMessages, StudentMessages } from '../models/messageEnums';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function getAllStudents(req: IRequest, res: Response) {
   StudentModel.find()
-    .then((allStudent) => generateHttpRes(res, 200, 'student_found', allStudent))
-    .catch(() => generateHttpRes(res, 404, 'fetch_students_error'));
+    .then((allStudent) => generateHttpRes(res, 200, StudentMessages.student_found, allStudent))
+    .catch(() => generateHttpRes(res, 404, StudentMessages.student_not_found));
 }
 
 export function getStudent(req: IRequest, res: Response) {
@@ -15,32 +16,32 @@ export function getStudent(req: IRequest, res: Response) {
     .populate('receiptIds')
     .then((found) => {
       if (found) {
-        return generateHttpRes(res, 200, 'student_found', found);
+        return generateHttpRes(res, 200, StudentMessages.student_found, found);
       }
       throw new Error();
     })
-    .catch(() => generateHttpRes(res, 404, 'student_not_found'));
+    .catch(() => generateHttpRes(res, 404, StudentMessages.student_not_found));
 }
 
 export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
   StudentModelBuilder(req.body)
-    .then((newS) => generateHttpRes(res, 201, 'student_created', newS))
-    .catch(() => generateHttpRes(res, 500, 'student_creation_error'));
+    .then((newS) => generateHttpRes(res, 201, StudentMessages.student_created, newS))
+    .catch(() => generateHttpRes(res, 500, ServerMessages.creation_error));
 }
 
 export function putStudent(req: IBackendRequest<IStudent>, res: Response) {
   StudentModel.updateOne({ _id: req.params.id }, req.body)
-    .then((s) => generateHttpRes(res, 200, 'student_updated', s))
-    .catch(() => generateHttpRes(res, 500, 'update_fail'));
+    .then((s) => generateHttpRes(res, 200, StudentMessages.student_updated, s))
+    .catch(() => generateHttpRes(res, 500, ServerMessages.update_error));
 }
 
 export function deleteStudent(req: IRequest, res: Response) {
   StudentModel.deleteOne({ _id: req.params.id })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
-        return generateHttpRes(res, 200, 'student_deleted');
+        return generateHttpRes(res, 200, StudentMessages.student_deleted);
       }
       throw new Error();
     })
-    .catch(() => generateHttpRes(res, 500, 'delete_fail'));
+    .catch(() => generateHttpRes(res, 500, ServerMessages.delete_error));
 }

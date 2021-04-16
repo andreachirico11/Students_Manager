@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IReceipt } from '../models/interfaces/Receipt';
+import { ReceiptMessages, ServerMessages } from '../models/messageEnums';
 import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
 import { StudentModel } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
@@ -18,8 +19,8 @@ export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       }
       throw new Error();
     })
-    .then(() => generateHttpRes(res, 200, 'student_updated_with_receipt', receiptToSend))
-    .catch(() => generateHttpRes(res, 500, 'receipt_creation_fail'));
+    .then(() => generateHttpRes(res, 200, ReceiptMessages.receipt_created, receiptToSend))
+    .catch(() => generateHttpRes(res, 500, ServerMessages.creation_error));
 }
 
 export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {
@@ -35,8 +36,8 @@ export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       }
       throw new Error();
     })
-    .then((r) => generateHttpRes(res, 200, 'receipt_updated', r))
-    .catch(() => generateHttpRes(res, 500, 'update_fail'));
+    .then((r) => generateHttpRes(res, 200, ReceiptMessages.receipt_updated, r))
+    .catch(() => generateHttpRes(res, 500, ServerMessages.update_error));
 }
 
 export function deleteReceipt(req: IRequest, res: Response) {
@@ -53,9 +54,9 @@ export function deleteReceipt(req: IRequest, res: Response) {
     })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
-        return generateHttpRes(res, 200, 'receipt_deleted');
+        return generateHttpRes(res, 200, ReceiptMessages.receipt_deleted);
       }
       throw new Error();
     })
-    .catch(() => generateHttpRes(res, 500, 'delete_fail'));
+    .catch(() => generateHttpRes(res, 500, ServerMessages.delete_error));
 }
