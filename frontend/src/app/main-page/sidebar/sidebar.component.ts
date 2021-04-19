@@ -14,11 +14,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private actualStudentIdLoaded: string = '';
   private reloadSub: Subscription;
 
-  constructor(
-    private dbService: DataService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private dbService: DataService, private router: Router) {}
 
   ngOnInit(): void {
     this.students = this.dbService.getStudents();

@@ -12,6 +12,7 @@ import { CanLoadGuard } from './shared/can-activate.guard';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 const routes: Routes = [
   {
@@ -36,7 +37,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatDialogModule,
-
+    MatButtonModule,
     RouterModule.forRoot(routes),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }],

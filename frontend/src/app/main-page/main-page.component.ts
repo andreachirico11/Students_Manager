@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Student } from '../shared/models/Student';
 
 @Component({
   selector: 'app-main-page',

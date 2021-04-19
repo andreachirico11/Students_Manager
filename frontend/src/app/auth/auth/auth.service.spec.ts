@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
@@ -18,7 +19,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterModule.forRoot([])],
     });
     service = TestBed.inject(AuthService);
     controller = TestBed.inject(HttpTestingController);
@@ -58,6 +59,18 @@ describe('AuthService', () => {
     const request = controller.expectOne(dbUrl + 'user/login');
     expect(request.request.method).toBe('POST');
     request.flush('no_user_found', { status: 404, statusText: 'error' });
+    controller.verify();
+  });
+
+  fit('should unauthenticate', () => {
+    service.login(email, password).subscribe(() => {
+      expect(service.isUserLogged).toBeTrue();
+      service.logout();
+      expect(service.isUserLogged).toBeFalse();
+    });
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
+    request.flush(respObj);
     controller.verify();
   });
 });
