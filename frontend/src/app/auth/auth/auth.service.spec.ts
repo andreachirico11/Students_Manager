@@ -62,7 +62,7 @@ describe('AuthService', () => {
     controller.verify();
   });
 
-  fit('should unauthenticate', () => {
+  it('should unauthenticate', () => {
     service.login(email, password).subscribe(() => {
       expect(service.isUserLogged).toBeTrue();
       service.logout();

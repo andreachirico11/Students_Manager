@@ -43,6 +43,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem(localStorageDataName);
-    this.router.navigate(['']);
+    this.router.navigate(['enter']);
   }
 }
