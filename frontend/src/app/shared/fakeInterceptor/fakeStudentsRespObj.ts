@@ -32,7 +32,8 @@ export const studentFakeResponses = {
     };
   },
 
-  deleteStudent(): IHttpResponse<null> {
+  deleteStudent(id: string): IHttpResponse<null> {
+    FAKE_DB.students = [...FAKE_DB.students.filter((s) => s.id !== id)];
     return {
       message: StudentMessages.student_deleted,
       payload: null,

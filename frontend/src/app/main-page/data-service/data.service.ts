@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
@@ -12,8 +12,17 @@ import { environment } from 'src/environments/environment';
 })
 export class DataService {
   private dbUrl = environment.dbUrl;
+  private _reload = new Subject<boolean>();
 
   constructor(private http: HttpClient) {}
+
+  public get reload() {
+    return this._reload.asObservable();
+  }
+
+  private launchReload() {
+    this._reload.next(true);
+  }
 
   public getStudents(): Observable<Student[]> {
     return this.http.get<IHttpResponse<Student[]>>(this.dbUrl + 'students').pipe(
@@ -51,6 +60,11 @@ export class DataService {
         observe: 'response',
       })
       .pipe(
+        tap((r) => {
+          if (r.status === 200) {
+            this.launchReload();
+          }
+        }),
         map((r) => (r.status === 200 ? true : throwError(''))),
         catchError((e) => of(null))
       );

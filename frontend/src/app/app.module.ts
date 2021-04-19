@@ -9,7 +9,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
 import { CanLoadGuard } from './shared/can-activate.guard';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   {
@@ -25,15 +27,16 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ConfirmationDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
     CommonModule,
     HttpClientModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatDialogModule,
+
     RouterModule.forRoot(routes),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }],

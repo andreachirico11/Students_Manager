@@ -27,15 +27,20 @@ export class FakeInterceptor implements HttpInterceptor {
         if (request.url === this.baseUrl + 'students') {
           return this.getHttpRes(200, studentFakeResponses.getAllStudents());
         } else {
-          const arr = request.url.split('/');
-          return this.getHttpRes(200, studentFakeResponses.getStudent(arr[arr.length - 1]));
+          return this.getHttpRes(
+            200,
+            studentFakeResponses.getStudent(this.geUrlLastPart(request.url))
+          );
         }
       } else if (request.method === 'POST') {
         return this.getHttpRes(201, studentFakeResponses.postStudent());
       } else if (request.method === 'PUT') {
         return this.getHttpRes(200, studentFakeResponses.putStudent());
       } else if (request.method === 'DELETE') {
-        return this.getHttpRes(200, studentFakeResponses.deleteStudent());
+        return this.getHttpRes(
+          200,
+          studentFakeResponses.deleteStudent(this.geUrlLastPart(request.url))
+        );
       } else {
         console.error('wrong request from interceptor');
       }
@@ -59,5 +64,10 @@ export class FakeInterceptor implements HttpInterceptor {
         loggedUserId: '1',
       },
     };
+  }
+
+  private geUrlLastPart(url: string): string {
+    const arr = url.split('/');
+    return arr[arr.length - 1];
   }
 }

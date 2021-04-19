@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -13,11 +15,13 @@ export class StudentComponent implements OnInit, OnDestroy {
   public student: Student;
   public isBadgeOpen = false;
   private paramsSub: Subscription;
+  public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
   constructor(
     private route: ActivatedRoute,
     private dbService: DataService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -30,18 +34,12 @@ export class StudentComponent implements OnInit, OnDestroy {
     this.paramsSub.unsubscribe();
   }
 
-  private loadStudent(id: string) {
-    this.dbService.getStudentWithReceipts(id).subscribe((student) => {
-      if (student) {
-        this.student = student;
-      }
-    });
-  }
-
-  public deleteStudent() {
-    this.dbService.deleteStudent(this.student.id).subscribe((result) => {
-      if (result) {
-        this.router.navigate(['']);
+  public onDeleteClick() {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, { id: 'STUDENT_DELETE_DIALOG' });
+    this.dialogRef.componentInstance.dialogTitle = 'Do You Really Want To Delete?';
+    this.dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.deleteStudent();
       }
     });
   }
@@ -55,6 +53,22 @@ export class StudentComponent implements OnInit, OnDestroy {
         }, 1000);
       } else {
         alert('Error Cannot Update');
+      }
+    });
+  }
+
+  private loadStudent(id: string) {
+    this.dbService.getStudentWithReceipts(id).subscribe((student) => {
+      if (student) {
+        this.student = student;
+      }
+    });
+  }
+
+  private deleteStudent() {
+    this.dbService.deleteStudent(this.student.id).subscribe((result) => {
+      if (result) {
+        this.router.navigate(['']);
       }
     });
   }

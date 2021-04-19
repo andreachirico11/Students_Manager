@@ -1,9 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
-import { IUser } from 'src/app/shared/models/IUser';
 import { IUserRequest } from 'src/app/shared/models/IUserRequest';
 import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';

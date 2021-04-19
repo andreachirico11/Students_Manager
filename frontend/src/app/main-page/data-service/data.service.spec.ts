@@ -85,7 +85,18 @@ describe('DataService', () => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students/1');
-    req.flush(studentFakeResponses.deleteStudent());
+    req.flush(studentFakeResponses.deleteStudent(''));
+    expect(req.request.method).toBe('DELETE');
+    controller.verify();
+  });
+
+  it('should emit reload on  delete the student', () => {
+    service.reload.subscribe((answer) => {
+      expect(answer).toBeTruthy();
+    });
+    service.deleteStudent('1').subscribe();
+    const req = controller.expectOne(dbUrl + 'students/1');
+    req.flush(studentFakeResponses.deleteStudent(''));
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });

@@ -12,7 +12,18 @@ import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { StudentComponent } from './student.component';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
+class MockMatDialog {
+  open() {
+    return {
+      afterClosed: () => of(true),
+      componentInstance: {
+        dialogTitle: '',
+      },
+    };
+  }
+}
 @Directive({
   selector: 'routerLink',
 })
@@ -42,7 +53,8 @@ describe('StudentComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
     },
-    getMatTitle = () => getByCss('mat-card-title').nativeElement.textContent;
+    getMatTitle = () => getByCss('mat-card-title').nativeElement.textContent,
+    getMatDialog = () => getByCss('#STUDENT_DELETE_DIALOG');
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -53,6 +65,7 @@ describe('StudentComponent', () => {
         MaterialModule,
         BrowserAnimationsModule,
         HttpClientTestingModule,
+        // MatDialogModule,
         RouterModule.forRoot([]),
       ],
       providers: [
@@ -61,6 +74,10 @@ describe('StudentComponent', () => {
           useValue: {
             paramMap: paramsSubject.asObservable(),
           },
+        },
+        {
+          provide: MatDialog,
+          useClass: MockMatDialog,
         },
       ],
     }).compileComponents();
@@ -125,6 +142,30 @@ describe('StudentComponent', () => {
     paramsSubject.next(params);
     updateComponent();
     expect(getByCss('mat-card-title').nativeElement.textContent).toEqual('Sorry...');
+  });
+
+  it('should open dialog when remove student is press students', () => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    expect(component.dialogRef).toBeFalsy();
+    const deleteBtn = getButtons()[2].nativeElement;
+    deleteBtn.click();
+    fixture.detectChanges();
+    expect(component.dialogRef).toBeTruthy();
+  });
+
+  it('should launch delete method on true value returned from modal', () => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    const deleteSpy = spyOn(dbServ, 'deleteStudent').and.returnValue(of(true));
+    const deleteBtn = getButtons()[2].nativeElement;
+    deleteBtn.click();
+    fixture.detectChanges();
+    component.dialogRef.afterClosed().subscribe((res) => {
+      expect(deleteSpy).toHaveBeenCalled();
+    });
   });
 
   it('should remove students', () => {
