@@ -9,6 +9,10 @@ import { AuthService } from './auth/auth/auth.service';
 export class AppComponent {
   constructor(private authService: AuthService) {}
 
+  get isLoggedIn() {
+    return this.authService.isUserLogged;
+  }
+
   onLogout(): void {
     this.authService.logout();
   }

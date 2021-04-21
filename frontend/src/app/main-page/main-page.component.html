@@ -1,8 +1,17 @@
 <mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened>
+  <mat-drawer #sideDrawer [mode]="mode" [opened]="isOpened">
     <sidebar></sidebar>
   </mat-drawer>
   <mat-drawer-content>
     <router-outlet></router-outlet>
+    <button
+      *ngIf="!isOpened"
+      class="drawer-toggler"
+      mat-fab
+      color="primary"
+      (click)="sideDrawer.toggle()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
   </mat-drawer-content>
 </mat-drawer-container>

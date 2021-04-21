@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-main-page',
@@ -6,7 +6,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main-page.component.scss'],
 })
 export class MainPageComponent implements OnInit {
+  public mode: 'over' | 'side' = 'over';
+
+  public get isOpened(): boolean {
+    return this.mode === 'over' ? false : true;
+  }
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.changeSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.changeSize();
+  }
+
+  private changeSize() {
+    if (window.innerWidth < 768) {
+      this.mode = 'over';
+    } else {
+      this.mode = 'side';
+    }
+  }
 }

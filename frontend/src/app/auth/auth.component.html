@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card class="mat-elevation-z2">
   <mat-card-header>
     <mat-card-title>{{ isRegistering ? 'Register' : 'Login' }}</mat-card-title>
   </mat-card-header>
@@ -10,13 +10,13 @@
         <mat-error>Please Provide a Name</mat-error>
         <mat-icon matSuffix color="primary">person</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="fill" color="primary">
+      <mat-form-field appearance="outline" color="primary">
         <mat-label>Email</mat-label>
         <input matInput ngModel name="email" type="email" required email />
         <mat-error>Please Provide a Valid Email</mat-error>
         <mat-icon matSuffix color="primary">mail</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="fill" color="primary">
+      <mat-form-field appearance="outline" color="primary">
         <mat-label>Password</mat-label>
         <input
           matInput

@@ -13,6 +13,7 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
     MatToolbarModule,
     MatDialogModule,
     MatButtonModule,
+    MatIconModule,
     RouterModule.forRoot(routes),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }],
