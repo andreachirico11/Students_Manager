@@ -3,73 +3,17 @@ mat-drawer-container {
 
   mat-drawer-content {
     padding: 2em;
-
-    // padding-bottom: 0;
   }
 }
 
-.drawer-toggler {
+button {
   position: fixed;
   bottom: 50px;
   width: 40px !important;
   height: 40px !important;
-  .mat-fab * {
-    padding: 0 !important;
-  }
 }
 
+::ng-deep .mat-button-wrapper  {
+  padding: 0 !important;
+}
 
-// @media screen and (max-height: 550px) {
-
-
-//   mat-drawer-content {
-//     flex-direction: column-reverse;
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// mat-drawer-container {
-//   height: calc(100% - 60px);
-
-//   mat-drawer-content {
-//     position: relative;
-//     padding: 2em;
-//     padding-bottom: 0;
-//   }
-// }
-
-// .drawer-toggler {
-//   position: absolute;
-//   z-index: 10;
-//   bottom: 50px;
-//   left: 2em;
-//   width: 40px !important;
-//   height: 40px !important;
-//   .mat-fab * {
-//     padding: 0 !important;
-//   }
-// }
-
-
-// @media screen and (max-height: 550px) {
-//   .drawer-toggler {
-//     top: 2em;
-//     bottom: unset;
-//   }
-
-//   mat-drawer-content {
-//     padding-top: 4em !important;
-//   }
-// }
