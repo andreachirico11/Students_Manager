@@ -27,7 +27,8 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           fiscalCode: 'abc',
         },
       ],
-      notes: 'deve morire',
+      notes:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [],
     },
     {
@@ -46,7 +47,8 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           fiscalCode: 'abc',
         },
       ],
-      notes: 'deve morire',
+      notes:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [
         {
           id: 'r_2',
@@ -88,7 +90,8 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           fiscalCode: 'abc',
         },
       ],
-      notes: 'deve morire',
+      notes:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [
         {
           id: 'r_1',

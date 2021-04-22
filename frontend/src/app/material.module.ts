@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -17,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     MatListModule,
     MatFormFieldModule,
+    MatExpansionModule,
   ],
 })
 export class MaterialModule {}
