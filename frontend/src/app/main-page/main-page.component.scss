@@ -2,15 +2,15 @@ mat-drawer-container {
   height: calc(100% - 60px);
 
   mat-drawer-content {
-    display: flex;
-    flex-direction: column;
-   align-content: space-between;
     padding: 2em;
+
     // padding-bottom: 0;
   }
 }
 
 .drawer-toggler {
+  position: fixed;
+  bottom: 50px;
   width: 40px !important;
   height: 40px !important;
   .mat-fab * {
@@ -19,17 +19,13 @@ mat-drawer-container {
 }
 
 
-@media screen and (max-height: 550px) {
-  .drawer-toggler {
-  }
+// @media screen and (max-height: 550px) {
 
-  mat-drawer-content:first-child {
-  }
 
-  mat-drawer-content {
-    flex-direction: column-reverse;
-  }
-}
+//   mat-drawer-content {
+//     flex-direction: column-reverse;
+//   }
+// }
 
 
 

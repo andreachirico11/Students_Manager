@@ -12,11 +12,12 @@ describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let dbService: DataService;
-  let router: Router;
+  let routerSpy;
 
   const fakeStudentsDb = [new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1')],
     getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
   beforeEach(async () => {
+    routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
       declarations: [SidebarComponent],
       imports: [HttpClientTestingModule, MaterialModule, RouterModule.forRoot([])],
@@ -24,6 +25,12 @@ describe('SidebarComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {},
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate: routerSpy,
+          },
         },
       ],
     }).compileComponents();
@@ -34,7 +41,9 @@ describe('SidebarComponent', () => {
       fixture = TestBed.createComponent(SidebarComponent);
       component = fixture.componentInstance;
       dbService = TestBed.inject(DataService);
-      router = TestBed.inject(Router);
+      fixture.detectChanges();
+      spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
+      component.ngOnInit();
       fixture.detectChanges();
     })
   );
@@ -44,28 +53,27 @@ describe('SidebarComponent', () => {
   });
 
   it('should render options correctly', () => {
-    spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
-    component.ngOnInit();
-    fixture.detectChanges();
     expect(getListOptions().length).toBe(1);
   });
 
   it('should navigate to the right url', () => {
-    spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
-    component.ngOnInit();
-    fixture.detectChanges();
-    const spy = spyOn(router, 'navigate');
+    const emitsPy = spyOn(component.linkPressed, 'emit');
+
     getListOptions()[0].nativeNode.click();
-    expect(spy).toHaveBeenCalledOnceWith(['1']);
+    expect(routerSpy).toHaveBeenCalledOnceWith(['1']);
+
+    expect(emitsPy).toHaveBeenCalled();
   });
 
   it('should navigate to the home url if the previous link is pressed', () => {
-    spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
-    component.ngOnInit();
-    fixture.detectChanges();
-    const spy = spyOn(router, 'navigate');
     getListOptions()[0].nativeNode.click();
     getListOptions()[0].nativeNode.click();
-    expect(spy).toHaveBeenCalledWith(['1']);
+    expect(routerSpy).toHaveBeenCalledWith(['1']);
+  });
+
+  it('link press event to be clicked', () => {
+    const emitsPy = spyOn(component.linkPressed, 'emit');
+    getListOptions()[0].nativeNode.click();
+    expect(emitsPy).toHaveBeenCalled();
   });
 });

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
@@ -13,6 +13,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public students: Observable<Student[]>;
   private actualStudentIdLoaded: string = '';
   private reloadSub: Subscription;
+  @Output()
+  public linkPressed = new EventEmitter();
 
   constructor(private dbService: DataService, private router: Router) {}
 
@@ -37,6 +39,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     } else {
       this.actualStudentIdLoaded = studentId;
     }
+    this.linkPressed.emit();
     this.router.navigate([this.actualStudentIdLoaded]);
   }
 }
