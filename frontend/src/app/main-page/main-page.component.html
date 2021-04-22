@@ -1,6 +1,6 @@
 <mat-drawer-container class="example-container">
   <mat-drawer #sideDrawer [mode]="mode" [opened]="isOpened">
-    <sidebar (linkPressed)="sideDrawer.toggle()"></sidebar>
+    <sidebar (linkPressed)="mode === 'over' ? sideDrawer.toggle() : null"></sidebar>
   </mat-drawer>
   <mat-drawer-content>
     <router-outlet></router-outlet>

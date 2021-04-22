@@ -1,9 +1,11 @@
 <mat-card *ngIf="student; else noStudent">
   <mat-card-header>
     <mat-card-title>{{ student.name }} {{ student.surname }}</mat-card-title>
-    <mat-card-subtitle>{{ student.dateOfBirth }}</mat-card-subtitle>
-    <mat-card-subtitle>{{ student.address }}</mat-card-subtitle>
-    <mat-card-subtitle>{{ student.schoolClass }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
+    </mat-card-subtitle>
+    <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
+    <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <mat-form-field appearance="outline">
@@ -17,6 +19,7 @@
     <button mat-button (click)="onDeleteClick()">Remove Student</button>
   </mat-action-list>
 </mat-card>
+
 <ng-template #noStudent>
   <mat-card>
     <mat-card-header>

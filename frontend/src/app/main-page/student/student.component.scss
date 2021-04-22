@@ -1,6 +1,7 @@
 mat-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
 mat-form-field {
@@ -18,6 +19,33 @@ mat-form-field {
       width: 50%;
     }
   }
-
-
 }
+
+
+
+
+
+
+
+
+// mat-card {
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// mat-form-field {
+//   width: 100%;
+//   height: 100%;
+// }
+
+
+// @media screen and (min-width: 1000px) {
+//   mat-card {
+//     flex-direction: row;
+//     justify-content: space-between;
+
+//     mat-card-content {
+//       width: 50%;
+//     }
+//   }
+// }
