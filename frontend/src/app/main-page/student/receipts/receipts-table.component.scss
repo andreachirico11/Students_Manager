@@ -1,3 +1,17 @@
-table {
+.container {
   width: 100%;
+  overflow: auto;
+}
+
+table {
+   min-width: 600px;
+  width: 100%
+}
+
+td.mat-column-actions {
+  width: 20px;
+  padding: 0 !important;
+  padding-left: .5em !important;
+  border-left: 1px solid #e0e0e0 !important;
+
 }

@@ -44,11 +44,15 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card class="receipts" *ngIf="student && student.receipts.length > 0">
+  <student-receipts [receipts]="student.receipts"></student-receipts>
+</mat-card>
+
 <ng-template #noStudent>
   <mat-card>
     <mat-card-header>
       <mat-card-title>Sorry...</mat-card-title>
-      <mat-card-subtitle>No student was found</mat-card-subtitle>
+      <mat-card-subtitle style="margin-top: 2em">No student was found</mat-card-subtitle>
     </mat-card-header>
   </mat-card>
 </ng-template>

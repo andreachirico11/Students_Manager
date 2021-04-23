@@ -1,22 +1,16 @@
 mat-card {
+  margin-bottom: 3em;
+}
+
+
+mat-card:not(.receipts) {
   display: grid;
   gap: 2em;
-  margin-bottom: 3em;
-  mat-card-header,
-  mat-card-actions {
-    grid-column: 1;
-  }
 
   mat-card-header {
-    grid-row: 1;  
-    margin-bottom: 1em;
     mat-expansion-panel-header {
       padding-left: 0 !important;
     }
-  }
-
-  mat-card-actions {
-    grid-row: 2;
   }
 
   button,
@@ -26,7 +20,7 @@ mat-card {
 
   button {
     max-width: 300px;
-    display: block;
+    display: inline-block;
   }
 
   mat-card-content {
@@ -49,9 +43,7 @@ mat-card-subtitle.parents {
 
 
 @media screen and (min-width: 550px) {
-  mat-card {
-    display: grid;
-    gap: 2em;
+  mat-card:not(.receipts)  {
     grid-template-columns: 1fr 1fr;
 
     mat-card-header,

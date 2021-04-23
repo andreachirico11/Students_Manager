@@ -1,22 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { DataService } from 'src/app/main-page/data-service/data.service';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Receipt } from 'src/app/shared/models/Receipts';
-import { Student } from 'src/app/shared/models/Student';
 
 @Component({
   selector: 'student-receipts',
   templateUrl: './receipts-table.component.html',
   styleUrls: ['./receipts-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentReceiptsComponent implements OnInit {
   @Input()
-  public student: Student;
+  public receipts: Receipt[];
 
-  public receipts: Observable<Receipt[]>;
-  public displayedColumns = ['number', 'amount', 'emissionDate', 'paymentDate', 'typeOfPayment'];
-
-  constructor(private dbService: DataService) {}
+  public displayedColumns = [
+    'number',
+    'amount',
+    'emissionDate',
+    'paymentDate',
+    'typeOfPayment',
+    'actions',
+  ];
 
   ngOnInit(): void {
     // this.receipts = this.dbService.getReceiptsForStudent(this.student.receipts);
