@@ -12,18 +12,20 @@
       <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
       <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
       <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
-      <mat-expansion-panel class="mat-elevation-z-5">
+      <mat-expansion-panel class="mat-elevation-z-5" *ngIf="student.parents.length > 0">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <mat-card-subtitle class="parents">Genitori</mat-card-subtitle>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-card-subtitle>
-          {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
-        </mat-card-subtitle>
-        <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
-        <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
-        <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
+        <div *ngFor="let parent of student.parents">
+          <p style="margin-top: 1em">
+            <b>{{ parent.name }} {{ parent.surname }}</b>
+          </p>
+          <p>{{ parent.dateOfBirth | date: 'dd MMMM yyyy' }}</p>
+          <p>CF: {{ parent.fiscalCode }}</p>
+          <mat-divider></mat-divider>
+        </div>
       </mat-expansion-panel>
     </mat-expansion-panel>
   </mat-card-header>
@@ -33,6 +35,7 @@
     <button mat-stroked-button color="accent">Edit</button>
     <button mat-stroked-button color="warn" (click)="onDeleteClick()">Remove</button>
   </mat-action-list>
+
   <mat-card-content>
     <mat-form-field appearance="outline">
       <mat-label>Note</mat-label>
@@ -49,4 +52,5 @@
     </mat-card-header>
   </mat-card>
 </ng-template>
+
 <p id="successBadge" *ngIf="isBadgeOpen">Updated</p>
