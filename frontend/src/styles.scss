@@ -12,3 +12,16 @@ body {
   min-width: 250px
 }
 
+mat-spinner {
+  width: 50px !important;
+  height: 50px !important;
+  svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  position: fixed !important;
+  z-index: 100;
+  top: calc(50vh - 25px);
+  left: calc(50vw - 25px);
+
+}

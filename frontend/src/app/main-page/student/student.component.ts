@@ -16,6 +16,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   public isBadgeOpen = false;
   private paramsSub: Subscription;
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  public isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,10 +59,12 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   private loadStudent(id: string) {
+    this.isLoading = true;
     this.dbService.getStudentWithReceipts(id).subscribe((student) => {
       if (student) {
         this.student = student;
       }
+      this.isLoading = false;
     });
   }
 

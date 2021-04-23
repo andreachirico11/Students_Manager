@@ -21,9 +21,13 @@
       <td mat-cell *matCellDef="let element">{{ element.typeOfPayment }}</td>
     </ng-container>
     <ng-container matColumnDef="actions" stickyEnd>
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
+      </th>
       <td mat-cell *matCellDef="let element">
-        <mat-icon>more_vert</mat-icon>
+        <receipts-actions></receipts-actions>
       </td>
     </ng-container>
 

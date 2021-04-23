@@ -8,7 +8,8 @@ table {
   width: 100%
 }
 
-td.mat-column-actions {
+td.mat-column-actions,
+th.mat-column-actions {
   width: 20px;
   padding: 0 !important;
   padding-left: .5em !important;

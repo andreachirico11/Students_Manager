@@ -11,6 +11,7 @@ import { AuthService } from './auth/auth.service';
 })
 export class AuthComponent {
   public isRegistering = false;
+  public isLoading = false;
   constructor(
     private router: Router,
     private authS: AuthService,
@@ -26,6 +27,7 @@ export class AuthComponent {
   }
 
   login(f: NgForm) {
+    this.isLoading = true;
     const { email, password } = f.value;
     this.authS.login(email, password).subscribe((result) => {
       if (result) {
@@ -35,6 +37,7 @@ export class AuthComponent {
         for (const control in f.controls) {
           f.controls[control].markAsTouched();
         }
+        this.isLoading = false;
       }
     });
   }

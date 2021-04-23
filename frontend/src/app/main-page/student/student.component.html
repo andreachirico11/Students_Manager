@@ -1,60 +1,63 @@
-<mat-card *ngIf="student; else noStudent">
-  <mat-card-header>
-    <mat-expansion-panel class="mat-elevation-z-5">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-card-title>{{ student.name }} {{ student.surname }}</mat-card-title>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <mat-card-subtitle>
-        {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
-      </mat-card-subtitle>
-      <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
-      <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
-      <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
-      <mat-expansion-panel class="mat-elevation-z-5" *ngIf="student.parents.length > 0">
+<ng-container *ngIf="!isLoading">
+  <mat-card *ngIf="student; else noStudent">
+    <mat-card-header>
+      <mat-expansion-panel class="mat-elevation-z-5">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <mat-card-subtitle class="parents">Genitori</mat-card-subtitle>
+            <mat-card-title>{{ student.name }} {{ student.surname }}</mat-card-title>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div *ngFor="let parent of student.parents">
-          <p style="margin-top: 1em">
-            <b>{{ parent.name }} {{ parent.surname }}</b>
-          </p>
-          <p>{{ parent.dateOfBirth | date: 'dd MMMM yyyy' }}</p>
-          <p>CF: {{ parent.fiscalCode }}</p>
-          <mat-divider></mat-divider>
-        </div>
+        <mat-card-subtitle>
+          {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
+        </mat-card-subtitle>
+        <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
+        <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
+        <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
+        <mat-expansion-panel class="mat-elevation-z-5" *ngIf="student.parents.length > 0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-card-subtitle class="parents">Genitori</mat-card-subtitle>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngFor="let parent of student.parents">
+            <p style="margin-top: 1em">
+              <b>{{ parent.name }} {{ parent.surname }}</b>
+            </p>
+            <p>{{ parent.dateOfBirth | date: 'dd MMMM yyyy' }}</p>
+            <p>CF: {{ parent.fiscalCode }}</p>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-expansion-panel>
       </mat-expansion-panel>
-    </mat-expansion-panel>
-  </mat-card-header>
-
-  <mat-action-list>
-    <button mat-stroked-button (click)="updateNote()">Update notes</button>
-    <button mat-stroked-button color="accent">Edit</button>
-    <button mat-stroked-button color="warn" (click)="onDeleteClick()">Remove</button>
-  </mat-action-list>
-
-  <mat-card-content>
-    <mat-form-field appearance="outline">
-      <mat-label>Note</mat-label>
-      <textarea matInput [(ngModel)]="student.notes"></textarea>
-    </mat-form-field>
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="receipts" *ngIf="student && student.receipts.length > 0">
-  <student-receipts [receipts]="student.receipts"></student-receipts>
-</mat-card>
-
-<ng-template #noStudent>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Sorry...</mat-card-title>
-      <mat-card-subtitle style="margin-top: 2em">No student was found</mat-card-subtitle>
     </mat-card-header>
-  </mat-card>
-</ng-template>
 
-<p id="successBadge" *ngIf="isBadgeOpen">Updated</p>
+    <mat-action-list>
+      <button mat-stroked-button (click)="updateNote()">Update notes</button>
+      <button mat-stroked-button color="accent">Edit</button>
+      <button mat-stroked-button color="warn" (click)="onDeleteClick()">Remove</button>
+    </mat-action-list>
+
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Note</mat-label>
+        <textarea matInput [(ngModel)]="student.notes"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="receipts" *ngIf="student && student.receipts.length > 0">
+    <student-receipts [receipts]="student.receipts"></student-receipts>
+  </mat-card>
+
+  <ng-template #noStudent>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Sorry...</mat-card-title>
+        <mat-card-subtitle style="margin-top: 2em">No student was found</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </ng-template>
+
+  <p id="successBadge" *ngIf="isBadgeOpen">Updated</p>
+</ng-container>
+<mat-spinner *ngIf="isLoading"></mat-spinner>

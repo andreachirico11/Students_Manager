@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
 import { IUserResponse } from '../models/IUserResponse';
@@ -52,7 +53,7 @@ export class FakeInterceptor implements HttpInterceptor {
     status: number,
     body: IHttpResponse<T>
   ): Observable<HttpResponse<IHttpResponse<T>>> {
-    return of(new HttpResponse({ body, status }));
+    return of(new HttpResponse({ body, status })).pipe(delay(1000));
   }
 
   private loginRes(): IHttpResponse<IUserResponse> {
