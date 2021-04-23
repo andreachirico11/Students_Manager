@@ -17,6 +17,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   private paramsSub: Subscription;
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
   public isLoading = false;
+  public noteUpdating: 'updating' | 'fail' | 'success' = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,16 +47,25 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   public updateNote() {
-    this.dbService.updateStudent(this.student).subscribe((result) => {
-      if (result) {
-        this.isBadgeOpen = true;
+    this.noteUpdating = 'updating';
+    this.dbService.updateStudent(this.student).subscribe(
+      (result) => {
+        if (result) {
+          this.noteUpdating = 'success';
+        } else {
+          this.noteUpdating = 'fail';
+        }
         setTimeout(() => {
-          this.isBadgeOpen = false;
-        }, 1000);
-      } else {
-        alert('Error Cannot Update');
+          this.noteUpdating = null;
+        }, 1500);
+      },
+      () => {
+        this.noteUpdating = 'fail';
+        setTimeout(() => {
+          this.noteUpdating = null;
+        }, 1500);
       }
-    });
+    );
   }
 
   private loadStudent(id: string) {

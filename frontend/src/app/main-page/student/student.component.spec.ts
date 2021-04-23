@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -198,13 +198,49 @@ describe('StudentComponent', () => {
     paramsSubject.next(params);
     updateComponent();
     spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
-    expect(getByCss('#successBadge')).toBeNull();
+    expect(getByCss('.note-update-container')).toBeNull();
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
     fixture.detectChanges();
-    expect(getByCss('#successBadge')).toBeTruthy();
-    tick(1000);
+    expect(getByCss('.note-update-container')).toBeTruthy();
+    tick(1500);
     fixture.detectChanges();
-    expect(getByCss('#successBadge')).toBeNull();
+    expect(getByCss('.note-update-container')).toBeNull();
+  }));
+
+  it('should display the note update load badge', fakeAsync(() => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    const updateBtn = getButtons()[0].nativeElement;
+    updateBtn.click();
+    fixture.detectChanges();
+    expect(getByCss('mat-progress-bar')).toBeTruthy();
+  }));
+
+  it('should display the note update success badge', fakeAsync(() => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
+    const updateBtn = getButtons()[0].nativeElement;
+    updateBtn.click();
+    tick(500);
+    fixture.detectChanges();
+    expect(getByCss('.note-update-container mat-icon').nativeElement.textContent).toBe('done');
+    tick(1000);
+  }));
+
+  it('should display the note update fail badge', fakeAsync(() => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    spyOn(dbServ, 'updateStudent').and.returnValue(of(null));
+    const updateBtn = getButtons()[0].nativeElement;
+    updateBtn.click();
+    tick(500);
+    fixture.detectChanges();
+    expect(getByCss('.note-update-container mat-icon').nativeElement.textContent).toBe('warning');
+    tick(1000);
   }));
 });

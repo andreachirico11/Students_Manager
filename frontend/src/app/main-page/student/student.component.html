@@ -11,12 +11,12 @@
           {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
         </mat-card-subtitle>
         <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
-        <mat-card-subtitle>Classe: {{ student.schoolClass }}</mat-card-subtitle>
+        <mat-card-subtitle>Class: {{ student.schoolClass }}</mat-card-subtitle>
         <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
         <mat-expansion-panel class="mat-elevation-z-5" *ngIf="student.parents.length > 0">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <mat-card-subtitle class="parents">Genitori</mat-card-subtitle>
+              <mat-card-subtitle class="parents">Parents</mat-card-subtitle>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div *ngFor="let parent of student.parents">
@@ -32,7 +32,13 @@
     </mat-card-header>
 
     <mat-action-list>
-      <button mat-stroked-button (click)="updateNote()">Update notes</button>
+      <button
+        *ngIf="!noteUpdating; else noteUpdatingTemplates"
+        mat-stroked-button
+        (click)="updateNote()"
+      >
+        Update note
+      </button>
       <button mat-stroked-button color="accent">Edit</button>
       <button mat-stroked-button color="warn" (click)="onDeleteClick()">Remove</button>
     </mat-action-list>
@@ -57,7 +63,22 @@
       </mat-card-header>
     </mat-card>
   </ng-template>
-
-  <p id="successBadge" *ngIf="isBadgeOpen">Updated</p>
 </ng-container>
+
+<ng-template #noteUpdatingTemplates>
+  <div [ngSwitch]="noteUpdating">
+    <div class="note-update-container" *ngSwitchCase="'updating'">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div class="note-update-container" *ngSwitchCase="'fail'">
+      <span>Note Update Failed.</span>
+      <mat-icon color="warn">warning</mat-icon>
+    </div>
+    <div class="note-update-container" *ngSwitchCase="'success'">
+      <span>The Note Has Been Updated!</span>
+      <mat-icon color="accent">done</mat-icon>
+    </div>
+  </div>
+</ng-template>
+
 <mat-spinner *ngIf="isLoading"></mat-spinner>

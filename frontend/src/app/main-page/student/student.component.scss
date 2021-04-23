@@ -14,13 +14,27 @@ mat-card:not(.receipts) {
   }
 
   button,
-  mat-form-field {
+  mat-form-field,
+  mat-progress-bar {
     width: 100%;
   }
 
-  button {
+  button,
+  mat-progress-bar {
     max-width: 300px;
     display: block;
+  }
+
+  .note-update-container {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  mat-progress-bar {
+    height: 5px;
+    margin-top: 15px;
   }
 
   mat-card-content {
