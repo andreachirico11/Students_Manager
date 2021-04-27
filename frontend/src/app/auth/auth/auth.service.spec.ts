@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,7 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterModule.forRoot([])],
+      providers: [{ provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } }],
     });
     service = TestBed.inject(AuthService);
     controller = TestBed.inject(HttpTestingController);
