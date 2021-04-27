@@ -12,11 +12,15 @@ const routes: Routes = [
     component: ReceiptsFormComponent,
   },
   {
-    path: 'receipt',
+    path: 'receipt/:id',
     component: ReceiptsFormComponent,
   },
   {
     path: 'student',
+    component: StudentFormComponent,
+  },
+  {
+    path: 'student/:id',
     component: StudentFormComponent,
   },
 ];

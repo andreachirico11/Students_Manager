@@ -1,0 +1,17 @@
+mat-divider {
+    margin-bottom: 2em;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
+}
+
+
+@media screen and (min-width: 550px){
+    form {
+        grid-template-areas: "1 2" "3 4" "5 6";
+    }
+        
+}

@@ -1,1 +1,33 @@
-<p>receipts-form works!</p>
+<h2>Add Receipt</h2>
+<mat-divider></mat-divider>
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Number</mat-label>
+    <input matInput />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Amount</mat-label>
+    <input matInput />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Emission Date</mat-label>
+    <input matInput [matDatepicker]="startPicker" disabled />
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker disabled="false"></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Payment Date</mat-label>
+    <input matInput [matDatepicker]="endPicker" disabled />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker disabled="false"></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Type Of Payment</mat-label>
+    <mat-select>
+      <mat-option value="Moneta">Money</mat-option>
+      <mat-option value="Bancomat">Bancomat</mat-option>
+      <mat-option value="Bonifico">Bonifico</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button [disabled]="" mat-raised-button color="accent" type="submit">Add Receipt</button>
+</form>
