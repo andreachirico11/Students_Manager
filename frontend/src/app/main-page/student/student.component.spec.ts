@@ -3,16 +3,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { of, Subject, throwError } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
+import { ReceiptsActionsComponent } from './receipts/receipts-actions/receipts-actions.component';
+import { ReceiptsTableComponent } from './receipts/receipts-table.component';
 import { StudentComponent } from './student.component';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 class MockMatDialog {
   open() {
@@ -58,14 +60,13 @@ describe('StudentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StudentComponent],
+      declarations: [StudentComponent, ReceiptsTableComponent, ReceiptsActionsComponent],
       imports: [
         FormsModule,
         CommonModule,
         MaterialModule,
         BrowserAnimationsModule,
         HttpClientTestingModule,
-        // MatDialogModule,
         RouterModule.forRoot([]),
       ],
       providers: [

@@ -27,7 +27,10 @@
         </button>
       </th>
       <td mat-cell *matCellDef="let element">
-        <receipts-actions></receipts-actions>
+        <receipts-actions
+          [receiptId]="element.id"
+          (updateOrDeleteEvent)="onUpdateOrDelete($event)"
+        ></receipts-actions>
       </td>
     </ng-container>
 

@@ -7,6 +7,7 @@ import { MaterialModule } from '../material.module';
 import { MainPageComponent } from './main-page.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StudentComponent } from './student/student.component';
+import { FormsComponent } from './forms/forms.component';
 
 const routes: Routes = [
   {
@@ -18,12 +19,21 @@ const routes: Routes = [
         loadChildren: () => import('./student/student.module').then((m) => m.StudentModule),
         component: StudentComponent,
       },
+      {
+        path: 'compilation',
+        loadChildren: () => import('./forms/forms.module').then((m) => m.FormsModule),
+        component: FormsComponent,
+      },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];
 
 @NgModule({
-  declarations: [MainPageComponent, SidebarComponent],
+  declarations: [MainPageComponent, SidebarComponent, FormsComponent],
   imports: [
     RouterModule.forChild(routes),
     FormsModule,

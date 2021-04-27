@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'receipts-actions',
@@ -6,8 +6,21 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./receipts-actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReceiptsActionsComponent implements OnInit {
-  constructor() {}
+export class ReceiptsActionsComponent {
+  @Input()
+  public receiptId: string;
 
-  ngOnInit(): void {}
+  @Output()
+  updateOrDeleteEvent = new EventEmitter<IupdateOrDeleteEvent>();
+
+  emit(type: updateOrDelete) {
+    this.updateOrDeleteEvent.emit({ type, id: this.receiptId });
+  }
 }
+
+export interface IupdateOrDeleteEvent {
+  type: updateOrDelete;
+  id: string;
+}
+
+type updateOrDelete = 'update' | 'delete';

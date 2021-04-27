@@ -102,7 +102,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_2',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
@@ -110,7 +110,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_3',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
@@ -118,7 +118,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_4',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
@@ -126,7 +126,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_5',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
@@ -134,7 +134,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_6',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
@@ -142,7 +142,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Bancomat',
         },
         {
-          id: 'r_1',
+          id: 'r_7',
           number: 'asdfsadf',
           amount: 12,
           emissionDate: new Date(),
