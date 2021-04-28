@@ -1,0 +1,19 @@
+mat-divider {
+    margin-bottom: 2em;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
+    button {
+        height: 51px !important;
+    }
+}
+
+@media screen and (min-width: 550px){
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+        
+}

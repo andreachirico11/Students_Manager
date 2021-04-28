@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
@@ -27,6 +28,12 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ReceiptsFormComponent],
-  imports: [RouterModule.forChild(routes), MaterialModule, HttpClientModule, CommonModule],
+  imports: [
+    RouterModule.forChild(routes),
+    MaterialModule,
+    HttpClientModule,
+    CommonModule,
+    ReactiveFormsModule,
+  ],
 })
 export class FormsModule {}
