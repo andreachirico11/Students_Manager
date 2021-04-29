@@ -1,18 +1,31 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { dateComparerValidator } from 'src/app/shared/dateComparerValidator';
+import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 
 @Component({
   selector: 'app-receipts-form',
   templateUrl: './receipts-form.component.html',
   styleUrls: ['./receipts-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReceiptsFormComponent implements OnInit {
   public rForm: FormGroup;
 
+  get formHasDateError(): boolean {
+    return this.rForm.get('paymentDate').getError('dateCannotBeGreater');
+  }
+
   constructor() {}
 
   ngOnInit(): void {
+    this.initForm();
+  }
+
+  onSubmit(): void {
+    console.log(this.rForm);
+  }
+
+  initForm(): void {
     this.rForm = new FormGroup({
       number: new FormControl('', Validators.required),
       amount: new FormControl('', [
@@ -20,21 +33,16 @@ export class ReceiptsFormComponent implements OnInit {
         Validators.min(0),
         Validators.pattern('^[0-9]*$'),
       ]),
-      emissionDate: new FormControl({ value: '' }, Validators.required),
-      paymentDate: new FormControl(''),
+      emissionDate: new FormControl('', Validators.required),
+      paymentDate: new FormControl('', Validators.required),
       typeOfPayment: new FormControl('', Validators.required),
     });
-
-    this.rForm
-      .get('paymentDate')
-      .setValidators([Validators.required, dateComparerValidator(this.rForm.get('emissionDate'))]);
+    this.rForm.setValidators(
+      formDateComparerValidator(this.rForm.get('emissionDate'), this.rForm.get('paymentDate'))
+    );
   }
 
-  onSubmit(): void {
+  logform() {
     console.log(this.rForm);
-  }
-
-  log(x) {
-    console.log(x);
   }
 }

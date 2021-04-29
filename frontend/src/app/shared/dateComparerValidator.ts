@@ -1,12 +1,17 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
-export function dateComparerValidator(otherFormControl: AbstractControl) {
-  return (formControl: AbstractControl): { [message: string]: boolean } => {
-    if (otherFormControl.touched) {
-      const otherValue = new Date(otherFormControl.value);
-      const thisValue = new Date(formControl.value);
-      if (thisValue.getTime() < otherValue.getTime()) {
-        return { dateCannotBeGreater: true };
+export function formDateComparerValidator(
+  controlToCompare: AbstractControl,
+  controlUnderValidation: AbstractControl
+) {
+  return (group: FormGroup): { [message: string]: boolean } => {
+    if (controlToCompare.dirty && controlUnderValidation.dirty && controlUnderValidation.value) {
+      const dateToCompare = new Date(controlToCompare.value);
+      const dateToValidate = new Date(controlUnderValidation.value);
+      if (dateToValidate.getTime() < dateToCompare.getTime()) {
+        controlUnderValidation.setErrors({ dateCannotBeGreater: true });
+      } else {
+        controlUnderValidation.setErrors(null);
       }
     }
     return null;

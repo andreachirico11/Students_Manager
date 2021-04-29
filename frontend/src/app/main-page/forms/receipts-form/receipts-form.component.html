@@ -33,6 +33,7 @@
       [matDatepicker]="endPicker"
       formControlName="paymentDate"
     />
+    <mat-error *ngIf="formHasDateError">Payment Date Must Be Greater Than Emission Date</mat-error>
     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
     <mat-datepicker touchUi="true" #endPicker disabled="false"></mat-datepicker>
   </mat-form-field>
@@ -48,3 +49,4 @@
     Add Receipt
   </button>
 </form>
+<button (click)="logform()">Logf</button>
