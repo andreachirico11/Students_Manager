@@ -9,7 +9,7 @@ import { StudentFormComponent } from './student-form/student-form.component';
 
 const routes: Routes = [
   {
-    path: 'receipt',
+    path: 'receipt/add/:studentId',
     component: ReceiptsFormComponent,
   },
   {
