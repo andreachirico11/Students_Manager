@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { IupdateOrDeleteEvent, updateOrDelete } from '../IUpdateOrDelete';
 
 @Component({
   selector: 'receipts-actions',
@@ -17,10 +18,3 @@ export class ReceiptsActionsComponent {
     this.updateOrDeleteEvent.emit({ type, id: this.receiptId });
   }
 }
-
-export interface IupdateOrDeleteEvent {
-  type: updateOrDelete;
-  id: string;
-}
-
-type updateOrDelete = 'update' | 'delete';

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
+import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { DataService } from '../../data-service/data.service';
 
@@ -12,10 +13,16 @@ import { DataService } from '../../data-service/data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReceiptsFormComponent implements OnInit {
-  public rForm: FormGroup;
-  private receiptToUpdateId: string;
   private studentId: string;
+  private receiptToUpdateId: string;
+
+  public rForm: FormGroup;
   public formMode: 'Add' | 'Update';
+  public matSelectValues = PaymentTypeValues;
+
+  get isTouchUiActivate() {
+    return window.innerWidth < 500 ? true : false;
+  }
 
   get formHasDateError(): boolean {
     return this.rForm.get('paymentDate').getError('dateCannotBeGreater');

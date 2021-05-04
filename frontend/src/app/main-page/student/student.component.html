@@ -52,7 +52,7 @@
   </mat-card>
 
   <mat-card class="receipts" *ngIf="student && student.receipts.length > 0">
-    <student-receipts [receipts]="student.receipts"></student-receipts>
+    <student-receipts [receipts]="student.receipts" [owner]="student"></student-receipts>
   </mat-card>
 
   <ng-template #noStudent>

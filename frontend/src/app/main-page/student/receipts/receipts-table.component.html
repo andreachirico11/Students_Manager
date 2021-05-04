@@ -22,7 +22,7 @@
     </ng-container>
     <ng-container matColumnDef="actions" stickyEnd>
       <th mat-header-cell *matHeaderCellDef>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="addReceipt()">
           <mat-icon>add</mat-icon>
         </button>
       </th>

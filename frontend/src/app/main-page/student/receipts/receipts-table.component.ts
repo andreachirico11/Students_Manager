@@ -3,8 +3,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Receipt } from 'src/app/shared/models/Receipts';
+import { Student } from 'src/app/shared/models/Student';
 import { DataService } from '../../data-service/data.service';
-import { IupdateOrDeleteEvent } from './receipts-actions/receipts-actions.component';
+import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
 
 @Component({
   selector: 'student-receipts',
@@ -14,6 +15,9 @@ import { IupdateOrDeleteEvent } from './receipts-actions/receipts-actions.compon
 export class ReceiptsTableComponent {
   @Input()
   public receipts: Receipt[] = [];
+
+  @Input()
+  public owner: Student;
 
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -29,12 +33,17 @@ export class ReceiptsTableComponent {
   constructor(private dataS: DataService, private dialog: MatDialog, private router: Router) {}
 
   public addReceipt() {
-    // this.router
+    this.router.navigate(['compilation', 'receipt', 'add', this.owner.id]);
   }
 
   public onUpdateOrDelete(ev: IupdateOrDeleteEvent) {
     if (ev.type === 'update') {
-      // this.router
+      const receiptToUpdate = JSON.stringify(this.receipts.find((r) => r.id === ev.id));
+      this.router.navigate(['compilation', 'receipt', ev.id], {
+        queryParams: {
+          receiptToUpdate,
+        },
+      });
     }
     if (ev.type === 'delete') {
       this.deleteReceipt(ev.id);
