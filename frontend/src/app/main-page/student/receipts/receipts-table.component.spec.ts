@@ -31,12 +31,15 @@ describe('ReceiptsTableComponent', () => {
 
   const fakeFirstRecId = 'fake',
     fakeFirstRecNumber = '1111';
-  const fakeFirstRec: Receipt = {
-    ...FAKE_DB.students[2].receipts[0],
-    id: fakeFirstRecId,
-    number: fakeFirstRecNumber,
-  };
-  const fakeRec = [fakeFirstRec, ...FAKE_DB.students[2].receipts];
+  const fakeFirstRec: Receipt = new Receipt(
+    fakeFirstRecNumber,
+    50,
+    new Date(),
+    new Date(),
+    'Moneta',
+    fakeFirstRecId
+  );
+  const fakeRec = [fakeFirstRec, ...FAKE_DB.students.find((s) => s.receipts.length > 0).receipts];
 
   beforeEach(
     waitForAsync(() => {

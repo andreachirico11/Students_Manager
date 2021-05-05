@@ -74,6 +74,7 @@ export class ReceiptsFormComponent implements OnInit {
       typeOfPayment,
     });
   }
+
   private initForm(): void {
     this.rForm = new FormGroup({
       number: new FormControl('', Validators.required),
