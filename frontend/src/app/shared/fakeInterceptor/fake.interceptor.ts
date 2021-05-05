@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
 import { IUserResponse } from '../models/IUserResponse';
 import { UserMessages } from '../models/MessageEnums';
+import { receiptFakeResponses } from './fakeReceiptRespObj';
 import { studentFakeResponses } from './fakeStudentsRespObj';
 
 @Injectable()
@@ -41,6 +42,20 @@ export class FakeInterceptor implements HttpInterceptor {
         return this.getHttpRes(
           200,
           studentFakeResponses.deleteStudent(this.geUrlLastPart(request.url))
+        );
+      } else {
+        console.error('wrong request from interceptor');
+      }
+    }
+    if (/receipts/.test(request.url)) {
+      if (request.method === 'POST') {
+        return this.getHttpRes(201, receiptFakeResponses.postReceipt());
+      } else if (request.method === 'PUT') {
+        return this.getHttpRes(200, receiptFakeResponses.putReceipt());
+      } else if (request.method === 'DELETE') {
+        return this.getHttpRes(
+          200,
+          receiptFakeResponses.deleteReceipt(this.geUrlLastPart(request.url))
         );
       } else {
         console.error('wrong request from interceptor');

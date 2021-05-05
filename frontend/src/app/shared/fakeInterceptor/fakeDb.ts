@@ -1,4 +1,7 @@
 import { IUser } from '../models/IUser';
+import { Parent } from '../models/Parent';
+import { PaymentType } from '../models/PaymentType';
+import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
 
 export const FAKE_DB: { user: IUser[]; students: Student[] } = {
@@ -96,7 +99,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_1',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 1,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -104,7 +107,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_2',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 2,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -112,7 +115,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_3',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 3,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -120,7 +123,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_4',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 4,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -128,7 +131,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_5',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 5,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -136,7 +139,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_6',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 6,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -144,7 +147,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_7',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 7,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -152,7 +155,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_1',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 8,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -160,7 +163,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_1',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 9,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -168,7 +171,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_1',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 10,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -176,7 +179,7 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
         {
           id: 'r_1',
           number: 'asdfsadf',
-          amount: 12,
+          amount: 11,
           emissionDate: new Date(),
           paymentDate: new Date(),
           typeOfPayment: 'Bancomat',
@@ -185,3 +188,85 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
     },
   ],
 };
+
+(function initDB() {
+  FAKE_DB.students = [];
+  FAKE_DB.students = getStudents();
+})();
+
+function getStudents(): Student[] {
+  const num = getRand(20),
+    students = [];
+  let i = 0;
+  while (i < num) {
+    students.push(getStudent(i));
+    i++;
+  }
+  return students;
+}
+
+function getStudent(i: number): Student {
+  return new Student(
+    'Name_' + i,
+    'Surname_' + i,
+    getRand(10) + getLongString(1),
+    new Date(),
+    getLongString(12),
+    `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`,
+    getParents(),
+    getReceipts(),
+    getLongString(40),
+    's_' + i
+  );
+}
+
+function getParents(): Parent[] {
+  const num = getRand(15),
+    Parents = [];
+  let i = 0;
+  while (i < num) {
+    Parents.push(getParent(i));
+    i++;
+  }
+  return Parents;
+}
+
+function getParent(i: number): Parent {
+  return new Parent('P_name' + i, 'P_surname' + i, new Date(), getLongString(12));
+}
+
+function getReceipts(): Receipt[] {
+  const num = getRand(15),
+    receipts = [];
+  let i = 0;
+  while (i < num) {
+    receipts.push(getReceipt(i));
+    i++;
+  }
+  return receipts;
+}
+
+function getReceipt(i: number): Receipt {
+  return new Receipt(
+    getRand(300) + '',
+    getRand(30),
+    new Date(),
+    new Date(),
+    i % 2 === 0 ? 'Bancomat' : i % 3 === 0 ? 'Bonifico' : 'Moneta',
+    'r_' + i
+  );
+}
+
+function getLongString(length: number) {
+  const result = [];
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+  }
+  return result.join('');
+}
+
+function getRand(interval: number) {
+  return Math.floor(Math.random() * interval);
+}

@@ -71,17 +71,29 @@ export class DataService {
   }
 
   public addReceipt(studentId: string, r: Receipt): Observable<Receipt> {
-    return this.http.post<Receipt>(this.dbUrl + 'receipts/' + studentId, r);
-    // TODO
+    return this.http.post<IHttpResponse<Receipt>>(this.dbUrl + 'receipts/' + studentId, r).pipe(
+      map((r) => r.payload),
+      catchError((e) => of(null))
+    );
   }
 
   public updateReceipt(updated: Receipt): Observable<Receipt> {
-    return this.http.put<Receipt>(this.dbUrl + `receipts/${updated.id}`, updated);
-    // TODO
+    return this.http
+      .put<IHttpResponse<Receipt>>(this.dbUrl + `receipts/${updated.id}`, updated)
+      .pipe(
+        map((r) => r.payload),
+        catchError((e) => of(null))
+      );
   }
 
   public deleteReceipt(id: string): Observable<boolean> {
-    return this.http.delete<boolean>(this.dbUrl + `receipts/${id}`);
-    // TODO
+    return this.http
+      .delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`, {
+        observe: 'response',
+      })
+      .pipe(
+        map((r) => (r.status === 200 ? true : throwError(''))),
+        catchError((e) => of(null))
+      );
   }
 }

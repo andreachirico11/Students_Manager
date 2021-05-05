@@ -1,6 +1,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
+import { receiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
 import { studentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
 import { environment } from 'src/environments/environment';
 import { Receipt } from '../../shared/models/Receipts';
@@ -101,32 +102,34 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  xit('should add a new receipt', () => {
-    service.addReceipt(fakeStudent.id, fakeReceipt).subscribe((r) => {
-      expect(r).toEqual(fakeReceipt);
+  it('should add a new receipt', () => {
+    const receiptToAdd: Receipt = { ...receiptFakeResponses.postReceipt().payload, id: null };
+    service.addReceipt(fakeStudent.id, receiptToAdd).subscribe((r) => {
+      expect(r.number).toEqual(receiptToAdd.number);
     });
     const req = controller.expectOne(dbUrl + 'receipts/' + fakeStudent.id);
-    req.flush(fakeReceipt);
+    req.flush(receiptFakeResponses.postReceipt());
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
-  xit('should update the receipt', () => {
-    service.updateReceipt(fakeReceipt).subscribe((answer) => {
-      expect(answer).toEqual(fakeReceipt);
+  it('should update the receipt', () => {
+    const receiptToUpdate: Receipt = { ...receiptFakeResponses.postReceipt().payload };
+    service.updateReceipt(receiptToUpdate).subscribe((answer) => {
+      expect(answer).toEqual(receiptToUpdate);
     });
-    const req = controller.expectOne(dbUrl + 'receipts/' + fakeReceipt.id);
-    req.flush(fakeReceipt);
+    const req = controller.expectOne(dbUrl + 'receipts/' + receiptToUpdate.id);
+    req.flush(receiptFakeResponses.putReceipt());
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });
 
-  xit('should delete the receipt', () => {
+  it('should delete the receipt', () => {
     service.deleteReceipt('1').subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'receipts/1');
-    req.flush(true);
+    req.flush(receiptFakeResponses.deleteReceipt(''));
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });
