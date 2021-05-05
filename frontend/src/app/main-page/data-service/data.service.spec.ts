@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
+import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { receiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
 import { studentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
 import { environment } from 'src/environments/environment';
@@ -13,18 +13,8 @@ describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl,
     fakeStudent = new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1'),
-    fakeStudentsDb: Student[] = [
-      { ...fakeStudent },
-      { ...fakeStudent, id: '2' },
-      { ...fakeStudent, id: '3' },
-      { ...fakeStudent, id: '4' },
-    ],
-    fakeReceipt = new Receipt('', 10, new Date(), new Date(), 'Bancomat', '1'),
-    fakeReceiptsDb: Receipt[] = [
-      { ...fakeReceipt, id: '2', typeOfPayment: 'Bancomat' },
-      { ...fakeReceipt, id: '3', typeOfPayment: 'Bonifico' },
-      { ...fakeReceipt, id: '4', typeOfPayment: 'Moneta' },
-    ];
+    fakeStudentsDb: Student[] = getFakeStudents();
+
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
     service = TestBed.inject(DataService);

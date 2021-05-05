@@ -191,10 +191,10 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
 
 (function initDB() {
   FAKE_DB.students = [];
-  FAKE_DB.students = getStudents();
+  FAKE_DB.students = getFakeStudents();
 })();
 
-function getStudents(): Student[] {
+export function getFakeStudents(): Student[] {
   const num = getRand(20),
     students = [];
   let i = 0;
