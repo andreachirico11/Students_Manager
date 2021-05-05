@@ -1,3 +1,7 @@
+if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 import bodyParser = require('body-parser');
 import * as express from 'express';
 import * as mongoose from 'mongoose';
@@ -6,19 +10,19 @@ import { verifyToken } from './controllers/webTokenController';
 import { router } from './routes';
 
 const app = express();
+const connStr = process.env.MONGO_CONNECTION_STRING;
 
-mongoose
-  .connect(
-    'mongodb+srv://admin:admin@cluster0.fpac0.mongodb.net/students-manager-db?retryWrites=true"',
-    {
+if (connStr) {
+  mongoose
+    .connect(connStr, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    }
-  )
-  .then((x) => {
-    console.log('connected');
-  })
-  .catch((e) => console.log('error in connection:', e));
+    })
+    .then((x) => {
+      console.log('connected');
+    })
+    .catch((e) => console.log('error in connection:', e));
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
