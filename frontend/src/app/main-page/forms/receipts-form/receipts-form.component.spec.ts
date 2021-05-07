@@ -165,33 +165,18 @@ describe('ReceiptsFormComponent', () => {
     expect(paymentDate.valid).toBeTruthy('after value update');
   });
 
-  xit('shows and hides correctly the error message', () => {
-    // expect(getMatError().length).toBe(0, 'before error');
-    // const { emissionDate, paymentDate } = componentForm.controls;
-    // emissionDate.markAsDirty();
-    // paymentDate.markAsDirty();
-    // emissionDate.setValue(new Date('2011-03-11'));
-    // paymentDate.setValue(new Date('2011-03-10'));
-    // componentForm.markAsTouched();
-    // componentForm.markAsDirty();
-    // fixture.detectChanges();
-    // expect(getMatError().length).toBe(1, 'after error');
-    // paymentDate.setValue(new Date('2011-03-12'));
-    // fixture.detectChanges();
-    // expect(getMatError().length).toBe(0, 'after update');
+  it('shows correctly the date error message', () => {
     expect(getMatError().length).toBe(0, 'before error');
-    const { emissionDate, paymentDate } = component.rForm.controls;
-    paymentDate.statusChanges.subscribe(() => {
-      console.log(paymentDate.getError('dateCannotBeGreater'));
-      fixture.detectChanges();
-      expect(getMatError().length).toBe(1, 'after error');
-    });
+    const { paymentDate } = component.rForm.controls;
+    paymentDate.markAsDirty();
+    paymentDate.markAsTouched();
     paymentDate.setErrors({ dateCannotBeGreater: true });
+    fixture.detectChanges();
+    expect(getMatError().length).toBe(1, 'after error');
   });
 
-  xit('does not allow to press the button until all fields are filled', () => {
+  it('does not allow to press the button until all fields are filled', () => {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = component.rForm.controls;
-    // expect(getIfButtonIsDisabled()).toBeTruthy();
     number.setValue(111);
     amount.setValue(222);
     emissionDate.setValue(new Date());
@@ -203,11 +188,8 @@ describe('ReceiptsFormComponent', () => {
     getInputs().forEach((input) => {
       input.nativeElement.dispatchEvent(new Event('input'));
     });
-    console.log(getInputs());
-
     component.rForm.updateValueAndValidity();
     fixture.detectChanges();
-
     expect(getIfButtonIsDisabled()).toBeFalsy();
   });
 

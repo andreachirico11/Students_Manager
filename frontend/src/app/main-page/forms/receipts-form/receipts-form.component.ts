@@ -24,10 +24,6 @@ export class ReceiptsFormComponent implements OnInit {
     return window.innerWidth < 500 ? true : false;
   }
 
-  get formHasDateError(): boolean {
-    return this.rForm.get('paymentDate').getError('dateCannotBeGreater');
-  }
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
@@ -52,6 +48,10 @@ export class ReceiptsFormComponent implements OnInit {
   private addNewReceipt() {
     this.formMode = 'Add';
     this.onSubmit = () => this.createAndAdd();
+  }
+
+  formHasDateError(): boolean {
+    return this.rForm.get('paymentDate').getError('dateCannotBeGreater');
   }
 
   private updatePreviousReceipt() {
