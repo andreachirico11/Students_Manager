@@ -214,7 +214,7 @@ function getStudent(i: number): Student {
     getLongString(12),
     `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`,
     getParents(),
-    getReceipts(),
+    getFakeReceipts(),
     getLongString(40),
     's_' + i
   );
@@ -235,7 +235,7 @@ function getParent(i: number): Parent {
   return new Parent('P_name' + i, 'P_surname' + i, new Date(), getLongString(12));
 }
 
-function getReceipts(): Receipt[] {
+export function getFakeReceipts(): Receipt[] {
   const num = getRand(15),
     receipts = [];
   let i = 0;
@@ -268,5 +268,5 @@ function getLongString(length: number) {
 }
 
 function getRand(interval: number) {
-  return Math.floor(Math.random() * interval);
+  return Math.floor(Math.random() * interval) + 1;
 }

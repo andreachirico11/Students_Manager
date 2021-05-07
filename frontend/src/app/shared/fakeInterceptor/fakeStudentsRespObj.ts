@@ -1,42 +1,43 @@
 import { IHttpResponse } from '../models/IHttpResponse';
 import { StudentMessages } from '../models/MessageEnums';
 import { Student } from '../models/Student';
-import { FAKE_DB } from './fakeDb';
 
-export const studentFakeResponses = {
+export class StudentFakeResponses {
+  constructor(private fakeStudentDb: Student[]) {}
+
   getAllStudents(): IHttpResponse<Student[]> {
     return {
       message: StudentMessages.student_found,
-      payload: FAKE_DB.students,
+      payload: this.fakeStudentDb,
     };
-  },
+  }
 
   getStudent(id: string): IHttpResponse<Student> {
     return {
       message: StudentMessages.student_found,
-      payload: FAKE_DB.students.find((s) => s.id === id),
+      payload: this.fakeStudentDb.find((s) => s.id === id),
     };
-  },
+  }
 
   postStudent(): IHttpResponse<Student> {
     return {
       message: StudentMessages.student_created,
-      payload: FAKE_DB.students[0],
+      payload: this.fakeStudentDb[0],
     };
-  },
+  }
 
   putStudent(): IHttpResponse<Student> {
     return {
       message: StudentMessages.student_updated,
-      payload: FAKE_DB.students[0],
+      payload: this.fakeStudentDb[0],
     };
-  },
+  }
 
   deleteStudent(id: string): IHttpResponse<null> {
-    FAKE_DB.students = [...FAKE_DB.students.filter((s) => s.id !== id)];
+    this.fakeStudentDb = [...this.fakeStudentDb.filter((s) => s.id !== id)];
     return {
       message: StudentMessages.student_deleted,
       payload: null,
     };
-  },
-};
+  }
+}

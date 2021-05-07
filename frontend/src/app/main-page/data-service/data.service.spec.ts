@@ -1,8 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
-import { receiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
-import { studentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
+import { getFakeStudents, getFakeReceipts } from 'src/app/shared/fakeInterceptor/fakeDb';
+import { ReceiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
+import { StudentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
 import { environment } from 'src/environments/environment';
 import { Receipt } from '../../shared/models/Receipts';
 import { Student } from '../../shared/models/Student';
@@ -13,7 +13,9 @@ describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl,
     fakeStudent = new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1'),
-    fakeStudentsDb: Student[] = getFakeStudents();
+    fakeStudentsDb: Student[] = getFakeStudents(),
+    studenfFakeResps = new StudentFakeResponses(fakeStudentsDb),
+    receiptsFakeResps = new ReceiptFakeResponses(fakeStudentsDb);
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
@@ -27,46 +29,44 @@ describe('DataService', () => {
 
   it('should return an array of students', () => {
     service.getStudents().subscribe((db) => {
-      expect(db.length).toBe(FAKE_DB.students.length);
-      expect(db[0].name).toBe(FAKE_DB.students[0].name);
+      expect(db.length).toBe(fakeStudentsDb.length);
+      expect(db[0].name).toBe(fakeStudentsDb[0].name);
     });
     const req = controller.expectOne(dbUrl + 'students');
-    req.flush(studentFakeResponses.getAllStudents());
+    req.flush(studenfFakeResps.getAllStudents());
     controller.verify();
   });
 
   it('should return a student with his receipts', () => {
-    const testStudent = FAKE_DB.students[1],
+    const testStudent = { ...fakeStudentsDb[1] },
       id = testStudent.id;
     service.getStudentWithReceipts(id).subscribe((s) => {
       expect(s.receipts.length).toBe(testStudent.receipts.length);
       expect(s.receipts[0].typeOfPayment).toBe(testStudent.receipts[0].typeOfPayment);
     });
     const req = controller.expectOne(dbUrl + 'students/' + id);
-    const studentToReturn = fakeStudentsDb[0];
-    studentToReturn.receipts = [...fakeReceiptsDb];
-    req.flush(studentFakeResponses.getStudent(id));
+    req.flush(studenfFakeResps.getStudent(id));
     controller.verify();
   });
 
   it('should add a new student', () => {
-    const studentToAdd: Student = { ...studentFakeResponses.postStudent().payload, id: null };
+    const studentToAdd: Student = { ...studenfFakeResps.postStudent().payload, id: null };
     service.addStudent(studentToAdd).subscribe((resultStudent) => {
       expect(studentToAdd.name).toEqual(resultStudent.name);
     });
     const req = controller.expectOne(dbUrl + 'students');
-    req.flush(studentFakeResponses.postStudent());
+    req.flush(studenfFakeResps.postStudent());
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
   it('should update the student', () => {
-    const studentWithUpdate = studentFakeResponses.putStudent().payload;
+    const studentWithUpdate = studenfFakeResps.putStudent().payload;
     service.updateStudent(studentWithUpdate).subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students/' + studentWithUpdate.id);
-    req.flush(studentFakeResponses.putStudent());
+    req.flush(studenfFakeResps.putStudent());
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });
@@ -76,7 +76,7 @@ describe('DataService', () => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students/1');
-    req.flush(studentFakeResponses.deleteStudent(''));
+    req.flush(studenfFakeResps.deleteStudent(''));
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });
@@ -87,40 +87,41 @@ describe('DataService', () => {
     });
     service.deleteStudent('1').subscribe();
     const req = controller.expectOne(dbUrl + 'students/1');
-    req.flush(studentFakeResponses.deleteStudent(''));
+    req.flush(studenfFakeResps.deleteStudent(''));
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });
 
   it('should add a new receipt', () => {
-    const receiptToAdd: Receipt = { ...receiptFakeResponses.postReceipt().payload, id: null };
+    const receiptToAdd: Receipt = { ...receiptsFakeResps.postReceipt().payload, id: null };
     service.addReceipt(fakeStudent.id, receiptToAdd).subscribe((r) => {
       expect(r).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'receipts/' + fakeStudent.id);
-    req.flush(receiptFakeResponses.postReceipt());
+    req.flush(receiptsFakeResps.postReceipt());
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
   it('should update the receipt', () => {
-    const receiptToUpdate: Receipt = { ...receiptFakeResponses.putReceipt().payload };
+    const receiptToUpdate: Receipt = { ...receiptsFakeResps.putReceipt().payload };
     service.updateReceipt(receiptToUpdate).subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'receipts/' + receiptToUpdate.id);
-    req.flush(receiptFakeResponses.putReceipt());
+    req.flush(receiptsFakeResps.putReceipt());
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });
 
   it('should delete the receipt', () => {
-    const rid = FAKE_DB.students[0].receipts[0].id;
+    const rid = fakeStudentsDb[0].receipts[0].id;
     service.deleteReceipt(rid).subscribe((answer) => {
       expect(answer).toBeTruthy();
+      expect(fakeStudentsDb[0].receipts.find((r) => r.id === rid)).toBeFalsy();
     });
     const req = controller.expectOne(dbUrl + 'receipts/' + rid);
-    req.flush(receiptFakeResponses.deleteReceipt(rid));
+    req.flush(receiptsFakeResps.deleteReceipt(rid));
     expect(req.request.method).toBe('DELETE');
     controller.verify();
   });
