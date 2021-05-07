@@ -27,6 +27,9 @@ mat-card {
         justify-content: space-between;
         flex-direction: column;
     }
+    ::ng-deep .mat-card-header-text {
+        margin-left: 0 ;
+    }
 }
 
 @media screen and (min-width: 500px) {
