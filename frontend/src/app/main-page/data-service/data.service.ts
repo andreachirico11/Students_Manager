@@ -70,30 +70,35 @@ export class DataService {
       );
   }
 
-  public addReceipt(studentId: string, r: Receipt): Observable<Receipt> {
-    return this.http.post<IHttpResponse<Receipt>>(this.dbUrl + 'receipts/' + studentId, r).pipe(
-      map((r) => r.payload),
-      catchError((e) => of(null))
+  public addReceipt(studentId: string, r: Receipt): Observable<boolean> {
+    return this.sharedPipe(
+      this.http.post<IHttpResponse<Receipt>>(this.dbUrl + 'receipts/' + studentId, r)
     );
   }
 
-  public updateReceipt(updated: Receipt): Observable<Receipt> {
-    return this.http
-      .put<IHttpResponse<Receipt>>(this.dbUrl + `receipts/${updated.id}`, updated)
-      .pipe(
-        map((r) => r.payload),
-        catchError((e) => of(null))
-      );
+  public updateReceipt(updated: Receipt): Observable<boolean> {
+    return this.sharedPipe(
+      this.http.put<IHttpResponse<Receipt>>(this.dbUrl + `receipts/${updated.id}`, updated)
+    );
   }
 
   public deleteReceipt(id: string): Observable<boolean> {
-    return this.http
-      .delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`, {
-        observe: 'response',
-      })
-      .pipe(
-        map((r) => (r.status === 200 ? true : throwError(''))),
-        catchError((e) => of(null))
-      );
+    return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
+    // return this.http
+    //   .delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`, {
+    //     observe: 'response',
+    //   })
+    //   .pipe(
+    //     map((r) => (r.status === 200 ? true : throwError(''))),
+    //     catchError((e) => of(null))
+    //   );
+  }
+
+  private sharedPipe(obs: Observable<any>): Observable<boolean> {
+    return obs.pipe(
+      tap(console.log),
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

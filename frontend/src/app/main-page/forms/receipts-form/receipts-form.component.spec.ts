@@ -225,7 +225,7 @@ describe('ReceiptsFormComponent', () => {
       paymentDate: r.paymentDate,
       typeOfPayment: r.typeOfPayment,
     });
-    const addSpy = spyOn(dataService, 'addReceipt').and.returnValue(of(r));
+    const addSpy = spyOn(dataService, 'addReceipt').and.returnValue(of(true));
     component.onSubmit();
     expect(addSpy).toHaveBeenCalledOnceWith('123', r);
   });
@@ -255,7 +255,7 @@ describe('ReceiptsFormComponent', () => {
     };
     component.ngOnInit();
     fixture.detectChanges();
-    const update = spyOn(dataService, 'updateReceipt').and.returnValue(of(r));
+    const update = spyOn(dataService, 'updateReceipt').and.returnValue(of(true));
     component.onSubmit();
     expect(update).toHaveBeenCalledOnceWith({ ...r, id: '123' });
   });

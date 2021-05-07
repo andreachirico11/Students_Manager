@@ -66,4 +66,11 @@ export class ReceiptsTableComponent {
       }
     });
   }
+
+  // private onError() {
+  //   const componentInstance = this.dialog.open(ConfirmationDialogComponent);
+  //   componentInstance.componentInstance.dialogTitle = `There was a problem ${
+  //     this.formMode === 'Add' ? 'adding' : 'updating'
+  //   } the receipt`;
+  // }
 }

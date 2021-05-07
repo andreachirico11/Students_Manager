@@ -16,6 +16,9 @@ export class ConfirmationDialogComponent implements OnInit {
   @Input()
   public dialogTitle = 'Title';
 
+  @Input()
+  public onlyConfirmation: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}

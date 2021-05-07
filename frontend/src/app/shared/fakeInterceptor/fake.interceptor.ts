@@ -1,4 +1,5 @@
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
@@ -6,7 +7,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
@@ -90,5 +91,9 @@ export class FakeInterceptor implements HttpInterceptor {
   private geUrlLastPart(url: string): string {
     const arr = url.split('/');
     return arr[arr.length - 1];
+  }
+
+  private fakeErrorResp() {
+    return throwError(new HttpErrorResponse({ status: 500 }));
   }
 }

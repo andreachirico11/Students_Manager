@@ -1,6 +1,10 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <mat-dialog-content class="mat-typography"></mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>{{ successBtnLabel }}</button>
-  <button mat-button [mat-dialog-close]="false">{{ unsuccessBtnLabel }}</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    {{ onlyConfirmation ? 'Ok' : successBtnLabel }}
+  </button>
+  <button *ngIf="!onlyConfirmation" mat-button [mat-dialog-close]="false">
+    {{ unsuccessBtnLabel }}
+  </button>
 </mat-dialog-actions>

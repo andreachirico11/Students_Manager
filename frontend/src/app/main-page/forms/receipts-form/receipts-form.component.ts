@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -27,6 +29,7 @@ export class ReceiptsFormComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
+    private dialog: MatDialog,
     private router: Router
   ) {}
 
@@ -95,13 +98,13 @@ export class ReceiptsFormComponent implements OnInit {
   private createAndAdd() {
     this.dataService
       .addReceipt(this.studentId, this.collectInputs())
-      .subscribe((r) => this.ifPositiveRespNavigate(r));
+      .subscribe((r) => this.onResponse(r));
   }
 
   private updateExistent() {
     this.dataService
       .updateReceipt({ ...this.collectInputs(), id: this.receiptToUpdateId })
-      .subscribe((r) => this.ifPositiveRespNavigate(r));
+      .subscribe((r) => this.onResponse(r));
   }
 
   private collectInputs(): Receipt {
@@ -109,9 +112,19 @@ export class ReceiptsFormComponent implements OnInit {
     return new Receipt(number, amount, emissionDate, paymentDate, typeOfPayment);
   }
 
-  private ifPositiveRespNavigate(r: Receipt) {
+  private onResponse(r: boolean) {
     if (r) {
       this.router.navigate([this.studentId]);
+    } else {
+      this.onError();
     }
+  }
+
+  private onError() {
+    const componentInstance = this.dialog.open(ConfirmationDialogComponent).componentInstance;
+    componentInstance.dialogTitle = `There was a problem ${
+      this.formMode === 'Add' ? 'adding' : 'updating'
+    } the receipt`;
+    componentInstance.onlyConfirmation = true;
   }
 }
