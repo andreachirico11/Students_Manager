@@ -38,7 +38,10 @@ export class ReceiptsTableComponent {
 
   public onUpdateOrDelete(ev: IupdateOrDeleteEvent) {
     if (ev.type === 'update') {
-      const receiptToUpdate = JSON.stringify(this.receipts.find((r) => r.id === ev.id));
+      const receiptToUpdate = JSON.stringify({
+        ...this.receipts.find((r) => r.id === ev.id),
+        ownerId: this.owner.id,
+      });
       this.router.navigate(['compilation', 'receipt', ev.id], {
         queryParams: {
           receiptToUpdate,

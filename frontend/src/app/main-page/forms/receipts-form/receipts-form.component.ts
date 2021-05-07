@@ -64,8 +64,8 @@ export class ReceiptsFormComponent implements OnInit {
     }
     this.formMode = 'Update';
     this.onSubmit = () => this.updateExistent();
-    const { number, amount, emissionDate, paymentDate, typeOfPayment } = JSON.parse(rToUp);
-
+    const { number, amount, emissionDate, paymentDate, typeOfPayment, ownerId } = JSON.parse(rToUp);
+    this.studentId = ownerId;
     this.rForm.patchValue({
       number,
       amount,
@@ -93,25 +93,25 @@ export class ReceiptsFormComponent implements OnInit {
   }
 
   private createAndAdd() {
-    this.dataService.addReceipt(this.studentId, this.collectInputs()).subscribe((r) => {
-      if (r) {
-        this.router.navigate([this.studentId]);
-      }
-    });
+    this.dataService
+      .addReceipt(this.studentId, this.collectInputs())
+      .subscribe((r) => this.ifPositiveRespNavigate(r));
   }
 
   private updateExistent() {
     this.dataService
       .updateReceipt({ ...this.collectInputs(), id: this.receiptToUpdateId })
-      .subscribe((r) => {
-        if (r) {
-          this.router.navigate([this.studentId]);
-        }
-      });
+      .subscribe((r) => this.ifPositiveRespNavigate(r));
   }
 
   private collectInputs(): Receipt {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = this.rForm.value;
     return new Receipt(number, amount, emissionDate, paymentDate, typeOfPayment);
+  }
+
+  private ifPositiveRespNavigate(r: Receipt) {
+    if (r) {
+      this.router.navigate([this.studentId]);
+    }
   }
 }
