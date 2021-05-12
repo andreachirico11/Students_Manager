@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
-import { MY_DATE_FORMATS } from './custom-date-formats';
-import { AppDateAdapter } from './dateAdapter.service';
+import { MY_DATE_FORMATS } from './utils/custom-date-formats';
+import { AppDateAdapter } from './utils/dateAdapter.service';
 
 @Component({
   selector: 'app-forms',

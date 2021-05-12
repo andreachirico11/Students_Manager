@@ -7,6 +7,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
 import { StudentBaseComponent } from './student-base/student-base.component';
 import { StudentFormComponent } from './student-base/student-form/student-form.component';
+import { StudentResumeComponent } from './student-base/student-resume/student-resume.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ReceiptsFormComponent, StudentBaseComponent, StudentFormComponent],
+  declarations: [ReceiptsFormComponent, StudentBaseComponent, StudentFormComponent, StudentResumeComponent],
   imports: [
     RouterModule.forChild(routes),
     MaterialModule,

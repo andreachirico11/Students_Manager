@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { DataService } from '../../data-service/data.service';
+import { AllRegExp } from '../utils/allRegExp';
 
 @Component({
   selector: 'app-receipts-form',
@@ -84,7 +85,7 @@ export class ReceiptsFormComponent implements OnInit {
       amount: new FormControl('', [
         Validators.required,
         Validators.min(0),
-        Validators.pattern('^[0-9]*$'),
+        Validators.pattern(AllRegExp.onlyNumbersReg),
       ]),
       emissionDate: new FormControl('', Validators.required),
       paymentDate: new FormControl('', Validators.required),
