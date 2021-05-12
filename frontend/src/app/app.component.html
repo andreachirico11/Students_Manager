@@ -1,4 +1,5 @@
 <mat-toolbar color="primary">
+  <button [routerLink]="['compilation', 'prova']">Apri form</button>
   <span>Students Manager</span>
   <button *ngIf="isLoggedIn" mat-button type="button" (click)="onLogout()" color="warn">
     <mat-icon color="warn">exit_to_app</mat-icon>
