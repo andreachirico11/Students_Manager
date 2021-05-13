@@ -96,7 +96,6 @@ export class DataService {
 
   private sharedPipe(obs: Observable<any>): Observable<boolean> {
     return obs.pipe(
-      tap(console.log),
       map(() => true),
       catchError(() => of(false))
     );

@@ -221,7 +221,7 @@ function getStudent(i: number): Student {
 }
 
 function getParents(): Parent[] {
-  const num = getRand(15),
+  const num = getRand(5),
     Parents = [];
   let i = 0;
   while (i < num) {

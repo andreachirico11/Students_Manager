@@ -4,7 +4,7 @@ import { MY_DATE_FORMATS } from './utils/custom-date-formats';
 import { AppDateAdapter } from './utils/dateAdapter.service';
 
 @Component({
-  selector: 'app-forms',
+  selector: 'forms',
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.scss'],
   providers: [
