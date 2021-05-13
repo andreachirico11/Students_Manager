@@ -46,7 +46,11 @@ export class StudentFormComponent implements OnInit {
       ]),
       dateOfBirth: new FormControl(null, [Validators.required]),
       fiscalCode: new FormControl(null, [Validators.required, Validators.pattern(AllRegExp.cfReg)]),
-      address: new FormControl(null, [Validators.required]),
+      phoneNumber: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(AllRegExp.onlyNumbersReg),
+      ]),
+      address: new FormControl(null),
       schoolClass: new FormControl(null, [
         Validators.required,
         Validators.pattern(AllRegExp.schoolClassReg),

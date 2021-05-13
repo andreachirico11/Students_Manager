@@ -23,8 +23,8 @@ export class ParentFormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    const { name, surname, dateOfBirth, fiscalCode } = this.parentF.value;
-    // this.parent.emit(new Parent(name, surname, dateOfBirth, fiscalCode));
+    const { name, surname, fiscalCode, phoneNumber, address } = this.parentF.value;
+    this.parent.emit(new Parent(name, surname, fiscalCode, phoneNumber, address || null));
   }
 
   public patternErrorChecker(controlName: string): boolean {
@@ -45,8 +45,12 @@ export class ParentFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(AllRegExp.onlyLettersReg),
       ]),
-      dateOfBirth: new FormControl(null, [Validators.required]),
       fiscalCode: new FormControl(null, [Validators.required, Validators.pattern(AllRegExp.cfReg)]),
+      phoneNumber: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(AllRegExp.onlyNumbersReg),
+      ]),
+      address: new FormControl(null),
     });
   }
 }

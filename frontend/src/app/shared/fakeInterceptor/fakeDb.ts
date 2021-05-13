@@ -227,7 +227,7 @@ function getParent(i: number): Parent {
 }
 
 export function getFakeReceipts(): Receipt[] {
-  const num = getRand(15),
+  const num = getRand(15) + 1,
     receipts = [];
   let i = 0;
   while (i < num) {

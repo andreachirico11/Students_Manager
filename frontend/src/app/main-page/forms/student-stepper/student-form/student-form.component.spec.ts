@@ -127,6 +127,7 @@ describe('StudentFormComponent', () => {
       fiscalCode: 'a',
       address: 'a',
       schoolClass: 'a',
+      phoneNumber: 123,
     };
     fixture.componentInstance.partialStudent.subscribe((p) => {
       expect(p).toEqual(st);

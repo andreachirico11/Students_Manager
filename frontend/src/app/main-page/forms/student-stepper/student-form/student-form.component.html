@@ -21,6 +21,11 @@
     <mat-error *ngIf="patternErrorChecker('fiscalCode')">Invalid Format</mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
+    <mat-label>Phone Number</mat-label>
+    <input matInput formControlName="phoneNumber" />
+    <mat-error *ngIf="patternErrorChecker('fiscalCode')">Invalid Format</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
     <mat-label>Address</mat-label>
     <input matInput formControlName="address" />
   </mat-form-field>
