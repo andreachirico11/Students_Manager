@@ -5,10 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
-import { ParentFormComponent } from './student-base/parent-form/parent-form.component';
-import { StudentBaseComponent } from './student-base/student-base.component';
-import { StudentFormComponent } from './student-base/student-form/student-form.component';
-import { StudentResumeComponent } from './student-base/student-resume/student-resume.component';
+import { ParentFormComponent } from './student-stepper/parent-form/parent-form.component';
+import { StudentFormComponent } from './student-stepper/student-form/student-form.component';
+import { StudentResumeComponent } from './student-stepper/student-resume/student-resume.component';
+import { StudentStepperComponent } from './student-stepper/student-stepper.component';
 
 const routes: Routes = [
   {
@@ -21,14 +21,14 @@ const routes: Routes = [
   },
   {
     path: 'student',
-    component: StudentBaseComponent,
+    component: StudentStepperComponent,
   },
   {
     path: 'student/:id',
-    component: StudentBaseComponent,
+    component: StudentStepperComponent,
   },
   // testing
-  { path: 'prova', component: StudentBaseComponent },
+  { path: 'prova', component: ParentFormComponent },
   ////////
 ];
 
@@ -36,9 +36,9 @@ const routes: Routes = [
   declarations: [
     ParentFormComponent,
     ReceiptsFormComponent,
-    StudentBaseComponent,
     StudentFormComponent,
     StudentResumeComponent,
+    StudentStepperComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

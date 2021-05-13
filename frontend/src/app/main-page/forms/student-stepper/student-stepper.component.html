@@ -1,0 +1,19 @@
+<mat-horizontal-stepper>
+  <mat-step label="Step 1" state="phone">
+    <p>Put down your phones.</p>
+    <div>
+      <student-form></student-form>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step label="Step 2" state="chat">
+    <parent-form></parent-form>
+    <div>
+      <!-- <button mat-button matStepperPrevious>Back</button> -->
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step label="Step 3">
+    <student-resume [student]="fakeS"></student-resume>
+  </mat-step>
+</mat-horizontal-stepper>
