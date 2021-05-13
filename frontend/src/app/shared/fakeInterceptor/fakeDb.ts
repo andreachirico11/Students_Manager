@@ -4,7 +4,7 @@ import { PaymentType } from '../models/PaymentType';
 import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
 
-export const FAKE_DB: { user: IUser[]; students: Student[] } = {
+export let FAKE_DB: { user: IUser[]; students: Student[] } = {
   user: [
     {
       id: '1',
@@ -22,14 +22,13 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
       address: 'via gianni gianno',
-      parents: [
-        {
-          name: 'Mauro',
-          surname: 'Mauri',
-          dateOfBirth: new Date(),
-          fiscalCode: 'abc',
-        },
-      ],
+      parent: {
+        name: 'Mauro',
+        surname: 'Mauri',
+        dateOfBirth: new Date(),
+        fiscalCode: 'abc',
+      },
+
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [],
@@ -42,14 +41,12 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
       address: 'via gianni gianno',
-      parents: [
-        {
-          name: 'Mauro',
-          surname: 'Mauri',
-          dateOfBirth: new Date(),
-          fiscalCode: 'abc',
-        },
-      ],
+      parent: {
+        name: 'Mauro',
+        surname: 'Mauri',
+        dateOfBirth: new Date(),
+        fiscalCode: 'abc',
+      },
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [
@@ -79,20 +76,12 @@ export const FAKE_DB: { user: IUser[]; students: Student[] } = {
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
       address: 'via gianni gianno',
-      parents: [
-        {
-          name: 'Mauro',
-          surname: 'Mauri',
-          dateOfBirth: new Date(),
-          fiscalCode: 'abc',
-        },
-        {
-          name: 'Maura',
-          surname: 'Mauri',
-          dateOfBirth: new Date(),
-          fiscalCode: 'abc',
-        },
-      ],
+      parent: {
+        name: 'Mauro',
+        surname: 'Mauri',
+        dateOfBirth: new Date(),
+        fiscalCode: 'abc',
+      },
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [
@@ -213,22 +202,12 @@ function getStudent(i: number): Student {
     new Date(),
     getLongString(12),
     `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`,
-    getParents(),
+    // getParents(),
+    getParent(i),
     getFakeReceipts(),
     getLongString(40),
     's_' + i
   );
-}
-
-function getParents(): Parent[] {
-  const num = getRand(5),
-    Parents = [];
-  let i = 0;
-  while (i < num) {
-    Parents.push(getParent(i));
-    i++;
-  }
-  return Parents;
 }
 
 function getParent(i: number): Parent {

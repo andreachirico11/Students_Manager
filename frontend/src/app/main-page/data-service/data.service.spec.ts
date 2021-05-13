@@ -11,7 +11,18 @@ import { DataService } from './data.service';
 describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl,
-    fakeStudent = new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1'),
+    fakeStudent = new Student(
+      'gianni',
+      'gianno',
+      '',
+      new Date(),
+      '',
+      '',
+      { name: 'a', surname: 'b', dateOfBirth: new Date(), fiscalCode: 'aaaaaa' },
+      [],
+      '',
+      '1'
+    ),
     fakeStudentsDb: Student[] = getFakeStudents(),
     studenfFakeResps = new StudentFakeResponses(fakeStudentsDb),
     receiptsFakeResps = new ReceiptFakeResponses(fakeStudentsDb);

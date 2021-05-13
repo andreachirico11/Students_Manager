@@ -14,7 +14,20 @@ describe('SidebarComponent', () => {
   let dbService: DataService;
   let routerSpy;
 
-  const fakeStudentsDb = [new Student('gianni', 'gianno', '', new Date(), '', '', [], [], '', '1')],
+  const fakeStudentsDb = [
+      new Student(
+        'gianni',
+        'gianno',
+        '',
+        new Date(),
+        '',
+        '',
+        { name: 'a', surname: 'b', dateOfBirth: new Date(), fiscalCode: 'aaaaaa' },
+        [],
+        '',
+        '1'
+      ),
+    ],
     getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
   beforeEach(async () => {
     routerSpy = jasmine.createSpy('navigate');

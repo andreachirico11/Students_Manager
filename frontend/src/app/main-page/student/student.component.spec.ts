@@ -38,7 +38,18 @@ describe('StudentComponent', () => {
   let router: Router;
 
   const receipt = new Receipt('12345', 3, new Date(), new Date(), 'Bancomat', 'r1'),
-    student = new Student('gianni', 'gianno', '', new Date(), '', '', [], [receipt], 'notes', '1'),
+    student = new Student(
+      'gianni',
+      'gianno',
+      '',
+      new Date(),
+      '',
+      '',
+      { name: 'a', surname: 'b', dateOfBirth: new Date(), fiscalCode: 'aaaaaa' },
+      [receipt],
+      'notes',
+      '1'
+    ),
     newNoteText = 'new note',
     params = {
       id: 's1',
