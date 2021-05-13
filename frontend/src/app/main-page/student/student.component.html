@@ -10,9 +10,12 @@
         <mat-card-subtitle>
           {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
         </mat-card-subtitle>
-        <mat-card-subtitle>{{ student.address | titlecase }}</mat-card-subtitle>
+        <mat-card-subtitle>Phone: {{ student.phoneNumber }}</mat-card-subtitle>
         <mat-card-subtitle>Class: {{ student.schoolClass }}</mat-card-subtitle>
         <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="student.address">
+          {{ student.address | titlecase }}
+        </mat-card-subtitle>
         <mat-expansion-panel class="mat-elevation-z-5">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -23,17 +26,10 @@
             <p style="margin-top: 1em">
               <b>{{ student.parent.name }} {{ student.parent.surname }}</b>
             </p>
-            <p>{{ student.parent.dateOfBirth | date: 'dd MMMM yyyy' }}</p>
+            <p>Phone: {{ student.parent.phoneNumber }}</p>
             <p>CF: {{ student.parent.fiscalCode }}</p>
+            <p>Address: {{ student.parent.address }}</p>
           </div>
-          <!-- <div *ngFor="let parent of student.parents">
-            <p style="margin-top: 1em">
-              <b>{{ parent.name }} {{ parent.surname }}</b>
-            </p>
-            <p>{{ parent.dateOfBirth | date: 'dd MMMM yyyy' }}</p>
-            <p>CF: {{ parent.fiscalCode }}</p>
-            <mat-divider></mat-divider>
-          </div> -->
         </mat-expansion-panel>
       </mat-expansion-panel>
     </mat-card-header>

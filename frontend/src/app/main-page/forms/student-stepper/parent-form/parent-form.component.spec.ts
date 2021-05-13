@@ -103,7 +103,13 @@ describe('ParentFormComponent', () => {
   });
 
   it('expect result student to be instance of parent', () => {
-    const pr: Parent = new Parent('a', 'b', new Date(), 'c');
+    const pr: Parent = {
+      name: 'a',
+      surname: 'b',
+      fiscalCode: 'aaaaaa',
+      address: 'asdfjhalfbanflasdbfasf',
+      phoneNumber: 1111111111111111111,
+    };
     fixture.componentInstance.parent.subscribe((p) => {
       expect(p instanceof Parent).toBeTruthy();
     });

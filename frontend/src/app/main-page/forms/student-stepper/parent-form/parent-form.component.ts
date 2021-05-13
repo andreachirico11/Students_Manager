@@ -24,7 +24,7 @@ export class ParentFormComponent implements OnInit {
 
   public onSubmit(): void {
     const { name, surname, dateOfBirth, fiscalCode } = this.parentF.value;
-    this.parent.emit(new Parent(name, surname, dateOfBirth, fiscalCode));
+    // this.parent.emit(new Parent(name, surname, dateOfBirth, fiscalCode));
   }
 
   public patternErrorChecker(controlName: string): boolean {

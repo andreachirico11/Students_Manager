@@ -8,9 +8,10 @@ export class Student {
     public schoolClass: string,
     public dateOfBirth: Date,
     public fiscalCode: string,
-    public address: string,
+    public phoneNumber: number,
     public parent: Parent,
     public receipts: Receipt[],
+    public address?: string,
     public notes?: string,
     public id?: string
   ) {}

@@ -1,6 +1,5 @@
 import { IUser } from '../models/IUser';
 import { Parent } from '../models/Parent';
-import { PaymentType } from '../models/PaymentType';
 import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
 
@@ -21,14 +20,15 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       schoolClass: '1b',
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
-      address: 'via gianni gianno',
+      phoneNumber: 1,
       parent: {
         name: 'Mauro',
         surname: 'Mauri',
-        dateOfBirth: new Date(),
         fiscalCode: 'abc',
+        address: 'hasfkljahfashbasolfasd',
+        phoneNumber: 3453456656,
       },
-
+      address: 'via gianni gianno',
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [],
@@ -40,12 +40,13 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       schoolClass: '1b',
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
-      address: 'via gianni gianno',
+      phoneNumber: 1,
       parent: {
         name: 'Mauro',
         surname: 'Mauri',
-        dateOfBirth: new Date(),
         fiscalCode: 'abc',
+        address: 'hasfkljahfashbasolfasd',
+        phoneNumber: 3453456656,
       },
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
@@ -67,6 +68,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'Moneta',
         },
       ],
+      address: 'via gianni gianno',
     },
     {
       id: 's_3',
@@ -75,13 +77,16 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       schoolClass: '1b',
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
-      address: 'via gianni gianno',
+      phoneNumber: 1,
       parent: {
         name: 'Mauro',
         surname: 'Mauri',
-        dateOfBirth: new Date(),
         fiscalCode: 'abc',
+        address: 'hasfkljahfashbasolfasd',
+        phoneNumber: 3453456656,
       },
+      address: 'via gianni gianno',
+
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [
@@ -195,23 +200,30 @@ export function getFakeStudents(): Student[] {
 }
 
 function getStudent(i: number): Student {
+  const addr = i % 3 === 0 ? null : `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`;
   return new Student(
     'Name_' + i,
     'Surname_' + i,
     getRand(10) + getLongString(1),
     new Date(),
     getLongString(12),
-    `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`,
-    // getParents(),
+    getRand(20),
     getParent(i),
     getFakeReceipts(),
+    addr,
     getLongString(40),
     's_' + i
   );
 }
 
 function getParent(i: number): Parent {
-  return new Parent('P_name' + i, 'P_surname' + i, new Date(), getLongString(12));
+  return new Parent(
+    'P_name' + i,
+    'P_surname' + i,
+    getLongString(12),
+    getLongString(40),
+    getRand(1000000)
+  );
 }
 
 export function getFakeReceipts(): Receipt[] {

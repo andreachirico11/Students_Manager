@@ -21,9 +21,17 @@ describe('SidebarComponent', () => {
         '',
         new Date(),
         '',
-        '',
-        { name: 'a', surname: 'b', dateOfBirth: new Date(), fiscalCode: 'aaaaaa' },
+        1,
+        {
+          name: 'a',
+          surname: 'b',
+          fiscalCode: 'aaaaaa',
+          address: 'asdfjhalfbanflasdbfasf',
+          phoneNumber: 1111111111111111111,
+        },
+
         [],
+        '',
         '',
         '1'
       ),
