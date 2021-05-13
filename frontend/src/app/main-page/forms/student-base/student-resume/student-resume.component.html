@@ -1,1 +1,45 @@
-<p>student-resume works!</p>
+<mat-list *ngIf="student">
+  <div mat-subheader>Student</div>
+  <mat-list-item>
+    <div mat-line>
+      Name:
+      <b>{{ student.name }}</b>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div mat-line>
+      Surame:
+      <b>{{ student.surname }}</b>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div mat-line>
+      Date Of Birth
+      <b>{{ student.dateOfBirth | date }}</b>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div mat-line>
+      Address:
+      <b>{{ student.address }}</b>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div mat-line>
+      Fiscal Code:
+      <b>{{ student.fiscalCode }}</b>
+    </div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Parents</div>
+  <mat-list-item *ngFor="let parent of student.parents">
+    <div mat-line>Name: {{ parent.name }}</div>
+    <div mat-line>Surname: {{ parent.surname }}</div>
+    <div mat-line>Date Of Birth: {{ parent.dateOfBirth }}</div>
+    <div mat-line>Fiscal Code: {{ parent.fiscalCode }}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <button mat-raised-button color="accent" type="button" (click)="okEv.emit()" style="width: 100%">
+    Ok
+  </button>
+</mat-list>
