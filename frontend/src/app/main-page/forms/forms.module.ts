@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
+import { ParentFormComponent } from './student-base/parent-form/parent-form.component';
 import { StudentBaseComponent } from './student-base/student-base.component';
 import { StudentFormComponent } from './student-base/student-form/student-form.component';
 import { StudentResumeComponent } from './student-base/student-resume/student-resume.component';
@@ -27,12 +28,18 @@ const routes: Routes = [
     component: StudentBaseComponent,
   },
   // testing
-  { path: 'prova', component: StudentFormComponent },
+  { path: 'prova', component: ParentFormComponent },
   ////////
 ];
 
 @NgModule({
-  declarations: [ReceiptsFormComponent, StudentBaseComponent, StudentFormComponent, StudentResumeComponent],
+  declarations: [
+    ParentFormComponent,
+    ReceiptsFormComponent,
+    StudentBaseComponent,
+    StudentFormComponent,
+    StudentResumeComponent,
+  ],
   imports: [
     RouterModule.forChild(routes),
     MaterialModule,

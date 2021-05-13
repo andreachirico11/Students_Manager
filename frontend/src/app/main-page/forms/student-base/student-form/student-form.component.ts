@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Student } from 'src/app/shared/models/Student';
 import { AllRegExp } from '../../utils/allRegExp';
 
 @Component({
-  selector: 'app-student-form',
+  selector: 'student-form',
   templateUrl: './student-form.component.html',
   styleUrls: ['./student-form.component.scss'],
 })
@@ -12,6 +13,8 @@ export class StudentFormComponent implements OnInit {
   get isTouchUiActivate() {
     return window.innerWidth < 500 ? true : false;
   }
+  @Output()
+  public partialStudent = new EventEmitter<Partial<Student>>();
 
   constructor() {}
 
@@ -20,7 +23,7 @@ export class StudentFormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.studentF);
+    this.partialStudent.emit(this.studentF.value);
   }
 
   public patternErrorChecker(controlName: string): boolean {

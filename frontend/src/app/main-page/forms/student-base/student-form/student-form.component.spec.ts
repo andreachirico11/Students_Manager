@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
+import { Student } from 'src/app/shared/models/Student';
 
 import { StudentFormComponent } from './student-form.component';
 
@@ -116,5 +117,23 @@ describe('StudentFormComponent', () => {
     expect(isBtnDisabled()).toBeTrue();
     component.studentF.markAllAsTouched();
     expect(isBtnDisabled()).toBeTrue();
+  });
+
+  it('expect partial student to be instance of student', () => {
+    const st: Partial<Student> = {
+      name: 'a',
+      surname: 'a',
+      dateOfBirth: new Date(),
+      fiscalCode: 'a',
+      address: 'a',
+      schoolClass: 'a',
+    };
+    fixture.componentInstance.partialStudent.subscribe((p) => {
+      expect(p).toEqual(st);
+    });
+    fixture.componentInstance.studentF.patchValue({
+      ...st,
+    });
+    fixture.componentInstance.onSubmit();
   });
 });
