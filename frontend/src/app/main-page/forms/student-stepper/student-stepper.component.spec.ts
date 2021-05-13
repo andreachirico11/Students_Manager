@@ -33,7 +33,7 @@ describe('StudentStepperComponent', () => {
     });
   };
   const fillParentForm = (parent: Parent) => {
-    studentForm.studentF.patchValue({
+    parentForm.parentF.patchValue({
       ...parent,
     });
   };
@@ -51,8 +51,8 @@ describe('StudentStepperComponent', () => {
   });
 
   beforeEach(() => {
-    (fakeStudent = getFakeStudents()[0]),
-      (fixture = TestBed.createComponent(StudentStepperComponent));
+    fakeStudent = getFakeStudents()[0];
+    fixture = TestBed.createComponent(StudentStepperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     studentForm = fixture.debugElement.query(By.directive(StudentFormComponent)).componentInstance;
@@ -69,7 +69,7 @@ describe('StudentStepperComponent', () => {
     expect(studentResume).toBeTruthy();
   });
 
-  fit('Should launch the correct methods', () => {
+  it('Should launch the correct methods', () => {
     const onStSpy = stepperSpyGen('onStudentFormEv'),
       onParentSpy = stepperSpyGen('onParentFormEv'),
       onResumeSpy = stepperSpyGen('onOk'),
@@ -77,6 +77,22 @@ describe('StudentStepperComponent', () => {
     fillStudentForm(partialS);
     studentForm.onSubmit();
     expect(onStSpy).toHaveBeenCalledOnceWith(partialS);
-    // finire con gli altri
+    fillParentForm(fakeStudent.parent);
+    parentForm.onSubmit();
+    expect(onParentSpy).toHaveBeenCalledOnceWith(fakeStudent.parent);
+    studentResume.okEv.emit();
+    expect(onResumeSpy).toHaveBeenCalled();
+  });
+
+  fit('should display correctly datas', () => {
+    const partialS = getPartialStudent(),
+      fakeParent: Parent = { ...fakeStudent.parent } as Parent;
+    fillStudentForm(partialS);
+    studentForm.onSubmit();
+    fillParentForm(fakeParent);
+    parentForm.onSubmit();
+    fixture.detectChanges();
+    // PRENDE PER IL CULO ESCE OBJECT INVECE CHE PARENT
+    expect(studentResume.student.parent === fakeParent).toBeTruthy();
   });
 });

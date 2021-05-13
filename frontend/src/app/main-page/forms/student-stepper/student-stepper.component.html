@@ -1,17 +1,11 @@
 <mat-horizontal-stepper>
   <mat-step label="Student" state="phone">
     <student-form (partialStudent)="onStudentFormEv($event)"></student-form>
-    <!-- <div>
-      <button mat-button matStepperNext>Next</button>
-    </div> -->
   </mat-step>
   <mat-step label="Parent" state="chat">
     <parent-form (parent)="onParentFormEv($event)"></parent-form>
-    <!-- <div>
-      <button mat-button matStepperNext>Next</button>
-    </div> -->
   </mat-step>
   <mat-step label="Done">
-    <student-resume [student]="fakeS" (okEv)="onOk()"></student-resume>
+    <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>
   </mat-step>
 </mat-horizontal-stepper>

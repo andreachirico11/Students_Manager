@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -10,5 +10,6 @@ import { Student } from 'src/app/shared/models/Student';
 export class StudentResumeComponent {
   @Input()
   public student: Student;
+  @Output()
   public okEv = new EventEmitter();
 }

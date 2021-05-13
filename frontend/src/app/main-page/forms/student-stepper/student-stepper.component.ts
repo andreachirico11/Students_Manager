@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatHorizontalStepper } from '@angular/material/stepper';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
 
@@ -9,18 +9,35 @@ import { Student } from 'src/app/shared/models/Student';
   styleUrls: ['./student-stepper.component.scss'],
 })
 export class StudentStepperComponent implements OnInit {
-  fakeS = FAKE_DB.students[0];
+  public studentCreated: Student = null;
+  private studentPartial: Partial<Student>;
+
+  @ViewChild(MatHorizontalStepper)
+  private stepper: MatHorizontalStepper;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   onStudentFormEv(student: Partial<Student>) {
-    console.log(student);
+    this.studentPartial = student;
+    this.stepper.next();
   }
 
   onParentFormEv(parent: Parent) {
-    console.log(parent);
+    this.studentPartial.parent = parent;
+    this.studentCreated = new Student(
+      this.studentPartial.name,
+      this.studentPartial.surname,
+      this.studentPartial.schoolClass,
+      this.studentPartial.dateOfBirth,
+      this.studentPartial.fiscalCode,
+      this.studentPartial.phoneNumber,
+      parent,
+      [],
+      this.studentPartial.address
+    );
+    this.stepper.next();
   }
 
   onOk() {
