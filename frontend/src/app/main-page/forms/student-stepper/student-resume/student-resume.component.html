@@ -42,43 +42,50 @@
       <b>{{ student.fiscalCode }}</b>
     </div>
   </mat-list-item>
+  <ng-container *ngIf="student.parent">
+    <mat-divider></mat-divider>
+    <div mat-subheader>Parent</div>
+    <mat-list-item>
+      <div mat-line>
+        Name:
+        <b>{{ student.parent.name }}</b>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>
+        Surname:
+        <b>{{ student.parent.surname }}</b>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>
+        Phone Number:
+        <b>{{ student.parent.phoneNumber }}</b>
+      </div>
+    </mat-list-item>
 
-  <mat-divider></mat-divider>
-  <div mat-subheader>Parent</div>
-  <mat-list-item>
-    <div mat-line>
-      Name:
-      <b>{{ student.parent.name }}</b>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div mat-line>
-      Surname:
-      <b>{{ student.parent.surname }}</b>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div mat-line>
-      Phone Number:
-      <b>{{ student.parent.phoneNumber }}</b>
-    </div>
-  </mat-list-item>
+    <mat-list-item *ngIf="student.parent.address">
+      <div mat-line>
+        Address:
+        <b>{{ student.parent.address }}</b>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>
+        Fiscal Code:
+        <b>{{ student.parent.fiscalCode }}</b>
+      </div>
+    </mat-list-item>
 
-  <mat-list-item *ngIf="student.parent.address">
-    <div mat-line>
-      Address:
-      <b>{{ student.parent.address }}</b>
-    </div>
-  </mat-list-item>
-  <mat-list-item>
-    <div mat-line>
-      Fiscal Code:
-      <b>{{ student.parent.fiscalCode }}</b>
-    </div>
-  </mat-list-item>
-
-  <mat-divider></mat-divider>
-  <button mat-raised-button color="accent" type="button" (click)="okEv.emit()" style="width: 100%">
-    Ok
-  </button>
+    <mat-divider></mat-divider>
+    <button
+      mat-raised-button
+      color="accent"
+      type="button"
+      (click)="okEv.emit()"
+      style="width: 100%"
+    >
+      Ok
+    </button>
+  </ng-container>
 </mat-list>

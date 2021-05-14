@@ -10,7 +10,6 @@ import { Student } from 'src/app/shared/models/Student';
 })
 export class StudentStepperComponent implements OnInit {
   public studentCreated: Student = null;
-  private studentPartial: Partial<Student>;
 
   @ViewChild(MatHorizontalStepper)
   private stepper: MatHorizontalStepper;
@@ -20,24 +19,23 @@ export class StudentStepperComponent implements OnInit {
   ngOnInit(): void {}
 
   onStudentFormEv(student: Partial<Student>) {
-    this.studentPartial = student;
+    this.studentCreated = new Student(
+      student.name,
+      student.surname,
+      student.schoolClass,
+      student.dateOfBirth,
+      student.fiscalCode,
+      student.phoneNumber,
+      null,
+      [],
+      student.address
+    );
     this.stepper.selected.completed = true;
     this.stepper.next();
   }
 
   onParentFormEv(parent: Parent) {
-    this.studentPartial.parent = parent;
-    this.studentCreated = new Student(
-      this.studentPartial.name,
-      this.studentPartial.surname,
-      this.studentPartial.schoolClass,
-      this.studentPartial.dateOfBirth,
-      this.studentPartial.fiscalCode,
-      this.studentPartial.phoneNumber,
-      parent,
-      [],
-      this.studentPartial.address
-    );
+    this.studentCreated = { ...this.studentCreated, parent };
     this.stepper.selected.completed = true;
     this.stepper.next();
   }
