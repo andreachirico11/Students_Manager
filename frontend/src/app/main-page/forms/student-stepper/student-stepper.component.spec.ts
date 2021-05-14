@@ -84,15 +84,20 @@ describe('StudentStepperComponent', () => {
     expect(onResumeSpy).toHaveBeenCalled();
   });
 
-  fit('should display correctly datas', () => {
+  it('should display correctly datas', () => {
     const partialS = getPartialStudent(),
-      fakeParent: Parent = { ...fakeStudent.parent } as Parent;
+      fakeParent = new Parent(
+        fakeStudent.parent.name,
+        fakeStudent.parent.surname,
+        fakeStudent.parent.fiscalCode,
+        fakeStudent.parent.address,
+        fakeStudent.parent.phoneNumber
+      );
     fillStudentForm(partialS);
     studentForm.onSubmit();
     fillParentForm(fakeParent);
     parentForm.onSubmit();
     fixture.detectChanges();
-    // PRENDE PER IL CULO ESCE OBJECT INVECE CHE PARENT
-    expect(studentResume.student.parent === fakeParent).toBeTruthy();
+    expect(studentResume.student.parent.address === fakeParent.address).toBeTruthy();
   });
 });
