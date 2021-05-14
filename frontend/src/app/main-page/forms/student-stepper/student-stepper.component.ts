@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatHorizontalStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { DataService } from '../../data-service/data.service';
 
 @Component({
   selector: 'app-student-stepper',
@@ -14,7 +18,11 @@ export class StudentStepperComponent implements OnInit {
   @ViewChild(MatHorizontalStepper)
   private stepper: MatHorizontalStepper;
 
-  constructor() {}
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {}
 
@@ -41,6 +49,32 @@ export class StudentStepperComponent implements OnInit {
   }
 
   onOk() {
-    console.log('ok');
+    this.dataService.addStudent(this.studentCreated).subscribe((r) => {
+      if (r) {
+        this.openDialog(() => this.navigateHome(), 'Student Added Successfully');
+      } else {
+        this.openDialog(() => this.resetStepper(), 'There was a problem adding Student');
+      }
+    });
+  }
+
+  private openDialog(callBack: Function, title: string) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.dialogTitle = title;
+    dialogRef.componentInstance.onlyConfirmation = true;
+    dialogRef.afterClosed().subscribe(() => {
+      callBack();
+    });
+  }
+
+  private navigateHome() {
+    this.router.navigate(['']);
+  }
+
+  private resetStepper() {
+    this.stepper.selectedIndex = 0;
+    this.stepper.steps.forEach((step) => {
+      step.completed = false;
+    });
   }
 }

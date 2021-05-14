@@ -38,10 +38,16 @@ export class DataService {
     );
   }
 
-  public addStudent(newStudent: Student): Observable<Student> {
-    return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
-      map((r) => r.payload),
-      catchError((e) => of(null))
+  // public addStudent(newStudent: Student): Observable<Student> {
+  //   return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
+  //     map((r) => r.payload),
+  //     catchError((e) => of(null))
+  //   );
+  // }
+
+  public addStudent(newStudent: Student): Observable<boolean> {
+    return this.sharedPipe(
+      this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent)
     );
   }
 

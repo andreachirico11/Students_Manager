@@ -68,12 +68,12 @@ describe('DataService', () => {
   });
 
   it('should add a new student', () => {
-    const studentToAdd: Student = { ...studenfFakeResps.postStudent().payload, id: null };
-    service.addStudent(studentToAdd).subscribe((resultStudent) => {
-      expect(studentToAdd.name).toEqual(resultStudent.name);
+    const studentToAdd: Student = { ...fakeStudentsDb[0], name: 'carlo' };
+    service.addStudent(studentToAdd).subscribe(() => {
+      expect(studentToAdd.name).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students');
-    req.flush(studenfFakeResps.postStudent());
+    req.flush(studenfFakeResps.postStudent(studentToAdd));
     expect(req.request.method).toBe('POST');
     controller.verify();
   });

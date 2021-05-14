@@ -19,7 +19,8 @@ export class StudentFakeResponses {
     };
   }
 
-  postStudent(): IHttpResponse<Student> {
+  postStudent(stToAdd: Student): IHttpResponse<Student> {
+    this.fakeStudentDb.push({ ...stToAdd, id: this.generateLastId() });
     return {
       message: StudentMessages.student_created,
       payload: this.fakeStudentDb[0],
@@ -39,5 +40,10 @@ export class StudentFakeResponses {
       message: StudentMessages.student_deleted,
       payload: null,
     };
+  }
+
+  private generateLastId() {
+    const lastNum = +this.fakeStudentDb[this.fakeStudentDb.length - 1].id.split('_')[1];
+    return 's_' + (lastNum + 1);
   }
 }
