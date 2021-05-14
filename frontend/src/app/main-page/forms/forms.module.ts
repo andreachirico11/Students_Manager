@@ -28,7 +28,7 @@ const routes: Routes = [
     component: StudentStepperComponent,
   },
   // testing
-  { path: 'prova', component: StudentStepperComponent },
+  // { path: 'prova', component: StudentStepperComponent },
   ////////
 ];
 

@@ -189,7 +189,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
 })();
 
 export function getFakeStudents(): Student[] {
-  const num = getRand(20),
+  const num = getRand(50) + 30,
     students = [];
   let i = 0;
   while (i < num) {

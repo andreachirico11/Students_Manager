@@ -1,9 +1,18 @@
-<mat-selection-list [multiple]="false">
-  <mat-list-option
-    *ngFor="let student of students | async"
-    [value]="student"
-    (click)="navigateToStudent(student.id)"
-  >
-    {{ student.name }} {{ student.surname }}
-  </mat-list-option>
-</mat-selection-list>
+<div class="button-container">
+  <button mat-icon-button color="primary" routerLink="compilation/student">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<mat-divider></mat-divider>
+
+<div class="sidebar-container">
+  <mat-selection-list [multiple]="false">
+    <mat-list-option
+      *ngFor="let student of students | async"
+      [value]="student"
+      (click)="navigateToStudent(student.id)"
+    >
+      {{ student.name }} {{ student.surname }}
+    </mat-list-option>
+  </mat-selection-list>
+</div>

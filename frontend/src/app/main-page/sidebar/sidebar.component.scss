@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.button-container {
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar-container {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
