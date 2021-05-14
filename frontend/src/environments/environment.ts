@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  dbUrl: 'http://localhost:3000/',
+  dbUrl: 'fakeUrl',
   // dbUrl: 'http://localhost:3210/api/',
 };
 

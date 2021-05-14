@@ -20,10 +20,11 @@ export class StudentFakeResponses {
   }
 
   postStudent(stToAdd: Student): IHttpResponse<Student> {
-    this.fakeStudentDb.push({ ...stToAdd, id: this.generateLastId() });
+    const studentToAdd: Student = { ...stToAdd, id: this.generateLastId() };
+    this.fakeStudentDb.push(studentToAdd);
     return {
       message: StudentMessages.student_created,
-      payload: this.fakeStudentDb[0],
+      payload: studentToAdd,
     };
   }
 
@@ -34,7 +35,7 @@ export class StudentFakeResponses {
     this.fakeStudentDb[i] = { ...stUpdated };
     return {
       message: StudentMessages.student_updated,
-      payload: this.fakeStudentDb[0],
+      payload: this.fakeStudentDb[i],
     };
   }
 

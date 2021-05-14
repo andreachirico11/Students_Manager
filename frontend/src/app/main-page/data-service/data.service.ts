@@ -13,21 +13,12 @@ import { environment } from 'src/environments/environment';
 export class DataService {
   private dbUrl = environment.dbUrl;
   private localStudentDb: Student[] = [];
-  // private _reload = new Subject<boolean>();
   public studentsSubj = new BehaviorSubject<Student[]>(null);
 
   constructor(private http: HttpClient) {}
 
-  // public get reload() {
-  //   // return this._reload.asObservable();
-  // }
-
   public get studentDbObservable(): Observable<Student[]> {
     return this.studentsSubj.asObservable();
-  }
-
-  private launchReload() {
-    // this._reload.next(true);
   }
 
   public getStudents(): Observable<boolean> {
@@ -42,13 +33,6 @@ export class DataService {
     );
   }
 
-  // public getStudents(): Observable<Student[]> {
-  //   return this.http.get<IHttpResponse<Student[]>>(this.dbUrl + 'students').pipe(
-  //     map((r) => r.payload),
-  //     catchError((e) => of([]))
-  //   );
-  // }
-
   public getStudentWithReceipts(id: string): Observable<Student> {
     return this.http.get<IHttpResponse<Student>>(this.dbUrl + `students/${id}`).pipe(
       map((r) => r.payload),
@@ -57,8 +41,13 @@ export class DataService {
   }
 
   public addStudent(newStudent: Student): Observable<boolean> {
-    return this.sharedPipe(
-      this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent)
+    return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
+      tap((res) => {
+        this.localStudentDb.push(res.payload);
+        this.studentsSubj.next(this.localStudentDb);
+      }),
+      map(() => true),
+      catchError(() => of(false))
     );
   }
 

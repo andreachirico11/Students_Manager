@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
 import { DataService } from '../../data-service/data.service';

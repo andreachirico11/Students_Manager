@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { last } from 'rxjs/operators';
 import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { ReceiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
 import { StudentFakeResponses } from 'src/app/shared/fakeInterceptor/fakeStudentsRespObj';
@@ -30,12 +31,14 @@ describe('DataService', () => {
       '',
       '',
       '1'
-    ),
-    fakeStudentsDb: Student[] = getFakeStudents(),
-    studenfFakeResps = new StudentFakeResponses(fakeStudentsDb),
-    receiptsFakeResps = new ReceiptFakeResponses(fakeStudentsDb);
+    );
+  let fakeStudentsDb: Student[], studenfFakeResps, receiptsFakeResps;
 
   beforeEach(() => {
+    fakeStudentsDb = getFakeStudents();
+    studenfFakeResps = new StudentFakeResponses(fakeStudentsDb);
+    receiptsFakeResps = new ReceiptFakeResponses(fakeStudentsDb);
+
     TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
     service = TestBed.inject(DataService);
     controller = TestBed.inject(HttpTestingController);
@@ -98,7 +101,6 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  // sbagliato dovrebbe arrivare true
   it('should delete the student', () => {
     service.deleteStudent('1').subscribe((answer) => {
       expect(answer).toBeTruthy();
@@ -109,7 +111,17 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  xit('should update the local db without the deleted student', () => {});
+  it('should update the local db without the deleted student', () => {
+    const idToDelete = fakeStudentsDb[0].id;
+    service.studentDbObservable.pipe(last()).subscribe((students) => {
+      expect(students.find((s) => s.id === idToDelete)).toBeFalsy();
+    });
+    service.deleteStudent(idToDelete).subscribe();
+    const req = controller.expectOne(dbUrl + 'students/' + idToDelete);
+    req.flush(studenfFakeResps.deleteStudent(idToDelete));
+    expect(req.request.method).toBe('DELETE');
+    controller.verify();
+  });
 
   it('should add a new receipt', () => {
     const receiptToAdd: Receipt = { ...receiptsFakeResps.postReceipt().payload, id: null };
