@@ -21,6 +21,7 @@ export class StudentStepperComponent implements OnInit {
 
   onStudentFormEv(student: Partial<Student>) {
     this.studentPartial = student;
+    this.stepper.selected.completed = true;
     this.stepper.next();
   }
 
@@ -37,6 +38,7 @@ export class StudentStepperComponent implements OnInit {
       [],
       this.studentPartial.address
     );
+    this.stepper.selected.completed = true;
     this.stepper.next();
   }
 
