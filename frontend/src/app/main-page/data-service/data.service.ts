@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
@@ -12,24 +12,42 @@ import { environment } from 'src/environments/environment';
 })
 export class DataService {
   private dbUrl = environment.dbUrl;
-  private _reload = new Subject<boolean>();
+  private localStudentDb: Student[] = [];
+  // private _reload = new Subject<boolean>();
+  public studentsSubj = new BehaviorSubject<Student[]>(null);
 
   constructor(private http: HttpClient) {}
 
-  public get reload() {
-    return this._reload.asObservable();
+  // public get reload() {
+  //   // return this._reload.asObservable();
+  // }
+
+  public get studentDbObservable(): Observable<Student[]> {
+    return this.studentsSubj.asObservable();
   }
 
   private launchReload() {
-    this._reload.next(true);
+    // this._reload.next(true);
   }
 
-  public getStudents(): Observable<Student[]> {
+  public getStudents(): Observable<boolean> {
     return this.http.get<IHttpResponse<Student[]>>(this.dbUrl + 'students').pipe(
-      map((r) => r.payload),
-      catchError((e) => of([]))
+      first(),
+      tap((res) => {
+        this.localStudentDb = [...res.payload];
+        this.studentsSubj.next(this.localStudentDb);
+      }),
+      map(() => true),
+      catchError(() => of(false))
     );
   }
+
+  // public getStudents(): Observable<Student[]> {
+  //   return this.http.get<IHttpResponse<Student[]>>(this.dbUrl + 'students').pipe(
+  //     map((r) => r.payload),
+  //     catchError((e) => of([]))
+  //   );
+  // }
 
   public getStudentWithReceipts(id: string): Observable<Student> {
     return this.http.get<IHttpResponse<Student>>(this.dbUrl + `students/${id}`).pipe(
@@ -38,26 +56,16 @@ export class DataService {
     );
   }
 
-  // public addStudent(newStudent: Student): Observable<Student> {
-  //   return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
-  //     map((r) => r.payload),
-  //     catchError((e) => of(null))
-  //   );
-  // }
-
   public addStudent(newStudent: Student): Observable<boolean> {
     return this.sharedPipe(
       this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent)
     );
   }
 
-  public updateStudent(updated: Student): Observable<Student> {
-    return this.http
-      .put<IHttpResponse<Student>>(this.dbUrl + `students/${updated.id}`, updated)
-      .pipe(
-        map((r) => r.payload),
-        catchError((e) => of(null))
-      );
+  public updateStudent(updated: Student): Observable<boolean> {
+    return this.sharedPipe(
+      this.http.put<IHttpResponse<Student>>(this.dbUrl + `students/${updated.id}`, updated)
+    );
   }
 
   public deleteStudent(id: string): Observable<boolean> {
@@ -68,7 +76,7 @@ export class DataService {
       .pipe(
         tap((r) => {
           if (r.status === 200) {
-            this.launchReload();
+            this.removeAndUpdateStudents(id);
           }
         }),
         map((r) => (r.status === 200 ? true : throwError(''))),
@@ -90,14 +98,6 @@ export class DataService {
 
   public deleteReceipt(id: string): Observable<boolean> {
     return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
-    // return this.http
-    //   .delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`, {
-    //     observe: 'response',
-    //   })
-    //   .pipe(
-    //     map((r) => (r.status === 200 ? true : throwError(''))),
-    //     catchError((e) => of(null))
-    //   );
   }
 
   private sharedPipe(obs: Observable<any>): Observable<boolean> {
@@ -105,5 +105,10 @@ export class DataService {
       map(() => true),
       catchError(() => of(false))
     );
+  }
+
+  private removeAndUpdateStudents(stId: string) {
+    this.localStudentDb = this.localStudentDb.filter((s) => s.id !== stId);
+    this.studentsSubj.next(this.localStudentDb);
   }
 }

@@ -8,35 +8,46 @@ import { Student } from 'src/app/shared/models/Student';
 import { MaterialModule } from '../../material.module';
 import { SidebarComponent } from './sidebar.component';
 
+let fakeStudentsDb;
+
+export class FakeDbService {
+  get studentDbObservable() {
+    return of(fakeStudentsDb);
+  }
+  getStudents() {
+    return of(true);
+  }
+}
+
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
-  let dbService: DataService;
   let routerSpy;
 
-  const fakeStudentsDb = [
-      new Student(
-        'gianni',
-        'gianno',
-        '',
-        new Date(),
-        '',
-        1,
-        {
-          name: 'a',
-          surname: 'b',
-          fiscalCode: 'aaaaaa',
-          address: 'asdfjhalfbanflasdbfasf',
-          phoneNumber: 1111111111111111111,
-        },
+  fakeStudentsDb = [
+    new Student(
+      'gianni',
+      'gianno',
+      '',
+      new Date(),
+      '',
+      1,
+      {
+        name: 'a',
+        surname: 'b',
+        fiscalCode: 'aaaaaa',
+        address: 'asdfjhalfbanflasdbfasf',
+        phoneNumber: 1111111111111111111,
+      },
 
-        [],
-        '',
-        '',
-        '1'
-      ),
-    ],
-    getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
+      [],
+      '',
+      '',
+      '1'
+    ),
+  ];
+  const getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
+
   beforeEach(async () => {
     routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
@@ -53,6 +64,10 @@ describe('SidebarComponent', () => {
             navigate: routerSpy,
           },
         },
+        {
+          provide: DataService,
+          useClass: FakeDbService,
+        },
       ],
     }).compileComponents();
   });
@@ -61,9 +76,7 @@ describe('SidebarComponent', () => {
     waitForAsync(() => {
       fixture = TestBed.createComponent(SidebarComponent);
       component = fixture.componentInstance;
-      dbService = TestBed.inject(DataService);
       fixture.detectChanges();
-      spyOn(dbService, 'getStudents').and.returnValue(of(fakeStudentsDb));
       component.ngOnInit();
       fixture.detectChanges();
     })
@@ -79,10 +92,8 @@ describe('SidebarComponent', () => {
 
   it('should navigate to the right url', () => {
     const emitsPy = spyOn(component.linkPressed, 'emit');
-
     getListOptions()[0].nativeNode.click();
     expect(routerSpy).toHaveBeenCalledOnceWith(['1']);
-
     expect(emitsPy).toHaveBeenCalled();
   });
 

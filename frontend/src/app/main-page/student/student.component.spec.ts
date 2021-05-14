@@ -206,7 +206,7 @@ describe('StudentComponent', () => {
     textarea.value = newNoteText;
     textarea.dispatchEvent(new Event('input'));
     expect(component.student.notes).toBe(newNoteText);
-    const updateMethod = spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
+    const updateMethod = spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
     expect(updateMethod).toHaveBeenCalledOnceWith(component.student);
@@ -216,7 +216,7 @@ describe('StudentComponent', () => {
     createGetStSpy(student);
     paramsSubject.next(params);
     updateComponent();
-    spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
+    spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
     expect(getByCss('.note-update-container')).toBeNull();
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
@@ -241,7 +241,7 @@ describe('StudentComponent', () => {
     createGetStSpy(student);
     paramsSubject.next(params);
     updateComponent();
-    spyOn(dbServ, 'updateStudent').and.returnValue(of(component.student));
+    spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
     const updateBtn = getButtons()[0].nativeElement;
     updateBtn.click();
     tick(500);

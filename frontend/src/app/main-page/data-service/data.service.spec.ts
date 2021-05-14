@@ -46,10 +46,19 @@ describe('DataService', () => {
   });
 
   it('should return an array of students', () => {
-    service.getStudents().subscribe((db) => {
-      expect(db.length).toBe(fakeStudentsDb.length);
-      expect(db[0].name).toBe(fakeStudentsDb[0].name);
+    service.getStudents().subscribe((res) => {
+      expect(res).toBeTrue();
     });
+    const req = controller.expectOne(dbUrl + 'students');
+    req.flush(studenfFakeResps.getAllStudents());
+    controller.verify();
+  });
+
+  it('should update student subject when getStudents is called', () => {
+    service.studentDbObservable.subscribe((students) => {
+      expect(students[0].name).toBe(studenfFakeResps.getAllStudents().payload[0].name);
+    });
+    service.getStudents().subscribe();
     const req = controller.expectOne(dbUrl + 'students');
     req.flush(studenfFakeResps.getAllStudents());
     controller.verify();
@@ -69,8 +78,8 @@ describe('DataService', () => {
 
   it('should add a new student', () => {
     const studentToAdd: Student = { ...fakeStudentsDb[0], name: 'carlo' };
-    service.addStudent(studentToAdd).subscribe(() => {
-      expect(studentToAdd.name).toBeTruthy();
+    service.addStudent(studentToAdd).subscribe((r) => {
+      expect(r).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students');
     req.flush(studenfFakeResps.postStudent(studentToAdd));
@@ -79,18 +88,18 @@ describe('DataService', () => {
   });
 
   it('should update the student', () => {
-    const studentWithUpdate = studenfFakeResps.putStudent().payload;
+    const studentWithUpdate = { ...fakeStudentsDb[0], name: 'carlo' };
     service.updateStudent(studentWithUpdate).subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'students/' + studentWithUpdate.id);
-    req.flush(studenfFakeResps.putStudent());
+    req.flush(studenfFakeResps.putStudent(studentWithUpdate));
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });
 
   // sbagliato dovrebbe arrivare true
-  xit('should delete the student', () => {
+  it('should delete the student', () => {
     service.deleteStudent('1').subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
@@ -100,16 +109,7 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  it('should emit reload on  delete the student', () => {
-    service.reload.subscribe((answer) => {
-      expect(answer).toBeTruthy();
-    });
-    service.deleteStudent('1').subscribe();
-    const req = controller.expectOne(dbUrl + 'students/1');
-    req.flush(studenfFakeResps.deleteStudent(''));
-    expect(req.request.method).toBe('DELETE');
-    controller.verify();
-  });
+  xit('should update the local db without the deleted student', () => {});
 
   it('should add a new receipt', () => {
     const receiptToAdd: Receipt = { ...receiptsFakeResps.postReceipt().payload, id: null };

@@ -27,7 +27,11 @@ export class StudentFakeResponses {
     };
   }
 
-  putStudent(): IHttpResponse<Student> {
+  putStudent(stUpdated: Student): IHttpResponse<Student> {
+    const i = this.fakeStudentDb.findIndex((s) => {
+      s.id === stUpdated.id;
+    });
+    this.fakeStudentDb[i] = { ...stUpdated };
     return {
       message: StudentMessages.student_updated,
       payload: this.fakeStudentDb[0],

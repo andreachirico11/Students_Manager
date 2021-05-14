@@ -9,7 +9,7 @@ import { Student } from 'src/app/shared/models/Student';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit, OnDestroy {
+export class SidebarComponent implements OnInit {
   public students: Observable<Student[]>;
   private actualStudentIdLoaded: string = '';
   private reloadSub: Subscription;
@@ -19,16 +19,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(private dbService: DataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.students = this.dbService.getStudents();
-    this.reloadSub = this.dbService.reload.subscribe((r) => {
-      if (r) {
-        this.students = this.dbService.getStudents();
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.reloadSub.unsubscribe();
+    this.students = this.dbService.studentDbObservable;
+    this.dbService.getStudents().subscribe();
   }
 
   navigateToStudent(studentId: string): void {
