@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
 import { IUserResponse } from '../models/IUserResponse';
 import { UserMessages } from '../models/MessageEnums';
+import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
 import { FAKE_DB } from './fakeDb';
 import { ReceiptFakeResponses } from './fakeReceiptRespObj';
@@ -56,7 +57,13 @@ export class FakeInterceptor implements HttpInterceptor {
     }
     if (/receipts/.test(request.url)) {
       if (request.method === 'POST') {
-        return this.getHttpRes(201, this.receiptFakeResponses.postReceipt());
+        return this.getHttpRes(
+          201,
+          this.receiptFakeResponses.postReceipt(
+            this.geUrlLastPart(request.url),
+            request.body as Receipt
+          )
+        );
       } else if (request.method === 'PUT') {
         return this.getHttpRes(200, this.receiptFakeResponses.putReceipt());
       } else if (request.method === 'DELETE') {

@@ -35,8 +35,8 @@ describe('ReceiptsTableComponent', () => {
     fakeFirstRecNumber,
     50,
     new Date(),
-    new Date(),
     'Moneta',
+    new Date(),
     fakeFirstRecId
   );
   const fakeRec = [fakeFirstRec, ...FAKE_DB.students.find((s) => s.receipts.length > 0).receipts];

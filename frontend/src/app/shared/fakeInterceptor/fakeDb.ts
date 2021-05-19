@@ -242,8 +242,8 @@ function getReceipt(i: number): Receipt {
     getRand(300) + '',
     getRand(30),
     new Date(),
-    new Date(),
     i % 2 === 0 ? 'Bancomat' : i % 3 === 0 ? 'Bonifico' : 'Moneta',
+    new Date(),
     'r_' + i
   );
 }

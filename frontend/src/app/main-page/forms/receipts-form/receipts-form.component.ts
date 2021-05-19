@@ -88,7 +88,7 @@ export class ReceiptsFormComponent implements OnInit {
         Validators.pattern(AllRegExp.onlyNumbersReg),
       ]),
       emissionDate: new FormControl('', Validators.required),
-      paymentDate: new FormControl('', Validators.required),
+      paymentDate: new FormControl(''),
       typeOfPayment: new FormControl('', Validators.required),
     });
     this.rForm.setValidators(
@@ -110,7 +110,7 @@ export class ReceiptsFormComponent implements OnInit {
 
   private collectInputs(): Receipt {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = this.rForm.value;
-    return new Receipt(number, amount, emissionDate, paymentDate, typeOfPayment);
+    return new Receipt(number, amount, emissionDate, typeOfPayment, paymentDate);
   }
 
   private onResponse(r: boolean) {
