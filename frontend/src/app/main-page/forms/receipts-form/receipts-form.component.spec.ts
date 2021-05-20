@@ -13,7 +13,7 @@ import { Receipt } from 'src/app/shared/models/Receipts';
 import { DataService } from '../../data-service/data.service';
 import { ReceiptsFormComponent } from './receipts-form.component';
 
-fdescribe('ReceiptsFormComponent', () => {
+describe('ReceiptsFormComponent', () => {
   let component: ReceiptsFormComponent;
   let fixture: ComponentFixture<ReceiptsFormComponent>;
   let routerSpy;

@@ -11,28 +11,10 @@ import { DataService } from './data.service';
 
 describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
-  const dbUrl = environment.dbUrl,
-    fakeStudent = new Student(
-      'gianni',
-      'gianno',
-      '',
-      new Date(),
-      '',
-      33333333,
-      {
-        name: 'a',
-        surname: 'b',
-        fiscalCode: 'aaaaaa',
-        address: 'asdfjhalfbanflasdbfasf',
-        phoneNumber: 1111111111111111111,
-      },
-
-      [],
-      '',
-      '',
-      '1'
-    );
-  let fakeStudentsDb: Student[], studenfFakeResps, receiptsFakeResps;
+  const dbUrl = environment.dbUrl;
+  let fakeStudentsDb: Student[],
+    studenfFakeResps: StudentFakeResponses,
+    receiptsFakeResps: ReceiptFakeResponses;
 
   beforeEach(() => {
     fakeStudentsDb = getFakeStudents();
@@ -124,34 +106,35 @@ describe('DataService', () => {
   });
 
   it('should add a new receipt', () => {
-    const receiptToAdd: Receipt = { ...receiptsFakeResps.postReceipt().payload, id: null };
-    service.addReceipt(fakeStudent.id, receiptToAdd).subscribe((r) => {
+    const owner = fakeStudentsDb[0],
+      receiptToAdd: Receipt = { ...owner.receipts[0], id: null };
+    service.addReceipt(owner.id, receiptToAdd).subscribe((r) => {
       expect(r).toBeTruthy();
     });
-    const req = controller.expectOne(dbUrl + 'receipts/' + fakeStudent.id);
-    req.flush(receiptsFakeResps.postReceipt());
+    const req = controller.expectOne(dbUrl + 'receipts/' + owner.id);
+    req.flush(receiptsFakeResps.postReceipt(owner.id, receiptToAdd));
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
   it('should return false if error is returned', () => {
-    const receiptToAdd: Receipt = { ...receiptsFakeResps.postReceipt().payload, id: null };
-    service.addReceipt(fakeStudent.id, receiptToAdd).subscribe((r) => {
+    const receiptToAdd: Receipt = { ...fakeStudentsDb[0].receipts[0], id: null };
+    service.addReceipt('123', receiptToAdd).subscribe((r) => {
       expect(r).toBeFalse();
     });
-    const req = controller.expectOne(dbUrl + 'receipts/' + fakeStudent.id);
+    const req = controller.expectOne(dbUrl + 'receipts/' + '123');
     req.error(new ErrorEvent(''));
     expect(req.request.method).toBe('POST');
     controller.verify();
   });
 
   it('should update the receipt', () => {
-    const receiptToUpdate: Receipt = { ...receiptsFakeResps.putReceipt().payload };
+    const receiptToUpdate: Receipt = { ...fakeStudentsDb[0].receipts[0] };
     service.updateReceipt(receiptToUpdate).subscribe((answer) => {
       expect(answer).toBeTruthy();
     });
     const req = controller.expectOne(dbUrl + 'receipts/' + receiptToUpdate.id);
-    req.flush(receiptsFakeResps.putReceipt());
+    req.flush(receiptsFakeResps.putReceipt(receiptToUpdate));
     expect(req.request.method).toBe('PUT');
     controller.verify();
   });

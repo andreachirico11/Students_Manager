@@ -65,7 +65,7 @@ export class FakeInterceptor implements HttpInterceptor {
           )
         );
       } else if (request.method === 'PUT') {
-        return this.getHttpRes(200, this.receiptFakeResponses.putReceipt());
+        return this.getHttpRes(200, this.receiptFakeResponses.putReceipt(request.body as Receipt));
       } else if (request.method === 'DELETE') {
         return this.getHttpRes(
           200,

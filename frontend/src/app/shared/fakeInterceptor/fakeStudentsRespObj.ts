@@ -3,25 +3,25 @@ import { StudentMessages } from '../models/MessageEnums';
 import { Student } from '../models/Student';
 
 export class StudentFakeResponses {
-  constructor(private fakeStudentDb: Student[]) {}
+  constructor(private FAKE_DB: Student[]) {}
 
   getAllStudents(): IHttpResponse<Student[]> {
     return {
       message: StudentMessages.student_found,
-      payload: this.fakeStudentDb,
+      payload: this.FAKE_DB,
     };
   }
 
   getStudent(id: string): IHttpResponse<Student> {
     return {
       message: StudentMessages.student_found,
-      payload: this.fakeStudentDb.find((s) => s.id === id),
+      payload: this.FAKE_DB.find((s) => s.id === id),
     };
   }
 
   postStudent(stToAdd: Student): IHttpResponse<Student> {
     const studentToAdd: Student = { ...stToAdd, id: this.generateLastId() };
-    this.fakeStudentDb.push(studentToAdd);
+    this.FAKE_DB.push(studentToAdd);
     return {
       message: StudentMessages.student_created,
       payload: studentToAdd,
@@ -29,18 +29,18 @@ export class StudentFakeResponses {
   }
 
   putStudent(stUpdated: Student): IHttpResponse<Student> {
-    const i = this.fakeStudentDb.findIndex((s) => {
+    const i = this.FAKE_DB.findIndex((s) => {
       s.id === stUpdated.id;
     });
-    this.fakeStudentDb[i] = { ...stUpdated };
+    this.FAKE_DB[i] = { ...stUpdated };
     return {
       message: StudentMessages.student_updated,
-      payload: this.fakeStudentDb[i],
+      payload: this.FAKE_DB[i],
     };
   }
 
   deleteStudent(id: string): IHttpResponse<null> {
-    this.fakeStudentDb = [...this.fakeStudentDb.filter((s) => s.id !== id)];
+    this.FAKE_DB = [...this.FAKE_DB.filter((s) => s.id !== id)];
     return {
       message: StudentMessages.student_deleted,
       payload: null,
@@ -48,7 +48,7 @@ export class StudentFakeResponses {
   }
 
   private generateLastId() {
-    const lastNum = +this.fakeStudentDb[this.fakeStudentDb.length - 1].id.split('_')[1];
+    const lastNum = +this.FAKE_DB[this.FAKE_DB.length - 1].id.split('_')[1];
     return 's_' + (lastNum + 1);
   }
 }
