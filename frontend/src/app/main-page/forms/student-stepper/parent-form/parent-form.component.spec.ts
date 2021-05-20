@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
+import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
 import { ParentFormComponent } from './parent-form.component';
 
@@ -29,6 +30,7 @@ describe('ParentFormComponent', () => {
     'MRSLDA02L51D6!2X',
     'LNTLCU02S25H5011',
   ];
+  const testParent = { ...FAKE_DB.students[0].parent };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -115,6 +117,25 @@ describe('ParentFormComponent', () => {
     });
     fixture.componentInstance.parentF.patchValue({
       ...pr,
+    });
+    fixture.componentInstance.onSubmit();
+  });
+
+  it('it load correctly the student on form', () => {
+    component.parentToUpdate = { ...testParent };
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(
+      testParent.name
+    );
+  });
+
+  it('expect partial student to be instance of studentToUpdate if provided', () => {
+    component.parentToUpdate = { ...testParent };
+    component.ngOnInit();
+    fixture.detectChanges();
+    fixture.componentInstance.parent.subscribe((p) => {
+      expect(p.name).toEqual(testParent.name);
     });
     fixture.componentInstance.onSubmit();
   });

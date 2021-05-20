@@ -5,12 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
-import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
+import { FAKE_DB, getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { ParentFormComponent } from './parent-form/parent-form.component';
 import { StudentFormComponent } from './student-form/student-form.component';
@@ -35,7 +36,11 @@ describe('StudentStepperComponent', () => {
   let parentForm: ParentFormComponent;
   let studentResume: StudentResumeComponent;
   let fixture: ComponentFixture<StudentStepperComponent>;
+  let updateDataService: UpdateDataService<Student>;
   let fakeStudent: Student;
+  let fakeParams = {
+    id: '',
+  };
 
   const stepperSpyGen = (methodName) => spyOn(component, methodName);
   const getPartialStudent = (): Partial<Student> => {
@@ -53,7 +58,9 @@ describe('StudentStepperComponent', () => {
       ...parent,
     });
   };
-
+  const getFakeTestStudent = (): Student => {
+    return { ...FAKE_DB.students[0] };
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -75,6 +82,14 @@ describe('StudentStepperComponent', () => {
           provide: MatDialog,
           useClass: MockMatDialog,
         },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              params: fakeParams,
+            },
+          },
+        },
       ],
     }).compileComponents();
   });
@@ -82,6 +97,7 @@ describe('StudentStepperComponent', () => {
   beforeEach(() => {
     fakeStudent = getFakeStudents()[0];
     fixture = TestBed.createComponent(StudentStepperComponent);
+    updateDataService = TestBed.inject(UpdateDataService);
     component = fixture.componentInstance;
     fixture.detectChanges();
     studentForm = fixture.debugElement.query(By.directive(StudentFormComponent)).componentInstance;
@@ -146,5 +162,45 @@ describe('StudentStepperComponent', () => {
     component.studentCreated = { ...fakeStudent };
     component.onOk();
     expect(resetSpy).toHaveBeenCalled();
+  });
+
+  it('gets the student to update', () => {
+    const fakeS: Student = getFakeTestStudent();
+    fakeParams.id = fakeS.id;
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(fakeS);
+    component.ngOnInit();
+    expect(component.studentUnderUpdate).toEqual(fakeS);
+  });
+
+  it('fill the components forms correctly', () => {
+    const fakeS: Student = getFakeTestStudent();
+    fakeParams.id = fakeS.id;
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(fakeS);
+    component.ngOnInit();
+    fixture.detectChanges();
+    studentForm.ngOnInit();
+    parentForm.ngOnInit();
+    expect(studentForm.studentF.get('name').value).toBe(fakeS.name);
+    expect(parentForm.parentF.get('name').value).toBe(fakeS.parent.name);
+  });
+
+  it('pass a correctly updated student to the service', () => {
+    const newName = 'gianni',
+      newPName = 'carlo',
+      fakeS: Student = getFakeTestStudent(),
+      updatedFakeS: Student = {
+        ...fakeS,
+        name: newName,
+        parent: { ...fakeS.parent, name: newPName },
+      };
+    component.studentUnderUpdate = { ...fakeS };
+    component.studentCreated = { ...updatedFakeS };
+    const serviceSpy = spyOn(TestBed.inject(DataService), 'updateStudent').and.returnValue(of());
+    component.onOk();
+    expect(serviceSpy).toHaveBeenCalledWith(updatedFakeS);
+  });
+
+  afterEach(() => {
+    fakeParams.id = '';
   });
 });

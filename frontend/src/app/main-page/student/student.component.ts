@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Student } from 'src/app/shared/models/Student';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 
 @Component({
   selector: 'student',
@@ -23,7 +24,8 @@ export class StudentComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dbService: DataService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private updateDataService: UpdateDataService<Student>
   ) {}
 
   ngOnInit() {
@@ -34,6 +36,11 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.paramsSub.unsubscribe();
+  }
+
+  public onEditClick() {
+    this.updateDataService.elementUnderUpdate = { ...this.student };
+    this.router.navigate(['compilation', 'student', this.student.id]);
   }
 
   public onDeleteClick() {

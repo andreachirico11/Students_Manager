@@ -1,9 +1,15 @@
 <mat-horizontal-stepper linear="true">
   <mat-step label="Student" state="phone" completed="false">
-    <student-form (partialStudent)="onStudentFormEv($event)"></student-form>
+    <student-form
+      (partialStudent)="onStudentFormEv($event)"
+      [studentToUpdate]="studentUnderUpdate"
+    ></student-form>
   </mat-step>
   <mat-step label="Parent" state="chat" completed="false">
-    <parent-form (parent)="onParentFormEv($event)"></parent-form>
+    <parent-form
+      (parent)="onParentFormEv($event)"
+      [parentToUpdate]="studentUnderUpdate?.parent"
+    ></parent-form>
   </mat-step>
   <mat-step label="Done">
     <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>

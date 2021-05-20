@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
+import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Student } from 'src/app/shared/models/Student';
 
 import { StudentFormComponent } from './student-form.component';
@@ -32,6 +33,7 @@ describe('StudentFormComponent', () => {
   ];
   const fakeClasses = ['1bc', '2', 'c', 'asdfasdfs', '11', 'aa'];
   const goodClasses = ['1c', '1C'];
+  const testStudent = { ...FAKE_DB.students[0] };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -134,6 +136,25 @@ describe('StudentFormComponent', () => {
     });
     fixture.componentInstance.studentF.patchValue({
       ...st,
+    });
+    fixture.componentInstance.onSubmit();
+  });
+
+  it('it load correctly the student on form', () => {
+    component.studentToUpdate = { ...testStudent };
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(
+      testStudent.name
+    );
+  });
+
+  it('expect partial student to be instance of studentToUpdate if provided', () => {
+    component.studentToUpdate = { ...testStudent };
+    component.ngOnInit();
+    fixture.detectChanges();
+    fixture.componentInstance.partialStudent.subscribe((p) => {
+      expect(p.name).toEqual(testStudent.name);
     });
     fixture.componentInstance.onSubmit();
   });

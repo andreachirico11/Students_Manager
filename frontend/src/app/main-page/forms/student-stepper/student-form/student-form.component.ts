@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Student } from 'src/app/shared/models/Student';
 import { AllRegExp } from '../../utils/allRegExp';
@@ -16,10 +16,16 @@ export class StudentFormComponent implements OnInit {
   @Output()
   public partialStudent = new EventEmitter<Partial<Student>>();
 
+  @Input()
+  public studentToUpdate: Student;
+
   constructor() {}
 
   ngOnInit(): void {
     this.initForm();
+    if (this.studentToUpdate) {
+      this.patchFormWithStudent();
+    }
   }
 
   public onSubmit(): void {
@@ -55,6 +61,18 @@ export class StudentFormComponent implements OnInit {
         Validators.required,
         Validators.pattern(AllRegExp.schoolClassReg),
       ]),
+    });
+  }
+
+  private patchFormWithStudent() {
+    this.studentF.patchValue({
+      name: this.studentToUpdate.name,
+      surname: this.studentToUpdate.surname,
+      dateOfBirth: this.studentToUpdate.dateOfBirth,
+      fiscalCode: this.studentToUpdate.fiscalCode,
+      phoneNumber: this.studentToUpdate.phoneNumber,
+      address: this.studentToUpdate.address || null,
+      schoolClass: this.studentToUpdate.schoolClass,
     });
   }
 }

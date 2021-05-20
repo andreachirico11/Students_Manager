@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatHorizontalStepper } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
-import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 
 @Component({
@@ -15,6 +16,7 @@ import { DataService } from '../../data-service/data.service';
 })
 export class StudentStepperComponent implements OnInit {
   public studentCreated: Student = null;
+  public studentUnderUpdate: Student = null;
 
   @ViewChild(MatHorizontalStepper)
   private stepper: MatHorizontalStepper;
@@ -22,10 +24,17 @@ export class StudentStepperComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private updateDataService: UpdateDataService<Student>
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const studentToUpdateId: string = this.activatedRoute.snapshot.params['id'];
+    if (studentToUpdateId) {
+      this.collectStudentToUpdate(studentToUpdateId);
+    }
+  }
 
   onStudentFormEv(student: Partial<Student>) {
     this.studentCreated = new Student(
@@ -50,11 +59,36 @@ export class StudentStepperComponent implements OnInit {
   }
 
   onOk() {
-    this.dataService.addStudent(this.studentCreated).subscribe((r) => {
+    if (this.studentUnderUpdate) {
+      this.updateStudent();
+    } else {
+      this.addNewStudent();
+    }
+  }
+
+  private collectStudentToUpdate(studentToUpdateId: string) {
+    const stToUp = this.updateDataService.getElementUnderUpdate();
+    if (stToUp && stToUp.schoolClass && stToUp.id && stToUp.id === studentToUpdateId) {
+      this.studentUnderUpdate = { ...stToUp };
+    }
+  }
+
+  private updateStudent() {
+    this.studentCreated.id = this.studentUnderUpdate.id;
+    this.onAddOrUpdateResp(this.dataService.updateStudent(this.studentCreated));
+  }
+
+  private addNewStudent() {
+    this.onAddOrUpdateResp(this.dataService.addStudent(this.studentCreated));
+  }
+
+  private onAddOrUpdateResp(rObs: Observable<boolean>) {
+    rObs.subscribe((r) => {
+      const addOrUpdat = this.studentUnderUpdate ? 'Updat' : 'Add';
       if (r) {
-        this.openDialog(() => this.navigateHome(), 'Student Added Successfully');
+        this.openDialog(() => this.navigateHome(), `Student ${addOrUpdat}ed Successfully`);
       } else {
-        this.openDialog(() => this.resetStepper(), 'There was a problem adding Student');
+        this.openDialog(() => this.resetStepper(), `There was a Problem ${addOrUpdat}ing Student`);
       }
     });
   }
@@ -68,14 +102,14 @@ export class StudentStepperComponent implements OnInit {
     });
   }
 
-  private navigateHome() {
-    this.router.navigate(['']);
-  }
-
   private resetStepper() {
     this.stepper.selectedIndex = 0;
     this.stepper.steps.forEach((step) => {
       step.completed = false;
     });
+  }
+
+  private navigateHome() {
+    this.router.navigate(['']);
   }
 }

@@ -16,15 +16,6 @@ export class ReceiptFakeResponses {
     };
   }
 
-  // putReceipt(updatedR: Receipt): IHttpResponse<Receipt> {
-  //   let found = this.findReceiptInWholeDb(updatedR.id);
-  //   found = { ...updatedR };
-  //   return {
-  //     message: ReceiptMessages.receipt_updated,
-  //     payload: found,
-  //   };
-  // }
-
   putReceipt(updatedR: Receipt): IHttpResponse<Receipt> {
     const { rIndex, sttIndex } = this.findIndexesInWholeDb(updatedR.id);
     this.FAKE_DB[sttIndex].receipts[rIndex] = { ...updatedR };
@@ -52,17 +43,6 @@ export class ReceiptFakeResponses {
 
   private findStudentByid(id: string) {
     return this.FAKE_DB.find((s) => s.id === id);
-  }
-
-  private findReceiptInWholeDb(rId: string) {
-    let foundR: Receipt;
-    for (const student of this.FAKE_DB) {
-      foundR = student.receipts.find((r) => r.id === rId);
-      if (foundR) {
-        break;
-      }
-    }
-    return foundR;
   }
 
   private findIndexesInWholeDb(rId: string) {

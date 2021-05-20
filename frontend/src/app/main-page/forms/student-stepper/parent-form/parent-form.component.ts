@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Parent } from 'src/app/shared/models/Parent';
 import { AllRegExp } from '../../utils/allRegExp';
@@ -16,10 +16,16 @@ export class ParentFormComponent implements OnInit {
   @Output()
   public parent = new EventEmitter<Parent>();
 
+  @Input()
+  public parentToUpdate: Parent;
+
   constructor() {}
 
   ngOnInit(): void {
     this.initForm();
+    if (this.parentToUpdate) {
+      this.patchFormWithParent();
+    }
   }
 
   public onSubmit(): void {
@@ -51,6 +57,16 @@ export class ParentFormComponent implements OnInit {
         Validators.pattern(AllRegExp.onlyNumbersReg),
       ]),
       address: new FormControl(null),
+    });
+  }
+
+  private patchFormWithParent() {
+    this.parentF.patchValue({
+      name: this.parentToUpdate.name,
+      surname: this.parentToUpdate.surname,
+      fiscalCode: this.parentToUpdate.fiscalCode,
+      phoneNumber: this.parentToUpdate.phoneNumber,
+      address: this.parentToUpdate.address || null,
     });
   }
 }
