@@ -11,7 +11,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
-import { IUserResponse } from '../models/IUserResponse';
 import { UserMessages } from '../models/MessageEnums';
 import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
@@ -30,7 +29,8 @@ export class FakeInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (/login/.test(request.url)) {
-      return this.getHttpRes(200, this.loginRes());
+      // return this.getHttpRes(200, this.loginRes());
+      return this.login(request.body);
     }
     if (/students/.test(request.url)) {
       if (request.method === 'GET') {
@@ -85,16 +85,42 @@ export class FakeInterceptor implements HttpInterceptor {
     return of(new HttpResponse({ body, status })).pipe(delay(1000));
   }
 
-  private loginRes(): IHttpResponse<IUserResponse> {
-    return {
+  private login(body: any) {
+    const { email, password } = body;
+    if (email === this.fakeDb.user[0].email && password === this.fakeDb.user[0].password) {
+      return this.goodLogin();
+    } else {
+      return this.badLogin();
+    }
+  }
+
+  private goodLogin() {
+    return this.getHttpRes(200, {
       message: UserMessages.user_found,
       payload: {
         expiresIn: 3600,
         token: 'asdfasfasdfa',
         loggedUserId: '1',
       },
-    };
+    });
   }
+
+  private badLogin() {
+    return throwError(
+      new HttpErrorResponse({ status: 401, error: UserMessages.wrong_credentials })
+    );
+  }
+
+  // private loginRes(body: any): IHttpResponse<IUserResponse> {
+  //   return {
+  //     message: UserMessages.user_found,
+  //     payload: {
+  //       expiresIn: 3600,
+  //       token: 'asdfasfasdfa',
+  //       loggedUserId: '1',
+  //     },
+  //   };
+  // }
 
   private geUrlLastPart(url: string): string {
     const arr = url.split('/');
