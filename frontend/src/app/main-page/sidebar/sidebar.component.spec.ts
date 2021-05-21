@@ -55,10 +55,6 @@ describe('SidebarComponent', () => {
       imports: [HttpClientTestingModule, MaterialModule, RouterModule.forRoot([])],
       providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {},
-        },
-        {
           provide: Router,
           useValue: {
             navigate: routerSpy,

@@ -8,7 +8,7 @@
 <div class="sidebar-container">
   <mat-selection-list [multiple]="false">
     <mat-list-option
-      *ngFor="let student of students | async"
+      *ngFor="let student of students"
       [value]="student"
       (click)="navigateToStudent(student.id)"
     >

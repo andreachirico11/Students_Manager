@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
 
@@ -9,8 +9,10 @@ import { Student } from 'src/app/shared/models/Student';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
-  public students: Observable<Student[]>;
+export class SidebarComponent implements OnInit, OnDestroy {
+  public students: Student[];
+  public sub: Subscription;
+
   private actualStudentIdLoaded: string = '';
   @Output()
   public linkPressed = new EventEmitter();
@@ -18,8 +20,15 @@ export class SidebarComponent implements OnInit {
   constructor(private dbService: DataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.students = this.dbService.studentDbObservable;
+    this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
+      this.actualStudentIdLoaded = '';
+      this.students = newS;
+    });
     this.dbService.getStudents().subscribe();
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   navigateToStudent(studentId: string): void {
