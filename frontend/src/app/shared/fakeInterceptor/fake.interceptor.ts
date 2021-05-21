@@ -29,7 +29,6 @@ export class FakeInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (/login/.test(request.url)) {
-      // return this.getHttpRes(200, this.loginRes());
       return this.login(request.body);
     }
     if (/students/.test(request.url)) {
@@ -87,7 +86,10 @@ export class FakeInterceptor implements HttpInterceptor {
 
   private login(body: any) {
     const { email, password } = body;
-    if (email === this.fakeDb.user[0].email && password === this.fakeDb.user[0].password) {
+    if (
+      body.email === this.fakeDb.user[0].email &&
+      body.password === this.fakeDb.user[0].password
+    ) {
       return this.goodLogin();
     } else {
       return this.badLogin();
@@ -110,17 +112,6 @@ export class FakeInterceptor implements HttpInterceptor {
       new HttpErrorResponse({ status: 401, error: UserMessages.wrong_credentials })
     );
   }
-
-  // private loginRes(body: any): IHttpResponse<IUserResponse> {
-  //   return {
-  //     message: UserMessages.user_found,
-  //     payload: {
-  //       expiresIn: 3600,
-  //       token: 'asdfasfasdfa',
-  //       loggedUserId: '1',
-  //     },
-  //   };
-  // }
 
   private geUrlLastPart(url: string): string {
     const arr = url.split('/');

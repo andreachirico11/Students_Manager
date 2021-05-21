@@ -1,19 +1,25 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
-import { IUserResponse } from 'src/app/shared/models/IUserResponse';
 import { environment } from 'src/environments/environment';
+import { IlocalStorageData } from '../IlocalStorageData';
+import { ILoginBackendResponse } from '../IloginBackendResponse';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let controller: HttpTestingController;
+  const localStorageDataName = 'loggedUser';
+  const getActualDateInMs = () => new Date().getTime();
+  const faketoken = 'abc1234';
+  const idleTimeout = environment.idleTimeout;
+
   const email = 'wella',
     password = '1234',
-    respObj: IHttpResponse<IUserResponse> = {
+    respObj: IHttpResponse<ILoginBackendResponse> = {
       message: '',
-      payload: { expiresIn: 3600, loggedUserId: '1', token: '1234' },
+      payload: { expirationDate: new Date().getTime() + idleTimeout * 10, token: faketoken },
     },
     dbUrl = environment.dbUrl;
 
@@ -42,10 +48,8 @@ describe('AuthService', () => {
 
   it('should store a user in the local storage', () => {
     service.login(email, password).subscribe(() => {
-      const loggedUser = service.loggedUser;
-      expect(loggedUser).toBeTruthy();
-      expect(loggedUser.token).toBe(respObj.payload.token);
-      expect(service.isUserLogged).toBeTrue();
+      const saved: IlocalStorageData = JSON.parse(localStorage.getItem(localStorageDataName));
+      expect(saved.userToken).toBe(faketoken);
     });
     const request = controller.expectOne(dbUrl + 'user/login');
     expect(request.request.method).toBe('POST');
@@ -63,11 +67,44 @@ describe('AuthService', () => {
     controller.verify();
   });
 
+  it('should return false after a specified idle time', fakeAsync(() => {
+    service.login(email, password).subscribe((res) => {
+      expect(service.isUserLoggedAndvalid).toBeTruthy();
+      tick(idleTimeout + 1);
+      expect(service.isUserLoggedAndvalid).toBeFalsy();
+    });
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
+    request.flush(respObj);
+    controller.verify();
+  }));
+
+  it('should return false if the token has expired time', fakeAsync(() => {
+    spyOn<any>(service, 'isIdleDateInvalid').and.returnValue(false);
+    const fakePassedTime = 60000,
+      expTestDate = new Date().getTime() + fakePassedTime;
+    service.login(email, password).subscribe((res) => {
+      expect(service.isUserLoggedAndvalid).toBeTruthy();
+      tick(fakePassedTime + 1);
+      expect(service.isUserLoggedAndvalid).toBeFalsy();
+    });
+    const request = controller.expectOne(dbUrl + 'user/login');
+    expect(request.request.method).toBe('POST');
+    request.flush({
+      ...respObj,
+      payload: {
+        ...respObj.payload,
+        expirationDate: expTestDate,
+      },
+    });
+    controller.verify();
+  }));
+
   it('should unauthenticate', () => {
     service.login(email, password).subscribe(() => {
-      expect(service.isUserLogged).toBeTrue();
+      expect(service.isUserLoggedAndvalid).toBeTrue();
       service.logout();
-      expect(service.isUserLogged).toBeFalse();
+      expect(service.isUserLoggedAndvalid).toBeFalse();
     });
     const request = controller.expectOne(dbUrl + 'user/login');
     expect(request.request.method).toBe('POST');

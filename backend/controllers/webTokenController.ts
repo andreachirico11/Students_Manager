@@ -18,7 +18,6 @@ export function generateToken(user: IMongoUser): ILoginResponse {
   return {
     token: sign(userToAttach, longString, { expiresIn: '1h' }),
     expiresIn: 3600,
-    loggedUserId: user._id,
   };
 }
 

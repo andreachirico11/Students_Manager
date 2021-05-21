@@ -9,7 +9,7 @@ export class CanLoadGuard implements CanLoad {
   constructor(private auth: AuthService, private router: Router) {}
 
   canLoad(route: Route, segments: UrlSegment[]): boolean | UrlTree {
-    if (this.auth.isUserLogged) {
+    if (this.auth.isUserLoggedAndvalid) {
       return true;
     }
     return this.router.createUrlTree(['enter']);

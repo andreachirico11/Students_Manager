@@ -7,8 +7,8 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
   user: [
     {
       id: '1',
-      email: 'gianni@email',
-      password: '1234',
+      email: 'admin@email',
+      password: 'admin',
       name: 'Gianni',
     },
   ],
