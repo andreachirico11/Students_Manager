@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
@@ -52,7 +52,7 @@ describe('SidebarComponent', () => {
     routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
       declarations: [SidebarComponent],
-      imports: [HttpClientTestingModule, MaterialModule, RouterModule.forRoot([])],
+      imports: [HttpClientTestingModule, MaterialModule],
       providers: [
         {
           provide: Router,
