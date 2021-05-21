@@ -29,9 +29,7 @@ export class StudentFakeResponses {
   }
 
   putStudent(stUpdated: Student): IHttpResponse<Student> {
-    const i = this.FAKE_DB.findIndex((s) => {
-      s.id === stUpdated.id;
-    });
+    const i = this.FAKE_DB.findIndex((s) => s.id === stUpdated.id);
     this.FAKE_DB[i] = { ...stUpdated };
     return {
       message: StudentMessages.student_updated,

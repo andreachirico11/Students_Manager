@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
 
@@ -12,7 +12,6 @@ import { Student } from 'src/app/shared/models/Student';
 export class SidebarComponent implements OnInit {
   public students: Observable<Student[]>;
   private actualStudentIdLoaded: string = '';
-  private reloadSub: Subscription;
   @Output()
   public linkPressed = new EventEmitter();
 

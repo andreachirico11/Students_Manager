@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -52,9 +52,21 @@ export class DataService {
   }
 
   public updateStudent(updated: Student): Observable<boolean> {
-    return this.sharedPipe(
-      this.http.put<IHttpResponse<Student>>(this.dbUrl + `students/${updated.id}`, updated)
-    );
+    return this.http
+      .put<IHttpResponse<Student>>(this.dbUrl + `students/${updated.id}`, updated)
+      .pipe(
+        tap((res) => {
+          const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
+          this.localStudentDb = [
+            ...this.localStudentDb.slice(0, index),
+            res.payload,
+            ...this.localStudentDb.slice(index + 1),
+          ];
+          this.studentsSubj.next(this.localStudentDb);
+        }),
+        map(() => true),
+        catchError(() => of(false))
+      );
   }
 
   public deleteStudent(id: string): Observable<boolean> {
