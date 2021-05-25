@@ -4,10 +4,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from '../material.module';
+import { CanLoadGuard } from '../shared/can-load.guard';
+import { FormsComponent } from './forms/forms.component';
 import { MainPageComponent } from './main-page.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StudentComponent } from './student/student.component';
-import { FormsComponent } from './forms/forms.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,8 @@ const routes: Routes = [
         component: FormsComponent,
       },
     ],
+    canActivateChild: [CanLoadGuard],
+    // canActivate: [CanLoadGuard],
   },
   {
     path: '**',

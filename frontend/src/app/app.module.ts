@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
-import { CanLoadGuard } from './shared/can-activate.guard';
+import { CanLoadGuard } from './shared/can-load.guard';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
