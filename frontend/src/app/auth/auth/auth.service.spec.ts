@@ -1,5 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,6 @@ describe('AuthService', () => {
   let service: AuthService;
   let controller: HttpTestingController;
   const localStorageDataName = 'loggedUser';
-  const getActualDateInMs = () => new Date().getTime();
   const faketoken = 'abc1234';
   const idleTimeout = environment.idleTimeout;
 
@@ -30,6 +29,7 @@ describe('AuthService', () => {
     });
     service = TestBed.inject(AuthService);
     controller = TestBed.inject(HttpTestingController);
+    localStorage.removeItem(localStorageDataName);
   });
 
   it('should be created', () => {
@@ -67,18 +67,6 @@ describe('AuthService', () => {
     controller.verify();
   });
 
-  it('should return false after a specified idle time', fakeAsync(() => {
-    service.login(email, password).subscribe((res) => {
-      expect(service.isUserLoggedAndvalid).toBeTruthy();
-      tick(idleTimeout + 1);
-      expect(service.isUserLoggedAndvalid).toBeFalsy();
-    });
-    const request = controller.expectOne(dbUrl + 'user/login');
-    expect(request.request.method).toBe('POST');
-    request.flush(respObj);
-    controller.verify();
-  }));
-
   it('should return false if the token has expired time', fakeAsync(() => {
     spyOn<any>(service, 'isIdleDateInvalid').and.returnValue(false);
     const fakePassedTime = 60000,
@@ -98,17 +86,56 @@ describe('AuthService', () => {
       },
     });
     controller.verify();
+    flush();
   }));
 
-  it('should unauthenticate', () => {
-    service.login(email, password).subscribe(() => {
-      expect(service.isUserLoggedAndvalid).toBeTrue();
-      service.logout();
-      expect(service.isUserLoggedAndvalid).toBeFalse();
-    });
+  it('should return false after a specified idle time', fakeAsync(() => {
+    service.login(email, password).subscribe();
     const request = controller.expectOne(dbUrl + 'user/login');
-    expect(request.request.method).toBe('POST');
     request.flush(respObj);
-    controller.verify();
-  });
+    expect(service.isUserLoggedAndvalid).toBeTruthy();
+    tick(idleTimeout + 1000);
+    expect(service.isUserLoggedAndvalid).toBeFalsy();
+    flush();
+  }));
+
+  it('should unauthenticate', fakeAsync(() => {
+    service.login(email, password).subscribe();
+    const request = controller.expectOne(dbUrl + 'user/login');
+    request.flush(respObj);
+    expect(service.isUserLoggedAndvalid).toBeTrue();
+    service.logout();
+    expect(service.isUserLoggedAndvalid).toBeFalse();
+    flush();
+  }));
+
+  it('should automatically logout after token has expired', fakeAsync(() => {
+    const tokenExp = 10000,
+      logoutSpy = spyOn(service, 'logout');
+    service.login(email, password).subscribe();
+    const request = controller.expectOne(dbUrl + 'user/login');
+    const respO: IHttpResponse<ILoginBackendResponse> = {
+      ...respObj,
+      payload: { ...respObj.payload },
+    };
+    respO.payload.expirationDate = tokenExp;
+    request.flush(respO);
+    expect(logoutSpy).not.toHaveBeenCalled();
+    tick(tokenExp);
+    expect(logoutSpy).toHaveBeenCalled();
+    flush();
+  }));
+
+  it('should automatically logout after idle timer has expired', fakeAsync(() => {
+    let hasBeenCalled = false;
+    service.logoutHasFired.subscribe(() => {
+      hasBeenCalled = true;
+    });
+    service.login(email, password).subscribe();
+    const request = controller.expectOne(dbUrl + 'user/login');
+    request.flush(respObj);
+    tick(idleTimeout + 1);
+    expect(hasBeenCalled).toBeTrue();
+    flush();
+  }));
 });

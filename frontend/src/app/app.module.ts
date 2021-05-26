@@ -8,12 +8,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
-import { CanLoadGuard } from './shared/can-load.guard';
+import { AuthGuard } from './shared/auth.guard';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthInterceptor } from './shared/auth.interceptor';
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./main-page/main-page.module').then((m) => m.MainPageModule),
-    canLoad: [CanLoadGuard],
+    canLoad: [AuthGuard],
   },
 ];
 
@@ -42,7 +43,10 @@ const routes: Routes = [
     MatIconModule,
     RouterModule.forRoot(routes),
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

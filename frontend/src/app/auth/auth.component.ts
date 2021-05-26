@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ViewChild, ViewChildren } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PasswordValidationService } from '../shared/passwordValidationService/password-validation.service';
 import { AuthService } from './auth/auth.service';

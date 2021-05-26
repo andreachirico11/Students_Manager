@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IUserRequest } from 'src/app/shared/models/IUserRequest';
@@ -14,9 +14,16 @@ const localStorageDataName = 'loggedUser';
 })
 export class AuthService {
   private dbUrl = environment.dbUrl;
+  private tokenTimer: any;
+  private idleTimer: any;
+  private logoutSubject: Subject<any> = new Subject();
 
   get isUserLoggedAndvalid(): boolean {
     return this.getItemFromLocalStorage() ? this.handleIdleTimeouts() : false;
+  }
+
+  get logoutHasFired() {
+    return this.logoutSubject.asObservable();
   }
 
   constructor(private http: HttpClient) {}
@@ -30,6 +37,7 @@ export class AuthService {
       .post<IHttpResponse<ILoginBackendResponse>>(this.dbUrl + 'user/login', body)
       .pipe(
         map((res) => {
+          this.startTimers(res.payload);
           this.setItemOnLocalStorage(res.payload, this.getActualDateInMs());
           return true;
         }),
@@ -39,12 +47,20 @@ export class AuthService {
       );
   }
 
-  // autoLogin() {
-  //   const parsed: IlocalStorageData = JSON.parse(localStorage.getItem(localStorageDataName));
-  // }
-
   logout() {
+    this.cleanLocalTimers();
     localStorage.removeItem(localStorageDataName);
+    this.logoutSubject.next();
+  }
+
+  getItemFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(localStorageDataName)) as IlocalStorageData;
+  }
+
+  private startTimers(res: ILoginBackendResponse) {
+    const tokenDelta = res.expirationDate - new Date().getTime();
+    this.startLogoutTimer(this.tokenTimer, tokenDelta);
+    this.startLogoutTimer(this.idleTimer, environment.idleTimeout);
   }
 
   private setItemOnLocalStorage(backendRes: ILoginBackendResponse, idleDate: number) {
@@ -56,8 +72,10 @@ export class AuthService {
     localStorage.setItem(localStorageDataName, JSON.stringify(data));
   }
 
-  private getItemFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(localStorageDataName)) as IlocalStorageData;
+  private startLogoutTimer(timerRef: any, timeout: number) {
+    timerRef = setTimeout(() => {
+      this.logout();
+    }, timeout);
   }
 
   private handleIdleTimeouts() {
@@ -85,5 +103,10 @@ export class AuthService {
 
   private getActualDateInMs() {
     return new Date().getTime();
+  }
+
+  private cleanLocalTimers() {
+    clearTimeout(this.tokenTimer);
+    clearTimeout(this.idleTimer);
   }
 }

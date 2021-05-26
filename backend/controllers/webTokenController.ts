@@ -33,7 +33,6 @@ export function verifyToken(req: IRequest, res: Response, next: NextFunction) {
     // in futuro si puo usare per attaccare user alla req
     next();
   } catch (e) {
-    console.log(e);
     generateHttpRes(res, 401, errorMsg);
   }
 }

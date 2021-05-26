@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   dbUrl: 'fakeUrl',
   // dbUrl: 'http://localhost:3210/api/',
-  idleTimeout: 3600000,
+  idleTimeout: 3600000, //1h
 };
 
 /*

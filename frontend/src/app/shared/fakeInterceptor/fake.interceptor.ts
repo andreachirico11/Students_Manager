@@ -9,9 +9,10 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { ILoginBackendResponse } from 'src/app/auth/IloginBackendResponse';
 import { environment } from 'src/environments/environment';
 import { IHttpResponse } from '../models/IHttpResponse';
-import { UserMessages } from '../models/MessageEnums';
+import { StudentMessages, TokenErrors, UserMessages } from '../models/MessageEnums';
 import { Receipt } from '../models/Receipts';
 import { Student } from '../models/Student';
 import { FAKE_DB } from './fakeDb';
@@ -31,6 +32,10 @@ export class FakeInterceptor implements HttpInterceptor {
     if (/login/.test(request.url)) {
       return this.login(request.body);
     }
+    if (!request.headers.has('auth')) {
+      return this.fakeErrorResp();
+    }
+
     if (/students/.test(request.url)) {
       if (request.method === 'GET') {
         if (request.url === this.baseUrl + 'students') {
@@ -97,13 +102,14 @@ export class FakeInterceptor implements HttpInterceptor {
   }
 
   private goodLogin() {
+    const payload: ILoginBackendResponse = {
+      expirationDate: new Date().getTime() + 3600000,
+      // expirationDate: new Date().getTime() + 5000,
+      token: 'aaaaaaaabbbbbbbbbbbccccccccccdddddddddddddd',
+    };
     return this.getHttpRes(200, {
       message: UserMessages.user_found,
-      payload: {
-        expiresIn: 3600,
-        token: 'asdfasfasdfa',
-        loggedUserId: '1',
-      },
+      payload,
     });
   }
 
@@ -119,6 +125,6 @@ export class FakeInterceptor implements HttpInterceptor {
   }
 
   private fakeErrorResp() {
-    return throwError(new HttpErrorResponse({ status: 500 }));
+    return throwError(new HttpErrorResponse({ status: 500, error: TokenErrors.Token_not_found }));
   }
 }
