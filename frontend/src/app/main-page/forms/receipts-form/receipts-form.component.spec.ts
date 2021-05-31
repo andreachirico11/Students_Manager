@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { ReceiptsFormComponent } from './receipts-form.component';
 
@@ -20,6 +21,7 @@ describe('ReceiptsFormComponent', () => {
   let _params: { studentId?: string; id?: string } = {};
   let _queryParams: { receiptToUpdate?: string } = {};
   let dataService: DataService;
+  let updateDataService: UpdateDataService<Receipt>;
 
   const getIfButtonIsDisabled = () => {
     return (
@@ -78,6 +80,7 @@ describe('ReceiptsFormComponent', () => {
     fixture = TestBed.createComponent(ReceiptsFormComponent);
     component = fixture.componentInstance;
     dataService = TestBed.inject(DataService);
+    updateDataService = TestBed.inject(UpdateDataService);
     component.ngOnInit();
     fixture.detectChanges();
   });
@@ -234,9 +237,7 @@ describe('ReceiptsFormComponent', () => {
     _params = {
       id: '123',
     };
-    _queryParams = {
-      receiptToUpdate: JSON.stringify(r),
-    };
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(r);
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.rForm.value.typeOfPayment).toBe(r.typeOfPayment, 'internal');
@@ -250,9 +251,7 @@ describe('ReceiptsFormComponent', () => {
     _params = {
       id: '123',
     };
-    _queryParams = {
-      receiptToUpdate: JSON.stringify(r),
-    };
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(r);
     component.ngOnInit();
     fixture.detectChanges();
     const update = spyOn(dataService, 'updateReceipt').and.returnValue(of(true));

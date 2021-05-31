@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
 
@@ -30,7 +31,12 @@ export class ReceiptsTableComponent {
     'actions',
   ];
 
-  constructor(private dataS: DataService, private dialog: MatDialog, private router: Router) {}
+  constructor(
+    private dataS: DataService,
+    private dialog: MatDialog,
+    private router: Router,
+    private updateDataS: UpdateDataService<Receipt>
+  ) {}
 
   public addReceipt() {
     this.router.navigate(['compilation', 'receipt', 'add', this.owner.id]);
@@ -38,15 +44,8 @@ export class ReceiptsTableComponent {
 
   public onUpdateOrDelete(ev: IupdateOrDeleteEvent) {
     if (ev.type === 'update') {
-      const receiptToUpdate = JSON.stringify({
-        ...this.receipts.find((r) => r.id === ev.id),
-        ownerId: this.owner.id,
-      });
-      this.router.navigate(['compilation', 'receipt', ev.id], {
-        queryParams: {
-          receiptToUpdate,
-        },
-      });
+      this.updateDataS.elementUnderUpdate = { ...this.receipts.find((r) => r.id === ev.id) };
+      this.router.navigate(['compilation', 'receipt', ev.id]);
     }
     if (ev.type === 'delete') {
       this.deleteReceipt(ev.id);
@@ -66,11 +65,4 @@ export class ReceiptsTableComponent {
       }
     });
   }
-
-  // private onError() {
-  //   const componentInstance = this.dialog.open(ConfirmationDialogComponent);
-  //   componentInstance.componentInstance.dialogTitle = `There was a problem ${
-  //     this.formMode === 'Add' ? 'adding' : 'updating'
-  //   } the receipt`;
-  // }
 }

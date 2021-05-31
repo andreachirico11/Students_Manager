@@ -6,6 +6,7 @@ import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
+import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { AllRegExp } from '../utils/allRegExp';
 
@@ -31,7 +32,8 @@ export class ReceiptsFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private updateDataService: UpdateDataService<Receipt>
   ) {}
 
   ngOnInit(): void {
@@ -59,23 +61,18 @@ export class ReceiptsFormComponent implements OnInit {
   }
 
   private updatePreviousReceipt() {
-    if (!this.activatedRoute.snapshot.queryParams) {
-      return this.router.navigate(['']);
-    }
-    const rToUp = this.activatedRoute.snapshot.queryParams.receiptToUpdate;
+    const rToUp = this.updateDataService.getElementUnderUpdate();
     if (!rToUp) {
       return this.router.navigate(['']);
     }
     this.formMode = 'Update';
     this.onSubmit = () => this.updateExistent();
-    const { number, amount, emissionDate, paymentDate, typeOfPayment, ownerId } = JSON.parse(rToUp);
-    this.studentId = ownerId;
     this.rForm.patchValue({
-      number,
-      amount,
-      emissionDate: new Date(emissionDate),
-      paymentDate: new Date(paymentDate),
-      typeOfPayment,
+      number: rToUp.number,
+      amount: rToUp.amount,
+      emissionDate: rToUp.emissionDate,
+      paymentDate: rToUp.paymentDate,
+      typeOfPayment: rToUp.typeOfPayment,
     });
   }
 
