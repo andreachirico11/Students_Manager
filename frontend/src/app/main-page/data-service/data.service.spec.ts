@@ -39,16 +39,6 @@ describe('DataService', () => {
     controller.verify();
   });
 
-  it('should update student subject when getStudents is called', () => {
-    service.studentDbObservable.subscribe((students) => {
-      expect(students[0].name).toBe(studenfFakeResps.getAllStudents().payload[0].name);
-    });
-    service.getStudents().subscribe();
-    const req = controller.expectOne(dbUrl + 'students');
-    req.flush(studenfFakeResps.getAllStudents());
-    controller.verify();
-  });
-
   it('should return a student with his receipts', () => {
     const testStudent = { ...fakeStudentsDb[1] },
       id = testStudent.id;
