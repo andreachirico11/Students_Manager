@@ -68,7 +68,7 @@ export class ReceiptsFormComponent implements OnInit {
 
   private updatePreviousReceipt() {
     const rToUp = this.updateDataService.getElementUnderUpdate();
-    if (!rToUp) {
+    if (!rToUp || rToUp.number === undefined) {
       return this.router.navigate(['']);
     }
     this.formMode = 'Update';
