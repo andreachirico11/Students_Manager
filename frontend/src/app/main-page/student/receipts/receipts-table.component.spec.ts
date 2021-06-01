@@ -101,4 +101,11 @@ describe('ReceiptsTableComponent', () => {
       fakeFirstRecNumber
     );
   });
+
+  it('visualize the add button if there are no receipts', () => {
+    expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeFalsy();
+    component.receipts = [];
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeTruthy();
+  });
 });
