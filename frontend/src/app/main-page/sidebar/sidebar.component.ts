@@ -42,4 +42,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.linkPressed.emit();
     this.router.navigate([this.actualStudentIdLoaded]);
   }
+
+  navigateToForm() {
+    this.linkPressed.emit();
+    this.router.navigate(['compilation', 'student']);
+  }
 }
