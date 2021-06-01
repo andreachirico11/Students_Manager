@@ -208,9 +208,7 @@ describe('ReceiptsFormComponent', () => {
     _params = {
       id: '123',
     };
-    _queryParams = {
-      receiptToUpdate: JSON.stringify(r),
-    };
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(r);
     component.ngOnInit();
     fixture.detectChanges();
     expect(getFormTitle()).toBe('Update Receipt');
@@ -259,7 +257,7 @@ describe('ReceiptsFormComponent', () => {
     expect(update).toHaveBeenCalledOnceWith({ ...r, id: '123' });
   });
 
-  fit('can clear the payment date field', () => {
+  it('can clear the payment date field', () => {
     _params = {
       id: '123',
     };
