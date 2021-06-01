@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,23 +12,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './shared/auth.guard';
-import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
-import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthInterceptor } from './shared/auth.interceptor';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { CustomPreloadStrategyService } from './shared/custom-preload-strategy.service';
+import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 
 const routes: Routes = [
   {
     path: 'enter',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     component: AuthComponent,
+    data: { preload: true },
   },
   {
     path: '',
     loadChildren: () => import('./main-page/main-page.module').then((m) => m.MainPageModule),
-    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 ];
 
@@ -41,7 +43,7 @@ const routes: Routes = [
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadStrategyService }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -19,11 +19,13 @@ const routes: Routes = [
         path: ':id',
         loadChildren: () => import('./student/student.module').then((m) => m.StudentModule),
         component: StudentComponent,
+        data: { delay: 1000 },
       },
       {
         path: 'compilation',
         loadChildren: () => import('./forms/forms.module').then((m) => m.FormsModule),
         component: FormsComponent,
+        data: { delay: 2000 },
       },
     ],
     canActivateChild: [AuthGuard],
