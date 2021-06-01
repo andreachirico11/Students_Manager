@@ -258,4 +258,17 @@ describe('ReceiptsFormComponent', () => {
     component.onSubmit();
     expect(update).toHaveBeenCalledOnceWith({ ...r, id: '123' });
   });
+
+  fit('can clear the payment date field', () => {
+    _params = {
+      id: '123',
+    };
+    spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(r);
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(getInputs()[3].nativeElement.value).toBeTruthy();
+    component.clearPaymentDate();
+    fixture.detectChanges();
+    expect(getInputs()[3].nativeElement.value).toEqual('');
+  });
 });

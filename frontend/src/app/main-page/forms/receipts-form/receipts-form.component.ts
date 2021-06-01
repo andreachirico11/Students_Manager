@@ -53,13 +53,17 @@ export class ReceiptsFormComponent implements OnInit {
 
   onSubmit(): void {}
 
+  formHasDateError(): boolean {
+    return this.rForm.get('paymentDate').getError('dateCannotBeGreater');
+  }
+
+  clearPaymentDate() {
+    this.rForm.controls.paymentDate.setValue('');
+  }
+
   private addNewReceipt() {
     this.formMode = 'Add';
     this.onSubmit = () => this.createAndAdd();
-  }
-
-  formHasDateError(): boolean {
-    return this.rForm.get('paymentDate').getError('dateCannotBeGreater');
   }
 
   private updatePreviousReceipt() {
