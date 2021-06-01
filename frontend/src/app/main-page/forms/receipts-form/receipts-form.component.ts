@@ -9,6 +9,7 @@ import { Receipt } from 'src/app/shared/models/Receipts';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { AllRegExp } from '../utils/allRegExp';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-receipts-form',
@@ -33,7 +34,8 @@ export class ReceiptsFormComponent implements OnInit {
     private dataService: DataService,
     private dialog: MatDialog,
     private router: Router,
-    private updateDataService: UpdateDataService<Receipt>
+    private updateDataService: UpdateDataService<Receipt>,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -112,7 +114,7 @@ export class ReceiptsFormComponent implements OnInit {
 
   private onResponse(r: boolean) {
     if (r) {
-      this.router.navigate([this.studentId]);
+      this.location.back();
     } else {
       this.onError();
     }
