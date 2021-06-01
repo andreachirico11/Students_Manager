@@ -45,6 +45,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Type Of Payment</mat-label>
     <mat-select formControlName="typeOfPayment">
+      <mat-option value=""></mat-option>
       <mat-option *ngFor="let item of matSelectValues" [value]="item">{{ item }}</mat-option>
     </mat-select>
   </mat-form-field>

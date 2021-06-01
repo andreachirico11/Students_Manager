@@ -18,7 +18,12 @@ export class ReceiptFakeResponses {
 
   putReceipt(updatedR: Receipt): IHttpResponse<Receipt> {
     const { rIndex, sttIndex } = this.findIndexesInWholeDb(updatedR.id);
-    this.FAKE_DB[sttIndex].receipts[rIndex] = { ...updatedR };
+    this.FAKE_DB[sttIndex].receipts = [
+      ...this.FAKE_DB[sttIndex].receipts.slice(0, rIndex),
+      { ...updatedR },
+      ...this.FAKE_DB[sttIndex].receipts.slice(rIndex + 1),
+    ];
+
     return {
       message: ReceiptMessages.receipt_updated,
       payload: updatedR,

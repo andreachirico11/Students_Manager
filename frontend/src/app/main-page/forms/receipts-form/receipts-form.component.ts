@@ -92,7 +92,7 @@ export class ReceiptsFormComponent implements OnInit {
       ]),
       emissionDate: new FormControl('', Validators.required),
       paymentDate: new FormControl(''),
-      typeOfPayment: new FormControl('', Validators.required),
+      typeOfPayment: new FormControl(''),
     });
     this.rForm.setValidators(
       formDateComparerValidator(this.rForm.get('emissionDate'), this.rForm.get('paymentDate'))

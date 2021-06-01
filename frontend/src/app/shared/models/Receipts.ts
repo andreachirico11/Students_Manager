@@ -5,7 +5,7 @@ export class Receipt {
     public number: string,
     public amount: number,
     public emissionDate: Date,
-    public typeOfPayment: PaymentType,
+    public typeOfPayment?: PaymentType,
     public paymentDate?: Date,
     public id?: string
   ) {}
