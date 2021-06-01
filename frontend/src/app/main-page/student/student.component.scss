@@ -2,6 +2,10 @@ mat-card {
   margin-bottom: 3em;
 }
 
+mat-card-header {
+  width: 250px;
+}
+
 
 mat-card:not(.receipts) {
   display: grid;
@@ -85,5 +89,18 @@ mat-card-subtitle.parents {
     textarea {
       height: 100% !important;
     }
+  }
+}
+
+@media screen and (min-width: 800px) {
+  mat-card-header {
+    width: 500px;
+  }
+}
+
+
+@media screen and (max-width: 340px) {
+  mat-card {
+    padding: 0 !important;
   }
 }
