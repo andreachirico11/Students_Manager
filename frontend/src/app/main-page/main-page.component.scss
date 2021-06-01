@@ -1,10 +1,14 @@
 mat-drawer-container {
   height: calc(100% - 60px);
-
+}
+  
   mat-drawer-content {
     padding: 2em;
+    background-image: url('../../assets/gatto.jpeg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
-}
 
 button {
   position: fixed;
@@ -21,3 +25,10 @@ mat-drawer {
   min-width: 200px;
 }
 
+@media screen and (min-width: 1000px) {
+    
+  mat-drawer-content {
+    background-size: 790px;
+  }
+  
+}
