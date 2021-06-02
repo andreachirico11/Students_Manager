@@ -212,7 +212,7 @@ function getStudent(i: number): Student {
     getFakeReceipts(),
     addr,
     getLongString(40),
-    's_' + i
+    's_' + randomId()
   );
 }
 
@@ -244,7 +244,13 @@ function getReceipt(i: number): Receipt {
     new Date(),
     i % 2 === 0 ? 'Bancomat' : i % 3 === 0 ? 'Bonifico' : 'Moneta',
     new Date(),
-    'r_' + i
+    'r_' + randomId()
+  );
+}
+
+function randomId() {
+  return (
+    getLongString(2) + getRand(2) + getLongString(2) + getRand(2) + getLongString(2) + getRand(2)
   );
 }
 
