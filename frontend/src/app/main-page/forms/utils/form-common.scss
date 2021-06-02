@@ -3,17 +3,10 @@ mat-divider {
 }
 
 form {
-    display: grid;
-    grid-template-columns: 1fr;
+    width: auto;
+    max-width: 100%;
     gap: 1em;
     button {
         height: 51px !important;
     }
-}
-
-@media screen and (min-width: 650px){
-    form {
-        grid-template-columns: 1fr 1fr;
-    }
-        
 }

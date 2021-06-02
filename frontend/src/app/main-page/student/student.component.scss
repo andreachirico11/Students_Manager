@@ -4,8 +4,21 @@ mat-card {
 
 mat-card-header {
   width: 250px;
+
 }
 
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex{
+  padding: 0 !important;
+}
+
+::ng-deep mat-expansion-panel-header {
+  padding: 0;
+}
+
+
+::ng-deep .mat-card-header-text {
+    margin: 0 !important;
+  }
 
 mat-card:not(.receipts) {
   display: grid;
@@ -60,7 +73,7 @@ mat-card-subtitle.parents {
 
 
 
-@media screen and (min-width: 550px) {
+@media screen and (min-width: 600px) {
   mat-card:not(.receipts)  {
     grid-template-columns: 1fr 1fr;
 
@@ -89,6 +102,7 @@ mat-card-subtitle.parents {
     textarea {
       height: 100% !important;
     }
+
   }
 }
 
