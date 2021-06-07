@@ -2,6 +2,15 @@
   <button mat-icon-button color="primary" (click)="navigateToForm()">
     <mat-icon>add</mat-icon>
   </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="orderOnClick(1)">Name Ascending</button>
+    <button mat-menu-item (click)="orderOnClick(2)">Name Descending</button>
+    <button mat-menu-item (click)="orderOnClick(3)">Surname Ascending</button>
+    <button mat-menu-item (click)="orderOnClick(4)">Surname Descending</button>
+  </mat-menu>
 </div>
 <mat-divider></mat-divider>
 

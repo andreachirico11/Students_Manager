@@ -144,10 +144,4 @@ describe('SidebarComponent', () => {
     getListOptions()[0].nativeNode.click();
     expect(emitsPy).toHaveBeenCalled();
   });
-
-  // fit('should sort an array of students by name', () => {
-  //   expect(component.students[0].name).toEqual(fakeStudentsDb[1].name);
-  //   expect(component.students[1].name).toEqual(fakeStudentsDb[0].name);
-  //   expect(component.students[0].name).toEqual(fakeStudentsDb[2].name);
-  // });
 });

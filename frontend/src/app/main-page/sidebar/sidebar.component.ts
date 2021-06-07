@@ -11,7 +11,7 @@ import { SortService } from '../forms/utils/sort-service/sort.service';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  public students: Student[];
+  public students: Student[] = [];
   public sub: Subscription;
 
   private actualStudentIdLoaded: string = '';
@@ -27,7 +27,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
       this.actualStudentIdLoaded = '';
-      this.students = this.sortService.sortStudents(newS, 'name', 'ascending');
+      if (newS && newS.length > 0) {
+        this.students = this.sortService.sortStudents(newS, 'name', 'ascending');
+      }
     });
     this.dbService.getStudents().subscribe();
   }
@@ -51,5 +53,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
   navigateToForm() {
     this.linkPressed.emit();
     this.router.navigate(['compilation', 'student']);
+  }
+
+  orderOnClick(orderCode: number) {
+    switch (orderCode) {
+      case 1:
+        this.students = this.sortService.sortStudents(this.students, 'name', 'ascending');
+        break;
+      case 2:
+        this.students = this.sortService.sortStudents(this.students, 'name', 'descending');
+        break;
+      case 3:
+        this.students = this.sortService.sortStudents(this.students, 'surname', 'ascending');
+        break;
+      case 4:
+        this.students = this.sortService.sortStudents(this.students, 'surname', 'descending');
+        break;
+    }
   }
 }
