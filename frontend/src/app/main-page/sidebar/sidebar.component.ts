@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { Student } from 'src/app/shared/models/Student';
+import { SortService } from '../forms/utils/sort-service/sort.service';
 
 @Component({
   selector: 'sidebar',
@@ -17,12 +18,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Output()
   public linkPressed = new EventEmitter();
 
-  constructor(private dbService: DataService, private router: Router) {}
+  constructor(
+    private dbService: DataService,
+    private router: Router,
+    private sortService: SortService
+  ) {}
 
   ngOnInit(): void {
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
       this.actualStudentIdLoaded = '';
-      this.students = newS;
+      this.students = this.sortService.sortStudents(newS, 'name', 'ascending');
     });
     this.dbService.getStudents().subscribe();
   }

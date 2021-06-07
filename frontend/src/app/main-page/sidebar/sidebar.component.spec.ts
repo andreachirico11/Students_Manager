@@ -26,7 +26,47 @@ describe('SidebarComponent', () => {
 
   fakeStudentsDb = [
     new Student(
+      'giannino',
       'gianni',
+      '',
+      new Date(),
+      '',
+      1,
+      {
+        name: 'a',
+        surname: 'b',
+        fiscalCode: 'aaaaaa',
+        address: 'asdfjhalfbanflasdbfasf',
+        phoneNumber: 1111111111111111111,
+      },
+
+      [],
+      '',
+      '',
+      '1'
+    ),
+    new Student(
+      'gianni',
+      'gianno',
+      '',
+      new Date(),
+      '',
+      1,
+      {
+        name: 'a',
+        surname: 'b',
+        fiscalCode: 'aaaaaa',
+        address: 'asdfjhalfbanflasdbfasf',
+        phoneNumber: 1111111111111111111,
+      },
+
+      [],
+      '',
+      '',
+      '1'
+    ),
+    new Student(
+      'alberto',
       'gianno',
       '',
       new Date(),
@@ -83,7 +123,7 @@ describe('SidebarComponent', () => {
   });
 
   it('should render options correctly', () => {
-    expect(getListOptions().length).toBe(1);
+    expect(getListOptions().length).toBe(fakeStudentsDb.length);
   });
 
   it('should navigate to the right url', () => {
@@ -104,4 +144,10 @@ describe('SidebarComponent', () => {
     getListOptions()[0].nativeNode.click();
     expect(emitsPy).toHaveBeenCalled();
   });
+
+  // fit('should sort an array of students by name', () => {
+  //   expect(component.students[0].name).toEqual(fakeStudentsDb[1].name);
+  //   expect(component.students[1].name).toEqual(fakeStudentsDb[0].name);
+  //   expect(component.students[0].name).toEqual(fakeStudentsDb[2].name);
+  // });
 });
