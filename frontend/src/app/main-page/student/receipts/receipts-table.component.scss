@@ -17,6 +17,12 @@ th.mat-column-actions,
   border-left: 1px solid #e0e0e0 !important;
 }
 
+
+td.mat-column-number,
+th.mat-column-number {
+  padding-left: 1em;
+}
+
 .border-right {
   width: 40px;
   border-left: 0 !important;

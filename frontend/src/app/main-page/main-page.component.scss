@@ -15,6 +15,7 @@ button {
   bottom: 50px;
   width: 40px !important;
   height: 40px !important;
+  z-index: 100;
 }
 
 ::ng-deep .mat-button-wrapper  {
