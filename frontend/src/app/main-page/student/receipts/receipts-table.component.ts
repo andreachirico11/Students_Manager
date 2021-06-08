@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -48,7 +48,8 @@ export class ReceiptsTableComponent implements OnInit {
     private dataS: DataService,
     private dialog: MatDialog,
     private router: Router,
-    private updateDataS: UpdateDataService<Receipt>
+    private updateDataS: UpdateDataService<Receipt>,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -93,6 +94,7 @@ export class ReceiptsTableComponent implements OnInit {
           };
         })
       );
+      this.cdr.detectChanges();
       this.tableDataSource.paginator = this.paginator;
       this.tableDataSource.sort = this.sort;
     }

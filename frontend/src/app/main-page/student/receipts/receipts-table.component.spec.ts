@@ -29,6 +29,7 @@ describe('ReceiptsTableComponent', () => {
     fakeFirstRecId
   );
   const fakeRec = [fakeFirstRec, ...FAKE_DB.students.find((s) => s.receipts.length > 0).receipts];
+  const paginatorMaxNumberOfRow = 10;
 
   beforeEach(
     waitForAsync(() => {
@@ -65,7 +66,8 @@ describe('ReceiptsTableComponent', () => {
   });
 
   it('should display the correct number of row with data', () => {
-    expect(fixture.debugElement.queryAll(By.css('tr')).length).toBe(fakeRec.length + 1);
+    const l = fakeRec.length > paginatorMaxNumberOfRow ? paginatorMaxNumberOfRow : fakeRec.length;
+    expect(fixture.debugElement.queryAll(By.css('tr')).length).toBe(l + 1);
   });
 
   it('should display correctly firs row data', () => {
@@ -78,9 +80,9 @@ describe('ReceiptsTableComponent', () => {
     const updateOrDeleteSpy = spyOn(component, 'onUpdateOrDelete');
     const secondRowActions = fixture.debugElement.queryAll(
       By.directive(ReceiptsActionsComponent)
-    )[1].componentInstance as ReceiptsActionsComponent;
+    )[0].componentInstance as ReceiptsActionsComponent;
     secondRowActions.emit('update');
-    expect(updateOrDeleteSpy).toHaveBeenCalledOnceWith({ type: 'update', id: fakeRec[1].id });
+    expect(updateOrDeleteSpy).toHaveBeenCalledOnceWith({ type: 'update', id: fakeRec[0].id });
   });
 
   it('should remove the first receipt from the view', () => {
