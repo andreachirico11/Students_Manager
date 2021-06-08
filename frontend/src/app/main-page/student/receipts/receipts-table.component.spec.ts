@@ -13,17 +13,6 @@ import { DataService } from '../../data-service/data.service';
 import { ReceiptsActionsComponent } from './receipts-actions/receipts-actions.component';
 import { ReceiptsTableComponent } from './receipts-table.component';
 
-class MockMatDialog {
-  open() {
-    return {
-      afterClosed: () => of(true),
-      componentInstance: {
-        dialogTitle: '',
-      },
-    };
-  }
-}
-
 describe('ReceiptsTableComponent', () => {
   let component: ReceiptsTableComponent;
   let fixture: ComponentFixture<ReceiptsTableComponent>;
@@ -67,6 +56,7 @@ describe('ReceiptsTableComponent', () => {
     dataS = TestBed.inject(DataService);
     component = fixture.componentInstance;
     component.receipts = fakeRec;
+    component.ngAfterViewInit();
     fixture.detectChanges();
   });
 
@@ -79,7 +69,7 @@ describe('ReceiptsTableComponent', () => {
   });
 
   it('should display correctly firs row data', () => {
-    expect(fixture.debugElement.queryAll(By.css('td'))[0].nativeElement.textContent).toBe(
+    expect(fixture.debugElement.queryAll(By.css('td'))[1].nativeElement.textContent).toBe(
       fakeFirstRecNumber
     );
   });
@@ -108,4 +98,23 @@ describe('ReceiptsTableComponent', () => {
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeTruthy();
   });
+
+  // fit('should add the payed voice to data correctly', () => {
+  //   expect(component.tableDataSource.data[0].payed).toBeTruthy();
+  //   // component.receipts[0].paymentDate = null;
+  //   // component.ngOnInit();
+  //   component.ngAfterViewInit();
+  //   expect(component.tableDataSource.data[0].payed).toBeFalsy();
+  // });
 });
+
+class MockMatDialog {
+  open() {
+    return {
+      afterClosed: () => of(true),
+      componentInstance: {
+        dialogTitle: '',
+      },
+    };
+  }
+}

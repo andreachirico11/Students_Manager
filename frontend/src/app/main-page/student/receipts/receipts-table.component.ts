@@ -9,6 +9,7 @@ import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
+import { IReceiptForTable } from './IReceiptForTable';
 import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
 
 @Component({
@@ -16,18 +17,19 @@ import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
   templateUrl: './receipts-table.component.html',
   styleUrls: ['./receipts-table.component.scss'],
 })
-export class ReceiptsTableComponent implements OnInit, AfterViewInit {
+export class ReceiptsTableComponent implements AfterViewInit {
   @Input()
   public receipts: Receipt[] = [];
 
   @Input()
   public owner: Student;
 
-  public tableDataSource: MatTableDataSource<Receipt>;
+  public tableDataSource: MatTableDataSource<IReceiptForTable>;
 
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
   public displayedColumns = [
+    'payed',
     'number',
     'amount',
     'emissionDate',
@@ -49,11 +51,15 @@ export class ReceiptsTableComponent implements OnInit, AfterViewInit {
     private updateDataS: UpdateDataService<Receipt>
   ) {}
 
-  ngOnInit() {
-    this.tableDataSource = new MatTableDataSource(this.receipts);
-  }
-
   ngAfterViewInit() {
+    this.tableDataSource = new MatTableDataSource(
+      this.receipts.map((r) => {
+        return {
+          ...r,
+          payed: r.paymentDate ? true : false,
+        };
+      })
+    );
     this.tableDataSource.paginator = this.paginator;
     this.tableDataSource.sort = this.sort;
   }
