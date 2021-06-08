@@ -1,15 +1,17 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
+import { IGuardedForm } from '../IGuardedForm';
 import { AllRegExp } from '../utils/allRegExp';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-receipts-form',
@@ -17,9 +19,10 @@ import { Location } from '@angular/common';
   styleUrls: ['./receipts-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReceiptsFormComponent implements OnInit {
+export class ReceiptsFormComponent implements OnInit, IGuardedForm {
   private studentId: string;
   private receiptToUpdateId: string;
+  private canLeave = false;
 
   public rForm: FormGroup;
   public formMode: 'Add' | 'Update';
@@ -59,6 +62,13 @@ export class ReceiptsFormComponent implements OnInit {
 
   clearPaymentDate() {
     this.rForm.controls.paymentDate.setValue('');
+  }
+
+  canDeactivate(): Observable<boolean> {
+    if (this.rForm.pristine || this.canLeave) {
+      return of(true);
+    }
+    return this.createGuardDialog().afterClosed();
   }
 
   private addNewReceipt() {
@@ -118,6 +128,7 @@ export class ReceiptsFormComponent implements OnInit {
 
   private onResponse(r: boolean) {
     if (r) {
+      this.canLeave = true;
       this.location.back();
     } else {
       this.onError();
@@ -130,5 +141,12 @@ export class ReceiptsFormComponent implements OnInit {
       this.formMode === 'Add' ? 'adding' : 'updating'
     } the receipt`;
     componentInstance.onlyConfirmation = true;
+  }
+
+  private createGuardDialog(): MatDialogRef<ConfirmationDialogComponent> {
+    const ref = this.dialog.open(ConfirmationDialogComponent);
+    ref.componentInstance.dialogTitle = 'Some fields are filled';
+    ref.componentInstance.dialogSubTitle = 'Wanna Leave?';
+    return ref;
   }
 }

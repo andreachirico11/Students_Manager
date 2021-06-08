@@ -17,6 +17,9 @@ export class ConfirmationDialogComponent implements OnInit {
   public dialogTitle = 'Title';
 
   @Input()
+  public dialogSubTitle = null;
+
+  @Input()
   public onlyConfirmation: boolean = false;
 
   constructor() {}
