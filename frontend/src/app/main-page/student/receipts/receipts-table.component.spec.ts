@@ -99,13 +99,12 @@ describe('ReceiptsTableComponent', () => {
     expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeTruthy();
   });
 
-  // fit('should add the payed voice to data correctly', () => {
-  //   expect(component.tableDataSource.data[0].payed).toBeTruthy();
-  //   // component.receipts[0].paymentDate = null;
-  //   // component.ngOnInit();
-  //   component.ngAfterViewInit();
-  //   expect(component.tableDataSource.data[0].payed).toBeFalsy();
-  // });
+  it('should add the payed voice to data correctly', () => {
+    expect(component.tableDataSource.data[0].payed).toBeTruthy();
+    component.receipts[0].paymentDate = null;
+    component.ngAfterViewInit();
+    expect(component.tableDataSource.data[0].payed).toBeFalsy();
+  });
 });
 
 class MockMatDialog {
