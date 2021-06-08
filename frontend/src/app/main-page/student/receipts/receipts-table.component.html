@@ -4,25 +4,28 @@
     mat-table
     [dataSource]="tableDataSource"
     class="mat-elevation-z1"
+    matSort
+    matSortActive="emissionDate"
+    matSortDirection="desc"
   >
     <ng-container matColumnDef="number">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
       <td mat-cell *matCellDef="let element">{{ element.number }}</td>
     </ng-container>
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef>Totale</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
       <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
     </ng-container>
     <ng-container matColumnDef="emissionDate">
-      <th mat-header-cell *matHeaderCellDef>Emissione</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Emission</th>
       <td mat-cell *matCellDef="let element">{{ element.emissionDate | date: 'dd MMMM yyyy' }}</td>
     </ng-container>
     <ng-container matColumnDef="paymentDate">
-      <th mat-header-cell *matHeaderCellDef>Pagamento</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment</th>
       <td mat-cell *matCellDef="let element">{{ element.paymentDate | date: 'dd MMMM yyyy' }}</td>
     </ng-container>
     <ng-container matColumnDef="typeOfPayment">
-      <th mat-header-cell *matHeaderCellDef>Metodo</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Method</th>
       <td mat-cell *matCellDef="let element">{{ element.typeOfPayment }}</td>
     </ng-container>
     <ng-container matColumnDef="actions" stickyEnd>

@@ -241,7 +241,7 @@ function getReceipt(i: number): Receipt {
   return new Receipt(
     getRand(300) + '',
     getRand(30),
-    new Date(),
+    generateRandomDOB(),
     i % 2 === 0 ? 'Bancomat' : i % 3 === 0 ? 'Bonifico' : 'Moneta',
     new Date(),
     'r_' + randomId()
@@ -266,4 +266,14 @@ function getLongString(length: number) {
 
 function getRand(interval: number) {
   return Math.floor(Math.random() * interval) + 1;
+}
+
+function generateRandomDOB(): Date {
+  return getRandomDate(new Date('2000-02-12T01:57:45.271Z'), new Date());
+}
+
+function getRandomDate(from: Date, to: Date) {
+  const fromTime = from.getTime();
+  const toTime = to.getTime();
+  return new Date(fromTime + Math.random() * (toTime - fromTime));
 }

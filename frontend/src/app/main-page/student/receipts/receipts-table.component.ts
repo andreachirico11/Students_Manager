@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
@@ -15,7 +16,7 @@ import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
   templateUrl: './receipts-table.component.html',
   styleUrls: ['./receipts-table.component.scss'],
 })
-export class ReceiptsTableComponent implements OnInit {
+export class ReceiptsTableComponent implements OnInit, AfterViewInit {
   @Input()
   public receipts: Receipt[] = [];
 
@@ -35,8 +36,11 @@ export class ReceiptsTableComponent implements OnInit {
     'actions',
   ];
 
-  @ViewChild(MatPaginator, { static: true })
+  @ViewChild(MatPaginator)
   paginator: MatPaginator;
+
+  @ViewChild(MatSort)
+  sort: MatSort;
 
   constructor(
     private dataS: DataService,
@@ -47,7 +51,11 @@ export class ReceiptsTableComponent implements OnInit {
 
   ngOnInit() {
     this.tableDataSource = new MatTableDataSource(this.receipts);
+  }
+
+  ngAfterViewInit() {
     this.tableDataSource.paginator = this.paginator;
+    this.tableDataSource.sort = this.sort;
   }
 
   public addReceipt() {
