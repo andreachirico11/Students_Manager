@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -13,12 +15,14 @@ import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
   templateUrl: './receipts-table.component.html',
   styleUrls: ['./receipts-table.component.scss'],
 })
-export class ReceiptsTableComponent {
+export class ReceiptsTableComponent implements OnInit {
   @Input()
   public receipts: Receipt[] = [];
 
   @Input()
   public owner: Student;
+
+  public tableDataSource: MatTableDataSource<Receipt>;
 
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -31,12 +35,20 @@ export class ReceiptsTableComponent {
     'actions',
   ];
 
+  @ViewChild(MatPaginator, { static: true })
+  paginator: MatPaginator;
+
   constructor(
     private dataS: DataService,
     private dialog: MatDialog,
     private router: Router,
     private updateDataS: UpdateDataService<Receipt>
   ) {}
+
+  ngOnInit() {
+    this.tableDataSource = new MatTableDataSource(this.receipts);
+    this.tableDataSource.paginator = this.paginator;
+  }
 
   public addReceipt() {
     this.router.navigate(['compilation', 'receipt', 'add', this.owner.id]);

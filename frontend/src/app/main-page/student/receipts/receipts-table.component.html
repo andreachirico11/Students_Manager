@@ -2,7 +2,7 @@
   <table
     *ngIf="receipts.length > 0; else noData"
     mat-table
-    [dataSource]="receipts"
+    [dataSource]="tableDataSource"
     class="mat-elevation-z1"
   >
     <ng-container matColumnDef="number">
@@ -42,6 +42,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  <mat-paginator #paginator [pageSize]="10" hidePageSize="true"></mat-paginator>
 </div>
 
 <ng-template #noData>
