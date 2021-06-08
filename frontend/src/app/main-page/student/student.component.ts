@@ -13,7 +13,7 @@ import { UpdateDataService } from 'src/app/shared/update-data.service';
   styleUrls: ['./student.component.scss'],
 })
 export class StudentComponent implements OnInit, OnDestroy {
-  public student: Student;
+  public student: Student = null;
   public isBadgeOpen = false;
   private paramsSub: Subscription;
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;

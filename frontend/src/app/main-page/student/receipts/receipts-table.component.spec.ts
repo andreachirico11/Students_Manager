@@ -56,7 +56,7 @@ describe('ReceiptsTableComponent', () => {
     dataS = TestBed.inject(DataService);
     component = fixture.componentInstance;
     component.receipts = fakeRec;
-    component.ngAfterViewInit();
+    component.ngOnInit();
     fixture.detectChanges();
   });
 
@@ -95,6 +95,8 @@ describe('ReceiptsTableComponent', () => {
   it('visualize the add button if there are no receipts', () => {
     expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeFalsy();
     component.receipts = [];
+    component.tableDataSource = null;
+    component.ngOnInit();
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('.noDataBtn'))).toBeTruthy();
   });
@@ -102,7 +104,7 @@ describe('ReceiptsTableComponent', () => {
   it('should add the payed voice to data correctly', () => {
     expect(component.tableDataSource.data[0].payed).toBeTruthy();
     component.receipts[0].paymentDate = null;
-    component.ngAfterViewInit();
+    component.ngOnInit();
     expect(component.tableDataSource.data[0].payed).toBeFalsy();
   });
 });

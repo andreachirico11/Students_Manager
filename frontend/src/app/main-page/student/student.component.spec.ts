@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Directive } from '@angular/core';
+import { Component, Directive, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,24 +12,7 @@ import { DataService } from 'src/app/main-page/data-service/data.service';
 import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
-import { ReceiptsActionsComponent } from './receipts/receipts-actions/receipts-actions.component';
-import { ReceiptsTableComponent } from './receipts/receipts-table.component';
 import { StudentComponent } from './student.component';
-
-class MockMatDialog {
-  open() {
-    return {
-      afterClosed: () => of(true),
-      componentInstance: {
-        dialogTitle: '',
-      },
-    };
-  }
-}
-@Directive({
-  selector: 'routerLink',
-})
-export class FakeRouterLink {}
 
 describe('StudentComponent', () => {
   let component: StudentComponent;
@@ -78,7 +61,7 @@ describe('StudentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StudentComponent, ReceiptsTableComponent, ReceiptsActionsComponent],
+      declarations: [StudentComponent, FakeReceiptsTableComponent],
       imports: [
         FormsModule,
         CommonModule,
@@ -263,3 +246,30 @@ describe('StudentComponent', () => {
     tick(1000);
   }));
 });
+
+class MockMatDialog {
+  open() {
+    return {
+      afterClosed: () => of(true),
+      componentInstance: {
+        dialogTitle: '',
+      },
+    };
+  }
+}
+@Directive({
+  selector: 'routerLink',
+})
+export class FakeRouterLink {}
+
+@Component({
+  selector: 'student-receipts',
+  template: ``,
+})
+export class FakeReceiptsTableComponent {
+  @Input()
+  public receipts: Receipt[] = [];
+
+  @Input()
+  public owner: Student;
+}

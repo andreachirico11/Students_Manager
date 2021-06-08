@@ -1,6 +1,6 @@
 <div class="container">
   <table
-    *ngIf="receipts.length > 0; else noData"
+    *ngIf="tableDataSource; else noData"
     mat-table
     [dataSource]="tableDataSource"
     class="mat-elevation-z1"

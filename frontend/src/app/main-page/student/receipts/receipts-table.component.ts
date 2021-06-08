@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -17,14 +17,14 @@ import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
   templateUrl: './receipts-table.component.html',
   styleUrls: ['./receipts-table.component.scss'],
 })
-export class ReceiptsTableComponent implements AfterViewInit {
+export class ReceiptsTableComponent implements OnInit {
   @Input()
   public receipts: Receipt[] = [];
 
   @Input()
   public owner: Student;
 
-  public tableDataSource: MatTableDataSource<IReceiptForTable>;
+  public tableDataSource: MatTableDataSource<IReceiptForTable> = null;
 
   public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
@@ -51,17 +51,8 @@ export class ReceiptsTableComponent implements AfterViewInit {
     private updateDataS: UpdateDataService<Receipt>
   ) {}
 
-  ngAfterViewInit() {
-    this.tableDataSource = new MatTableDataSource(
-      this.receipts.map((r) => {
-        return {
-          ...r,
-          payed: r.paymentDate ? true : false,
-        };
-      })
-    );
-    this.tableDataSource.paginator = this.paginator;
-    this.tableDataSource.sort = this.sort;
+  ngOnInit() {
+    this.initDataSource();
   }
 
   public addReceipt() {
@@ -90,5 +81,20 @@ export class ReceiptsTableComponent implements AfterViewInit {
         });
       }
     });
+  }
+
+  private initDataSource() {
+    if (this.receipts.length > 0) {
+      this.tableDataSource = new MatTableDataSource(
+        this.receipts.map((r) => {
+          return {
+            ...r,
+            payed: r.paymentDate ? true : false,
+          };
+        })
+      );
+      this.tableDataSource.paginator = this.paginator;
+      this.tableDataSource.sort = this.sort;
+    }
   }
 }
