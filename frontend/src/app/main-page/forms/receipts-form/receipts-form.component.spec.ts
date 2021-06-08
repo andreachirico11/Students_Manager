@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -66,6 +66,12 @@ describe('ReceiptsFormComponent', () => {
           provide: Router,
           useValue: {
             navigate: routerSpy,
+          },
+        },
+        {
+          provide: Location,
+          useValue: {
+            back() {},
           },
         },
       ],
