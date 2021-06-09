@@ -18,17 +18,15 @@
         </mat-card-subtitle>
         <mat-expansion-panel class="mat-elevation-z-5">
           <mat-expansion-panel-header>
-            <mat-panel-title>
-              <mat-card-subtitle class="parents">Parent</mat-card-subtitle>
-            </mat-panel-title>
+            <mat-card-subtitle class="parents">Parent</mat-card-subtitle>
           </mat-expansion-panel-header>
           <div>
-            <p style="margin-top: 1em">
+            <mat-card-subtitle>
               <b>{{ student.parent.name }} {{ student.parent.surname }}</b>
-            </p>
-            <p>Phone: {{ student.parent.phoneNumber }}</p>
-            <p>CF: {{ student.parent.fiscalCode }}</p>
-            <p>Address: {{ student.parent.address }}</p>
+            </mat-card-subtitle>
+            <mat-card-subtitle>Phone: {{ student.parent.phoneNumber }}</mat-card-subtitle>
+            <mat-card-subtitle>CF: {{ student.parent.fiscalCode }}</mat-card-subtitle>
+            <mat-card-subtitle>Address: {{ student.parent.address }}</mat-card-subtitle>
           </div>
         </mat-expansion-panel>
       </mat-expansion-panel>
