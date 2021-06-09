@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
@@ -12,6 +12,7 @@ import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { IGuardedForm } from '../IGuardedForm';
 import { AllRegExp } from '../utils/allRegExp';
+import { ComponentGuarded } from '../utils/guard-base.component';
 
 @Component({
   selector: 'app-receipts-form',
@@ -19,11 +20,7 @@ import { AllRegExp } from '../utils/allRegExp';
   styleUrls: ['./receipts-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReceiptsFormComponent implements OnInit, IGuardedForm {
-  private studentId: string;
-  private receiptToUpdateId: string;
-  private canLeave = false;
-
+export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, OnDestroy {
   public rForm: FormGroup;
   public formMode: 'Add' | 'Update';
   public matSelectValues = PaymentTypeValues;
@@ -32,14 +29,21 @@ export class ReceiptsFormComponent implements OnInit, IGuardedForm {
     return window.innerWidth < 500 ? true : false;
   }
 
+  private studentId: string;
+  private receiptToUpdateId: string;
+  // private canLeave = false;
+  private valueSub: Subscription;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    private dialog: MatDialog,
+    dialog: MatDialog,
     private router: Router,
     private updateDataService: UpdateDataService<Receipt>,
     private location: Location
-  ) {}
+  ) {
+    super(dialog);
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -52,6 +56,13 @@ export class ReceiptsFormComponent implements OnInit, IGuardedForm {
     } else {
       this.router.navigate(['']);
     }
+    this.valueSub = this.rForm.valueChanges.subscribe(() => {
+      this.canLeave = false;
+    });
+  }
+
+  ngOnDestroy() {
+    this.valueSub.unsubscribe();
   }
 
   onSubmit(): void {}
@@ -64,12 +75,12 @@ export class ReceiptsFormComponent implements OnInit, IGuardedForm {
     this.rForm.controls.paymentDate.setValue('');
   }
 
-  canDeactivate(): Observable<boolean> {
-    if (this.rForm.pristine || this.canLeave) {
-      return of(true);
-    }
-    return this.createGuardDialog().afterClosed();
-  }
+  // canDeactivate(): Observable<boolean> {
+  //   if (this.rForm.pristine || this.canLeave) {
+  //     return of(true);
+  //   }
+  //   return this.createGuardDialog().afterClosed();
+  // }
 
   private addNewReceipt() {
     this.formMode = 'Add';
@@ -143,10 +154,10 @@ export class ReceiptsFormComponent implements OnInit, IGuardedForm {
     componentInstance.onlyConfirmation = true;
   }
 
-  private createGuardDialog(): MatDialogRef<ConfirmationDialogComponent> {
-    const ref = this.dialog.open(ConfirmationDialogComponent);
-    ref.componentInstance.dialogTitle = 'Some fields are filled';
-    ref.componentInstance.dialogSubTitle = 'Wanna Leave?';
-    return ref;
-  }
+  // private createGuardDialog(): MatDialogRef<ConfirmationDialogComponent> {
+  //   const ref = this.dialog.open(ConfirmationDialogComponent);
+  //   ref.componentInstance.dialogTitle = 'Some fields are filled';
+  //   ref.componentInstance.dialogSubTitle = 'Wanna Leave?';
+  //   return ref;
+  // }
 }
