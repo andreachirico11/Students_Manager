@@ -54,7 +54,7 @@ describe('StudentStepperComponent', () => {
     });
   };
   const fillParentForm = (parent: Parent) => {
-    parentForm.parentF.patchValue({
+    parentForm.form.patchValue({
       ...parent,
     });
   };
@@ -181,7 +181,7 @@ describe('StudentStepperComponent', () => {
     studentForm.ngOnInit();
     parentForm.ngOnInit();
     expect(studentForm.studentF.get('name').value).toBe(fakeS.name);
-    expect(parentForm.parentF.get('name').value).toBe(fakeS.parent.name);
+    expect(parentForm.form.get('name').value).toBe(fakeS.parent.name);
   });
 
   it('pass a correctly updated student to the service', () => {

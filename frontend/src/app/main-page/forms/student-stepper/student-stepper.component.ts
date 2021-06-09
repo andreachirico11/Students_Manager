@@ -52,7 +52,9 @@ export class StudentStepperComponent implements OnInit {
     this.stepper.next();
   }
 
-  onParentFormEv(parent: Parent) {
+  onParentFormEv(result: any) {
+    const { name, surname, fiscalCode, phoneNumber, address } = result;
+    const parent = new Parent(name, surname, fiscalCode, address, phoneNumber);
     this.studentCreated = { ...this.studentCreated, parent };
     this.stepper.selected.completed = true;
     this.stepper.next();

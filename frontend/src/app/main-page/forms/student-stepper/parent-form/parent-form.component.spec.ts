@@ -7,13 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
+import { FormBaseComponent } from '../../utils/form-base.component';
 import { ParentFormComponent } from './parent-form.component';
 
 describe('ParentFormComponent', () => {
   let component: ParentFormComponent;
   let fixture: ComponentFixture<ParentFormComponent>;
 
-  const getControls = () => component.parentF.controls;
+  const getControls = () => component.form.controls;
   const getButton = () => fixture.debugElement.queryAll(By.css('button[type=submit]'))[0];
   const trueFiscalCodes = [
     'MRSLDA02L51D612X',
@@ -30,11 +31,19 @@ describe('ParentFormComponent', () => {
     'MRSLDA02L51D6!2X',
     'LNTLCU02S25H5011',
   ];
-  const testParent = { ...FAKE_DB.students[0].parent };
+  const fakeParent = { ...FAKE_DB.students[0].parent } as Parent;
+  const getTestParent = () =>
+    new Parent(
+      fakeParent.name,
+      fakeParent.surname,
+      fakeParent.fiscalCode,
+      fakeParent.address,
+      fakeParent.phoneNumber
+    );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ParentFormComponent],
+      declarations: [ParentFormComponent, FormBaseComponent],
       imports: [
         MaterialModule,
         CommonModule,
@@ -100,11 +109,11 @@ describe('ParentFormComponent', () => {
   it('expect button to be disabled', () => {
     const isBtnDisabled = () => getButton().nativeElement.disabled;
     expect(isBtnDisabled()).toBeTrue();
-    component.parentF.markAllAsTouched();
+    component.form.markAllAsTouched();
     expect(isBtnDisabled()).toBeTrue();
   });
 
-  it('expect result student to be instance of parent', () => {
+  it('expect result to contain parent properties', () => {
     const pr: Parent = {
       name: 'a',
       surname: 'b',
@@ -112,30 +121,39 @@ describe('ParentFormComponent', () => {
       address: 'asdfjhalfbanflasdbfasf',
       phoneNumber: 1111111111111111111,
     };
-    fixture.componentInstance.parent.subscribe((p) => {
-      expect(p instanceof Parent).toBeTruthy();
+    fixture.componentInstance.result.subscribe((p) => {
+      expect(p.name).toBe(pr.name);
+      expect(p.surname).toBe(pr.surname);
+      expect(p.fiscalCode).toBe(pr.fiscalCode);
+      expect(p.address).toBe(pr.address);
+      expect(p.phoneNumber).toBe(pr.phoneNumber);
     });
-    fixture.componentInstance.parentF.patchValue({
+    fixture.componentInstance.form.patchValue({
       ...pr,
     });
     fixture.componentInstance.onSubmit();
   });
 
   it('it load correctly the student on form', () => {
-    component.parentToUpdate = { ...testParent };
+    const testP = getTestParent();
+    component.objectToUpdate = testP;
     component.ngOnInit();
     fixture.detectChanges();
-    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(
-      testParent.name
-    );
+    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(testP.name);
   });
 
-  it('expect partial student to be instance of studentToUpdate if provided', () => {
-    component.parentToUpdate = { ...testParent };
+  it('expect result to be the updated input', () => {
+    const testP = getTestParent(),
+      testName = 'bello';
+    component.objectToUpdate = testP;
     component.ngOnInit();
     fixture.detectChanges();
-    fixture.componentInstance.parent.subscribe((p) => {
-      expect(p.name).toEqual(testParent.name);
+    component.form.patchValue({
+      ...component.form.value,
+      name: testName,
+    });
+    fixture.componentInstance.result.subscribe((p) => {
+      expect(p.name).toEqual(testName);
     });
     fixture.componentInstance.onSubmit();
   });
