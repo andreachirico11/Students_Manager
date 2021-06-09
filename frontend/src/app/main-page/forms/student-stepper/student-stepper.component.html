@@ -2,12 +2,14 @@
   <mat-step label="Student" state="phone" completed="false">
     <student-form
       (result)="onStudentFormEv($event)"
+      (formValueChanged)="onFormValueChange()"
       [objectToUpdate]="studentUnderUpdate"
     ></student-form>
   </mat-step>
   <mat-step label="Parent" state="chat" completed="false">
     <parent-form
       (result)="onParentFormEv($event)"
+      (formValueChanged)="onFormValueChange()"
       [objectToUpdate]="studentUnderUpdate?.parent"
     ></parent-form>
   </mat-step>

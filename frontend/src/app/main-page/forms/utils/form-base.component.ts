@@ -1,12 +1,13 @@
-import { Output } from '@angular/core';
+import { OnDestroy, Output } from '@angular/core';
 import { Component, EventEmitter, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
 import { AllRegExp } from './allRegExp';
 
 @Component({ template: '' })
-export class FormBaseComponent<T extends Student | Parent> implements OnInit {
+export class FormBaseComponent<T extends Student | Parent> implements OnInit, OnDestroy {
   public form: FormGroup;
 
   @Input()
@@ -15,9 +16,14 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit {
   @Output()
   public result = new EventEmitter<any>();
 
+  @Output()
+  public formValueChanged = new EventEmitter();
+
   get isTouchUiActivate() {
     return window.innerWidth < 500 ? true : false;
   }
+
+  private valueSub: Subscription;
 
   constructor(@Inject(String) private typeOfForm: 'StudentForm' | 'ParentForm') {}
 
@@ -26,6 +32,13 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit {
     if (this.objectToUpdate) {
       this.patchFormForUpdate();
     }
+    this.valueSub = this.form.valueChanges.subscribe(() => {
+      this.formValueChanged.emit();
+    });
+  }
+
+  ngOnDestroy() {
+    this.valueSub.unsubscribe();
   }
 
   public onSubmit(): void {

@@ -8,13 +8,14 @@ import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
+import { ComponentGuarded } from '../utils/guard-base.component';
 
 @Component({
   selector: 'app-student-stepper',
   templateUrl: './student-stepper.component.html',
   styleUrls: ['./student-stepper.component.scss'],
 })
-export class StudentStepperComponent implements OnInit {
+export class StudentStepperComponent extends ComponentGuarded implements OnInit {
   public studentCreated: Student = null;
   public studentUnderUpdate: Student = null;
 
@@ -22,12 +23,14 @@ export class StudentStepperComponent implements OnInit {
   private stepper: MatHorizontalStepper;
 
   constructor(
+    dialog: MatDialog,
     private dataService: DataService,
     private router: Router,
-    private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private updateDataService: UpdateDataService<Student>
-  ) {}
+  ) {
+    super(dialog);
+  }
 
   ngOnInit(): void {
     const studentToUpdateId: string = this.activatedRoute.snapshot.params['id'];
@@ -56,6 +59,10 @@ export class StudentStepperComponent implements OnInit {
     } else {
       this.addNewStudent();
     }
+  }
+
+  onFormValueChange() {
+    this.canLeave = false;
   }
 
   private collectStudentToUpdate(studentToUpdateId: string) {
