@@ -1,0 +1,14 @@
+mat-expansion-panel-header, mat-expansion-panel {
+    padding-left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important
+  }
+  
+mat-card-title,
+mat-card-subtitle.parents {
+  margin-bottom: 0 !important;
+}
+
+mat-panel-title {
+    margin: 0 !important;
+}

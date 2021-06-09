@@ -55,13 +55,11 @@ describe('StudentComponent', () => {
     updateComponent = () => {
       component.ngOnInit();
       fixture.detectChanges();
-    },
-    getMatTitle = () => getByCss('mat-card-title').nativeElement.textContent,
-    getMatDialog = () => getByCss('#STUDENT_DELETE_DIALOG');
+    };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StudentComponent, FakeReceiptsTableComponent],
+      declarations: [StudentComponent, FakeReceiptsTableComponent, FakeStudentInfoComponent],
       imports: [
         FormsModule,
         CommonModule,
@@ -103,13 +101,6 @@ describe('StudentComponent', () => {
     expect(component.student).toEqual(student);
   });
 
-  it('it should render a student correctly', () => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    expect(getMatTitle()).toBe(student.name + ' ' + student.surname);
-  });
-
   it('change internal student according to url change', () => {
     let studentToReturn: Student = { ...student };
     const dbServiceSpy = createGetStSpy(studentToReturn);
@@ -129,14 +120,14 @@ describe('StudentComponent', () => {
     createGetStSpy(studentToReturn);
     paramsSubject.next(params);
     updateComponent();
-    expect(getMatTitle()).toBe(studentToReturn.name + ' ' + studentToReturn.surname);
+    expect(component.student.name).toBe(studentToReturn.name);
     const newId = 's_2',
       newName = 'Carlo';
     studentToReturn.id = newId;
     studentToReturn.name = newName;
     paramsSubject.next({ ...params, id: newId });
     updateComponent();
-    expect(getMatTitle()).toBe(studentToReturn.name + ' ' + studentToReturn.surname);
+    expect(component.student.name).toBe(newName);
   });
 
   it('should render the other template if no student is found', () => {
@@ -272,4 +263,13 @@ export class FakeReceiptsTableComponent {
 
   @Input()
   public owner: Student;
+}
+
+@Component({
+  selector: 'student-info',
+  template: ``,
+})
+export class FakeStudentInfoComponent {
+  @Input()
+  public student: Student;
 }

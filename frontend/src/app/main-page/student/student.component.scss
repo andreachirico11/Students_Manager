@@ -4,15 +4,14 @@ mat-card {
 
 mat-card-header {
   width: 250px;
+  student-info {
+    width: 100%;
+  }
 
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex{
   padding: 0 !important;
-}
-
-::ng-deep mat-expansion-panel-header {
-  padding: 0;
 }
 
 
@@ -25,10 +24,8 @@ mat-card:not(.receipts) {
   gap: 2em;
 
   mat-card-header {
-    mat-expansion-panel-header {
-      padding-left: 0 !important;
-    }
-  }
+    width: 250px;
+  }  
 
   button,
   mat-form-field,
@@ -63,15 +60,6 @@ mat-card:not(.receipts) {
     }
   }
 }
-
-
-
-mat-card-title,
-mat-card-subtitle.parents {
-  margin-bottom: 0 !important;
-}
-
-
 
 @media screen and (min-width: 600px) {
   mat-card:not(.receipts)  {
@@ -112,9 +100,3 @@ mat-card-subtitle.parents {
   }
 }
 
-
-@media screen and (max-width: 340px) {
-  mat-card {
-    padding: 0 !important;
-  }
-}
