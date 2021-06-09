@@ -202,8 +202,8 @@ export function getFakeStudents(): Student[] {
 function getStudent(i: number): Student {
   const addr = i % 3 === 0 ? null : `Via ${getLongString(5)} ${getLongString(5)} ${getRand(50)}`;
   return new Student(
-    'Name_' + i,
-    'Surname_' + i,
+    'Name ' + i,
+    'Surname ' + i,
     getRand(10) + getLongString(1),
     new Date(),
     getLongString(12),
@@ -218,8 +218,8 @@ function getStudent(i: number): Student {
 
 function getParent(i: number): Parent {
   return new Parent(
-    'P_name' + i,
-    'P_surname' + i,
+    'P name' + i,
+    'P surname' + i,
     getLongString(12),
     getLongString(40),
     getRand(1000000)

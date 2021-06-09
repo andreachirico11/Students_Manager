@@ -10,6 +10,7 @@ import { ParentFormComponent } from './student-stepper/parent-form/parent-form.c
 import { StudentFormComponent } from './student-stepper/student-form/student-form.component';
 import { StudentResumeComponent } from './student-stepper/student-resume/student-resume.component';
 import { StudentStepperComponent } from './student-stepper/student-stepper.component';
+import { FormBaseComponent } from './utils/form-base.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
     StudentFormComponent,
     StudentResumeComponent,
     StudentStepperComponent,
+    FormBaseComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
