@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth/auth.service';
 
@@ -11,13 +12,22 @@ import { AuthService } from './auth/auth/auth.service';
 export class AppComponent implements OnInit, OnDestroy {
   private logoutSub: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  param = { value: 'world' };
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private translate: TranslateService
+  ) {}
 
   get isLoggedIn() {
     return this.authService.isUserLoggedAndvalid;
   }
 
   ngOnInit() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('it');
+
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
       this.router.navigate(['enter']);
     });
