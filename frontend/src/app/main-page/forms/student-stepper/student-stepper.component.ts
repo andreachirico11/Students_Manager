@@ -36,18 +36,8 @@ export class StudentStepperComponent implements OnInit {
     }
   }
 
-  onStudentFormEv(student: Partial<Student>) {
-    this.studentCreated = new Student(
-      student.name,
-      student.surname,
-      student.schoolClass,
-      student.dateOfBirth,
-      student.fiscalCode,
-      student.phoneNumber,
-      null,
-      [],
-      student.address
-    );
+  onStudentFormEv(result: any) {
+    this.studentCreated = this.generateStudent(result);
     this.stepper.selected.completed = true;
     this.stepper.next();
   }
@@ -69,9 +59,9 @@ export class StudentStepperComponent implements OnInit {
   }
 
   private collectStudentToUpdate(studentToUpdateId: string) {
-    const stToUp = this.updateDataService.getElementUnderUpdate();
+    const stToUp = this.generateStudent(this.updateDataService.getElementUnderUpdate());
     if (stToUp && stToUp.schoolClass && stToUp.id && stToUp.id === studentToUpdateId) {
-      this.studentUnderUpdate = { ...stToUp };
+      this.studentUnderUpdate = stToUp;
     }
   }
 
@@ -102,6 +92,33 @@ export class StudentStepperComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       callBack();
     });
+  }
+
+  private generateStudent(obj: any): Student {
+    const {
+      name,
+      surname,
+      schoolClass,
+      dateOfBirth,
+      fiscalCode,
+      phoneNumber,
+      parent,
+      address,
+      id,
+    } = obj;
+    return new Student(
+      name,
+      surname,
+      schoolClass,
+      dateOfBirth,
+      fiscalCode,
+      phoneNumber,
+      parent,
+      [],
+      address,
+      '',
+      id
+    );
   }
 
   private resetStepper() {

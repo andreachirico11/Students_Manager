@@ -63,6 +63,32 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit {
           address: new FormControl(null),
         });
         break;
+      case 'StudentForm':
+        this.form = new FormGroup({
+          name: new FormControl(null, [
+            Validators.required,
+            Validators.pattern(AllRegExp.onlyLettersReg),
+          ]),
+          surname: new FormControl(null, [
+            Validators.required,
+            Validators.pattern(AllRegExp.onlyLettersReg),
+          ]),
+          dateOfBirth: new FormControl(null, [Validators.required]),
+          fiscalCode: new FormControl(null, [
+            Validators.required,
+            Validators.pattern(AllRegExp.cfReg),
+          ]),
+          phoneNumber: new FormControl(null, [
+            Validators.required,
+            Validators.pattern(AllRegExp.onlyNumbersReg),
+          ]),
+          address: new FormControl(null),
+          schoolClass: new FormControl(null, [
+            Validators.required,
+            Validators.pattern(AllRegExp.schoolClassReg),
+          ]),
+        });
+        break;
     }
   }
 
@@ -81,8 +107,19 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit {
         break;
       case 'StudentForm':
         if (this.objectToUpdate instanceof Student) {
+          this.form.patchValue({
+            name: this.objectToUpdate.name,
+            surname: this.objectToUpdate.surname,
+            dateOfBirth: this.objectToUpdate.dateOfBirth,
+            fiscalCode: this.objectToUpdate.fiscalCode,
+            phoneNumber: this.objectToUpdate.phoneNumber,
+            address: this.objectToUpdate.address || null,
+            schoolClass: this.objectToUpdate.schoolClass,
+          });
         }
         break;
     }
   }
 }
+
+//controllare che vada e mettere a posto tests

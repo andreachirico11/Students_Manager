@@ -134,7 +134,7 @@ describe('ParentFormComponent', () => {
     fixture.componentInstance.onSubmit();
   });
 
-  it('it load correctly the student on form', () => {
+  it('it load correctly the parent on form', () => {
     const testP = getTestParent();
     component.objectToUpdate = testP;
     component.ngOnInit();

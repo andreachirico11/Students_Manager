@@ -49,7 +49,7 @@ describe('StudentStepperComponent', () => {
     return { name, surname, dateOfBirth, fiscalCode, phoneNumber, address, schoolClass };
   };
   const fillStudentForm = (partialStudent: Partial<Student>) => {
-    studentForm.studentF.patchValue({
+    studentForm.form.patchValue({
       ...partialStudent,
     });
   };
@@ -180,7 +180,7 @@ describe('StudentStepperComponent', () => {
     fixture.detectChanges();
     studentForm.ngOnInit();
     parentForm.ngOnInit();
-    expect(studentForm.studentF.get('name').value).toBe(fakeS.name);
+    expect(studentForm.form.get('name').value).toBe(fakeS.name);
     expect(parentForm.form.get('name').value).toBe(fakeS.parent.name);
   });
 

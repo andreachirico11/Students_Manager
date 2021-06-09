@@ -14,7 +14,7 @@ describe('StudentFormComponent', () => {
   let component: StudentFormComponent;
   let fixture: ComponentFixture<StudentFormComponent>;
 
-  const getControls = () => component.studentF.controls;
+  const getControls = () => component.form.controls;
   const getButton = () => fixture.debugElement.queryAll(By.css('button[type=submit]'))[0];
   const trueFiscalCodes = [
     'MRSLDA02L51D612X',
@@ -33,7 +33,21 @@ describe('StudentFormComponent', () => {
   ];
   const fakeClasses = ['1bc', '2', 'c', 'asdfasdfs', '11', 'aa'];
   const goodClasses = ['1c', '1C'];
-  const testStudent = { ...FAKE_DB.students[0] };
+  const fakeStudent = { ...FAKE_DB.students[0] } as Student;
+  const getTestStudent = () =>
+    new Student(
+      fakeStudent.name,
+      fakeStudent.surname,
+      fakeStudent.schoolClass,
+      fakeStudent.dateOfBirth,
+      fakeStudent.fiscalCode,
+      fakeStudent.phoneNumber,
+      fakeStudent.parent,
+      fakeStudent.receipts,
+      fakeStudent.address,
+      fakeStudent.notes,
+      fakeStudent.id
+    );
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -117,7 +131,7 @@ describe('StudentFormComponent', () => {
   it('expect button to be disabled', () => {
     const isBtnDisabled = () => getButton().nativeElement.disabled;
     expect(isBtnDisabled()).toBeTrue();
-    component.studentF.markAllAsTouched();
+    component.form.markAllAsTouched();
     expect(isBtnDisabled()).toBeTrue();
   });
 
@@ -131,30 +145,31 @@ describe('StudentFormComponent', () => {
       schoolClass: 'a',
       phoneNumber: 123,
     };
-    fixture.componentInstance.partialStudent.subscribe((p) => {
+    fixture.componentInstance.result.subscribe((p) => {
       expect(p).toEqual(st);
     });
-    fixture.componentInstance.studentF.patchValue({
+    fixture.componentInstance.form.patchValue({
       ...st,
     });
     fixture.componentInstance.onSubmit();
   });
 
   it('it load correctly the student on form', () => {
-    component.studentToUpdate = { ...testStudent };
+    const testSt = getTestStudent();
+
+    component.objectToUpdate = testSt;
     component.ngOnInit();
     fixture.detectChanges();
-    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(
-      testStudent.name
-    );
+    expect(fixture.debugElement.queryAll(By.css('input'))[0].nativeElement.value).toBe(testSt.name);
   });
 
   it('expect partial student to be instance of studentToUpdate if provided', () => {
-    component.studentToUpdate = { ...testStudent };
+    const testSt = getTestStudent();
+    component.objectToUpdate = testSt;
     component.ngOnInit();
     fixture.detectChanges();
-    fixture.componentInstance.partialStudent.subscribe((p) => {
-      expect(p.name).toEqual(testStudent.name);
+    fixture.componentInstance.result.subscribe((p) => {
+      expect(p.name).toEqual(testSt.name);
     });
     fixture.componentInstance.onSubmit();
   });
