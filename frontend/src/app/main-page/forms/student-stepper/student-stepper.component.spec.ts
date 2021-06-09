@@ -121,10 +121,10 @@ describe('StudentStepperComponent', () => {
       partialS = getPartialStudent();
     fillStudentForm(partialS);
     studentForm.onSubmit();
-    expect(onStSpy).toHaveBeenCalledOnceWith(partialS);
+    expect(onStSpy).toHaveBeenCalled();
     fillParentForm(fakeStudent.parent);
     parentForm.onSubmit();
-    expect(onParentSpy).toHaveBeenCalledOnceWith(fakeStudent.parent);
+    expect(onParentSpy).toHaveBeenCalled();
     studentResume.okEv.emit();
     expect(onResumeSpy).toHaveBeenCalled();
   });
@@ -169,7 +169,7 @@ describe('StudentStepperComponent', () => {
     fakeParams.id = fakeS.id;
     spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(fakeS);
     component.ngOnInit();
-    expect(component.studentUnderUpdate).toEqual(fakeS);
+    expect(component.studentUnderUpdate.id).toEqual(fakeS.id);
   });
 
   it('fill the components forms correctly', () => {
