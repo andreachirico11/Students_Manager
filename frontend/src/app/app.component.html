@@ -1,6 +1,5 @@
 <mat-toolbar color="primary">
-  <!-- <button [routerLink]="['compilation', 'student', 's_0']">Update Studente 0</button> -->
-  <span [routerLink]="['']" style="cursor: pointer">{{ 'HELLO' | translate }}</span>
+  <span [routerLink]="['']" style="cursor: pointer">{{ 'MAIN_TITLE' | translate }}</span>
   <button *ngIf="isLoggedIn" mat-button type="button" (click)="onLogout()" color="warn">
     <mat-icon color="warn">exit_to_app</mat-icon>
   </button>

@@ -18,6 +18,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { CustomPreloadStrategyService } from './shared/custom-preload-strategy.service';
 import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
+import { TRANSLATE_CONFIG } from './shared/translation-utils';
 
 const routes: Routes = [
   {
@@ -33,10 +34,6 @@ const routes: Routes = [
   },
 ];
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
-}
-
 @NgModule({
   declarations: [AppComponent, ConfirmationDialogComponent],
   imports: [
@@ -50,13 +47,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonModule,
     MatIconModule,
     RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadStrategyService }),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
+    TranslateModule.forRoot(TRANSLATE_CONFIG),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

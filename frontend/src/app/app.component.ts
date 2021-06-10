@@ -12,8 +12,6 @@ import { AuthService } from './auth/auth/auth.service';
 export class AppComponent implements OnInit, OnDestroy {
   private logoutSub: Subscription;
 
-  param = { value: 'world' };
-
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -25,7 +23,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translate.setDefaultLang('en');
     this.translate.use('en');
 
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {

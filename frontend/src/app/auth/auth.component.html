@@ -6,15 +6,17 @@
     <mat-card-content *ngIf="isRegistering; else loginForm">
       <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
         <mat-form-field appearance="fill" color="primary">
-          <mat-label>Name</mat-label>
+          <mat-label>{{ 'AUTH.NAME' | translate }}</mat-label>
           <input matInput ngModel name="name" type="text" required />
-          <mat-error>Please Provide a Name</mat-error>
+          <mat-error>
+            {{ 'AUTH.NAME_ERROR' | translate: { value: 'AUTH.NAME' | translate } }}
+          </mat-error>
           <mat-icon matSuffix color="primary">person</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline" color="primary">
           <mat-label>Email</mat-label>
           <input matInput ngModel name="email" type="email" required email />
-          <mat-error>Please Provide a Valid Email</mat-error>
+          <mat-error>{{ 'AUTH.NAME_ERROR' | translate: { value: 'Email' } }}</mat-error>
           <mat-icon matSuffix color="primary">mail</mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline" color="primary">
@@ -31,28 +33,27 @@
           />
           <mat-icon matSuffix color="primary">lock</mat-icon>
           <mat-error *ngIf="password.errors && password.touched">
-            <span *ngIf="password.errors.required">Password is Required</span>
-            <span *ngIf="password.errors.minlength">Password must be at least 6 characters</span>
+            <span *ngIf="password.errors.required">{{ 'AUTH.PSW_ERROR_1' | translate }}</span>
+            <span *ngIf="password.errors.minlength">{{ 'AUTH.PSW_ERROR_2' | translate }}</span>
             <span *ngIf="!password.errors.required && !password.errors.minlength">
-              {{ pswService.getErrorsText(password.errors)[0] }}
+              {{ pswService.getErrorsText(password.errors)[0] | async }}
             </span>
           </mat-error>
         </mat-form-field>
         <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
-          {{ isRegistering ? 'Register' : 'Login' }}
+          {{ 'AUTH.REGISTER_BUTTON' | translate }}
         </button>
       </form>
     </mat-card-content>
     <mat-card-footer>
       <a mat-button (click)="isRegistering = !isRegistering">
-        {{ isRegistering ? 'Login' : 'Register' }}
+        <span *ngIf="!isRegistering">{{ 'AUTH.REGISTER_BUTTON' | translate }}</span>
+        <span *ngIf="isRegistering">Login</span>
       </a>
-      <a mat-button disabled>Forgot Password?</a>
+      <a mat-button disabled>{{ 'AUTH.FORGOT_BUTTON' | translate }}</a>
     </mat-card-footer>
   </mat-card>
 </ng-container>
-
-<p>entrare con admin@email, admin</p>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 

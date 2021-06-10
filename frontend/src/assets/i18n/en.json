@@ -1,3 +1,14 @@
 {
-    "HELLO": "hellohello"
+    "MAIN_TITLE": "Student Manager",
+    "AUTH": {
+        "NAME": "Name",
+        "NAME_ERROR": "Please provide a valid {{value}}",
+        "PSW_ERROR_1": "Password is Required",
+        "PSW_ERROR_2": "Password must be at least 6 characters",
+        "FORGOT_BUTTON": "Forgot Password?",
+        "REGISTER_BUTTON": "Register"
+    },
+    "PSW_VALIDATION_SERV": {
+        "BASE": "ghasdfjhaslkjhf"
+    }
 }

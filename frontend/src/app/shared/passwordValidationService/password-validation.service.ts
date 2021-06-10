@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { PasswordErrors } from './passwordErrors';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PasswordValidationService {
+export class PasswordValidationService implements OnDestroy {
   private passwordRegexp = {
     symbols: /[$-/:-?{-~!"^_@`\[\]]/,
     lowercase: /[a-z]/,
@@ -12,24 +15,35 @@ export class PasswordValidationService {
     numbers: /[0-9]/,
   };
 
-  constructor() {}
+  constructor(private translate: TranslateService) {
+    console.log('const');
+  }
 
-  public getErrorsText(errs: PasswordErrors): string[] {
-    const output: string[] = [];
-    let baseStr = 'Password should contain at least one ';
-    if (errs.symbols) {
-      output.push(baseStr + 'symbol');
-    }
-    if (errs.lowercase) {
-      output.push(baseStr + 'lowercase letter');
-    }
-    if (errs.uppercase) {
-      output.push(baseStr + 'uppercase letter');
-    }
-    if (errs.numbers) {
-      output.push(baseStr + 'number');
-    }
-    return output;
+  ngOnDestroy() {
+    console.log('destroy');
+  }
+
+  public getErrorsText(errs: PasswordErrors): Observable<string[]> {
+    return this.translate.get('PSW_VALIDATION_SERV').pipe(
+      first(),
+      map((errors: Object) => {
+        const output: string[] = [];
+        let baseStr = errors['BASE'];
+        if (errs.symbols) {
+          output.push(baseStr + 'symbol');
+        }
+        if (errs.lowercase) {
+          output.push(baseStr + 'lowercase letter');
+        }
+        if (errs.uppercase) {
+          output.push(baseStr + 'uppercase letter');
+        }
+        if (errs.numbers) {
+          output.push(baseStr + 'number');
+        }
+        return output;
+      })
+    );
   }
 
   public validatePassword(psw: string): PasswordErrors {

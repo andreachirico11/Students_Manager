@@ -32,9 +32,9 @@ export class FakeInterceptor implements HttpInterceptor {
     if (/login/.test(request.url)) {
       return this.login(request.body);
     }
-    if (!request.headers.has('auth')) {
-      return this.fakeErrorResp();
-    }
+    // if (!request.headers.has('auth')) {
+    //   return this.fakeErrorResp();
+    // }
 
     if (/students/.test(request.url)) {
       if (request.method === 'GET') {
