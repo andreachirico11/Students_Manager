@@ -26,7 +26,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.translate.setDefaultLang('en');
-    this.translate.use('it');
+    this.translate.use('en');
 
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
       this.router.navigate(['enter']);
