@@ -114,7 +114,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             surname: this.objectToUpdate.surname,
             fiscalCode: this.objectToUpdate.fiscalCode,
             phoneNumber: this.objectToUpdate.phoneNumber,
-            address: this.objectToUpdate.address || null,
+            address: this.objectToUpdate.address ?? null,
           });
         }
         break;
@@ -126,7 +126,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             dateOfBirth: this.objectToUpdate.dateOfBirth,
             fiscalCode: this.objectToUpdate.fiscalCode,
             phoneNumber: this.objectToUpdate.phoneNumber,
-            address: this.objectToUpdate.address || null,
+            address: this.objectToUpdate.address ?? null,
             schoolClass: this.objectToUpdate.schoolClass,
           });
         }

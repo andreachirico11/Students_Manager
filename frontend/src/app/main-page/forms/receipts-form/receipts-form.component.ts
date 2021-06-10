@@ -1,16 +1,15 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
-import { IGuardedForm } from '../IGuardedForm';
 import { AllRegExp } from '../utils/allRegExp';
 import { ComponentGuarded } from '../utils/guard-base.component';
 
@@ -31,7 +30,6 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private studentId: string;
   private receiptToUpdateId: string;
-  // private canLeave = false;
   private valueSub: Subscription;
 
   constructor(
@@ -75,13 +73,6 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     this.rForm.controls.paymentDate.setValue('');
   }
 
-  // canDeactivate(): Observable<boolean> {
-  //   if (this.rForm.pristine || this.canLeave) {
-  //     return of(true);
-  //   }
-  //   return this.createGuardDialog().afterClosed();
-  // }
-
   private addNewReceipt() {
     this.formMode = 'Add';
     this.onSubmit = () => this.createAndAdd();
@@ -89,7 +80,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private updatePreviousReceipt() {
     const rToUp = this.updateDataService.getElementUnderUpdate();
-    if (!rToUp || rToUp.number === undefined) {
+    if (!rToUp?.number) {
       return this.router.navigate(['']);
     }
     this.formMode = 'Update';
@@ -153,11 +144,4 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     } the receipt`;
     componentInstance.onlyConfirmation = true;
   }
-
-  // private createGuardDialog(): MatDialogRef<ConfirmationDialogComponent> {
-  //   const ref = this.dialog.open(ConfirmationDialogComponent);
-  //   ref.componentInstance.dialogTitle = 'Some fields are filled';
-  //   ref.componentInstance.dialogSubTitle = 'Wanna Leave?';
-  //   return ref;
-  // }
 }
