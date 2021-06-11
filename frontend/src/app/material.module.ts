@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -37,6 +38,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatStepperModule,
     MatPaginatorModule,
     MatSortModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule {}

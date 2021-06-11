@@ -9,6 +9,10 @@
         "REGISTER_BUTTON": "Register"
     },
     "PSW_VALIDATION_SERV": {
-        "BASE": "ghasdfjhaslkjhf"
+        "BASE": "The Password should contain at least one ",
+        "SYMBOLS": "symbol",
+        "LOWERCASE": "lowercase letter",
+        "UPPERCASE": "uppercase letter",
+        "NUMBERS": "number"
     }
 }

@@ -1,19 +1,30 @@
 import { TestBed } from '@angular/core/testing';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { PasswordValidationService } from './password-validation.service';
+
+const translations = {
+  BASE: 'The Password should contain at least one ',
+  SYMBOLS: 'symbol',
+  LOWERCASE: 'lowercase letter',
+  UPPERCASE: 'uppercase letter',
+  NUMBERS: 'number',
+};
 
 describe('PasswordValidationService', () => {
   let service: PasswordValidationService;
   const goodPasswords = ['aB1!', 'aB1!gfhakadfgil', 'aaaaaaaaBBBBBBBBBBB!!!!!!!!!22222'],
     badPasswords = ['aa', 'aaaaaaaaBBBBBBBBBBB22222', 'aaaaaaaaBBBBBBBBBBB!'],
-    base = 'Password should contain at least one ',
+    base = 'The Password should contain at least one ',
     symbolErr = base + 'symbol',
     numberErr = base + 'number',
     uppercaseErr = base + 'uppercase letter',
     lowercaseErr = base + 'lowercase letter';
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+    });
     service = TestBed.inject(PasswordValidationService);
+    (service as any).errors = translations;
   });
 
   it('should be created', () => {

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { AuthComponent } from './auth.component';
@@ -35,7 +36,7 @@ describe('AuthComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AuthComponent],
-      imports: [AppModule, AuthModule],
+      imports: [AppModule, AuthModule, TranslateModule.forRoot()],
       providers: [{ provide: AuthService, useValue: fakeAuthService }],
     }).compileComponents();
   });

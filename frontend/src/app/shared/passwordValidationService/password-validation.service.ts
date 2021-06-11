@@ -1,13 +1,12 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { PasswordErrors } from './passwordErrors';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PasswordValidationService implements OnDestroy {
+export class PasswordValidationService {
   private passwordRegexp = {
     symbols: /[$-/:-?{-~!"^_@`\[\]]/,
     lowercase: /[a-z]/,
@@ -15,35 +14,28 @@ export class PasswordValidationService implements OnDestroy {
     numbers: /[0-9]/,
   };
 
+  private errors: { [key: string]: 'string' };
+
   constructor(private translate: TranslateService) {
-    console.log('const');
+    this.getTransObject();
   }
 
-  ngOnDestroy() {
-    console.log('destroy');
-  }
-
-  public getErrorsText(errs: PasswordErrors): Observable<string[]> {
-    return this.translate.get('PSW_VALIDATION_SERV').pipe(
-      first(),
-      map((errors: Object) => {
-        const output: string[] = [];
-        let baseStr = errors['BASE'];
-        if (errs.symbols) {
-          output.push(baseStr + 'symbol');
-        }
-        if (errs.lowercase) {
-          output.push(baseStr + 'lowercase letter');
-        }
-        if (errs.uppercase) {
-          output.push(baseStr + 'uppercase letter');
-        }
-        if (errs.numbers) {
-          output.push(baseStr + 'number');
-        }
-        return output;
-      })
-    );
+  public getErrorsText(errs: PasswordErrors): string[] {
+    const output: string[] = [];
+    let baseStr = this.errors['BASE'];
+    if (errs.symbols) {
+      output.push(baseStr + this.errors['SYMBOLS']);
+    }
+    if (errs.lowercase) {
+      output.push(baseStr + this.errors['LOWERCASE']);
+    }
+    if (errs.uppercase) {
+      output.push(baseStr + this.errors['UPPERCASE']);
+    }
+    if (errs.numbers) {
+      output.push(baseStr + this.errors['NUMBERS']);
+    }
+    return output;
   }
 
   public validatePassword(psw: string): PasswordErrors {
@@ -54,5 +46,14 @@ export class PasswordValidationService implements OnDestroy {
       }
     }
     return errors;
+  }
+
+  private getTransObject() {
+    return this.translate
+      .get('PSW_VALIDATION_SERV')
+      .pipe(first())
+      .subscribe((value) => {
+        this.errors = value;
+      });
   }
 }

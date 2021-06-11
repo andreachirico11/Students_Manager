@@ -1,7 +1,10 @@
 <ng-container *ngIf="!isLoading">
   <mat-card class="mat-elevation-z2">
     <mat-card-header>
-      <mat-card-title>{{ isRegistering ? 'Register' : 'Login' }}</mat-card-title>
+      <mat-card-title *ngIf="isRegistering">
+        {{ 'AUTH.REGISTER_BUTTON' | translate }}
+      </mat-card-title>
+      <mat-card-title *ngIf="!isRegistering">Login</mat-card-title>
     </mat-card-header>
     <mat-card-content *ngIf="isRegistering; else loginForm">
       <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
@@ -36,7 +39,7 @@
             <span *ngIf="password.errors.required">{{ 'AUTH.PSW_ERROR_1' | translate }}</span>
             <span *ngIf="password.errors.minlength">{{ 'AUTH.PSW_ERROR_2' | translate }}</span>
             <span *ngIf="!password.errors.required && !password.errors.minlength">
-              {{ pswService.getErrorsText(password.errors)[0] | async }}
+              {{ pswService.getErrorsText(password.errors)[0] }}
             </span>
           </mat-error>
         </mat-form-field>
