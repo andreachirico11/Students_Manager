@@ -2,77 +2,77 @@
   <div mat-subheader>Student</div>
   <mat-list-item>
     <div mat-line>
-      Name:
+      {{ 'FORMS.NAME' | translate }}:
       <b>{{ student.name }}</b>
     </div>
   </mat-list-item>
   <mat-list-item>
     <div mat-line>
-      Surname:
+      {{ 'FORMS.SURNAME' | translate }}:
       <b>{{ student.surname }}</b>
     </div>
   </mat-list-item>
   <mat-list-item>
     <div mat-line>
-      Date Of Birth:
+      {{ 'FORMS.DATE_BIRTH' | translate }}:
       <b>{{ student.dateOfBirth | date }}</b>
     </div>
   </mat-list-item>
   <mat-list-item>
     <div mat-line>
-      Phone Number:
+      {{ 'STUDENT_INFO.PHONE' | translate }}:
       <b>{{ student.phoneNumber }}</b>
     </div>
   </mat-list-item>
   <mat-list-item>
     <div mat-line>
-      School Class:
+      {{ 'STUDENT_INFO.CLASS' | translate }}:
       <b>{{ student.schoolClass }}</b>
     </div>
   </mat-list-item>
   <mat-list-item *ngIf="student.address">
     <div mat-line>
-      Address:
+      {{ 'STUDENT_INFO.ADDRESS' | translate }}:
       <b>{{ student.address }}</b>
     </div>
   </mat-list-item>
   <mat-list-item>
     <div mat-line>
-      Fiscal Code:
+      {{ 'STUDENT_INFO.FISCAL' | translate }}:
       <b>{{ student.fiscalCode }}</b>
     </div>
   </mat-list-item>
   <ng-container *ngIf="student.parent">
     <mat-divider></mat-divider>
-    <div mat-subheader>Parent</div>
+    <div mat-subheader>{{ 'STUDENT_INFO.PARENTS' | translate }}</div>
     <mat-list-item>
       <div mat-line>
-        Name:
+        {{ 'FORMS.NAME' | translate }}:
         <b>{{ student.parent.name }}</b>
       </div>
     </mat-list-item>
     <mat-list-item>
       <div mat-line>
-        Surname:
+        {{ 'FORMS.SURNAME' | translate }}:
         <b>{{ student.parent.surname }}</b>
       </div>
     </mat-list-item>
     <mat-list-item>
       <div mat-line>
-        Phone Number:
+        {{ 'STUDENT_INFO.PHONE' | translate }}:
         <b>{{ student.parent.phoneNumber }}</b>
       </div>
     </mat-list-item>
 
     <mat-list-item *ngIf="student.parent.address">
       <div mat-line>
-        Address:
+        {{ 'STUDENT_INFO.ADDRESS' | translate }}:
         <b>{{ student.parent.address }}</b>
       </div>
     </mat-list-item>
     <mat-list-item>
       <div mat-line>
-        Fiscal Code:
+        {{ 'STUDENT_INFO.FISCAL' | translate }}:
         <b>{{ student.parent.fiscalCode }}</b>
       </div>
     </mat-list-item>

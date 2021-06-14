@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatHorizontalStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
@@ -18,6 +20,7 @@ import { ComponentGuarded } from '../utils/guard-base.component';
 export class StudentStepperComponent extends ComponentGuarded implements OnInit {
   public studentCreated: Student = null;
   public studentUnderUpdate: Student = null;
+  public labels: string[] = [];
 
   @ViewChild(MatHorizontalStepper)
   private stepper: MatHorizontalStepper;
@@ -27,7 +30,8 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     private dataService: DataService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private updateDataService: UpdateDataService<Student>
+    private updateDataService: UpdateDataService<Student>,
+    private translate: TranslateService
   ) {
     super(dialog);
   }
@@ -37,6 +41,10 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     if (studentToUpdateId) {
       this.collectStudentToUpdate(studentToUpdateId);
     }
+    this.translate
+      .get('FORMS.STEPS')
+      .pipe(first())
+      .subscribe((res) => (this.labels = res));
   }
 
   onStudentFormEv(result: any) {
@@ -85,6 +93,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     rObs.subscribe((r) => {
       const addOrUpdat = this.studentUnderUpdate ? 'Updat' : 'Add';
       if (r) {
+        this.canLeave = true;
         this.openDialog(() => this.navigateHome(), `Student ${addOrUpdat}ed Successfully`);
       } else {
         this.openDialog(() => this.resetStepper(), `There was a Problem ${addOrUpdat}ing Student`);

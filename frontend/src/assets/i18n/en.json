@@ -53,11 +53,24 @@
     "FORMS": {
         "TITLE_1": "Update Receipt",
         "TITLE_2": "Add Receipt",
+        "NAME": "Name",
+        "SURNAME": "Surname",
         "NUMBER": "Number",
         "AMOUNT": "Amount",
         "DATE_EM": "Emission Date",
+        "DATE_BIRTH": "Date of Birth",
         "DATE_PAY": "Payment Date",
         "P_TYPE": "Type Of Payment",
-        "P_ERR": "Payment Date Must Be Greater Than Emission Date"
+        "P_ERR": "Payment Date Must Be Greater Than Emission Date",
+        "STEPS": [
+            "Student",
+            "Parent",
+            "Done"
+        ],
+        "ERRORS": {
+            "ONLY_LETTERS": "Only Letters",
+            "INVALID_FORMAT": "Invalid format"
+        },
+        "NEXT": "Next"
     }
 }
