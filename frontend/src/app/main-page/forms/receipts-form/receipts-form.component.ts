@@ -21,7 +21,7 @@ import { ComponentGuarded } from '../utils/guard-base.component';
 })
 export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, OnDestroy {
   public rForm: FormGroup;
-  public formMode: 'Add' | 'Update';
+  public isUpdating: boolean = false;
   public matSelectValues = PaymentTypeValues;
 
   get isTouchUiActivate() {
@@ -74,7 +74,6 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
   }
 
   private addNewReceipt() {
-    this.formMode = 'Add';
     this.onSubmit = () => this.createAndAdd();
   }
 
@@ -83,7 +82,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     if (!rToUp?.number) {
       return this.router.navigate(['']);
     }
-    this.formMode = 'Update';
+    this.isUpdating = true;
     this.onSubmit = () => this.updateExistent();
     this.rForm.patchValue({
       number: rToUp.number,
@@ -139,9 +138,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private onError() {
     const componentInstance = this.dialog.open(ConfirmationDialogComponent).componentInstance;
-    componentInstance.dialogTitle = `There was a problem ${
-      this.formMode === 'Add' ? 'adding' : 'updating'
-    } the receipt`;
+    // componentInstance.dialogTitle = `There was a problem ${
+    //   this.formMode === 'Add' ? 'adding' : 'updating'
+    // } the receipt`;
     componentInstance.onlyConfirmation = true;
   }
 }

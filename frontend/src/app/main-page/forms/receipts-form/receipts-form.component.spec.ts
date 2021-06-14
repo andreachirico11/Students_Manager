@@ -7,6 +7,7 @@ import { MatSelect } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -30,7 +31,6 @@ describe('ReceiptsFormComponent', () => {
         .nativeElement.getAttribute('disabled') === 'true'
     );
   };
-  const getFormTitle = () => fixture.debugElement.query(By.css('h2')).nativeElement.textContent;
   const getInputs = () => fixture.debugElement.queryAll(By.css('input'));
   const getMatError = () => fixture.debugElement.queryAll(By.css('mat-error'));
   const fakeSnapshot = {
@@ -54,6 +54,7 @@ describe('ReceiptsFormComponent', () => {
         BrowserAnimationsModule,
         ReactiveFormsModule,
         HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
       providers: [
         {
@@ -210,14 +211,14 @@ describe('ReceiptsFormComponent', () => {
     };
     component.ngOnInit();
     fixture.detectChanges();
-    expect(getFormTitle()).toBe('Add Receipt');
+    expect(component.isUpdating).toBeFalse();
     _params = {
       id: '123',
     };
     spyOn(updateDataService, 'getElementUnderUpdate').and.returnValue(r);
     component.ngOnInit();
     fixture.detectChanges();
-    expect(getFormTitle()).toBe('Update Receipt');
+    expect(component.isUpdating).toBeTrue();
   });
 
   it('creates a valid receipt', () => {

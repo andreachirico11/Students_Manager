@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { MaterialModule } from 'src/app/material.module';
@@ -67,6 +68,7 @@ describe('StudentComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
         RouterModule.forRoot([]),
+        TranslateModule.forRoot(),
       ],
       providers: [
         {
@@ -134,7 +136,7 @@ describe('StudentComponent', () => {
     createGetStSpy(null);
     paramsSubject.next(params);
     updateComponent();
-    expect(getByCss('mat-card-title').nativeElement.textContent).toEqual('Sorry...');
+    expect(getByCss('.noStudent')).toBeTruthy();
   });
 
   it('should open dialog when remove student is press students', () => {

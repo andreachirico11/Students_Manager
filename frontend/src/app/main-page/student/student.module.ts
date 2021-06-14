@@ -6,9 +6,16 @@ import { ReceiptsActionsComponent } from './receipts/receipts-actions/receipts-a
 import { ReceiptsTableComponent } from './receipts/receipts-table.component';
 import { StudentComponent } from './student.component';
 import { StudentInfoComponent } from './student-info/student-info.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_CONFIG } from 'src/app/shared/translation-utils';
 
 @NgModule({
-  declarations: [StudentComponent, ReceiptsTableComponent, ReceiptsActionsComponent, StudentInfoComponent],
-  imports: [CommonModule, MaterialModule, FormsModule],
+  declarations: [
+    StudentComponent,
+    ReceiptsTableComponent,
+    ReceiptsActionsComponent,
+    StudentInfoComponent,
+  ],
+  imports: [CommonModule, MaterialModule, FormsModule, TranslateModule.forChild(TRANSLATE_CONFIG)],
 })
 export class StudentModule {}

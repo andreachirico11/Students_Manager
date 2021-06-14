@@ -54,6 +54,9 @@ mat-card:not(.receipts) {
   mat-card-content {
     grid-column: 1;
     grid-row: 3;
+    ::ng-deep .mat-form-field-infix {
+      padding: 1em !important;
+    }
     textarea {
       resize: none !important;
       min-height: 100px !important;
@@ -86,8 +89,9 @@ mat-card:not(.receipts) {
     ::ng-deep mat-form-field,
     ::ng-deep .mat-form-field-wrapper,
     ::ng-deep .mat-form-field-flex,
-    ::ng-deep .mat-form-field-infix,
-    textarea {
+    ::ng-deep .mat-form-field-infix
+    // textarea 
+    {
       height: 100% !important;
     }
 

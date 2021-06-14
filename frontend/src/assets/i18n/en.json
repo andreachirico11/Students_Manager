@@ -14,5 +14,50 @@
         "LOWERCASE": "lowercase letter",
         "UPPERCASE": "uppercase letter",
         "NUMBERS": "number"
+    },
+    "STUDENT": {
+        "ST_ACTION_1": "Update note",
+        "ST_ACTION_2": "Edit",
+        "ST_ACTION_3": "Remove",
+        "NOTE_LABEL": "Note",
+        "NO_ST_TITLE": "Sorry...",
+        "NO_ST_CONTENT": "No student was found",
+        "NOTE_UP_FAIL": "Note Update Failed.",
+        "NOTE_UP_SUCC": "The Note Has Been Updated!"
+    },
+    "STUDENT_INFO": {
+        "PHONE": " Phone",
+        "CLASS": "Class",
+        "FISCAL": "CF",
+        "ADDRESS": "Address",
+        "PARENTS": "Parents"
+    },
+    "RECEIPTS": {
+        "T_HEAD_1": "Payed",
+        "T_HEAD_2": "No.",
+        "T_HEAD_3": "Total",
+        "T_HEAD_4": "Emission",
+        "T_HEAD_5": "Payment",
+        "T_HEAD_6": "Method"
+    },
+    "RECEIPTS_AC": {
+        "BTN_1": "Update",
+        "BTN_2": "Delete"
+    },
+    "SIDEBAR": {
+        "ORDER_1": "Name Ascending",
+        "ORDER_2": "Name Descending",
+        "ORDER_3": "Surname Ascending",
+        "ORDER_4": "Surname Descending"
+    },
+    "FORMS": {
+        "TITLE_1": "Update Receipt",
+        "TITLE_2": "Add Receipt",
+        "NUMBER": "Number",
+        "AMOUNT": "Amount",
+        "DATE_EM": "Emission Date",
+        "DATE_PAY": "Payment Date",
+        "P_TYPE": "Type Of Payment",
+        "P_ERR": "Payment Date Must Be Greater Than Emission Date"
     }
 }

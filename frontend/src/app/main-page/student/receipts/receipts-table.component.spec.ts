@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
@@ -41,6 +42,7 @@ describe('ReceiptsTableComponent', () => {
           BrowserAnimationsModule,
           HttpClientTestingModule,
           RouterModule.forRoot([]),
+          TranslateModule.forRoot(),
         ],
         providers: [
           {

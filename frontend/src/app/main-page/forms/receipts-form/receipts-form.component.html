@@ -1,17 +1,18 @@
-<h2>{{ formMode }} Receipt</h2>
+<h2 *ngIf="isUpdating">{{ 'FORMS.TITLE_1' | translate }}</h2>
+<h2 *ngIf="!isUpdating">{{ 'FORMS.TITLE_2' | translate }}</h2>
 <mat-divider></mat-divider>
 <form [formGroup]="rForm" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill">
-    <mat-label>Number</mat-label>
+    <mat-label>{{ 'FORMS.NUMBER' | translate }}</mat-label>
     <input matInput formControlName="number" />
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Amount</mat-label>
+    <mat-label>{{ 'FORMS.AMOUNT' | translate }}</mat-label>
     <input matInput formControlName="amount" />
     <mat-icon matSuffix>euro</mat-icon>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Emission Date</mat-label>
+    <mat-label>{{ 'FORMS.DATE_EM' | translate }}</mat-label>
     <input
       matInput
       #emissionInput
@@ -24,7 +25,7 @@
     <mat-datepicker [touchUi]="isTouchUiActivate" #startPicker disabled="false"></mat-datepicker>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Payment Date</mat-label>
+    <mat-label>{{ 'FORMS.DATE_PAY' | translate }}</mat-label>
     <input
       matInput
       #paymentInput
@@ -33,9 +34,7 @@
       [matDatepicker]="endPicker"
       formControlName="paymentDate"
     />
-    <mat-error *ngIf="formHasDateError()">
-      Payment Date Must Be Greater Than Emission Date
-    </mat-error>
+    <mat-error *ngIf="formHasDateError()">{{ 'FORMS.P_ERR' | translate }}</mat-error>
     <mat-datepicker-toggle matSuffix>
       <mat-icon matDatepickerToggleIcon (click)="clearPaymentDate()">clear</mat-icon>
     </mat-datepicker-toggle>
@@ -43,13 +42,14 @@
     <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Type Of Payment</mat-label>
+    <mat-label>{{ 'FORMS.P_TYPE' | translate }}</mat-label>
     <mat-select formControlName="typeOfPayment">
       <mat-option value=""></mat-option>
       <mat-option *ngFor="let item of matSelectValues" [value]="item">{{ item }}</mat-option>
     </mat-select>
   </mat-form-field>
   <button [disabled]="rForm.invalid" mat-raised-button color="accent" type="submit">
-    {{ formMode }} Receipt
+    <span *ngIf="isUpdating">{{ 'FORMS.TITLE_1' | translate }}</span>
+    <span *ngIf="!isUpdating">{{ 'FORMS.TITLE_2' | translate }}</span>
   </button>
 </form>

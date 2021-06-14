@@ -7,23 +7,37 @@
   <mat-card-subtitle>
     {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
   </mat-card-subtitle>
-  <mat-card-subtitle>Phone: {{ student.phoneNumber }}</mat-card-subtitle>
-  <mat-card-subtitle>Class: {{ student.schoolClass }}</mat-card-subtitle>
-  <mat-card-subtitle>CF: {{ student.fiscalCode }}</mat-card-subtitle>
+  <mat-card-subtitle>
+    {{ 'STUDENT_INFO.PHONE' | translate }}: {{ student.phoneNumber }}
+  </mat-card-subtitle>
+  <mat-card-subtitle>
+    {{ 'STUDENT_INFO.CLASS' | translate }}: {{ student.schoolClass }}
+  </mat-card-subtitle>
+  <mat-card-subtitle>
+    {{ 'STUDENT_INFO.FISCAL' | translate }}: {{ student.fiscalCode }}
+  </mat-card-subtitle>
   <mat-card-subtitle *ngIf="student.address">
-    {{ student.address | titlecase }}
+    {{ 'STUDENT_INFO.ADDRESS' | translate }}: {{ student.address | titlecase }}
   </mat-card-subtitle>
   <mat-expansion-panel class="mat-elevation-z-5">
     <mat-expansion-panel-header>
-      <mat-card-subtitle class="parents">Parent</mat-card-subtitle>
+      <mat-card-subtitle class="parents">
+        {{ 'STUDENT_INFO.PARENTS' | translate }}:
+      </mat-card-subtitle>
     </mat-expansion-panel-header>
     <div>
       <mat-card-subtitle>
         <b>{{ student.parent.name }} {{ student.parent.surname }}</b>
       </mat-card-subtitle>
-      <mat-card-subtitle>Phone: {{ student.parent.phoneNumber }}</mat-card-subtitle>
-      <mat-card-subtitle>CF: {{ student.parent.fiscalCode }}</mat-card-subtitle>
-      <mat-card-subtitle>Address: {{ student.parent.address }}</mat-card-subtitle>
+      <mat-card-subtitle>
+        {{ 'STUDENT_INFO.PHONE' | translate }}: {{ student.parent.phoneNumber }}
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        {{ 'STUDENT_INFO.FISCAL' | translate }}: {{ student.parent.fiscalCode }}
+      </mat-card-subtitle>
+      <mat-card-subtitle>
+        {{ 'STUDENT_INFO.ADDRESS' | translate }}: {{ student.parent.address }}
+      </mat-card-subtitle>
     </div>
   </mat-expansion-panel>
 </mat-expansion-panel>
