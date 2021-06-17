@@ -27,13 +27,14 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   constructor(
     dialog: MatDialog,
+    trans: TranslateService,
     private dataService: DataService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private updateDataService: UpdateDataService<Student>,
     private translate: TranslateService
   ) {
-    super(dialog);
+    super(dialog, trans);
   }
 
   ngOnInit(): void {
@@ -91,12 +92,21 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   private onAddOrUpdateResp(rObs: Observable<boolean>) {
     rObs.subscribe((r) => {
-      const addOrUpdat = this.studentUnderUpdate ? 'Updat' : 'Add';
       if (r) {
         this.canLeave = true;
-        this.openDialog(() => this.navigateHome(), `Student ${addOrUpdat}ed Successfully`);
+        this.openDialog(
+          () => this.navigateHome(),
+          this.studentUnderUpdate
+            ? this.translations['ST_UPDT_SUCC']
+            : this.translations['ST_ADD_SUCC']
+        );
       } else {
-        this.openDialog(() => this.resetStepper(), `There was a Problem ${addOrUpdat}ing Student`);
+        this.openDialog(
+          () => this.resetStepper(),
+          this.studentUnderUpdate
+            ? this.translations['ST_UPDT_ERR']
+            : this.translations['ST_ADD_ERR']
+        );
       }
     });
   }
@@ -105,6 +115,8 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.dialogTitle = title;
     dialogRef.componentInstance.onlyConfirmation = true;
+    dialogRef.componentInstance.successBtnLabel = this.translations['YES'];
+    dialogRef.componentInstance.unsuccessBtnLabel = this.translations['NO'];
     dialogRef.afterClosed().subscribe(() => {
       callBack();
     });

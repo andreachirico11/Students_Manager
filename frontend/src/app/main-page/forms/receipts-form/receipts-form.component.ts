@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
@@ -33,14 +34,15 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
   private valueSub: Subscription;
 
   constructor(
+    dialog: MatDialog,
+    translator: TranslateService,
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
-    dialog: MatDialog,
     private router: Router,
     private updateDataService: UpdateDataService<Receipt>,
     private location: Location
   ) {
-    super(dialog);
+    super(dialog, translator);
   }
 
   ngOnInit(): void {
@@ -138,9 +140,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private onError() {
     const componentInstance = this.dialog.open(ConfirmationDialogComponent).componentInstance;
-    // componentInstance.dialogTitle = `There was a problem ${
-    //   this.formMode === 'Add' ? 'adding' : 'updating'
-    // } the receipt`;
+    componentInstance.successBtnLabel = this.translations['YES'];
+    componentInstance.unsuccessBtnLabel = this.translations['NO'];
+    componentInstance.dialogTitle = this.translations['ERROR'] + this.translations['RECEIPTS'];
     componentInstance.onlyConfirmation = true;
   }
 }

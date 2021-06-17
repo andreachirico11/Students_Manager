@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
@@ -26,8 +25,6 @@ export class ReceiptsTableComponent implements OnInit {
 
   public tableDataSource: MatTableDataSource<IReceiptForTable> = null;
 
-  public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
-
   public displayedColumns = [
     'payed',
     'number',
@@ -46,10 +43,10 @@ export class ReceiptsTableComponent implements OnInit {
 
   constructor(
     private dataS: DataService,
-    private dialog: MatDialog,
     private router: Router,
     private updateDataS: UpdateDataService<Receipt>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private deleteDialog: DeleteConfirmationDialogService
   ) {}
 
   ngOnInit() {
@@ -71,9 +68,7 @@ export class ReceiptsTableComponent implements OnInit {
   }
 
   public deleteReceipt(id: string) {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, { id: 'RECEIPT_DELETE_DIALOG' });
-    this.dialogRef.componentInstance.dialogTitle = 'Do You Really Want To Delete?';
-    this.dialogRef.afterClosed().subscribe((res) => {
+    this.deleteDialog.open().subscribe((res) => {
       if (res) {
         this.dataS.deleteReceipt(id).subscribe((res) => {
           if (res) {

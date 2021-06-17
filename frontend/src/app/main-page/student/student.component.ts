@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 
@@ -24,8 +25,8 @@ export class StudentComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dbService: DataService,
     private router: Router,
-    private dialog: MatDialog,
-    private updateDataService: UpdateDataService<Student>
+    private updateDataService: UpdateDataService<Student>,
+    private deleteDialog: DeleteConfirmationDialogService
   ) {}
 
   ngOnInit() {
@@ -44,9 +45,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   public onDeleteClick() {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, { id: 'STUDENT_DELETE_DIALOG' });
-    this.dialogRef.componentInstance.dialogTitle = 'Do You Really Want To Delete?';
-    this.dialogRef.afterClosed().subscribe((res) => {
+    this.deleteDialog.open('STUDENT_DELETE_DIALOG').subscribe((res) => {
       if (res) {
         this.deleteStudent();
       }

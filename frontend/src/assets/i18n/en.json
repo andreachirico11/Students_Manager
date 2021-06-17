@@ -72,5 +72,20 @@
             "INVALID_FORMAT": "Invalid format"
         },
         "NEXT": "Next"
+    },
+    "DIALOG": {
+        "YES": "Yes",
+        "NO": "No",
+        "ERROR": "There was an error loading the ",
+        "RECEIPTS": "Receipts",
+        "LEAVE": "Wanna Leave?",
+        "FILLED_ERR": "Some fields are filled",
+        "UPDAT": "Updat",
+        "ADD": "Add",
+        "ST_UPDT_SUCC": "Student updated successfully",
+        "ST_UPDT_ERR": "There was a problem updating the student",
+        "ST_ADD_SUCC": "Student added successfully",
+        "ST_ADD_ERR": "There was a problem adding the student",
+        "DELETE_QUEST": "Do You Really Want To Delete?"
     }
 }
