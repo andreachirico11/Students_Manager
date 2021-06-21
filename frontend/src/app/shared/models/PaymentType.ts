@@ -1,7 +1,7 @@
-const moneta = 'Moneta',
-  bonifico = 'Bonifico',
-  bancomat = 'Bancomat';
+const money = 'money',
+  transfer = 'transfer',
+  atm = 'atm';
 
-export const PaymentTypeValues = [moneta, bonifico, bancomat];
+export const PaymentTypeValues = [money, transfer, atm];
 
-export type PaymentType = typeof moneta | typeof bonifico | typeof bancomat;
+export type PaymentType = typeof money | typeof transfer | typeof atm;
