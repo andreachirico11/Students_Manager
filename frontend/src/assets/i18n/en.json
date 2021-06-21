@@ -26,11 +26,11 @@
         "NOTE_UP_SUCC": "The Note Has Been Updated!"
     },
     "STUDENT_INFO": {
-        "PHONE": " Phone",
+        "PHONE": "Phone",
         "CLASS": "Class",
         "FISCAL": "CF",
         "ADDRESS": "Address",
-        "PARENTS": "Parents"
+        "PARENTS": "Parent"
     },
     "RECEIPTS": {
         "T_HEAD_1": "Payed",
@@ -80,12 +80,15 @@
         "RECEIPTS": "Receipts",
         "LEAVE": "Wanna Leave?",
         "FILLED_ERR": "Some fields are filled",
-        "UPDAT": "Updat",
-        "ADD": "Add",
         "ST_UPDT_SUCC": "Student updated successfully",
         "ST_UPDT_ERR": "There was a problem updating the student",
         "ST_ADD_SUCC": "Student added successfully",
         "ST_ADD_ERR": "There was a problem adding the student",
         "DELETE_QUEST": "Do You Really Want To Delete?"
+    },
+    "PAYMENT_TYPES": {
+        "MONEY": "Money",
+        "ATM": "Atm",
+        "TRANSFER": "Transfer"
     }
 }

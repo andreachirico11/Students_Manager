@@ -23,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translate.use('en');
+    this.translate.use('it');
 
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
       this.router.navigate(['enter']);
