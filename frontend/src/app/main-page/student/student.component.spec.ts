@@ -139,17 +139,6 @@ describe('StudentComponent', () => {
     expect(getByCss('.noStudent')).toBeTruthy();
   });
 
-  it('should open dialog when remove student is press students', () => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    expect(component.dialogRef).toBeFalsy();
-    const deleteBtn = getButtons()[2].nativeElement;
-    deleteBtn.click();
-    fixture.detectChanges();
-    expect(component.dialogRef).toBeTruthy();
-  });
-
   it('should launch delete method on true value returned from modal', () => {
     createGetStSpy(student);
     paramsSubject.next(params);
@@ -158,9 +147,7 @@ describe('StudentComponent', () => {
     const deleteBtn = getButtons()[2].nativeElement;
     deleteBtn.click();
     fixture.detectChanges();
-    component.dialogRef.afterClosed().subscribe((res) => {
-      expect(deleteSpy).toHaveBeenCalled();
-    });
+    expect(deleteSpy).toHaveBeenCalled();
   });
 
   it('should remove students', () => {

@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB, getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
@@ -76,6 +77,7 @@ describe('StudentStepperComponent', () => {
         BrowserAnimationsModule,
         ReactiveFormsModule,
         RouterModule.forRoot([]),
+        TranslateModule.forRoot(),
       ],
       providers: [
         {

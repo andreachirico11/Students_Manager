@@ -17,7 +17,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   public student: Student = null;
   public isBadgeOpen = false;
   private paramsSub: Subscription;
-  public dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  public: MatDialogRef<ConfirmationDialogComponent>;
   public isLoading = false;
   public noteUpdating: 'updating' | 'fail' | 'success' = null;
 
