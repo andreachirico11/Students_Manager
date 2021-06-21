@@ -25,7 +25,7 @@ describe('ReceiptsTableComponent', () => {
     fakeFirstRecNumber,
     50,
     new Date(),
-    'Moneta',
+    'money',
     new Date(),
     fakeFirstRecId
   );

@@ -1,6 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
@@ -41,12 +41,12 @@ describe('ReceiptsFormComponent', () => {
       return _queryParams;
     },
   };
-  const r = new Receipt('xzfadfa', 1, new Date(), 'Bancomat', new Date());
+  const r = new Receipt('xzfadfa', 1, new Date(), 'atm', new Date());
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
-      declarations: [ReceiptsFormComponent],
+      declarations: [ReceiptsFormComponent, FakePaymentTypePipe],
       imports: [
         MaterialModule,
         CommonModule,
@@ -277,3 +277,12 @@ describe('ReceiptsFormComponent', () => {
     expect(getInputs()[3].nativeElement.value).toEqual('');
   });
 });
+
+@Pipe({
+  name: 'paymentType',
+})
+export class FakePaymentTypePipe implements PipeTransform {
+  transform(value: any, ...args: any[]) {
+    return 'abc';
+  }
+}

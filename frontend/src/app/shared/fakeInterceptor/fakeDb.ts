@@ -57,7 +57,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 13,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bonifico',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_3',
@@ -65,7 +65,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 14,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Moneta',
+          typeOfPayment: 'atm',
         },
       ],
       address: 'via gianni gianno',
@@ -96,7 +96,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 1,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_2',
@@ -104,7 +104,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 2,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_3',
@@ -112,7 +112,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 3,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_4',
@@ -120,7 +120,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 4,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_5',
@@ -128,7 +128,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 5,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_6',
@@ -136,7 +136,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 6,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_7',
@@ -144,7 +144,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 7,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_1',
@@ -152,7 +152,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 8,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_1',
@@ -160,7 +160,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 9,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_1',
@@ -168,7 +168,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 10,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
         {
           id: 'r_1',
@@ -176,7 +176,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           amount: 11,
           emissionDate: new Date(),
           paymentDate: new Date(),
-          typeOfPayment: 'Bancomat',
+          typeOfPayment: 'atm',
         },
       ],
     },
@@ -242,7 +242,7 @@ function getReceipt(i: number): Receipt {
     getRand(300) + '',
     getRand(30),
     generateRandomDOB(),
-    i % 2 === 0 ? 'Bancomat' : i % 3 === 0 ? 'Bonifico' : 'Moneta',
+    i % 2 === 0 ? 'money' : i % 3 === 0 ? 'transfer' : 'atm',
     new Date(),
     'r_' + randomId()
   );
