@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from 'src/app/material.module';
+import { PaymentPipeModule } from 'src/app/shared/paymentType/payment-pipe-module.module';
 import { PaymentTypePipe } from 'src/app/shared/paymentType/payment-type.pipe';
 import { TRANSLATE_CONFIG } from 'src/app/shared/translation-utils';
 import { FormsGuard } from './forms.guard';
@@ -49,7 +50,6 @@ const routes: Routes = [
     StudentResumeComponent,
     StudentStepperComponent,
     FormBaseComponent,
-    PaymentTypePipe,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -58,6 +58,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     TranslateModule.forChild(TRANSLATE_CONFIG),
+    PaymentPipeModule,
   ],
 })
 export class FormsModule {}

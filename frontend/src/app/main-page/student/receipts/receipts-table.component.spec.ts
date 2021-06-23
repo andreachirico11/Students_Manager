@@ -10,6 +10,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Receipt } from 'src/app/shared/models/Receipts';
+import { PaymentPipeModule } from 'src/app/shared/paymentType/payment-pipe-module.module';
 import { DataService } from '../../data-service/data.service';
 import { ReceiptsActionsComponent } from './receipts-actions/receipts-actions.component';
 import { ReceiptsTableComponent } from './receipts-table.component';
@@ -43,6 +44,7 @@ describe('ReceiptsTableComponent', () => {
           HttpClientTestingModule,
           RouterModule.forRoot([]),
           TranslateModule.forRoot(),
+          PaymentPipeModule,
         ],
         providers: [
           {
