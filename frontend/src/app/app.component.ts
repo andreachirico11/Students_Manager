@@ -23,8 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.translate.use('it');
-
+    this.setTranslateService();
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
       this.router.navigate(['enter']);
     });
@@ -39,5 +38,17 @@ export class AppComponent implements OnInit, OnDestroy {
   onLogout(): void {
     this.authService.logout();
     this.router.navigate(['enter']);
+  }
+
+  onLanChange(newLan: string) {
+    this.translate.use(newLan);
+  }
+
+  private setTranslateService() {
+    let locale = navigator.languages[0] || 'en';
+    if (/-|_/.test(locale)) {
+      locale = locale.split(/-|_/)[0];
+    }
+    this.translate.use(locale);
   }
 }

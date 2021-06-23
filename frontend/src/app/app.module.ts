@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +13,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component';
+import { MaterialModule } from './material.module';
 import { AuthGuard } from './shared/auth.guard';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
@@ -40,11 +42,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
-    MatProgressSpinnerModule,
-    MatToolbarModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
+    MaterialModule,
+    FormsModule,
     RouterModule.forRoot(routes, { preloadingStrategy: CustomPreloadStrategyService }),
     TranslateModule.forRoot(TRANSLATE_CONFIG),
   ],

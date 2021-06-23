@@ -3,5 +3,16 @@
   <button *ngIf="isLoggedIn" mat-button type="button" (click)="onLogout()" color="warn">
     <mat-icon color="warn">exit_to_app</mat-icon>
   </button>
+
+  <div class="mat-select-container">
+    <mat-select-trigger>
+      <mat-icon color="accent">language</mat-icon>
+    </mat-select-trigger>
+
+    <mat-select ngModel (ngModelChange)="onLanChange($event)" *ngIf="!isLoggedIn">
+      <mat-option value="en">English</mat-option>
+      <mat-option value="it">Italiano</mat-option>
+    </mat-select>
+  </div>
 </mat-toolbar>
 <router-outlet></router-outlet>
