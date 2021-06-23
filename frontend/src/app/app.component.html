@@ -4,7 +4,7 @@
     <mat-icon color="warn">exit_to_app</mat-icon>
   </button>
 
-  <div class="mat-select-container">
+  <div class="mat-select-container" *ngIf="!isLoggedIn">
     <mat-select-trigger>
       <mat-icon color="accent">language</mat-icon>
     </mat-select-trigger>
