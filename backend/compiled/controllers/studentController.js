@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteStudent = exports.putStudent = exports.postStudent = exports.getStudent = exports.getAllStudents = void 0;
 var messageEnums_1 = require("../models/messageEnums");
+var receiptModel_1 = require("../models/receiptModel");
 var studentModell_1 = require("../models/studentModell");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function getAllStudents(req, res) {
@@ -35,7 +36,14 @@ function putStudent(req, res) {
 }
 exports.putStudent = putStudent;
 function deleteStudent(req, res) {
-    studentModell_1.StudentModel.deleteOne({ _id: req.params.id })
+    var studentId = req.params.id;
+    studentModell_1.StudentModel.deleteOne({ _id: studentId })
+        .then(function (r) {
+        if (r.deletedCount && r.deletedCount > 0) {
+            return receiptModel_1.ReceiptModel.deleteMany({ _studentId: studentId });
+        }
+        throw new Error();
+    })
         .then(function (r) {
         if (r.deletedCount && r.deletedCount > 0) {
             return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_deleted);

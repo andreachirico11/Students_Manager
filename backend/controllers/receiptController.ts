@@ -8,7 +8,7 @@ import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
   let receiptToSend: IReceipt;
-  ReceiptModelBuilder(req.body)
+  ReceiptModelBuilder(req.body, req.params.studentId)
     .then((receipt) => {
       if (receipt) {
         receiptToSend = receipt;

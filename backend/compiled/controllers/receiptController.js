@@ -7,7 +7,7 @@ var studentModell_1 = require("../models/studentModell");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function postReceipt(req, res) {
     var receiptToSend;
-    receiptModel_1.ReceiptModelBuilder(req.body)
+    receiptModel_1.ReceiptModelBuilder(req.body, req.params.studentId)
         .then(function (receipt) {
         if (receipt) {
             receiptToSend = receipt;

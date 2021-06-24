@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
 import { IStudent } from '../models/interfaces/Student';
 import { ServerMessages, StudentMessages } from '../models/messageEnums';
+import { ReceiptModel } from '../models/receiptModel';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 
@@ -36,7 +37,14 @@ export function putStudent(req: IBackendRequest<IStudent>, res: Response) {
 }
 
 export function deleteStudent(req: IRequest, res: Response) {
-  StudentModel.deleteOne({ _id: req.params.id })
+  const studentId = req.params.id;
+  StudentModel.deleteOne({ _id: studentId })
+    .then((r) => {
+      if (r.deletedCount && r.deletedCount > 0) {
+        return ReceiptModel.deleteMany({ _studentId: studentId });
+      }
+      throw new Error();
+    })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
         return generateHttpRes(res, 200, StudentMessages.student_deleted);

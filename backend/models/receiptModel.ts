@@ -24,9 +24,13 @@ export const ReceiptModel: Model<IMongoReceipt> = model(
       type: String,
       required: true,
     },
+    _studentId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Student',
+    },
   })
 );
 
-export function ReceiptModelBuilder(Receipt: IReceipt) {
-  return ReceiptModel.create(Receipt);
+export function ReceiptModelBuilder(Receipt: IReceipt, studentId: string) {
+  return ReceiptModel.create({ ...Receipt, _studentId: studentId });
 }
