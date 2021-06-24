@@ -14,3 +14,23 @@ export interface IFrontendReceipt extends IReceipt {
 }
 
 export interface IMongoReceipt extends Document, IReceipt {}
+
+export function parseToFront(
+  r: IMongoReceipt | IMongoReceipt[]
+): IFrontendReceipt | IFrontendReceipt[] {
+  if (Array.isArray(r)) {
+    return r.map((rec) => parse(rec));
+  }
+  return parse(r);
+}
+
+function parse(r: IMongoReceipt): IFrontendReceipt {
+  return {
+    amount: r.amount,
+    emissionDate: r.emissionDate,
+    id: r._id,
+    number: r.number,
+    paymentDate: r.paymentDate,
+    typeOfPayment: r.typeOfPayment,
+  };
+}

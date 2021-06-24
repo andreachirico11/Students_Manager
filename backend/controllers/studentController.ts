@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { IBackendRequest, IRequest } from '../models/interfaces/IRequests';
-import { IStudent } from '../models/interfaces/Student';
+import { IStudent, parseToFront } from '../models/interfaces/Student';
 import { ServerMessages, StudentMessages } from '../models/messageEnums';
 import { ReceiptModel } from '../models/receiptModel';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
@@ -8,7 +8,9 @@ import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function getAllStudents(req: IRequest, res: Response) {
   StudentModel.find()
-    .then((allStudent) => generateHttpRes(res, 200, StudentMessages.student_found, allStudent))
+    .then((allStudent) =>
+      generateHttpRes(res, 200, StudentMessages.student_found, parseToFront(allStudent))
+    )
     .catch(() => generateHttpRes(res, 404, StudentMessages.student_not_found));
 }
 
@@ -17,7 +19,7 @@ export function getStudent(req: IRequest, res: Response) {
     .populate('receiptIds')
     .then((found) => {
       if (found) {
-        return generateHttpRes(res, 200, StudentMessages.student_found, found);
+        return generateHttpRes(res, 200, StudentMessages.student_found, parseToFront(found));
       }
       throw new Error();
     })

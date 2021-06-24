@@ -1,13 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteStudent = exports.putStudent = exports.postStudent = exports.getStudent = exports.getAllStudents = void 0;
+var Student_1 = require("../models/interfaces/Student");
 var messageEnums_1 = require("../models/messageEnums");
 var receiptModel_1 = require("../models/receiptModel");
 var studentModell_1 = require("../models/studentModell");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function getAllStudents(req, res) {
     studentModell_1.StudentModel.find()
-        .then(function (allStudent) { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, allStudent); })
+        .then(function (allStudent) {
+        return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, Student_1.parseToFront(allStudent));
+    })
         .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 404, messageEnums_1.StudentMessages.student_not_found); });
 }
 exports.getAllStudents = getAllStudents;
@@ -16,7 +19,7 @@ function getStudent(req, res) {
         .populate('receiptIds')
         .then(function (found) {
         if (found) {
-            return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, found);
+            return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_found, Student_1.parseToFront(found));
         }
         throw new Error();
     })
