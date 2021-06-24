@@ -1,10 +1,12 @@
 "use strict";
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = exports.generateToken = void 0;
 var jsonwebtoken_1 = require("jsonwebtoken");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 var messageEnums_1 = require("../models/messageEnums");
-var longString = process.env.SECRET_AUTH_STRING || 'SECRET_AUTH_STRING';
+var longString = (_a = process.env.SECRET_AUTH_STRING) !== null && _a !== void 0 ? _a : 'SECRET_AUTH_STRING';
+var expirationTime = (_b = process.env.TOKEN_EXPIRATION_DATE) !== null && _b !== void 0 ? _b : '1d';
 function generateToken(user) {
     var userToAttach = {
         email: user.email,
@@ -13,8 +15,8 @@ function generateToken(user) {
         password: user.password,
     };
     return {
-        token: jsonwebtoken_1.sign(userToAttach, longString, { expiresIn: '1h' }),
-        expiresIn: 3600,
+        token: jsonwebtoken_1.sign(userToAttach, longString, { expiresIn: expirationTime }),
+        expiresIn: getExpirationMillis(expirationTime),
     };
 }
 exports.generateToken = generateToken;
@@ -35,4 +37,21 @@ function verifyToken(req, res, next) {
     }
 }
 exports.verifyToken = verifyToken;
+function getExpirationMillis(expirationTime) {
+    var _a = expirationTime
+        .split('')
+        .map(function (x) { return (isNaN(Number(x)) ? x : Number(x)); }), howMany = _a[0], measure = _a[1];
+    if (!howMany || typeof howMany === 'string') {
+        return 86400000;
+    }
+    switch (measure) {
+        case 'd':
+        default:
+            return 86400000 * howMany;
+        case 'h':
+            return 3600000 * howMany;
+        case 'm':
+            return 60000 * howMany;
+    }
+}
 //# sourceMappingURL=webTokenController.js.map

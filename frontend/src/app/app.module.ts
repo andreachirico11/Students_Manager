@@ -2,11 +2,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -18,7 +13,6 @@ import { AuthGuard } from './shared/auth.guard';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { CustomPreloadStrategyService } from './shared/custom-preload-strategy.service';
-import { FakeInterceptor } from './shared/fakeInterceptor/fake.interceptor';
 import { TRANSLATE_CONFIG } from './shared/translation-utils';
 
 const routes: Routes = [
@@ -49,7 +43,7 @@ const routes: Routes = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }, // testing
   ],
   bootstrap: [AppComponent],
 })

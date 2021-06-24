@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.postUser = void 0;
+exports.createAdminUser = exports.getUser = exports.postUser = void 0;
 var bcrypt_1 = require("bcrypt");
 var messageEnums_1 = require("../models/messageEnums");
 var userModel_1 = require("../models/userModel");
@@ -52,4 +52,13 @@ function getUser(req, res) {
         .catch(function (e) { return httpRespGenerator_1.generateHttpRes(res, 404, messageEnums_1.UserMessages.user_not_found); });
 }
 exports.getUser = getUser;
+function createAdminUser(newUser) {
+    bcrypt_1.hash(newUser.password, 10).then(function (hashedPassword) {
+        newUser.password = hashedPassword;
+        userModel_1.UserModelBuilder(newUser).then(function (u) {
+            u.save();
+        });
+    });
+}
+exports.createAdminUser = createAdminUser;
 //# sourceMappingURL=userController.js.map

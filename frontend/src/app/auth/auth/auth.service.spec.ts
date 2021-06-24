@@ -18,7 +18,7 @@ describe('AuthService', () => {
     password = '1234',
     respObj: IHttpResponse<ILoginBackendResponse> = {
       message: '',
-      payload: { expirationDate: new Date().getTime() + idleTimeout * 10, token: faketoken },
+      payload: { expiresIn: new Date().getTime() + idleTimeout * 10, token: faketoken },
     },
     dbUrl = environment.dbUrl;
 
@@ -67,10 +67,9 @@ describe('AuthService', () => {
     controller.verify();
   });
 
-  it('should return false if the token has expired time', fakeAsync(() => {
+  it('should return false if the token has expired', fakeAsync(() => {
     spyOn<any>(service, 'isIdleDateInvalid').and.returnValue(false);
-    const fakePassedTime = 60000,
-      expTestDate = new Date().getTime() + fakePassedTime;
+    const fakePassedTime = 60000;
     service.login(email, password).subscribe((res) => {
       expect(service.isUserLoggedAndvalid).toBeTruthy();
       tick(fakePassedTime + 1);
@@ -82,7 +81,7 @@ describe('AuthService', () => {
       ...respObj,
       payload: {
         ...respObj.payload,
-        expirationDate: expTestDate,
+        expiresIn: fakePassedTime,
       },
     });
     controller.verify();
@@ -118,7 +117,7 @@ describe('AuthService', () => {
       ...respObj,
       payload: { ...respObj.payload },
     };
-    respO.payload.expirationDate = tokenExp;
+    respO.payload.expiresIn = tokenExp;
     request.flush(respO);
     expect(logoutSpy).not.toHaveBeenCalled();
     tick(tokenExp);

@@ -25,5 +25,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController_1.corsController);
 app.use('/api', routes_1.router);
+// createAdminUser({
+//   email: 'admin@email',
+//   name: 'admin',
+//   password: 'admin',
+// });
+// // ACTUAL USER
 app.listen(3210);
 //# sourceMappingURL=server.js.map

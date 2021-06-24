@@ -6,7 +6,8 @@ import { ILoginResponse } from '../models/interfaces/LoginrResponse';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 import { TokenErrors } from '../models/messageEnums';
 
-const longString = process.env.SECRET_AUTH_STRING || 'SECRET_AUTH_STRING';
+const longString = process.env.SECRET_AUTH_STRING ?? 'SECRET_AUTH_STRING';
+const expirationTime = process.env.TOKEN_EXPIRATION_DATE ?? '1d';
 
 export function generateToken(user: IMongoUser): ILoginResponse {
   const userToAttach: IFrontendUser = {
@@ -16,8 +17,8 @@ export function generateToken(user: IMongoUser): ILoginResponse {
     password: user.password,
   };
   return {
-    token: sign(userToAttach, longString, { expiresIn: '1h' }),
-    expiresIn: 3600,
+    token: sign(userToAttach, longString, { expiresIn: expirationTime }),
+    expiresIn: getExpirationMillis(expirationTime),
   };
 }
 
@@ -34,5 +35,23 @@ export function verifyToken(req: IRequest, res: Response, next: NextFunction) {
     next();
   } catch (e) {
     generateHttpRes(res, 401, errorMsg);
+  }
+}
+
+function getExpirationMillis(expirationTime: string) {
+  const [howMany, measure] = expirationTime
+    .split('')
+    .map((x) => (isNaN(Number(x)) ? x : Number(x)));
+  if (!howMany || typeof howMany === 'string') {
+    return 86400000;
+  }
+  switch (measure) {
+    case 'd':
+    default:
+      return 86400000 * howMany;
+    case 'h':
+      return 3600000 * howMany;
+    case 'm':
+      return 60000 * howMany;
   }
 }

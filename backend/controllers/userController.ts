@@ -1,8 +1,8 @@
 import { compare, hash } from 'bcrypt';
 import { Response } from 'express';
-import { ServerMessages, UserMessages } from '../models/messageEnums';
 import { IBackendRequest } from '../models/interfaces/IRequests';
 import { IMongoUser, IUser } from '../models/interfaces/User';
+import { ServerMessages, UserMessages } from '../models/messageEnums';
 import { UserModel, UserModelBuilder } from '../models/userModel';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 import { generateToken } from './webTokenController';
@@ -51,4 +51,13 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
       return generateHttpRes(res, 200, UserMessages.user_found, generateToken(foundUser));
     })
     .catch((e) => generateHttpRes(res, 404, UserMessages.user_not_found));
+}
+
+export function createAdminUser(newUser: IUser) {
+  hash(newUser.password, 10).then((hashedPassword) => {
+    newUser.password = hashedPassword;
+    UserModelBuilder(newUser).then((u) => {
+      u.save();
+    });
+  });
 }

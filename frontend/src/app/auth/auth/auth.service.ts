@@ -58,7 +58,7 @@ export class AuthService {
   }
 
   private startTimers(res: ILoginBackendResponse) {
-    const tokenDelta = res.expirationDate - new Date().getTime();
+    const tokenDelta = res.expiresIn;
     this.startLogoutTimer(this.tokenTimer, tokenDelta);
     this.startLogoutTimer(this.idleTimer, environment.idleTimeout);
   }
@@ -66,7 +66,7 @@ export class AuthService {
   private setItemOnLocalStorage(backendRes: ILoginBackendResponse, idleDate: number) {
     const data: IlocalStorageData = {
       userToken: backendRes.token,
-      tokenExpDate: backendRes.expirationDate,
+      tokenExpDate: this.getActualDateInMs() + backendRes.expiresIn,
       lastActivityTimestamp: idleDate,
     };
     localStorage.setItem(localStorageDataName, JSON.stringify(data));
