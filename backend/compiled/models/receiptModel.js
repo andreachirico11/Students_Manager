@@ -20,7 +20,7 @@ exports.ReceiptModel = mongoose_1.model('Receipt', new mongoose_1.Schema({
         required: true,
     },
     typeOfPayment: {
-        type: Number,
+        type: String,
         required: true,
     },
 }));

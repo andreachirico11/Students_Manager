@@ -15,7 +15,6 @@ function generateToken(user) {
     return {
         token: jsonwebtoken_1.sign(userToAttach, longString, { expiresIn: '1h' }),
         expiresIn: 3600,
-        loggedUserId: user._id,
     };
 }
 exports.generateToken = generateToken;
@@ -32,7 +31,6 @@ function verifyToken(req, res, next) {
         next();
     }
     catch (e) {
-        console.log(e);
         httpRespGenerator_1.generateHttpRes(res, 401, errorMsg);
     }
 }

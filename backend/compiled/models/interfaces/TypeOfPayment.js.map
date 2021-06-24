@@ -1,1 +1,1 @@
-{"version":3,"file":"TypeOfPayment.js","sourceRoot":"","sources":["../../../models/interfaces/TypeOfPayment.ts"],"names":[],"mappings":";;;AAAA,IAAY,aAIX;AAJD,WAAY,aAAa;IACvB,yDAAQ,CAAA;IACR,yDAAQ,CAAA;IACR,yDAAQ,CAAA;AACV,CAAC,EAJW,aAAa,GAAb,qBAAa,KAAb,qBAAa,QAIxB"}
+{"version":3,"file":"TypeOfPayment.js","sourceRoot":"","sources":["../../../models/interfaces/TypeOfPayment.ts"],"names":[],"mappings":";;;AAAA,IAAM,KAAK,GAAG,OAAO,EACnB,QAAQ,GAAG,UAAU,EACrB,GAAG,GAAG,KAAK,CAAC;AAED,QAAA,iBAAiB,GAAG,CAAC,KAAK,EAAE,QAAQ,EAAE,GAAG,CAAC,CAAC"}

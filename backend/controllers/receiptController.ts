@@ -20,7 +20,7 @@ export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
       throw new Error();
     })
     .then(() => generateHttpRes(res, 200, ReceiptMessages.receipt_created, receiptToSend))
-    .catch(() => generateHttpRes(res, 500, ServerMessages.creation_error));
+    .catch((err) => generateHttpRes(res, 500, ServerMessages.creation_error));
 }
 
 export function putReceipt(req: IBackendRequest<IReceipt>, res: Response) {

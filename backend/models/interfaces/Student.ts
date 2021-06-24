@@ -5,12 +5,12 @@ export interface IStudent {
   name: string;
   surname: string;
   dateOfBirth: Date;
-  schoolClass?: string;
-  fiscalCode?: string;
+  schoolClass: string;
+  fiscalCode: string;
   address?: string;
   notes?: string;
-  parents?: IParent[];
-  receiptIds?: string[];
+  parents: IParent[];
+  receiptIds: string[];
 }
 
 export interface IFrontendStudent extends IStudent {

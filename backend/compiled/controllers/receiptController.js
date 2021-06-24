@@ -16,7 +16,7 @@ function postReceipt(req, res) {
         throw new Error();
     })
         .then(function () { return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.ReceiptMessages.receipt_created, receiptToSend); })
-        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
+        .catch(function (err) { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
 }
 exports.postReceipt = postReceipt;
 function putReceipt(req, res) {

@@ -26,11 +26,13 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
         type: Date,
         required: true,
     },
-    shoolClass: {
+    schoolClass: {
         type: String,
+        required: true,
     },
     fiscalCode: {
         type: String,
+        required: true,
     },
     address: {
         type: String,

@@ -16,11 +16,13 @@ export const StudentModel: Model<IMongoStudent> = model(
       type: Date,
       required: true,
     },
-    shoolClass: {
+    schoolClass: {
       type: String,
+      required: true,
     },
     fiscalCode: {
       type: String,
+      required: true,
     },
     address: {
       type: String,
