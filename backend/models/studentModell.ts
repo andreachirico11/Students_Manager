@@ -24,6 +24,10 @@ export const StudentModel: Model<IMongoStudent> = model(
       type: String,
       required: true,
     },
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
     address: {
       type: String,
     },
@@ -36,14 +40,18 @@ export const StudentModel: Model<IMongoStudent> = model(
         ref: 'Receipt',
       },
     ],
-    parents: [
-      {
-        name: { type: String, required: true },
-        surname: { type: String, required: true },
-        dateOfBirth: { type: Date, required: true },
-        fiscalCode: { type: String, required: true },
+    parent: {
+      name: { type: String, required: true },
+      surname: { type: String, required: true },
+      fiscalCode: { type: String, required: true },
+      phoneNumber: {
+        type: Number,
+        required: true,
       },
-    ],
+      address: {
+        type: String,
+      },
+    },
   })
 );
 

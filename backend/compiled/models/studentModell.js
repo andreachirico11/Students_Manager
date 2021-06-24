@@ -34,6 +34,10 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    phoneNumber: {
+        type: Number,
+        required: true,
+    },
     address: {
         type: String,
     },
@@ -46,14 +50,18 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
             ref: 'Receipt',
         },
     ],
-    parents: [
-        {
-            name: { type: String, required: true },
-            surname: { type: String, required: true },
-            dateOfBirth: { type: Date, required: true },
-            fiscalCode: { type: String, required: true },
+    parent: {
+        name: { type: String, required: true },
+        surname: { type: String, required: true },
+        fiscalCode: { type: String, required: true },
+        phoneNumber: {
+            type: Number,
+            required: true,
         },
-    ],
+        address: {
+            type: String,
+        },
+    },
 }));
 function StudentModelBuilder(Student, id) {
     return exports.StudentModel.create(__assign(__assign({}, Student), { id: id }));

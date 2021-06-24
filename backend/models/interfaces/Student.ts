@@ -7,10 +7,11 @@ export interface IStudent {
   dateOfBirth: Date;
   schoolClass: string;
   fiscalCode: string;
+  phoneNumber: number;
+  parent: IParent;
+  receiptIds: string[];
   address?: string;
   notes?: string;
-  parents: IParent[];
-  receiptIds: string[];
 }
 
 export interface IFrontendStudent extends IStudent {
