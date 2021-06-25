@@ -13,7 +13,7 @@ import { DataService } from '../../data-service/data.service';
 import { ComponentGuarded } from '../utils/guard-base.component';
 
 @Component({
-  selector: 'app-student-stepper',
+  selector: 'student-stepper',
   templateUrl: './student-stepper.component.html',
   styleUrls: ['./student-stepper.component.scss'],
 })

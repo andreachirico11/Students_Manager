@@ -76,7 +76,7 @@ export class StudentComponent implements OnInit, OnDestroy {
 
   private loadStudent(id: string) {
     this.isLoading = true;
-    this.dbService.getStudentWithReceipts(id).subscribe((student) => {
+    this.dbService.getStudentWithReceipts(id).subscribe((student: Student) => {
       if (student) {
         this.student = student;
       }

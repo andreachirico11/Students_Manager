@@ -15,7 +15,7 @@ interface IStudentBase {
 }
 
 export interface IStudent extends IStudentBase {
-  receiptIds: (string | IMongoReceipt)[];
+  receiptIds: string[] | IMongoReceipt[];
 }
 
 export interface IFrontendStudent extends IStudentBase {
@@ -36,8 +36,8 @@ export function parseToFront(
 
 function parser(s: IMongoStudent): IFrontendStudent {
   let receipts: IFrontendReceipt[] = [];
-  if (!s.receiptIds.every((obj) => typeof obj === 'string')) {
-    receipts = (s.receiptIds as IMongoReceipt[]).map((rec) => recParser(rec));
+  if (!s.receiptIds.some((obj) => typeof obj === 'string')) {
+    receipts = (s.receiptIds as IMongoReceipt[]).map((rec) => recParser(rec) as IFrontendReceipt);
   }
   return {
     id: s._id,

@@ -5,6 +5,7 @@ import { ServerMessages, StudentMessages } from '../models/messageEnums';
 import { ReceiptModel } from '../models/receiptModel';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
+import { ObjectID } from 'mongodb';
 
 export function getAllStudents(req: IRequest, res: Response) {
   StudentModel.find()
@@ -28,7 +29,7 @@ export function getStudent(req: IRequest, res: Response) {
 
 export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
   StudentModelBuilder(req.body)
-    .then((newS) => generateHttpRes(res, 201, StudentMessages.student_created, newS))
+    .then((newS) => generateHttpRes(res, 201, StudentMessages.student_created, parseToFront(newS)))
     .catch(() => generateHttpRes(res, 500, ServerMessages.creation_error));
 }
 
@@ -40,7 +41,7 @@ export function putStudent(req: IBackendRequest<IStudent>, res: Response) {
 
 export function deleteStudent(req: IRequest, res: Response) {
   const studentId = req.params.id;
-  StudentModel.deleteOne({ _id: studentId })
+  StudentModel.deleteOne({ _id: new ObjectID(studentId) })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
         return ReceiptModel.deleteMany({ _studentId: studentId });
@@ -48,10 +49,14 @@ export function deleteStudent(req: IRequest, res: Response) {
       throw new Error();
     })
     .then((r) => {
-      if (r.deletedCount && r.deletedCount > 0) {
+      if (r.ok) {
         return generateHttpRes(res, 200, StudentMessages.student_deleted);
       }
       throw new Error();
     })
-    .catch(() => generateHttpRes(res, 500, ServerMessages.delete_error));
+    .catch((e) => {
+      console.log(e);
+
+      return generateHttpRes(res, 500, ServerMessages.delete_error);
+    });
 }

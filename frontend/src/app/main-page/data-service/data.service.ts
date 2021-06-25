@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
+import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { environment } from 'src/environments/environment';
@@ -35,7 +36,30 @@ export class DataService {
 
   public getStudentWithReceipts(id: string): Observable<Student> {
     return this.http.get<IHttpResponse<Student>>(this.dbUrl + `students/${id}`).pipe(
-      map((r) => r.payload),
+      map((r) => {
+        if (r.payload) {
+          return new Student(
+            r.payload.name,
+            r.payload.surname,
+            r.payload.schoolClass,
+            r.payload.dateOfBirth,
+            r.payload.fiscalCode,
+            r.payload.phoneNumber,
+            new Parent(
+              r.payload.parent.name,
+              r.payload.parent.surname,
+              r.payload.parent.fiscalCode,
+              r.payload.parent.phoneNumber,
+              r.payload.parent.address
+            ),
+            r.payload.receipts,
+            r.payload.address,
+            r.payload.notes,
+            r.payload.id
+          );
+        }
+        throwError(new Error(''));
+      }),
       catchError((e) => of(null))
     );
   }
