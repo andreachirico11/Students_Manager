@@ -18,11 +18,9 @@ export const ReceiptModel: Model<IMongoReceipt> = model(
     },
     paymentDate: {
       type: Date,
-      required: true,
     },
     typeOfPayment: {
       type: String,
-      required: true,
     },
     _studentId: {
       type: Schema.Types.ObjectId,

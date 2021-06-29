@@ -84,6 +84,10 @@
         "ST_UPDT_ERR": "There was a problem updating the student",
         "ST_ADD_SUCC": "Student added successfully",
         "ST_ADD_ERR": "There was a problem adding the student",
+        "REC_UPDT_SUCC": "Receipt updated successfully",
+        "REC_UPDT_ERR": "There was a problem updating the receipt",
+        "REC_ADD_SUCC": "Receipt added successfully",
+        "REC_ADD_ERR": "There was a problem adding the receipt",
         "DELETE_QUEST": "Do You Really Want To Delete?"
     },
     "PAYMENT_TYPES": {

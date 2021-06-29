@@ -35,7 +35,7 @@ export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
 
 export function putStudent(req: IBackendRequest<IStudent>, res: Response) {
   StudentModel.updateOne({ _id: req.params.id }, req.body)
-    .then((s) => generateHttpRes(res, 200, StudentMessages.student_updated, s))
+    .then((s) => generateHttpRes(res, 200, StudentMessages.student_updated))
     .catch(() => generateHttpRes(res, 500, ServerMessages.update_error));
 }
 

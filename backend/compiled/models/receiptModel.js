@@ -28,11 +28,9 @@ exports.ReceiptModel = mongoose_1.model('Receipt', new mongoose_1.Schema({
     },
     paymentDate: {
         type: Date,
-        required: true,
     },
     typeOfPayment: {
         type: String,
-        required: true,
     },
     _studentId: {
         type: mongoose_1.Schema.Types.ObjectId,

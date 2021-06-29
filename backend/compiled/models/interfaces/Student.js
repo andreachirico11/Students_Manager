@@ -11,7 +11,7 @@ function parseToFront(input) {
 exports.parseToFront = parseToFront;
 function parser(s) {
     var receipts = [];
-    if (!s.receiptIds.every(function (obj) { return typeof obj === 'string'; })) {
+    if (!s.receiptIds.some(function (obj) { return typeof obj === 'string'; })) {
         receipts = s.receiptIds.map(function (rec) { return Receipt_1.parseToFront(rec); });
     }
     return {

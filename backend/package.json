@@ -2,10 +2,10 @@
   "name": "students_manager_rest_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "compiled/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon compiled/server.js"
+    "start": "nodemon --watch compiled/server.js"
   },
   "author": "",
   "license": "ISC",

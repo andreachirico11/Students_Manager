@@ -76,21 +76,19 @@ export class DataService {
   }
 
   public updateStudent(updated: Student): Observable<boolean> {
-    return this.http
-      .put<IHttpResponse<Student>>(this.dbUrl + `students/${updated.id}`, updated)
-      .pipe(
-        tap((res) => {
-          const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
-          this.localStudentDb = [
-            ...this.localStudentDb.slice(0, index),
-            res.payload,
-            ...this.localStudentDb.slice(index + 1),
-          ];
-          this.studentsSubj.next(this.localStudentDb);
-        }),
-        map(() => true),
-        catchError(() => of(false))
-      );
+    return this.http.put<IHttpResponse<null>>(this.dbUrl + `students/${updated.id}`, updated).pipe(
+      tap(() => {
+        const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
+        this.localStudentDb = [
+          ...this.localStudentDb.slice(0, index),
+          updated,
+          ...this.localStudentDb.slice(index + 1),
+        ];
+        this.studentsSubj.next(this.localStudentDb);
+      }),
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 
   public deleteStudent(id: string): Observable<boolean> {

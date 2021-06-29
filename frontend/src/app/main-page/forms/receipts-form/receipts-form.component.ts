@@ -142,7 +142,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     const componentInstance = this.dialog.open(ConfirmationDialogComponent).componentInstance;
     componentInstance.successBtnLabel = this.translations['YES'];
     componentInstance.unsuccessBtnLabel = this.translations['NO'];
-    componentInstance.dialogTitle = this.translations['ERROR'] + this.translations['RECEIPTS'];
+    componentInstance.dialogTitle = this.studentId
+      ? this.translations['REC_UPDT_ERR']
+      : this.translations['REC_ADD_ERR'];
     componentInstance.onlyConfirmation = true;
   }
 }
