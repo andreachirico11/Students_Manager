@@ -137,8 +137,8 @@ describe('StudentStepperComponent', () => {
         fakeStudent.parent.name,
         fakeStudent.parent.surname,
         fakeStudent.parent.fiscalCode,
-        fakeStudent.parent.address,
-        fakeStudent.parent.phoneNumber
+        fakeStudent.parent.phoneNumber,
+        fakeStudent.parent.address
       );
     fillStudentForm(partialS);
     studentForm.onSubmit();

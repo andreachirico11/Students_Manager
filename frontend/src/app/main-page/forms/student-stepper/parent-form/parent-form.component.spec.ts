@@ -38,8 +38,8 @@ describe('ParentFormComponent', () => {
       fakeParent.name,
       fakeParent.surname,
       fakeParent.fiscalCode,
-      fakeParent.address,
-      fakeParent.phoneNumber
+      fakeParent.phoneNumber,
+      fakeParent.address
     );
 
   beforeEach(async () => {

@@ -221,8 +221,8 @@ function getParent(i: number): Parent {
     'P name' + i,
     'P surname' + i,
     getLongString(12),
-    getLongString(40),
-    getRand(1000000)
+    getRand(1000000),
+    getLongString(40)
   );
 }
 
