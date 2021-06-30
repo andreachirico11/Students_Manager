@@ -35,4 +35,4 @@ app.use('/api', router);
 // });
 // // // ACTUAL USER
 
-app.listen(3210);
+app.listen(process.env.PORT ?? 3210);
