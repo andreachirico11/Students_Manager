@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -69,25 +70,19 @@ export class ReceiptsTableComponent implements OnInit {
   }
 
   public deleteReceipt(id: string) {
-    this.deleteDialog.open().subscribe((res) => {
-      if (res) {
-        this.dataS.deleteReceipt(id).subscribe((res) => {
-          if (res) {
-            this.receipts = this.receipts.filter((r) => r.id !== id);
-            this.initDataSource();
-          }
-        });
-      }
-    });
-    // this.deleteDialog.open().pipe(
-    //   switchMap((res) => {
-    //     if (res) {
-    //       return this.dataS.deleteReceipt(id);
-    //     }
-    //     return res
-    //   })
-    // ).subscribe(r => {});
-    // REFACTOR
+    this.deleteDialog
+      .open()
+      .pipe(
+        switchMap((dialogChoice) =>
+          dialogChoice ? this.dataS.deleteReceipt(id) : of(dialogChoice)
+        )
+      )
+      .subscribe((hasBeenDeleted) => {
+        if (hasBeenDeleted) {
+          this.receipts = this.receipts.filter((r) => r.id !== id);
+          this.initDataSource();
+        }
+      });
   }
 
   private initDataSource() {
