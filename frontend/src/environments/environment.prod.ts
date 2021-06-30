@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  dbUrl: 'fakeUrl',
+  dbUrl: 'https://student-manager-1.herokuapp.com/api/',
   idleTimeout: 86400000,
 };

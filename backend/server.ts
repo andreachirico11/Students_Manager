@@ -29,11 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController);
 app.use('/api', router);
 
-createAdminUser({
-  email: 'admin@email',
-  name: 'admin',
-  password: 'admin',
-});
+// createAdminUser({
+//   email: 'admin@email',
+//   name: 'admin',
+//   password: 'admin',
+// });
 // // // ACTUAL USER
 
 app.listen(process.env.PORT ?? 3210);

@@ -8,7 +8,6 @@ var bodyParser = require("body-parser");
 var express = require("express");
 var mongoose = require("mongoose");
 var corsController_1 = require("./controllers/corsController");
-var userController_1 = require("./controllers/userController");
 var routes_1 = require("./routes");
 var app = express();
 var connStr = process.env.MONGO_CONNECTION_STRING;
@@ -27,11 +26,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController_1.corsController);
 app.use('/api', routes_1.router);
-userController_1.createAdminUser({
-    email: 'admin@email',
-    name: 'admin',
-    password: 'admin',
-});
+// createAdminUser({
+//   email: 'admin@email',
+//   name: 'admin',
+//   password: 'admin',
+// });
 // // // ACTUAL USER
 app.listen((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3210);
 //# sourceMappingURL=server.js.map
