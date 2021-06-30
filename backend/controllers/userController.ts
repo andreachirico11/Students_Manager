@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt';
+import { compare, hash, genSalt } from 'bcrypt';
 import { Response } from 'express';
 import { IBackendRequest } from '../models/interfaces/IRequests';
 import { IMongoUser, IUser } from '../models/interfaces/User';
@@ -16,18 +16,27 @@ export function postUser(req: IBackendRequest<IUser>, res: Response) {
   if (!newUser.email || !newUser.password || !newUser.name) {
     return generateHttpRes(res, 500, ServerMessages.creation_error);
   }
-  hash(newUser.password, 10).then((hashedPassword) => {
-    newUser.password = hashedPassword;
-    UserModelBuilder(newUser)
-      .then((u) => {
-        u.save()
-          .then((created) => {
-            return generateHttpRes(res, 200, UserMessages.user_registered, generateToken(created));
-          })
-          .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
-      })
-      .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
-  });
+  genSalt(20)
+    .then((salt) => {
+      return hash(newUser.password, salt);
+    })
+    .then((hashedPassword) => {
+      newUser.password = hashedPassword;
+      UserModelBuilder(newUser)
+        .then((u) => {
+          u.save()
+            .then((created) => {
+              return generateHttpRes(
+                res,
+                200,
+                UserMessages.user_registered,
+                generateToken(created)
+              );
+            })
+            .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
+        })
+        .catch((e) => generateHttpRes(res, 500, ServerMessages.creation_error));
+    });
 }
 
 export function getUser(req: IBackendRequest<IUser>, res: Response) {

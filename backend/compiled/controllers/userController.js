@@ -15,7 +15,11 @@ function postUser(req, res) {
     if (!newUser.email || !newUser.password || !newUser.name) {
         return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error);
     }
-    bcrypt_1.hash(newUser.password, 10).then(function (hashedPassword) {
+    bcrypt_1.genSalt(20)
+        .then(function (salt) {
+        return bcrypt_1.hash(newUser.password, salt);
+    })
+        .then(function (hashedPassword) {
         newUser.password = hashedPassword;
         userModel_1.UserModelBuilder(newUser)
             .then(function (u) {
