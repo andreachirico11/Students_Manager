@@ -6,7 +6,8 @@
         "PSW_ERROR_1": "Password is Required",
         "PSW_ERROR_2": "Password must be at least 6 characters",
         "FORGOT_BUTTON": "Forgot Password?",
-        "REGISTER_BUTTON": "Register"
+        "REGISTER_BUTTON": "Register",
+        "AUTH_FAIL": "Credentials are Wrong or User Does not Exists"
     },
     "PSW_VALIDATION_SERV": {
         "BASE": "The Password should contain at least one ",

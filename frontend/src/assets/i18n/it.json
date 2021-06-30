@@ -6,7 +6,8 @@
         "PSW_ERROR_1": "La Password é obbligatoria",
         "PSW_ERROR_2": "La Password deve essere lunga almeno 6 caratteri",
         "FORGOT_BUTTON": "Password dimenticata?",
-        "REGISTER_BUTTON": "Registrati"
+        "REGISTER_BUTTON": "Registrati",
+        "AUTH_FAIL": "Credenziali Sbagliate o Utente Non Registrato"
     },
     "PSW_VALIDATION_SERV": {
         "BASE": "La Password deve contenere almeno ",

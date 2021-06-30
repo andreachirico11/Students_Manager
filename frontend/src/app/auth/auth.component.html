@@ -75,5 +75,8 @@
     <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
       Login
     </button>
+    <mat-error *ngIf="showErrorMessage" style="margin-top: 1em" class="mat-body-2">
+      {{ 'AUTH.AUTH_FAIL' | translate }}
+    </mat-error>
   </form>
 </ng-template>

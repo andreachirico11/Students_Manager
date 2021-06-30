@@ -13,6 +13,7 @@ export class AuthComponent {
   public isRegistering = false;
   public isLoading = false;
   public titleParam = { value: 'Login' };
+  public showErrorMessage = false;
 
   constructor(
     private router: Router,
@@ -39,6 +40,7 @@ export class AuthComponent {
         for (const control in f.controls) {
           f.controls[control].markAsTouched();
         }
+        this.showErrorMessage = true;
         this.isLoading = false;
       }
     });

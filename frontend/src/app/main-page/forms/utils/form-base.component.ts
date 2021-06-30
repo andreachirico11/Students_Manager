@@ -134,5 +134,3 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
     }
   }
 }
-
-//controllare che vada e mettere a posto tests
