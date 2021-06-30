@@ -5,7 +5,8 @@
   "main": "compiled/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --watch compiled/server.js"
+    "start": "node compiled/server.js",
+    "nodemon": "nodemon --watch compiled/server.js"
   },
   "author": "",
   "license": "ISC",
