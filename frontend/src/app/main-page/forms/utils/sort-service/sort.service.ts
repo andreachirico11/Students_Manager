@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
+import { SortOptions } from 'src/app/shared/models/sort-options';
 import { Student } from 'src/app/shared/models/Student';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SortService {
-  sortStudents(
-    input: Student[],
-    by: 'name' | 'surname',
-    order: 'ascending' | 'descending'
-  ): Student[] {
+  sortStudents(input: Student[], options: SortOptions): Student[] {
     const copy: Student[] = this.copy(input);
     return copy.sort((a, b) =>
-      by === 'name'
-        ? this.compareStrings(a.name, b.name, order)
-        : this.compareStrings(a.surname, b.surname, order)
+      options.by === 'name'
+        ? this.compareStrings(a.name, b.name, options.order)
+        : this.compareStrings(a.surname, b.surname, options.order)
     );
   }
 

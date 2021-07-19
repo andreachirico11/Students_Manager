@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { SortOptions } from 'src/app/shared/models/sort-options';
 import { Student } from 'src/app/shared/models/Student';
 import { SortService } from '../forms/utils/sort-service/sort.service';
 
@@ -14,9 +15,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public students: Student[] = [];
   public sub: Subscription;
 
-  private actualStudentIdLoaded: string = '';
   @Output()
   public linkPressed = new EventEmitter();
+
+  private actualStudentIdLoaded: string = '';
+  private actualSortOptions: SortOptions = { by: 'name', order: 'ascending' };
 
   constructor(
     private dbService: DataService,
@@ -28,7 +31,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
       this.actualStudentIdLoaded = '';
       if (newS && newS.length > 0) {
-        this.students = this.sortService.sortStudents(newS, 'name', 'ascending');
+        this.students = newS;
+        this.changeSortOrder(this.actualSortOptions);
       }
     });
     this.dbService.getStudents().subscribe();
@@ -58,17 +62,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
   orderOnClick(orderCode: number) {
     switch (orderCode) {
       case 1:
-        this.students = this.sortService.sortStudents(this.students, 'name', 'ascending');
+        this.changeSortOrder({ by: 'name', order: 'ascending' });
         break;
       case 2:
-        this.students = this.sortService.sortStudents(this.students, 'name', 'descending');
+        this.changeSortOrder({ by: 'name', order: 'descending' });
         break;
       case 3:
-        this.students = this.sortService.sortStudents(this.students, 'surname', 'ascending');
+        this.changeSortOrder({ by: 'surname', order: 'ascending' });
         break;
       case 4:
-        this.students = this.sortService.sortStudents(this.students, 'surname', 'descending');
+        this.changeSortOrder({ by: 'surname', order: 'descending' });
         break;
     }
+  }
+
+  private changeSortOrder(newOptions: SortOptions) {
+    this.actualSortOptions = newOptions;
+    this.students = this.sortService.sortStudents(this.students, this.actualSortOptions);
   }
 }

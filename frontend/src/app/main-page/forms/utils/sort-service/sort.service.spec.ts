@@ -78,28 +78,40 @@ describe('SortService', () => {
   });
 
   it('should sort an array of students by name', () => {
-    const result: Student[] = service.sortStudents(fakeStudentsDb, 'name', 'ascending');
+    const result: Student[] = service.sortStudents(fakeStudentsDb, {
+      by: 'name',
+      order: 'ascending',
+    });
     expect(result[0].name).toEqual(fakeStudentsDb[2].name);
     expect(result[1].name).toEqual(fakeStudentsDb[1].name);
     expect(result[2].name).toEqual(fakeStudentsDb[0].name);
   });
 
   it('should sort an array of students by surname', () => {
-    const result: Student[] = service.sortStudents(fakeStudentsDb, 'surname', 'ascending');
+    const result: Student[] = service.sortStudents(fakeStudentsDb, {
+      by: 'surname',
+      order: 'ascending',
+    });
     expect(result[0].name).toEqual(fakeStudentsDb[2].name);
     expect(result[1].name).toEqual(fakeStudentsDb[1].name);
     expect(result[2].name).toEqual(fakeStudentsDb[0].name);
   });
 
   it('should sort an array of students by name descending', () => {
-    const result: Student[] = service.sortStudents(fakeStudentsDb, 'name', 'descending');
+    const result: Student[] = service.sortStudents(fakeStudentsDb, {
+      by: 'name',
+      order: 'descending',
+    });
     expect(result[0].name).toEqual(fakeStudentsDb[0].name);
     expect(result[1].name).toEqual(fakeStudentsDb[1].name);
     expect(result[2].name).toEqual(fakeStudentsDb[2].name);
   });
 
   it('should sort an array of students by surname descending', () => {
-    const result: Student[] = service.sortStudents(fakeStudentsDb, 'surname', 'descending');
+    const result: Student[] = service.sortStudents(fakeStudentsDb, {
+      by: 'surname',
+      order: 'descending',
+    });
     expect(result[0].name).toEqual(fakeStudentsDb[0].name);
     expect(result[1].name).toEqual(fakeStudentsDb[1].name);
     expect(result[2].name).toEqual(fakeStudentsDb[2].name);
