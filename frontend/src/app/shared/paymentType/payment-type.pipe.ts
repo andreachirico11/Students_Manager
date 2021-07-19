@@ -22,7 +22,8 @@ export class PaymentTypePipe implements PipeTransform {
     return this.getVal(value);
   }
 
-  private getVal(valName: PaymentType): string {
+  private getVal(valName?: PaymentType): string {
+    if (!valName) return '';
     switch (valName) {
       case 'atm':
         return this.payments['ATM'];

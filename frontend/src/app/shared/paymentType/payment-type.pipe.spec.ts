@@ -35,4 +35,11 @@ describe('PaymentTypePipe', () => {
     expect(pipe.transform('atm')).toBe('Atm');
     expect(pipe.transform('money')).toBe('Money');
   });
+
+  it('get empty if input is empty', () => {
+    const pipe = getPipe();
+    expect(pipe.transform('' as any)).toBe('');
+    expect(pipe.transform(undefined)).toBe('');
+    expect(pipe.transform(null)).toBe('');
+  });
 });
