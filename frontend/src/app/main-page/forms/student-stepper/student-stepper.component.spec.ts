@@ -12,6 +12,7 @@ import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB, getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { ObjectComparatorService } from 'src/app/shared/object-comparator/object-comparator.service';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { ParentFormComponent } from './parent-form/parent-form.component';
@@ -30,6 +31,8 @@ class MockMatDialog {
     };
   }
 }
+
+let ARE_EQUALS = false;
 
 describe('StudentStepperComponent', () => {
   let component: StudentStepperComponent;
@@ -89,6 +92,14 @@ describe('StudentStepperComponent', () => {
           useValue: {
             snapshot: {
               params: fakeParams,
+            },
+          },
+        },
+        {
+          provide: ObjectComparatorService,
+          useValue: {
+            areObjEquals() {
+              return ARE_EQUALS;
             },
           },
         },
@@ -202,7 +213,20 @@ describe('StudentStepperComponent', () => {
     expect(serviceSpy).toHaveBeenCalledWith(updatedFakeS);
   });
 
+  it('should not launch the update if the object has not changed', () => {
+    const fakeS: Student = getFakeTestStudent(),
+      updatedFakeS: Student = { ...fakeS };
+    expect(updatedFakeS === fakeS).toBeFalse();
+    component.studentUnderUpdate = { ...fakeS };
+    component.studentCreated = { ...updatedFakeS };
+    ARE_EQUALS = true;
+    const addUpdateSpy = spyOn<any>(component, 'onAddOrUpdateResp');
+    component.onOk();
+    expect(addUpdateSpy).not.toHaveBeenCalled();
+  });
+
   afterEach(() => {
     fakeParams.id = '';
+    ARE_EQUALS = false;
   });
 });

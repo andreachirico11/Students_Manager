@@ -8,6 +8,7 @@ import { first } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { ObjectComparatorService } from 'src/app/shared/object-comparator/object-comparator.service';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { ComponentGuarded } from '../utils/guard-base.component';
@@ -32,7 +33,8 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private updateDataService: UpdateDataService<Student>,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private objComparatorSrv: ObjectComparatorService
   ) {
     super(dialog, trans);
   }
@@ -83,6 +85,9 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   private updateStudent() {
     this.studentCreated.id = this.studentUnderUpdate.id;
+    if (this.objComparatorSrv.areObjEquals(this.studentCreated, this.studentUnderUpdate)) {
+      return this.navigateHome();
+    }
     this.onAddOrUpdateResp(this.dataService.updateStudent(this.studentCreated));
   }
 
