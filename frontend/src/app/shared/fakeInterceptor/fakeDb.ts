@@ -206,10 +206,10 @@ function getStudent(i: number): Student {
     'Surname ' + i,
     getRand(10) + getLongString(1),
     new Date(),
-    getLongString(12),
     getRand(20),
     getParent(i),
     getFakeReceipts(),
+    getLongString(12),
     addr,
     getLongString(40),
     's_' + randomId()

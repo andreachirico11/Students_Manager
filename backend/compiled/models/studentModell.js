@@ -32,7 +32,6 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
     },
     fiscalCode: {
         type: String,
-        required: true,
     },
     phoneNumber: {
         type: Number,

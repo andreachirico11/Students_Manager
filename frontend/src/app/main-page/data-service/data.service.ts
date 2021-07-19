@@ -43,7 +43,6 @@ export class DataService {
             r.payload.surname,
             r.payload.schoolClass,
             r.payload.dateOfBirth,
-            r.payload.fiscalCode,
             r.payload.phoneNumber,
             new Parent(
               r.payload.parent.name,
@@ -53,6 +52,7 @@ export class DataService {
               r.payload.parent.address
             ),
             r.payload.receipts,
+            r.payload.fiscalCode,
             r.payload.address,
             r.payload.notes,
             r.payload.id

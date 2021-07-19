@@ -30,7 +30,7 @@ export function getStudent(req: IRequest, res: Response) {
 export function postStudent(req: IBackendRequest<IStudent>, res: Response) {
   StudentModelBuilder(req.body)
     .then((newS) => generateHttpRes(res, 201, StudentMessages.student_created, parseToFront(newS)))
-    .catch(() => generateHttpRes(res, 500, ServerMessages.creation_error));
+    .catch((err) => generateHttpRes(res, 500, ServerMessages.creation_error));
 }
 
 export function putStudent(req: IBackendRequest<IStudent>, res: Response) {

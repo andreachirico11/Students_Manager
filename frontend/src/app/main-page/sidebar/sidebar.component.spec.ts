@@ -30,7 +30,6 @@ describe('SidebarComponent', () => {
       'gianni',
       '',
       new Date(),
-      '',
       1,
       {
         name: 'a',
@@ -41,6 +40,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      '',
       '',
       '',
       '1'
@@ -50,7 +50,6 @@ describe('SidebarComponent', () => {
       'gianno',
       '',
       new Date(),
-      '',
       1,
       {
         name: 'a',
@@ -61,6 +60,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      '',
       '',
       '',
       '1'
@@ -70,7 +70,6 @@ describe('SidebarComponent', () => {
       'gianno',
       '',
       new Date(),
-      '',
       1,
       {
         name: 'a',
@@ -81,6 +80,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      '',
       '',
       '',
       '1'

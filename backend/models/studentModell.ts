@@ -22,7 +22,6 @@ export const StudentModel: Model<IMongoStudent> = model(
     },
     fiscalCode: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: Number,

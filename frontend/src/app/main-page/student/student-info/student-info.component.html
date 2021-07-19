@@ -13,7 +13,7 @@
   <mat-card-subtitle>
     {{ 'STUDENT_INFO.CLASS' | translate }}: {{ student.schoolClass }}
   </mat-card-subtitle>
-  <mat-card-subtitle>
+  <mat-card-subtitle *ngIf="student.fiscalCode">
     {{ 'STUDENT_INFO.FISCAL' | translate }}: {{ student.fiscalCode }}
   </mat-card-subtitle>
   <mat-card-subtitle *ngIf="student.address">

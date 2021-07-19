@@ -30,7 +30,7 @@ exports.getStudent = getStudent;
 function postStudent(req, res) {
     studentModell_1.StudentModelBuilder(req.body)
         .then(function (newS) { return httpRespGenerator_1.generateHttpRes(res, 201, messageEnums_1.StudentMessages.student_created, Student_1.parseToFront(newS)); })
-        .catch(function () { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
+        .catch(function (err) { return httpRespGenerator_1.generateHttpRes(res, 500, messageEnums_1.ServerMessages.creation_error); });
 }
 exports.postStudent = postStudent;
 function putStudent(req, res) {
