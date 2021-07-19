@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public linkPressed = new EventEmitter();
 
   private actualStudentIdLoaded: string = '';
-  private actualSortOptions: SortOptions = { by: 'name', order: 'ascending' };
+  private actualSortOptions: SortOptions;
 
   constructor(
     private dbService: DataService,
@@ -28,6 +28,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.actualSortOptions = this.sortService.localStSortOptions ?? {
+      by: 'name',
+      order: 'ascending',
+    };
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
       this.actualStudentIdLoaded = '';
       if (newS && newS.length > 0) {
@@ -78,6 +82,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   private changeSortOrder(newOptions: SortOptions) {
     this.actualSortOptions = newOptions;
+    this.sortService.localStSortOptions = newOptions;
     this.students = this.sortService.sortStudents(this.students, this.actualSortOptions);
   }
 }
