@@ -42,7 +42,7 @@ export const StudentModel: Model<IMongoStudent> = model(
     parent: {
       name: { type: String, required: true },
       surname: { type: String, required: true },
-      fiscalCode: { type: String, required: true },
+      fiscalCode: { type: String },
       phoneNumber: {
         type: Number,
         required: true,

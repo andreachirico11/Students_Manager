@@ -220,8 +220,8 @@ function getParent(i: number): Parent {
   return new Parent(
     'P name' + i,
     'P surname' + i,
-    getLongString(12),
     getRand(1000000),
+    getLongString(12),
     getLongString(40)
   );
 }

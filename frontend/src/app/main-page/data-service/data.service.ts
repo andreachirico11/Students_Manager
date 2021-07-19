@@ -47,8 +47,8 @@ export class DataService {
             new Parent(
               r.payload.parent.name,
               r.payload.parent.surname,
-              r.payload.parent.fiscalCode,
               r.payload.parent.phoneNumber,
+              r.payload.parent.fiscalCode,
               r.payload.parent.address
             ),
             r.payload.receipts,

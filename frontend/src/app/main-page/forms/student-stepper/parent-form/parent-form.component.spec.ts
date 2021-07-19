@@ -37,8 +37,8 @@ describe('ParentFormComponent', () => {
     new Parent(
       fakeParent.name,
       fakeParent.surname,
-      fakeParent.fiscalCode,
       fakeParent.phoneNumber,
+      fakeParent.fiscalCode,
       fakeParent.address
     );
 

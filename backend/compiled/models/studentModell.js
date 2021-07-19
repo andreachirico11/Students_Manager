@@ -52,7 +52,7 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
     parent: {
         name: { type: String, required: true },
         surname: { type: String, required: true },
-        fiscalCode: { type: String, required: true },
+        fiscalCode: { type: String },
         phoneNumber: {
             type: Number,
             required: true,

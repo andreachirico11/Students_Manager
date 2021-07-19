@@ -36,7 +36,7 @@
       <b>{{ student.address }}</b>
     </div>
   </mat-list-item>
-  <mat-list-item>
+  <mat-list-item *ngIf="student.fiscalCode">
     <div mat-line>
       {{ 'STUDENT_INFO.FISCAL' | translate }}:
       <b>{{ student.fiscalCode }}</b>
@@ -70,7 +70,7 @@
         <b>{{ student.parent.address }}</b>
       </div>
     </mat-list-item>
-    <mat-list-item>
+    <mat-list-item *ngIf="student.parent.fiscalCode">
       <div mat-line>
         {{ 'STUDENT_INFO.FISCAL' | translate }}:
         <b>{{ student.parent.fiscalCode }}</b>

@@ -65,10 +65,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             Validators.required,
             Validators.pattern(AllRegExp.onlyLettersReg),
           ]),
-          fiscalCode: new FormControl(null, [
-            Validators.required,
-            Validators.pattern(AllRegExp.cfReg),
-          ]),
+          fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
           phoneNumber: new FormControl(null, [
             Validators.required,
             Validators.pattern(AllRegExp.onlyNumbersReg),
