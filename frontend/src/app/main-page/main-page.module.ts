@@ -3,8 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../material.module';
 import { AuthGuard } from '../shared/auth.guard';
+import { TRANSLATE_CONFIG } from '../shared/translation-utils';
 import { FormsComponent } from './forms/forms.component';
 import { MainPageComponent } from './main-page.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -44,6 +46,7 @@ const routes: Routes = [
     MaterialModule,
     HttpClientModule,
     CommonModule,
+    TranslateModule.forChild(TRANSLATE_CONFIG),
   ],
 })
 export class MainPageModule {}

@@ -6,10 +6,10 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="orderOnClick(1)">Name Ascending</button>
-    <button mat-menu-item (click)="orderOnClick(2)">Name Descending</button>
-    <button mat-menu-item (click)="orderOnClick(3)">Surname Ascending</button>
-    <button mat-menu-item (click)="orderOnClick(4)">Surname Descending</button>
+    <button mat-menu-item (click)="orderOnClick(1)">{{ 'SIDEBAR.ORDER_1' | translate }}</button>
+    <button mat-menu-item (click)="orderOnClick(2)">{{ 'SIDEBAR.ORDER_2' | translate }}</button>
+    <button mat-menu-item (click)="orderOnClick(3)">{{ 'SIDEBAR.ORDER_3' | translate }}</button>
+    <button mat-menu-item (click)="orderOnClick(4)">{{ 'SIDEBAR.ORDER_4' | translate }}</button>
   </mat-menu>
 </div>
 <mat-divider></mat-divider>
