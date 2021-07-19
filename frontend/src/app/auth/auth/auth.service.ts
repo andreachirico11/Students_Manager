@@ -1,7 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, first, map } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IUserRequest } from 'src/app/shared/models/IUserRequest';
 import { environment } from 'src/environments/environment';
@@ -26,7 +29,7 @@ export class AuthService {
     return this.logoutSubject.asObservable();
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private dialog: MatDialog) {}
 
   login(email: string, password: string): Observable<boolean> {
     const body: IUserRequest = {
@@ -75,6 +78,7 @@ export class AuthService {
   private startLogoutTimer(timerRef: any, timeout: number) {
     timerRef = setTimeout(() => {
       this.logout();
+      this.openDialog();
     }, timeout);
   }
 
@@ -108,5 +112,13 @@ export class AuthService {
   private cleanLocalTimers() {
     clearTimeout(this.tokenTimer);
     clearTimeout(this.idleTimer);
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    dialogRef.componentInstance.dialogTitle = 'Session Has Expired';
+    dialogRef.componentInstance.onlyConfirmation = true;
+    dialogRef.componentInstance.successBtnLabel = 'YES';
+    dialogRef.afterClosed().pipe(first()).subscribe();
   }
 }

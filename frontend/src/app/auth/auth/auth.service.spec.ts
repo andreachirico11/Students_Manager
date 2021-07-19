@@ -1,6 +1,8 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterModule } from '@angular/router';
+import { MockMatDialog } from 'src/app/main-page/student/receipts/receipts-table.component.spec';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { environment } from 'src/environments/environment';
 import { IlocalStorageData } from '../IlocalStorageData';
@@ -25,7 +27,13 @@ describe('AuthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterModule.forRoot([])],
-      providers: [{ provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } }],
+      providers: [
+        { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },
+        {
+          provide: MatDialog,
+          useClass: MockMatDialog,
+        },
+      ],
     });
     service = TestBed.inject(AuthService);
     controller = TestBed.inject(HttpTestingController);

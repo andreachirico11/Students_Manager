@@ -13,6 +13,9 @@ export class FormsGuard implements CanDeactivate<unknown> {
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): Observable<boolean> {
+    if (nextState && !!nextState.root.queryParams['redirect']) {
+      return of(true);
+    }
     return component.canDeactivate ? component.canDeactivate() : of(true);
   }
 }

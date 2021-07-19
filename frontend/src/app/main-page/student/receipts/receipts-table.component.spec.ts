@@ -115,7 +115,7 @@ describe('ReceiptsTableComponent', () => {
   });
 });
 
-class MockMatDialog {
+export class MockMatDialog {
   open() {
     return {
       afterClosed: () => of(true),

@@ -38,9 +38,9 @@ function verifyToken(req, res, next) {
 }
 exports.verifyToken = verifyToken;
 function getExpirationMillis(expirationTime) {
-    var _a = expirationTime
-        .split('')
-        .map(function (x) { return (isNaN(Number(x)) ? x : Number(x)); }), howMany = _a[0], measure = _a[1];
+    var _a;
+    var howMany = Number((_a = /[0-9]+/.exec(expirationTime)) !== null && _a !== void 0 ? _a : 1);
+    var measure = expirationTime.slice(-1);
     if (!howMany || typeof howMany === 'string') {
         return 86400000;
     }
@@ -52,6 +52,8 @@ function getExpirationMillis(expirationTime) {
             return 3600000 * howMany;
         case 'm':
             return 60000 * howMany;
+        case 's':
+            return 1000 * howMany;
     }
 }
 //# sourceMappingURL=webTokenController.js.map

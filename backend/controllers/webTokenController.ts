@@ -39,9 +39,8 @@ export function verifyToken(req: IRequest, res: Response, next: NextFunction) {
 }
 
 function getExpirationMillis(expirationTime: string) {
-  const [howMany, measure] = expirationTime
-    .split('')
-    .map((x) => (isNaN(Number(x)) ? x : Number(x)));
+  const howMany = Number(/[0-9]+/.exec(expirationTime) ?? 1);
+  const measure = expirationTime.slice(-1);
   if (!howMany || typeof howMany === 'string') {
     return 86400000;
   }
@@ -53,5 +52,7 @@ function getExpirationMillis(expirationTime: string) {
       return 3600000 * howMany;
     case 'm':
       return 60000 * howMany;
+    case 's':
+      return 1000 * howMany;
   }
 }
