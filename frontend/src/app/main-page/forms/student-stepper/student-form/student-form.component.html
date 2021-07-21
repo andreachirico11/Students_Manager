@@ -1,43 +1,43 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'FORMS.NAME' | translate }}</mat-label>
     <input matInput formControlName="name" />
     <mat-error *ngIf="patternErrorChecker('name')">
       {{ 'FORMS.ERRORS.ONLY_LETTERS' | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'FORMS.SURNAME' | translate }}</mat-label>
     <input matInput formControlName="surname" />
     <mat-error *ngIf="patternErrorChecker('surname')">
       {{ 'FORMS.ERRORS.ONLY_LETTERS' | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill" (click)="picker.open()">
+  <mat-form-field appearance="fill" color="accent" (click)="picker.open()">
     <mat-label>{{ 'FORMS.DATE_BIRTH' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker [touchUi]="isTouchUiActivate" #picker></mat-datepicker>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'STUDENT_INFO.FISCAL' | translate }}</mat-label>
     <input matInput formControlName="fiscalCode" style="text-transform: uppercase" />
     <mat-error *ngIf="patternErrorChecker('fiscalCode')">
       {{ 'FORMS.ERRORS.INVALID_FORMAT' | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'STUDENT_INFO.PHONE' | translate }}</mat-label>
     <input matInput formControlName="phoneNumber" />
     <mat-error *ngIf="patternErrorChecker('fiscalCode')">
       {{ 'FORMS.ERRORS.INVALID_FORMAT' | translate }}
     </mat-error>
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'STUDENT_INFO.ADDRESS' | translate }}</mat-label>
     <input matInput formControlName="address" />
   </mat-form-field>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" color="accent">
     <mat-label>{{ 'STUDENT_INFO.CLASS' | translate }}</mat-label>
     <input matInput formControlName="schoolClass" />
     <mat-error *ngIf="patternErrorChecker('schoolClass')">

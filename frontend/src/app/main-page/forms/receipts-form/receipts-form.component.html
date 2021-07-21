@@ -5,16 +5,16 @@
   </mat-card-title>
   <mat-card-content>
     <form [formGroup]="rForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>{{ 'FORMS.NUMBER' | translate }}</mat-label>
         <input matInput formControlName="number" />
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>{{ 'FORMS.AMOUNT' | translate }}</mat-label>
         <input matInput formControlName="amount" />
-        <mat-icon matSuffix>euro</mat-icon>
+        <mat-icon matSuffix color="primary">euro</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>{{ 'FORMS.DATE_EM' | translate }}</mat-label>
         <input
           matInput
@@ -31,7 +31,7 @@
           disabled="false"
         ></mat-datepicker>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>{{ 'FORMS.DATE_PAY' | translate }}</mat-label>
         <input
           matInput
@@ -48,7 +48,7 @@
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>{{ 'FORMS.P_TYPE' | translate }}</mat-label>
         <mat-select formControlName="typeOfPayment">
           <mat-option value=""></mat-option>

@@ -12,16 +12,16 @@
       >
         {{ 'STUDENT.ST_ACTION_1' | translate }}
       </button>
-      <button mat-stroked-button color="accent" (click)="onEditClick()">
+      <button mat-stroked-button (click)="onEditClick()">
         {{ 'STUDENT.ST_ACTION_2' | translate }}
       </button>
-      <button mat-stroked-button color="warn" (click)="onDeleteClick()">
+      <button mat-stroked-button (click)="onDeleteClick()">
         {{ 'STUDENT.ST_ACTION_3' | translate }}
       </button>
     </mat-action-list>
 
     <mat-card-content>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" color="warn">
         <mat-label>{{ 'STUDENT.NOTE_LABEL' | translate }}</mat-label>
         <textarea matInput [(ngModel)]="student.notes"></textarea>
       </mat-form-field>
@@ -47,7 +47,7 @@
 <ng-template #noteUpdatingTemplates>
   <div [ngSwitch]="noteUpdating">
     <div class="note-update-container" *ngSwitchCase="'updating'">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
     </div>
     <div class="note-update-container" *ngSwitchCase="'fail'">
       <span>{{ 'STUDENT.NOTE_UP_SUCC' | translate }}</span>

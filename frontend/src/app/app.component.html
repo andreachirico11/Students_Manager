@@ -1,20 +1,22 @@
-<mat-toolbar color="primary">
-  <span [routerLink]="['']" style="cursor: pointer">{{ 'MAIN_TITLE' | translate }}</span>
-  <div class="controls-container">
-    <button mat-icon-button color="accent">
-      <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>
-      <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode</mat-icon>
-    </button>
-    <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="warn">
-      <mat-icon color="warn">exit_to_app</mat-icon>
-    </button>
-    <button *ngIf="!isLoggedIn" mat-icon-button (click)="matLanSelect.open()">
-      <mat-icon color="accent">language</mat-icon>
-    </button>
-    <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
-      <mat-option value="en">English</mat-option>
-      <mat-option value="it">Italiano</mat-option>
-    </mat-select>
-  </div>
-</mat-toolbar>
-<router-outlet></router-outlet>
+<mat-drawer-container>
+  <mat-toolbar color="primary">
+    <span [routerLink]="['']" style="cursor: pointer">{{ 'MAIN_TITLE' | translate }}</span>
+    <div class="controls-container">
+      <button mat-icon-button color="accent">
+        <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>
+        <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode</mat-icon>
+      </button>
+      <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="warn">
+        <mat-icon color="warn">exit_to_app</mat-icon>
+      </button>
+      <button *ngIf="!isLoggedIn" mat-icon-button (click)="matLanSelect.open()">
+        <mat-icon color="warn">language</mat-icon>
+      </button>
+      <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
+        <mat-option value="en">English</mat-option>
+        <mat-option value="it">Italiano</mat-option>
+      </mat-select>
+    </div>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
+</mat-drawer-container>

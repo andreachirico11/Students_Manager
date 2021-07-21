@@ -1,9 +1,9 @@
 <button mat-icon-button [matMenuTriggerFor]="menu">
-  <mat-icon>more_vert</mat-icon>
+  <mat-icon color="warn">more_vert</mat-icon>
 </button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="emit('update')">
-    <mat-icon>create</mat-icon>
+    <mat-icon color="accent">create</mat-icon>
     <span>{{ 'RECEIPTS_AC.BTN_1' | translate }}</span>
   </button>
   <button mat-menu-item (click)="emit('delete')">

@@ -1,15 +1,15 @@
 :host {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
 }
 
 .button-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .sidebar-container {
-    overflow-y: scroll;
-    flex-grow: 1;
+  overflow-y: scroll;
+  flex-grow: 1;
 }
