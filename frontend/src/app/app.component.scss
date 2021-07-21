@@ -1,16 +1,22 @@
 mat-toolbar {
-    display: flex;
-    justify-content: space-between;
-    height: 60px;
+  display: flex;
+  justify-content: space-between;
+  height: 60px !important;
 }
 
+.controls-container {
+  display: flex;
+}
 
 .mat-select-container {
-    width: 40px;
+  width: 40px;
 }
 
 mat-select {
-    width: 10px;
-    font-size: .8em !important;
-    
+  width: 10px;
+  font-size: 0.8em !important;
+}
+
+::ng-deep .mat-select-arrow {
+  display: none;
 }

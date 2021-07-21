@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth/auth.service';
+import { ThemeService } from './shared/theme-service/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,13 @@ import { AuthService } from './auth/auth/auth.service';
 export class AppComponent implements OnInit, OnDestroy {
   private logoutSub: Subscription;
   private _isInDarkMode = false;
+  private themeSub: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private themeService: ThemeService
   ) {}
 
   get isLoggedIn() {
@@ -29,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.themeService.isInDarkMode$.subscribe((trueOrFalse) => (this._isInDarkMode = trueOrFalse));
     this.setTranslateService();
     this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
       this.router.navigate(['enter'], {
@@ -43,6 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.logoutSub) {
       this.logoutSub.unsubscribe();
     }
+    if (this.themeSub) {
+      this.themeSub.unsubscribe();
+    }
   }
 
   onLogout(): void {
@@ -52,6 +59,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onLanChange(newLan: string) {
     this.translate.use(newLan);
+  }
+
+  toggleDarkMode(trueOrFalse: boolean) {
+    this.themeService.switchMode(trueOrFalse);
   }
 
   private setTranslateService() {

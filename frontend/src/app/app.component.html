@@ -1,15 +1,17 @@
 <mat-toolbar color="primary">
   <span [routerLink]="['']" style="cursor: pointer">{{ 'MAIN_TITLE' | translate }}</span>
-  <button *ngIf="isLoggedIn" mat-button type="button" (click)="onLogout()" color="warn">
-    <mat-icon color="warn">exit_to_app</mat-icon>
-  </button>
-
-  <div class="mat-select-container" *ngIf="!isLoggedIn">
-    <mat-select-trigger>
+  <div class="controls-container">
+    <button mat-icon-button color="accent">
+      <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>
+      <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode</mat-icon>
+    </button>
+    <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="warn">
+      <mat-icon color="warn">exit_to_app</mat-icon>
+    </button>
+    <button *ngIf="!isLoggedIn" mat-icon-button (click)="matLanSelect.open()">
       <mat-icon color="accent">language</mat-icon>
-    </mat-select-trigger>
-
-    <mat-select ngModel (ngModelChange)="onLanChange($event)" *ngIf="!isLoggedIn">
+    </button>
+    <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
       <mat-option value="en">English</mat-option>
       <mat-option value="it">Italiano</mat-option>
     </mat-select>
