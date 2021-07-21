@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { AuthService } from './auth/auth/auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   private logoutSub: Subscription;
+  private _isInDarkMode = false;
 
   constructor(
     private authService: AuthService,
@@ -20,6 +21,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   get isLoggedIn() {
     return this.authService.isUserLoggedAndvalid;
+  }
+
+  @HostBinding('class.dark-mode')
+  get isInDarkMode() {
+    return this._isInDarkMode;
   }
 
   ngOnInit() {
