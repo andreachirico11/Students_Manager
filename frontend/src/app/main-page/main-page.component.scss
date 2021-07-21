@@ -1,14 +1,14 @@
 mat-drawer-container {
   height: calc(100% - 60px);
 }
-  
-  mat-drawer-content {
-    padding: 2em;
-    background-image: url('../../assets/gatto.jpeg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
+
+mat-drawer-content {
+  padding: 2em;
+  background-image: url('../../assets/gatto.jpeg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 button {
   position: fixed;
@@ -18,7 +18,7 @@ button {
   z-index: 100;
 }
 
-::ng-deep .mat-button-wrapper  {
+::ng-deep .mat-button-wrapper {
   padding: 0 !important;
 }
 
@@ -27,18 +27,14 @@ mat-drawer {
 }
 
 @media screen and (min-width: 1000px) {
-    
   mat-drawer-content {
     background-size: 790px;
   }
-  
 }
 
 @media screen and (max-width: 340px) {
   mat-drawer-content {
-
     padding-left: 1em !important;
     padding-right: 1em !important;
-
   }
 }

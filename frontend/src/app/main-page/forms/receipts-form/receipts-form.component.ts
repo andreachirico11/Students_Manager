@@ -15,7 +15,7 @@ import { AllRegExp } from '../utils/allRegExp';
 import { ComponentGuarded } from '../utils/guard-base.component';
 
 @Component({
-  selector: 'app-receipts-form',
+  selector: 'receipts-form',
   templateUrl: './receipts-form.component.html',
   styleUrls: ['./receipts-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
