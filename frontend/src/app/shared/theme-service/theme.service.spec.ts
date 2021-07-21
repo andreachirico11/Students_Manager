@@ -36,4 +36,22 @@ describe('ThemeService', () => {
       expect(e).toBe(getIfBrowserIsDark());
     });
   });
+
+  it('should put the value in local storage', () => {
+    if (getIfBrowserIsDark()) {
+      expect(service['getFromLocalStorage']()).toBeTrue();
+    } else {
+      expect(service['getFromLocalStorage']()).toBeFalse();
+    }
+  });
+
+  it('should add the value to local S', () => {
+    service.switchMode(true);
+    expect(service['getFromLocalStorage']()).toBeTrue();
+  });
+
+  it('should remove the value from local S', () => {
+    service.switchMode(false);
+    expect(service['getFromLocalStorage']()).toBeFalse();
+  });
 });
