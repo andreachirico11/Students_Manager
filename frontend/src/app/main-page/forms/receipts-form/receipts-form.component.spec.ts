@@ -108,12 +108,21 @@ describe('ReceiptsFormComponent', () => {
     amount.setValue(123);
     expect(amount.invalid).toBeFalsy('test-2');
     amount.setValue('123a');
-    amount.markAsTouched();
     expect(amount.invalid).toBeTruthy('test-3');
     amount.setValue('a');
     expect(amount.invalid).toBeTruthy('test-4');
     amount.setValue('');
     expect(amount.invalid).toBeTruthy('test-5');
+    amount.setValue('1.1234234');
+    expect(amount.invalid).toBeFalsy('test-6');
+    amount.setValue('0.2');
+    expect(amount.invalid).toBeFalsy('test-7');
+    amount.setValue('.1231');
+    expect(amount.invalid).toBeTruthy('test-8');
+    amount.setValue('2343.23');
+    expect(amount.invalid).toBeFalsy('test-9');
+    amount.setValue('1234.');
+    expect(amount.invalid).toBeTruthy('test-10');
   });
 
   it('opens the calendar on date input click', () => {
