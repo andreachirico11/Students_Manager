@@ -48,10 +48,10 @@
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
       </mat-form-field>
-      <mat-form-field appearance="fill" color="accent">
+      <mat-form-field appearance="fill">
         <mat-label>{{ 'FORMS.P_TYPE' | translate }}</mat-label>
         <mat-select formControlName="typeOfPayment">
-          <mat-option value=""></mat-option>
+          <mat-option>{{ 'FORMS.EMPTY_VAL' | translate }}</mat-option>
           <mat-option *ngFor="let item of matSelectValues" [value]="item">
             {{ item | paymentType }}
           </mat-option>

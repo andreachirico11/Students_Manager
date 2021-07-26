@@ -72,7 +72,8 @@
             "ONLY_LETTERS": "Only Letters",
             "INVALID_FORMAT": "Invalid format"
         },
-        "NEXT": "Next"
+        "NEXT": "Next",
+        "EMPTY_VAL": "None"
     },
     "DIALOG": {
         "YES": "Yes",

@@ -3,3 +3,8 @@
 mat-card {
   padding: 2em !important;
 }
+
+::ng-deep.mat-select-value {
+  width: 500px !important;
+  max-width: unset !important;
+}

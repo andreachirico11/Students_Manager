@@ -1,7 +1,8 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -45,6 +46,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     super(dialog, translator);
   }
 
+  @ViewChild(MatSelect)
+  public select: MatSelect;
+
   ngOnInit(): void {
     this.initForm();
     this.studentId = this.activatedRoute.snapshot.params['studentId'];
@@ -56,7 +60,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     } else {
       this.router.navigate(['']);
     }
-    this.valueSub = this.rForm.valueChanges.subscribe(() => {
+    this.valueSub = this.rForm.valueChanges.subscribe((x) => {
       this.canLeave = false;
     });
   }
@@ -126,7 +130,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private collectInputs(): Receipt {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = this.rForm.value;
-    return new Receipt(number, amount, emissionDate, typeOfPayment, paymentDate);
+    return new Receipt(number, amount, emissionDate, typeOfPayment ?? '', paymentDate);
   }
 
   private onResponse(r: boolean) {
