@@ -9,13 +9,15 @@
       <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="warn">
         <mat-icon color="warn">exit_to_app</mat-icon>
       </button>
-      <button *ngIf="!isLoggedIn" mat-icon-button (click)="matLanSelect.open()">
-        <mat-icon color="warn">language</mat-icon>
-      </button>
-      <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
-        <mat-option value="en">English</mat-option>
-        <mat-option value="it">Italiano</mat-option>
-      </mat-select>
+      <ng-container *ngIf="!isLoggedIn">
+        <button mat-icon-button (click)="matLanSelect.open()">
+          <mat-icon color="warn">language</mat-icon>
+        </button>
+        <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
+          <mat-option value="en">English</mat-option>
+          <mat-option value="it">Italiano</mat-option>
+        </mat-select>
+      </ng-container>
     </div>
   </mat-toolbar>
   <router-outlet></router-outlet>
