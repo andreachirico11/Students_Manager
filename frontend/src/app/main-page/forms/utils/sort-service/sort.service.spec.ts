@@ -9,9 +9,6 @@ describe('SortService', () => {
     new Student(
       'giannino',
       'carlino',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -21,6 +18,9 @@ describe('SortService', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',
@@ -29,9 +29,6 @@ describe('SortService', () => {
     new Student(
       'gianni',
       'carli',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -41,6 +38,9 @@ describe('SortService', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',
@@ -49,9 +49,6 @@ describe('SortService', () => {
     new Student(
       'alberto',
       'abeti',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -61,6 +58,9 @@ describe('SortService', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',

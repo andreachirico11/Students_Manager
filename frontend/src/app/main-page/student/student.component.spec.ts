@@ -25,9 +25,6 @@ describe('StudentComponent', () => {
     student = new Student(
       'gianni',
       'gianno',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -36,6 +33,9 @@ describe('StudentComponent', () => {
         phoneNumber: 1111111111111111111,
       },
       [receipt],
+      new Date(),
+      1,
+      '',
       '',
       '',
       'notes',

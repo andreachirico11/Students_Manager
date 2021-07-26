@@ -5,12 +5,12 @@ export class Student {
   constructor(
     public name: string,
     public surname: string,
-    public schoolClass: string,
-    public dateOfBirth: Date,
-    public phoneNumber: number,
     public parent: Parent,
     public receipts: Receipt[],
+    public dateOfBirth?: Date,
+    public phoneNumber?: number,
     public fiscalCode?: string,
+    public schoolClass?: string,
     public address?: string,
     public notes?: string,
     public id?: string

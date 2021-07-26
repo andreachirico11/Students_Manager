@@ -204,12 +204,12 @@ function getStudent(i: number): Student {
   return new Student(
     'Name ' + i,
     'Surname ' + i,
-    getRand(10) + getLongString(1),
-    new Date(),
-    getRand(20),
     getParent(i),
     getFakeReceipts(),
+    new Date(),
+    getRand(20),
     getLongString(12),
+    getRand(10) + getLongString(1),
     addr,
     getLongString(40),
     's_' + randomId()

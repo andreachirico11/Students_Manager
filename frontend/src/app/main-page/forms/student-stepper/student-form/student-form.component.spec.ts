@@ -39,12 +39,12 @@ describe('StudentFormComponent', () => {
     new Student(
       fakeStudent.name,
       fakeStudent.surname,
-      fakeStudent.schoolClass,
-      fakeStudent.dateOfBirth,
-      fakeStudent.phoneNumber,
       fakeStudent.parent,
       fakeStudent.receipts,
+      fakeStudent.dateOfBirth,
+      fakeStudent.phoneNumber,
       fakeStudent.fiscalCode,
+      fakeStudent.schoolClass,
       fakeStudent.address,
       fakeStudent.notes,
       fakeStudent.id

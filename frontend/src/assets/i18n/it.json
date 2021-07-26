@@ -90,7 +90,7 @@
         "REC_UPDT_ERR": "Ci sono stati problemi durante l'aggiornamento della ricevuta",
         "REC_ADD_SUCC": "La ricevuta è stato aggiunta con successo",
         "REC_ADD_ERR": "Ci sono stati problemi durante l'aggiunta della ricevuta",
-        "DELETE_QUEST": "Sei sicuro di voler eliminare_"
+        "DELETE_QUEST": "Sei sicuro di voler eliminare?"
     },
     "PAYMENT_TYPES": {
         "MONEY": "Moneta",

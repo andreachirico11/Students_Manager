@@ -41,9 +41,6 @@ export class DataService {
           return new Student(
             r.payload.name,
             r.payload.surname,
-            r.payload.schoolClass,
-            r.payload.dateOfBirth,
-            r.payload.phoneNumber,
             new Parent(
               r.payload.parent.name,
               r.payload.parent.surname,
@@ -52,7 +49,10 @@ export class DataService {
               r.payload.parent.address
             ),
             r.payload.receipts,
+            r.payload.dateOfBirth,
+            r.payload.phoneNumber,
             r.payload.fiscalCode,
+            r.payload.schoolClass,
             r.payload.address,
             r.payload.notes,
             r.payload.id

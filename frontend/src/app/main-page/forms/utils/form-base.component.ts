@@ -66,10 +66,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             Validators.pattern(AllRegExp.onlyLettersReg),
           ]),
           fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
-          phoneNumber: new FormControl(null, [
-            Validators.required,
-            Validators.pattern(AllRegExp.onlyNumbersReg),
-          ]),
+          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbersReg)]),
           address: new FormControl(null),
         });
         break;
@@ -83,17 +80,11 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             Validators.required,
             Validators.pattern(AllRegExp.onlyLettersReg),
           ]),
-          dateOfBirth: new FormControl(null, [Validators.required]),
+          dateOfBirth: new FormControl(null),
           fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
-          phoneNumber: new FormControl(null, [
-            Validators.required,
-            Validators.pattern(AllRegExp.onlyNumbersReg),
-          ]),
+          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbersReg)]),
           address: new FormControl(null),
-          schoolClass: new FormControl(null, [
-            Validators.required,
-            Validators.pattern(AllRegExp.schoolClassReg),
-          ]),
+          schoolClass: new FormControl(null, [Validators.pattern(AllRegExp.schoolClassReg)]),
         });
         break;
     }

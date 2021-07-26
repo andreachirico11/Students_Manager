@@ -29,9 +29,6 @@ describe('SidebarComponent', () => {
     new Student(
       'giannino',
       'gianni',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -41,6 +38,9 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',
@@ -49,9 +49,6 @@ describe('SidebarComponent', () => {
     new Student(
       'gianni',
       'gianno',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -61,6 +58,9 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',
@@ -69,9 +69,6 @@ describe('SidebarComponent', () => {
     new Student(
       'alberto',
       'gianno',
-      '',
-      new Date(),
-      1,
       {
         name: 'a',
         surname: 'b',
@@ -81,6 +78,9 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      new Date(),
+      1,
+      '',
       '',
       '',
       '',

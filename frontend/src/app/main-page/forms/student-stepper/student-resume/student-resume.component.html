@@ -12,19 +12,19 @@
       <b>{{ student.surname }}</b>
     </div>
   </mat-list-item>
-  <mat-list-item>
+  <mat-list-item *ngIf="student.dateOfBirth">
     <div mat-line>
       {{ 'FORMS.DATE_BIRTH' | translate }}:
       <b>{{ student.dateOfBirth | date }}</b>
     </div>
   </mat-list-item>
-  <mat-list-item>
+  <mat-list-item *ngIf="student.phoneNumber">
     <div mat-line>
       {{ 'STUDENT_INFO.PHONE' | translate }}:
       <b>{{ student.phoneNumber }}</b>
     </div>
   </mat-list-item>
-  <mat-list-item>
+  <mat-list-item *ngIf="student.schoolClass">
     <div mat-line>
       {{ 'STUDENT_INFO.CLASS' | translate }}:
       <b>{{ student.schoolClass }}</b>
@@ -57,7 +57,7 @@
         <b>{{ student.parent.surname }}</b>
       </div>
     </mat-list-item>
-    <mat-list-item>
+    <mat-list-item *ngIf="student.parent.phoneNumber">
       <div mat-line>
         {{ 'STUDENT_INFO.PHONE' | translate }}:
         <b>{{ student.parent.phoneNumber }}</b>

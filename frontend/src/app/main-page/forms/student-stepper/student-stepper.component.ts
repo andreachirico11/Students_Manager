@@ -78,7 +78,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   private collectStudentToUpdate(studentToUpdateId: string) {
     const stToUp = this.generateStudent(this.updateDataService.getElementUnderUpdate());
-    if (stToUp && stToUp.schoolClass && stToUp.id && stToUp.id === studentToUpdateId) {
+    if (stToUp && stToUp.id && stToUp.id === studentToUpdateId) {
       this.studentUnderUpdate = stToUp;
     }
   }
@@ -142,12 +142,12 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     return new Student(
       name,
       surname,
-      schoolClass,
-      dateOfBirth,
-      Number(phoneNumber),
       parent,
       [],
+      dateOfBirth,
+      Number(phoneNumber),
       fiscalCode,
+      schoolClass,
       address,
       '',
       id

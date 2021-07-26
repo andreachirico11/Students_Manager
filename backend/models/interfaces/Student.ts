@@ -8,7 +8,7 @@ interface IStudentBase {
   dateOfBirth: Date;
   schoolClass: string;
   fiscalCode?: string;
-  phoneNumber: number;
+  phoneNumber?: number;
   parent: IParent;
   address?: string;
   notes?: string;

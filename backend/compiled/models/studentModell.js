@@ -24,18 +24,15 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
     },
     dateOfBirth: {
         type: Date,
-        required: true,
     },
     schoolClass: {
         type: String,
-        required: true,
     },
     fiscalCode: {
         type: String,
     },
     phoneNumber: {
         type: Number,
-        required: true,
     },
     address: {
         type: String,
@@ -55,7 +52,6 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
         fiscalCode: { type: String },
         phoneNumber: {
             type: Number,
-            required: true,
         },
         address: {
             type: String,
