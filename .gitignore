@@ -1,4 +1,4 @@
 .vscode
 node_modules
 .env
-run-db.bat
+run-db(run as admin).bat
