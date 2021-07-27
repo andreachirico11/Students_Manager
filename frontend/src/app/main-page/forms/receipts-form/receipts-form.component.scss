@@ -8,3 +8,10 @@ mat-card {
   width: 500px !important;
   max-width: unset !important;
 }
+
+@media screen and (max-width: 380px) {
+  ::ng-deep.mat-form-field-wrapper,
+  button {
+    max-width: 90% !important;
+  }
+}
