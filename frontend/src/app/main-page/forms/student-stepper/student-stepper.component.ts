@@ -145,7 +145,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       parent,
       [],
       dateOfBirth,
-      Number(phoneNumber),
+      phoneNumber ? Number(phoneNumber) : null,
       fiscalCode,
       schoolClass,
       address,

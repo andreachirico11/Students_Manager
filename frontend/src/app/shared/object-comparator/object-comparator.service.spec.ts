@@ -50,7 +50,7 @@ describe('ObjectComparatorService', () => {
     service = TestBed.inject(ObjectComparatorService);
   });
 
-  fit('it can compare 2 objects', () => {
+  it('it can compare 2 objects', () => {
     expect(service.areObjEquals({}, {})).toBeTruthy('empty obs');
     expect(service.areObjEquals(fakeDb[0], {})).toBeFalsy('fill obj and empty obj');
     expect(service.areObjEquals(fakeDb[0], fakeDb[0])).toBeTruthy('same obj');
