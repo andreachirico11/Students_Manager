@@ -23,9 +23,9 @@ describe('ReceiptsTableComponent', () => {
   const fakeFirstRecId = 'fake',
     fakeFirstRecNumber = '1111';
   const fakeFirstRec: Receipt = new Receipt(
-    fakeFirstRecNumber,
     50,
     new Date(),
+    fakeFirstRecNumber,
     'money',
     new Date(),
     fakeFirstRecId

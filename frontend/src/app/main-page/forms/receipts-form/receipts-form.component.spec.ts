@@ -41,7 +41,7 @@ describe('ReceiptsFormComponent', () => {
       return _queryParams;
     },
   };
-  const r = new Receipt('xzfadfa', 1, new Date(), 'atm', new Date());
+  const r = new Receipt(1, new Date(), 'xzfadfa', 'atm', new Date());
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpy('navigate');

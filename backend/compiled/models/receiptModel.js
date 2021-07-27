@@ -16,7 +16,6 @@ var mongoose_1 = require("mongoose");
 exports.ReceiptModel = mongoose_1.model('Receipt', new mongoose_1.Schema({
     number: {
         type: String,
-        required: true,
     },
     amount: {
         type: Number,

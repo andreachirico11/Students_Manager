@@ -239,9 +239,9 @@ export function getFakeReceipts(): Receipt[] {
 
 function getReceipt(i: number): Receipt {
   return new Receipt(
-    getRand(300) + '',
     getRand(30),
     generateRandomDOB(),
+    getRand(300) + '',
     i % 2 === 0 ? 'money' : i % 3 === 0 ? 'transfer' : 'atm',
     new Date(),
     'r_' + randomId()

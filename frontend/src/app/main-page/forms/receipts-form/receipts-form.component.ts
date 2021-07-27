@@ -85,7 +85,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private updatePreviousReceipt() {
     const rToUp = this.updateDataService.getElementUnderUpdate();
-    if (!rToUp?.number) {
+    if (!rToUp) {
       return this.router.navigate(['']);
     }
     this.isUpdating = true;
@@ -101,7 +101,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private initForm(): void {
     this.rForm = new FormGroup({
-      number: new FormControl('', Validators.required),
+      number: new FormControl(''),
       amount: new FormControl('', [
         Validators.required,
         Validators.min(0),
@@ -130,7 +130,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private collectInputs(): Receipt {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = this.rForm.value;
-    return new Receipt(number, amount, emissionDate, typeOfPayment ?? '', paymentDate);
+    return new Receipt(amount, emissionDate, number, typeOfPayment ?? '', paymentDate);
   }
 
   private onResponse(r: boolean) {
