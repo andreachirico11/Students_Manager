@@ -39,6 +39,44 @@ const stud1 = {
     address: null,
     notes: '',
     id: '60fedd5892d0714954a2ab57',
+  },
+  stud3 = {
+    name: 'primo',
+    surname: 'primi',
+    parent: {
+      name: 'padre',
+      surname: 'padri',
+      phoneNumber: null,
+      fiscalCode: null,
+      address: 'abcde',
+    },
+    receipts: [],
+    dateOfBirth: null,
+    phoneNumber: null,
+    fiscalCode: 'chrndr94m11c621q',
+    schoolClass: null,
+    address: 'abcde',
+    notes: '',
+    id: '60fedd5892d0714954a2ab57',
+  },
+  stud4 = {
+    name: 'primo',
+    surname: 'primi',
+    parent: {
+      name: 'padre',
+      surname: 'padri',
+      phoneNumber: 0,
+      fiscalCode: null,
+      address: 'abcde',
+    },
+    receipts: [],
+    dateOfBirth: null,
+    phoneNumber: null,
+    fiscalCode: 'chrndr94m11c621q',
+    schoolClass: null,
+    address: 'abcde',
+    notes: '',
+    id: '60fedd5892d0714954a2ab57',
   };
 
 describe('ObjectComparatorService', () => {
@@ -59,5 +97,7 @@ describe('ObjectComparatorService', () => {
       'same obs copied'
     );
     expect(service.areObjEquals(stud1, stud2)).toBeFalse();
+    expect(service.areObjEquals(stud1, { ...stud2, phoneNumber: null })).toBeFalse();
+    expect(service.areObjEquals(stud3, stud4)).toBeFalse();
   });
 });

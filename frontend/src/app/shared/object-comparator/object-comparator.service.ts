@@ -9,7 +9,7 @@ export class ObjectComparatorService {
       if (!obj2.hasOwnProperty(prop)) {
         return false;
       }
-      if (typeof obj1[prop] === 'object') {
+      if (obj1[prop] && typeof obj1[prop] === 'object') {
         if (!this.areObjEquals(obj1[prop], obj2[prop])) {
           return false;
         }

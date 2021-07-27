@@ -58,7 +58,13 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   onParentFormEv(result: any) {
     const { name, surname, fiscalCode, phoneNumber, address } = result;
-    const parent = new Parent(name, surname, Number(phoneNumber), fiscalCode, address);
+    const parent = new Parent(
+      name,
+      surname,
+      phoneNumber ? Number(phoneNumber) : null,
+      fiscalCode,
+      address
+    );
     this.studentCreated = { ...this.studentCreated, parent };
     this.stepper.selected.completed = true;
     this.stepper.next();
