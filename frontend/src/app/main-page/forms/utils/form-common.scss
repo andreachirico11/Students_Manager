@@ -1,23 +1,22 @@
 mat-divider {
-    margin-bottom: 2em;
+  margin-bottom: 2em;
 }
 
 form {
-    display: grid;
-    gap: 1em;
-    button {
-        height: 51px !important;
-    }
+  display: grid;
+  gap: 1em;
+  min-width: none;
+  button {
+    height: 51px !important;
+  }
 }
 
 ::ng-deep .mat-form-field-flex {
-    display: flex !important;
+  display: flex !important;
 }
 
 @media screen and (min-width: 550px) {
-    form {
-        grid-template-columns: repeat(2,minmax(200px, 250px));
-
-    }
-    
+  form {
+    grid-template-columns: repeat(2, minmax(200px, 250px));
+  }
 }

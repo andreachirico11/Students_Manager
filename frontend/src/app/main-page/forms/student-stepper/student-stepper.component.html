@@ -1,4 +1,4 @@
-<mat-stepper [orientation]="stepperOrientation | async">
+<mat-stepper [orientation]="orientation$ | async" [style.padding]="padding$ | async">
   <mat-step [label]="labels[0]" state="phone" completed="false">
     <student-form
       (result)="onStudentFormEv($event)"

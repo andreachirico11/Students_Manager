@@ -1,11 +1,11 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatHorizontalStepper, MatStepper, StepperOrientation } from '@angular/material/stepper';
+import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
@@ -23,7 +23,12 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
   public studentCreated: Student = null;
   public studentUnderUpdate: Student = null;
   public labels: string[] = [];
-  public stepperOrientation: Observable<StepperOrientation>;
+  public get orientation$(): Observable<StepperOrientation> {
+    return this.onViewBreakpoint('vertical', 'horizontal');
+  }
+  public get padding$(): Observable<string> {
+    return this.onViewBreakpoint('0em', '2em');
+  }
 
   @ViewChild(MatStepper)
   private stepper: MatStepper;
@@ -48,7 +53,6 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       this.collectStudentToUpdate(studentToUpdateId);
     }
     this.getTranslations();
-    this.stepperOrientation = this.getOrientationObs();
   }
 
   onStudentFormEv(result: any) {
@@ -82,6 +86,13 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
   onFormValueChange() {
     this.canLeave = false;
   }
+  private onViewBreakpoint(ifTrue: any, ifFalse: any): Observable<any> {
+    return this.breakPointObs.observe('(max-width: 549px)').pipe(
+      map((state: BreakpointState) => {
+        return state.matches ? ifTrue : ifFalse;
+      })
+    );
+  }
 
   private collectStudentToUpdate(studentToUpdateId: string) {
     const stToUp = this.generateStudent(this.updateDataService.getElementUnderUpdate());
@@ -95,14 +106,6 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       .get('FORMS.STEPS')
       .pipe(first())
       .subscribe((res) => (this.labels = res));
-  }
-
-  private getOrientationObs(): Observable<StepperOrientation> {
-    return this.breakPointObs.observe('(max-width: 549px)').pipe(
-      map((state: BreakpointState) => {
-        return state.matches ? 'vertical' : 'horizontal';
-      })
-    );
   }
 
   private updateStudent() {
