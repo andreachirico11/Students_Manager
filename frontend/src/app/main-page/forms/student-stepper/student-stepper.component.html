@@ -1,4 +1,4 @@
-<mat-horizontal-stepper linear="true">
+<mat-stepper [orientation]="stepperOrientation | async">
   <mat-step [label]="labels[0]" state="phone" completed="false">
     <student-form
       (result)="onStudentFormEv($event)"
@@ -16,4 +16,4 @@
   <mat-step [label]="labels[2]">
     <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>
   </mat-step>
-</mat-horizontal-stepper>
+</mat-stepper>
