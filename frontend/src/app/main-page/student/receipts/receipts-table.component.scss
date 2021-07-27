@@ -3,9 +3,16 @@
   overflow: auto;
 }
 
+.counters {
+  margin-bottom: 2em;
+  display: flex;
+  justify-content: space-between;
+}
+
 table {
-   min-width: 600px;
-  width: 100%
+  margin-top: 2em;
+  min-width: 600px;
+  width: 100%;
 }
 
 td.mat-column-actions,
@@ -13,10 +20,9 @@ th.mat-column-actions,
 .border-right {
   width: 20px;
   padding: 0 !important;
-  padding-left: .5em !important;
+  padding-left: 0.5em !important;
   border-left: 1px solid #e0e0e0 !important;
 }
-
 
 td.mat-column-number,
 th.mat-column-number {
@@ -29,7 +35,14 @@ th.mat-column-number {
   border-right: 1px solid #e0e0e0 !important;
 }
 
-.noDataBtn{
+.noDataBtn {
   margin: 0 auto;
   width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  .counters {
+    flex-direction: column;
+    line-height: 2em;
+  }
 }

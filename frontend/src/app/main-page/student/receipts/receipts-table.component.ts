@@ -12,6 +12,7 @@ import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { IReceiptForTable } from './IReceiptForTable';
 import { IupdateOrDeleteEvent } from './IUpdateOrDelete';
+import { ReceiptTotalsService } from './totals-service/receipt-totals.service';
 
 @Component({
   selector: 'student-receipts',
@@ -48,11 +49,23 @@ export class ReceiptsTableComponent implements OnInit {
     private router: Router,
     private updateDataS: UpdateDataService<Receipt>,
     private cdr: ChangeDetectorRef,
-    private deleteDialog: DeleteConfirmationDialogService
+    private deleteDialog: DeleteConfirmationDialogService,
+    private receiptTotalsService: ReceiptTotalsService
   ) {}
 
   ngOnInit() {
     this.initDataSource();
+  }
+
+  public getTheChosenTotal(chosen: 'payed' | 'unpayed' | 'monthPayed'): number {
+    switch (chosen) {
+      case 'payed':
+        return this.receiptTotalsService.totalPayed(this.receipts);
+      case 'unpayed':
+        return this.receiptTotalsService.totalUnpayed(this.receipts);
+      case 'monthPayed':
+        return this.receiptTotalsService.currentMonthPayed(this.receipts);
+    }
   }
 
   public addReceipt() {

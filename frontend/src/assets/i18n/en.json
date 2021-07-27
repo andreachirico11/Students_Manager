@@ -34,6 +34,11 @@
         "PARENTS": "Parent"
     },
     "RECEIPTS": {
+        "TOTALS": {
+            "1": "Total",
+            "2": "Payable Total",
+            "3": "Actual Month Total"
+        },
         "T_HEAD_1": "Payed",
         "T_HEAD_2": "No.",
         "T_HEAD_3": "Total",

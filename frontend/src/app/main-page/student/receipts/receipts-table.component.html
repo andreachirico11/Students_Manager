@@ -1,4 +1,19 @@
 <div class="container">
+  <div *ngIf="tableDataSource" class="counters">
+    <span>
+      <b>{{ 'RECEIPTS.TOTALS.1' | translate }}:</b>
+      {{ getTheChosenTotal('payed') }}€
+    </span>
+    <span>
+      <b>{{ 'RECEIPTS.TOTALS.2' | translate }}:</b>
+      {{ getTheChosenTotal('unpayed') }}€
+    </span>
+    <span>
+      <b>{{ 'RECEIPTS.TOTALS.3' | translate }}:</b>
+      {{ getTheChosenTotal('monthPayed') }}€
+    </span>
+  </div>
+
   <table
     *ngIf="tableDataSource; else noData"
     mat-table
@@ -70,6 +85,7 @@
     [pageSize]="10"
     hidePageSize="true"
   ></mat-paginator>
+  <!-- <div class="counters">Totale: 1231</div> -->
 </div>
 
 <ng-template #noData>
