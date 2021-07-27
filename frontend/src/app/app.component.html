@@ -5,18 +5,18 @@
       <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>
       <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode</mat-icon>
     </button>
-    <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="warn">
-      <mat-icon color="warn">exit_to_app</mat-icon>
-    </button>
-    <ng-container *ngIf="!isLoggedIn">
+    <ng-container>
       <button mat-icon-button (click)="matLanSelect.open()">
-        <mat-icon color="warn">language</mat-icon>
+        <mat-icon color="accent">language</mat-icon>
       </button>
       <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
         <mat-option value="en">English</mat-option>
         <mat-option value="it">Italiano</mat-option>
       </mat-select>
     </ng-container>
+    <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()" color="accent">
+      <mat-icon color="accent">exit_to_app</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 <router-outlet></router-outlet>

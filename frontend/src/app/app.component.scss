@@ -20,3 +20,13 @@ mat-select {
 ::ng-deep .mat-select-arrow {
   display: none;
 }
+
+@media screen and(max-width: 400px) {
+  .controls-container mat-icon {
+    font-size: 1.3em !important;
+  }
+
+  .controls-container .mat-icon-button {
+    width: 25px !important;
+  }
+}
