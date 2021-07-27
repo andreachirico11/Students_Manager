@@ -5,16 +5,16 @@
   </mat-card-title>
   <mat-card-content>
     <form [formGroup]="rForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill" color="accent">
+      <mat-form-field appearance="fill">
         <mat-label>{{ 'FORMS.NUMBER' | translate }}</mat-label>
         <input matInput formControlName="number" />
       </mat-form-field>
-      <mat-form-field appearance="fill" color="accent">
+      <mat-form-field appearance="fill">
         <mat-label>{{ 'FORMS.AMOUNT' | translate }}</mat-label>
         <input matInput formControlName="amount" />
         <mat-icon matSuffix color="primary">euro</mat-icon>
       </mat-form-field>
-      <mat-form-field appearance="fill" color="accent">
+      <mat-form-field appearance="fill">
         <mat-label>{{ 'FORMS.DATE_EM' | translate }}</mat-label>
         <input
           matInput
@@ -31,7 +31,7 @@
           disabled="false"
         ></mat-datepicker>
       </mat-form-field>
-      <mat-form-field appearance="fill" color="accent">
+      <mat-form-field appearance="fill">
         <mat-label>{{ 'FORMS.DATE_PAY' | translate }}</mat-label>
         <input
           matInput
@@ -57,7 +57,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button [disabled]="rForm.invalid" mat-raised-button color="accent" type="submit">
+      <button [disabled]="rForm.invalid" color="accent" mat-raised-button type="submit">
         <span *ngIf="isUpdating">{{ 'FORMS.TITLE_1' | translate }}</span>
         <span *ngIf="!isUpdating">{{ 'FORMS.TITLE_2' | translate }}</span>
       </button>
