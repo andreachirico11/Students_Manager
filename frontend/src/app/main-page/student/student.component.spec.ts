@@ -21,7 +21,7 @@ describe('StudentComponent', () => {
   let dbServ: DataService;
   let router: Router;
 
-  const receipt = new Receipt('12345', 3, new Date(), 'money', new Date(), 'r1'),
+  const receipt = new Receipt(3, new Date(), '12345', 'money', new Date(), 'r1'),
     student = new Student(
       'gianni',
       'gianno',
