@@ -43,7 +43,7 @@
             </span>
           </mat-error>
         </mat-form-field>
-        <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
+        <button [disabled]="authForm.invalid" mat-raised-button color="primary" type="submit">
           {{ 'AUTH.REGISTER_BUTTON' | translate }}
         </button>
       </form>
@@ -72,7 +72,7 @@
       <input matInput ngModel #password="ngModel" name="password" required type="password" />
       <mat-icon matSuffix color="primary">lock</mat-icon>
     </mat-form-field>
-    <button [disabled]="authForm.invalid" mat-raised-button color="accent" type="submit">
+    <button [disabled]="authForm.invalid" mat-raised-button color="primary" type="submit">
       Login
     </button>
     <mat-error *ngIf="showErrorMessage" style="margin-top: 1em" class="mat-body-2">

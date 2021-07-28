@@ -9,13 +9,14 @@
         *ngIf="!noteUpdating; else noteUpdatingTemplates"
         mat-stroked-button
         (click)="updateNote()"
+        color="primary"
       >
         {{ 'STUDENT.ST_ACTION_1' | translate }}
       </button>
-      <button mat-stroked-button (click)="onEditClick()">
+      <button mat-stroked-button (click)="onEditClick()" color="accent">
         {{ 'STUDENT.ST_ACTION_2' | translate }}
       </button>
-      <button mat-stroked-button (click)="onDeleteClick()">
+      <button mat-stroked-button (click)="onDeleteClick()" color="warn">
         {{ 'STUDENT.ST_ACTION_3' | translate }}
       </button>
     </mat-action-list>

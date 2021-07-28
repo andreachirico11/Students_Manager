@@ -57,7 +57,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button [disabled]="rForm.invalid" color="accent" mat-raised-button type="submit">
+      <button [disabled]="rForm.invalid" color="primary" mat-raised-button type="submit">
         <span *ngIf="isUpdating">{{ 'FORMS.TITLE_1' | translate }}</span>
         <span *ngIf="!isUpdating">{{ 'FORMS.TITLE_2' | translate }}</span>
       </button>

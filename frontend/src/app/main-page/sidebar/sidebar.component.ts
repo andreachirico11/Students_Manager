@@ -38,10 +38,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
       if (this.students.length > 0) {
         this.changeSortOrder(this.actualSortOptions);
       }
-      // if (newS && newS.length > 0) {
-      //   this.students = newS;
-      //   this.changeSortOrder(this.actualSortOptions);
-      // }
     });
     this.dbService.getStudents().subscribe();
   }

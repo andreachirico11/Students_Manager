@@ -1,13 +1,8 @@
 <div class="button-container">
-  <button mat-icon-button color="accent" (click)="navigateToForm()">
+  <button mat-icon-button (click)="navigateToForm()">
     <mat-icon>add</mat-icon>
   </button>
-  <button
-    mat-icon-button
-    [matMenuTriggerFor]="menu"
-    aria-label="Example icon-button with a menu"
-    color="accent"
-  >
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
