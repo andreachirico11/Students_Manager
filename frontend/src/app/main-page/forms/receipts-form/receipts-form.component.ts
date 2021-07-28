@@ -130,7 +130,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
 
   private collectInputs(): Receipt {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = this.rForm.value;
-    return new Receipt(amount, emissionDate, number, typeOfPayment ?? '', paymentDate);
+    return new Receipt(amount, emissionDate, number || null, typeOfPayment || null, paymentDate);
   }
 
   private onResponse(r: boolean) {
