@@ -7,17 +7,15 @@ mat-card-header {
   student-info {
     width: 100%;
   }
-
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex{
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
   padding: 0 !important;
 }
 
-
 ::ng-deep .mat-card-header-text {
-    margin: 0 !important;
-  }
+  margin: 0 !important;
+}
 
 mat-card:not(.receipts) {
   display: grid;
@@ -25,7 +23,7 @@ mat-card:not(.receipts) {
 
   mat-card-header {
     width: 250px;
-  }  
+  }
 
   button,
   mat-form-field,
@@ -45,7 +43,7 @@ mat-card:not(.receipts) {
     align-items: center;
     justify-content: space-between;
   }
-  
+
   mat-progress-bar {
     height: 5px;
     margin-top: 15px;
@@ -57,6 +55,9 @@ mat-card:not(.receipts) {
     ::ng-deep .mat-form-field-infix {
       padding: 1em !important;
     }
+    mat-label {
+      margin-left: 1em;
+    }
     textarea {
       resize: none !important;
       min-height: 100px !important;
@@ -65,7 +66,7 @@ mat-card:not(.receipts) {
 }
 
 @media screen and (min-width: 600px) {
-  mat-card:not(.receipts)  {
+  mat-card:not(.receipts) {
     grid-template-columns: 1fr 1fr;
 
     mat-card-header,
@@ -78,7 +79,7 @@ mat-card:not(.receipts) {
     }
 
     mat-card-actions {
-      grid-row: 2
+      grid-row: 2;
     }
 
     mat-card-content {
@@ -90,11 +91,10 @@ mat-card:not(.receipts) {
     ::ng-deep .mat-form-field-wrapper,
     ::ng-deep .mat-form-field-flex,
     ::ng-deep .mat-form-field-infix
-    // textarea 
+    // textarea
     {
       height: 100% !important;
     }
-
   }
 }
 
@@ -103,4 +103,3 @@ mat-card:not(.receipts) {
     width: 300px;
   }
 }
-
