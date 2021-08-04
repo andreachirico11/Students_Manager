@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { IndexedDbService } from '../indexed-db.service';
 
 const LOCAL_STR_KEY = 'DARK_MODE';
 
@@ -7,7 +8,7 @@ const LOCAL_STR_KEY = 'DARK_MODE';
   providedIn: 'root',
 })
 export class ThemeService {
-  private _isInDarkMode: boolean;
+  private _isInDarkMode: boolean = false;
   private _isInDarkMode$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   get isInDarkMode$() {
@@ -19,15 +20,19 @@ export class ThemeService {
     this._isInDarkMode$.next(this._isInDarkMode);
   }
 
-  constructor() {
-    if (
-      this.getFromLocalStorage() ||
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      this.switchMode(true);
-    } else {
-      this.switchMode(false);
-    }
+  constructor(private indexedService: IndexedDbService) {
+    this.indexedService.isInDarkMode.subscribe((darkConfig) => {
+      if (darkConfig) {
+        this.switchMode(darkConfig.configValue);
+      } else if (
+        this.getFromLocalStorage() ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        this.switchMode(true);
+      } else {
+        this.switchMode(false);
+      }
+    });
   }
 
   public switchMode(turnOnDarkMode: boolean) {
@@ -38,6 +43,7 @@ export class ThemeService {
       this.isInDarkMode = false;
       this.removeFromLocalStorage();
     }
+    this.indexedService.setDarkMode(this._isInDarkMode);
   }
 
   private getFromLocalStorage() {
