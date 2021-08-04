@@ -1,5 +1,6 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from './auth/auth/auth.service';
@@ -11,15 +12,15 @@ import { ThemeService } from './shared/theme-service/theme.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private logoutSub: Subscription;
   private _isInDarkMode = false;
-  private themeSub: Subscription;
+  private allSubs: Subscription[] = [];
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private translate: TranslateService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private swUpdate: SwUpdate
   ) {}
 
   get isLoggedIn() {
@@ -32,24 +33,28 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.themeService.isInDarkMode$.subscribe((trueOrFalse) => (this._isInDarkMode = trueOrFalse));
+    this.allSubs.push(
+      this.themeService.isInDarkMode$.subscribe((trueOrFalse) => (this._isInDarkMode = trueOrFalse))
+    );
     this.setTranslateService();
-    this.logoutSub = this.authService.logoutHasFired.subscribe(() => {
-      this.router.navigate(['enter'], {
-        queryParams: {
-          redirect: true,
-        },
-      });
-    });
+    this.allSubs.push(
+      this.authService.logoutHasFired.subscribe(() => {
+        this.router.navigate(['enter'], {
+          queryParams: {
+            redirect: true,
+          },
+        });
+      })
+    );
+    if (this.swUpdate.isEnabled) {
+      this.allSubs.push(this.onSwUpdate(this.swUpdate));
+    }
   }
 
   ngOnDestroy() {
-    if (this.logoutSub) {
-      this.logoutSub.unsubscribe();
-    }
-    if (this.themeSub) {
-      this.themeSub.unsubscribe();
-    }
+    this.allSubs.forEach((sub) => {
+      sub.unsubscribe();
+    });
   }
 
   onLogout(): void {
@@ -71,5 +76,13 @@ export class AppComponent implements OnInit, OnDestroy {
       locale = locale.split(/-|_/)[0];
     }
     this.translate.use(locale);
+  }
+
+  private onSwUpdate(sw: SwUpdate): Subscription {
+    return sw.available.subscribe(() => {
+      if (confirm('New Version is Available, Load it?')) {
+        window.location.reload();
+      }
+    });
   }
 }
