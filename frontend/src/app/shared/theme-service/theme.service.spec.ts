@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { IndexedDbService } from '../indexed-db.service';
 
 import { ThemeService } from './theme.service';
 
@@ -13,7 +15,17 @@ describe('ThemeService', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: IndexedDbService,
+          useValue: {
+            isInDarkMode: of(null),
+            setDarkMode(x: boolean) {},
+          },
+        },
+      ],
+    });
     service = TestBed.inject(ThemeService);
   });
 
