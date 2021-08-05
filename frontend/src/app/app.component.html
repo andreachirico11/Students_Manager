@@ -1,5 +1,7 @@
 <mat-toolbar color="primary">
-  <span [routerLink]="['']" style="cursor: pointer">{{ 'MAIN_TITLE' | translate }}</span>
+  <span [routerLink]="['']" style="cursor: pointer">
+    {{ 'APP_COMPONENT.MAIN_TITLE' | translate }}
+  </span>
   <div class="controls-container">
     <button mat-icon-button>
       <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>

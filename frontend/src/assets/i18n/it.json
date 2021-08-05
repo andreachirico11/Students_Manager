@@ -1,5 +1,8 @@
 {
-    "MAIN_TITLE": "Student Manager",
+    "APP_COMPONENT": {
+        "MAIN_TITLE": "Student Manager",
+        "CONFIRMATION": "E' disponibile una nuova versione. Scaricarla?"
+    },
     "AUTH": {
         "NAME": "Nome",
         "NAME_ERROR": "Per favore fornire un {{value}} valido",
