@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { mapTo, retryWhen, tap } from 'rxjs/operators';
+import { mapTo, retryWhen } from 'rxjs/operators';
 
 @Injectable()
 export class OfflineInterceptor implements HttpInterceptor {
@@ -16,11 +16,6 @@ export class OfflineInterceptor implements HttpInterceptor {
     if (this.isOnline() || request.method === 'GET') {
       return next.handle(request);
     }
-    return next.handle(request).pipe(
-      tap(() => {
-        console.log('tap');
-      }),
-      retryWhen(() => this.windowOnlineObs())
-    );
+    return next.handle(request).pipe(retryWhen(() => this.windowOnlineObs()));
   }
 }
