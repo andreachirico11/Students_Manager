@@ -21,6 +21,21 @@ export class ThemeService {
   }
 
   constructor(private indexedService: IndexedDbService) {
+    this.initialCheck();
+  }
+
+  public switchMode(turnOnDarkMode: boolean) {
+    if (turnOnDarkMode) {
+      this.isInDarkMode = true;
+      this.putInLocalStorage();
+    } else {
+      this.isInDarkMode = false;
+      this.removeFromLocalStorage();
+    }
+    this.indexedService.setDarkMode(this._isInDarkMode);
+  }
+
+  private initialCheck() {
     this.indexedService.isInDarkMode.subscribe((darkConfig) => {
       if (darkConfig) {
         this.switchMode(darkConfig.configValue);
@@ -33,17 +48,6 @@ export class ThemeService {
         this.switchMode(false);
       }
     });
-  }
-
-  public switchMode(turnOnDarkMode: boolean) {
-    if (turnOnDarkMode) {
-      this.isInDarkMode = true;
-      this.putInLocalStorage();
-    } else {
-      this.isInDarkMode = false;
-      this.removeFromLocalStorage();
-    }
-    this.indexedService.setDarkMode(this._isInDarkMode);
   }
 
   private getFromLocalStorage() {
