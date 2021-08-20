@@ -18,6 +18,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { indexedDbConfig } from './shared/indexed-db.service';
+import { OfflineInterceptor } from './shared/offline-interceptor/offline.interceptor';
 
 const routes: Routes = [
   {
@@ -54,6 +55,7 @@ const routes: Routes = [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: FakeInterceptor, multi: true }, // testing
   ],
   bootstrap: [AppComponent],
