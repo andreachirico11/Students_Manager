@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/commo
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { catchError, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -20,7 +21,7 @@ describe('OfflineInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         FakeDataService,
         { provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true },

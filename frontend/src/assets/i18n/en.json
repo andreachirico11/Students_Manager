@@ -104,5 +104,8 @@
         "MONEY": "Money",
         "ATM": "Atm",
         "TRANSFER": "Transfer"
+    },
+    "OFFLINE_INTERCEPTOR": {
+        "MAIN_MESSAGE": "Actions will be completed when the connection returns"
     }
 }

@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
-import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
