@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  // dbUrl: 'https://student-manager-1.herokuapp.com/api/',
   dbUrl: 'http://localhost:3210/api/',
   idleTimeout: 86400000, //1day
 };
