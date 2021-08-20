@@ -16,6 +16,8 @@ import { CustomPreloadStrategyService } from './shared/custom-preload-strategy.s
 import { TRANSLATE_CONFIG } from './shared/translation-utils';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { NgxIndexedDBModule } from 'ngx-indexed-db';
+import { indexedDbConfig } from './shared/indexed-db.service';
 
 const routes: Routes = [
   {
@@ -46,8 +48,9 @@ const routes: Routes = [
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
+    NgxIndexedDBModule.forRoot(indexedDbConfig),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
