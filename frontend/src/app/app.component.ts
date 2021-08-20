@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { AuthService } from './auth/auth/auth.service';
+import { GlobalTranslationService } from './shared/global-translation.service';
 import { ThemeService } from './shared/theme-service/theme.service';
 
 @Component({
@@ -18,9 +20,10 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private translate: TranslateService,
+    private globalTransServ: GlobalTranslationService,
     private themeService: ThemeService,
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private translateSrv: TranslateService
   ) {}
 
   get isLoggedIn() {
@@ -33,19 +36,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.allSubs.push(this.globalTransServ.setTranslateService().subscribe());
     this.allSubs.push(
       this.themeService.isInDarkMode$.subscribe((trueOrFalse) => (this._isInDarkMode = trueOrFalse))
     );
-    this.setTranslateService();
-    this.allSubs.push(
-      this.authService.logoutHasFired.subscribe(() => {
-        this.router.navigate(['enter'], {
-          queryParams: {
-            redirect: true,
-          },
-        });
-      })
-    );
+    this.allSubs.push(this.authService.logoutHasFired.subscribe(() => this.onLogoutFired()));
     if (this.swUpdate.isEnabled) {
       this.allSubs.push(this.onSwUpdate(this.swUpdate));
     }
@@ -63,26 +58,28 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onLanChange(newLan: string) {
-    this.translate.use(newLan);
+    this.globalTransServ.switchLan(newLan);
   }
 
   toggleDarkMode(trueOrFalse: boolean) {
     this.themeService.switchMode(trueOrFalse);
   }
 
-  private setTranslateService() {
-    let locale = navigator.languages[0] || 'en';
-    if (/-|_/.test(locale)) {
-      locale = locale.split(/-|_/)[0];
-    }
-    this.translate.use(locale);
+  private onLogoutFired() {
+    this.router.navigate(['enter'], {
+      queryParams: {
+        redirect: true,
+      },
+    });
   }
 
   private onSwUpdate(sw: SwUpdate): Subscription {
-    return sw.available.subscribe(() => {
-      if (confirm('New Version is Available, Load it?')) {
-        window.location.reload();
-      }
-    });
+    return sw.available
+      .pipe(switchMap(() => this.translateSrv.get('APP_COMPONENT.CONFIRMATION')))
+      .subscribe((message: string) => {
+        if (confirm(message)) {
+          window.location.reload();
+        }
+      });
   }
 }
