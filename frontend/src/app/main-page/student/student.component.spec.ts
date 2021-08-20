@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
@@ -76,6 +77,10 @@ describe('StudentComponent', () => {
           useValue: {
             paramMap: paramsSubject.asObservable(),
           },
+        },
+        {
+          provide: SwUpdate,
+          useValue: {},
         },
         {
           provide: MatDialog,

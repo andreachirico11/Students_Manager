@@ -7,6 +7,7 @@ import { MatSelect } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
@@ -74,6 +75,10 @@ describe('ReceiptsFormComponent', () => {
           useValue: {
             back() {},
           },
+        },
+        {
+          provide: SwUpdate,
+          useValue: {},
         },
       ],
     })
