@@ -1,8 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { IndexedDbService } from '../indexed-db.service';
+import { IAppConfig, IndexedDbService } from '../indexed-db.service';
 
 import { ThemeService } from './theme.service';
+
+let INDEXED_CONFIG: IAppConfig;
 
 describe('ThemeService', () => {
   let service: ThemeService;
@@ -15,12 +17,16 @@ describe('ThemeService', () => {
   };
 
   beforeEach(() => {
+    localStorage.clear();
+    INDEXED_CONFIG = null;
     TestBed.configureTestingModule({
       providers: [
         {
           provide: IndexedDbService,
           useValue: {
-            isInDarkMode: of(null),
+            get isInDarkMode() {
+              return of(INDEXED_CONFIG);
+            },
             setDarkMode(x: boolean) {},
           },
         },
@@ -66,4 +72,18 @@ describe('ThemeService', () => {
     service.switchMode(false);
     expect(service['getFromLocalStorage']()).toBeFalse();
   });
+
+  it(
+    'should use the value in the indexed db before the local storage one',
+    waitForAsync(() => {
+      INDEXED_CONFIG = {
+        configValue: true,
+        configName: 'darkMode',
+      };
+      service['initialCheck']();
+      service.isInDarkMode$.subscribe((e) => {
+        expect(e).toBe(true);
+      });
+    })
+  );
 });
