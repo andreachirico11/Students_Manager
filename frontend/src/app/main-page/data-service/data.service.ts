@@ -1,6 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { SwUpdate } from '@angular/service-worker';
+import { BehaviorSubject, merge, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
@@ -16,7 +17,7 @@ export class DataService {
   private localStudentDb: Student[] = [];
   public studentsSubj = new BehaviorSubject<Student[]>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private swUpdate: SwUpdate) {}
 
   public get studentDbObservable(): Observable<Student[]> {
     return this.studentsSubj.asObservable();
@@ -28,6 +29,11 @@ export class DataService {
       tap((res) => {
         this.localStudentDb = [...res.payload];
         this.studentsSubj.next(this.localStudentDb);
+      }),
+      tap(() => {
+        // if (this.swUpdate && this.swUpdate.isEnabled) {
+        //   this.fetchAllStudentsDataInBackgroundForSw();
+        // }
       }),
       map(() => true),
       catchError(() => of(false))
@@ -133,5 +139,14 @@ export class DataService {
   private removeAndUpdateStudents(stId: string) {
     this.localStudentDb = this.localStudentDb.filter((s) => s.id !== stId);
     this.studentsSubj.next(this.localStudentDb);
+  }
+
+  private fetchAllStudentsDataInBackgroundForSw() {
+    const tempS = merge(
+      this.localStudentDb.map((st) => this.getStudentWithReceipts(st.id).pipe(first()))
+    ).subscribe(() => {
+      alert('data fetched');
+      tempS.unsubscribe();
+    });
   }
 }

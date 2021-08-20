@@ -1,5 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { SwUpdate } from '@angular/service-worker';
 import { last } from 'rxjs/operators';
 import { getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { ReceiptFakeResponses } from 'src/app/shared/fakeInterceptor/fakeReceiptRespObj';
@@ -9,6 +10,8 @@ import { Receipt } from '../../shared/models/Receipts';
 import { Student } from '../../shared/models/Student';
 import { DataService } from './data.service';
 
+let IS_SW_FAKELY_ENABLED;
+
 describe('DataService', () => {
   let service: DataService, controller: HttpTestingController;
   const dbUrl = environment.dbUrl;
@@ -17,11 +20,24 @@ describe('DataService', () => {
     receiptsFakeResps: ReceiptFakeResponses;
 
   beforeEach(() => {
+    IS_SW_FAKELY_ENABLED = false;
     fakeStudentsDb = getFakeStudents();
     studenfFakeResps = new StudentFakeResponses(fakeStudentsDb);
     receiptsFakeResps = new ReceiptFakeResponses(fakeStudentsDb);
 
-    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        {
+          provide: SwUpdate,
+          useValue: {
+            get isEnabled() {
+              return IS_SW_FAKELY_ENABLED;
+            },
+          },
+        },
+      ],
+    });
     service = TestBed.inject(DataService);
     controller = TestBed.inject(HttpTestingController);
   });
