@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pwa": "ng build --prod && cd dist/frontend && http-server -c-1  -p 3333 ."
+    "pwa": "ng build --configuration test-production && cd dist/frontend && http-server -c-1  -p 3333 ."
   },
   "private": true,
   "dependencies": {
