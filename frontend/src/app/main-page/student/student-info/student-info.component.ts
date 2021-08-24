@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -8,6 +9,8 @@ import { Student } from 'src/app/shared/models/Student';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentInfoComponent {
+  constructor(public transServ: TranslateService) {}
+
   @Input()
   public student: Student;
 }

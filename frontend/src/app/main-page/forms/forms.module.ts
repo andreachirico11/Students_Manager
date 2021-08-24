@@ -6,7 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from 'src/app/material.module';
 import { PaymentPipeModule } from 'src/app/shared/paymentType/payment-pipe-module.module';
-import { PaymentTypePipe } from 'src/app/shared/paymentType/payment-type.pipe';
 import { TRANSLATE_CONFIG } from 'src/app/shared/translation-utils';
 import { FormsGuard } from './forms.guard';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
