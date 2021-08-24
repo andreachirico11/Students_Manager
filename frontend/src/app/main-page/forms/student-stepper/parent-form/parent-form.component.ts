@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Parent } from 'src/app/shared/models/Parent';
 import { FormBaseComponent } from '../../utils/form-base.component';
 
@@ -8,7 +10,7 @@ import { FormBaseComponent } from '../../utils/form-base.component';
   styleUrls: ['./parent-form.component.scss'],
 })
 export class ParentFormComponent extends FormBaseComponent<Parent> {
-  constructor() {
-    super('ParentForm');
+  constructor(d: DateAdapter<any>, t: TranslateService) {
+    super('ParentForm', d, t);
   }
 }

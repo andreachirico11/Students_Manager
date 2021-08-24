@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
 
@@ -12,6 +13,6 @@ export class AppDateAdapter extends NativeDateAdapter {
       let year = date.getFullYear();
       return `${day}-${month}-${year}`;
     }
-    return date.toDateString();
+    return new DatePipe(this.locale).transform(date);
   }
 }
