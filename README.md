@@ -1,3 +1,5 @@
+<img align="right" src="https://app.travis-ci.com/andreachirico11/Students_Manager.svg?branch=master"></img>
+
 <h1 align="center">
   <br>
   Student Manager

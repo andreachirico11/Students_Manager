@@ -1,17 +1,27 @@
 language: node_js
 node_js:
   - '14'
-
-cache:
-  directories:
-    - .frontend/node_modules
-
-before_install: cd frontend
-
-install:
-  - npm install
-
-before_script: cd frontend
-
+dist: trusty
+sudo: required
+addons:
+  chrome: stable
+# branches:
+#   only:
+#     - master
+before_script:
+  - cd frontend
 script:
-  - npm test --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+  - npm install
+  - npm run test:travis
+before_deploy:
+  - npm run build
+  - npm install netlify-cli -g
+cache:
+  - node_modules
+  - netlify-cli
+deploy:
+  provider: script
+  edge: true
+  script: netlify deploy --dir=dist/frontend --prod
+  on:
+    branch: master
