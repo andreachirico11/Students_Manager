@@ -22,7 +22,7 @@ const languageKey = 'language';
 
 type ConfigKeys = typeof darkModeKey | typeof languageKey;
 
-interface IAppConfig {
+export interface IAppConfig {
   configName: ConfigKeys;
   configValue: any;
 }

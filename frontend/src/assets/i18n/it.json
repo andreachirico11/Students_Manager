@@ -104,5 +104,8 @@
         "MONEY": "Moneta",
         "ATM": "Bancomat",
         "TRANSFER": "Bonifico"
+    },
+    "OFFLINE_INTERCEPTOR": {
+        "MAIN_MESSAGE": "Le operazioni saranno completate al ritorno della connessione"
     }
 }

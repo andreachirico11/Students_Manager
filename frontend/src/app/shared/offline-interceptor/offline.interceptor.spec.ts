@@ -2,8 +2,9 @@ import { HttpClient, HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/commo
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { catchError, delay, tap } from 'rxjs/operators';
+import { catchError, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { OfflineInterceptor } from './offline.interceptor';
 
@@ -20,7 +21,7 @@ describe('OfflineInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         FakeDataService,
         { provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true },
@@ -75,25 +76,21 @@ describe('OfflineInterceptor', () => {
     req.flush({}, { status, statusText });
   });
 
-  fit('should retry the post req after fake window returned online', fakeAsync(() => {
+  it('should retry the post req after fake window returned online', fakeAsync(() => {
+    switchOnOffline('offline');
+    service.postReq().subscribe(
+      (x) => {},
+      (y) => {},
+      () => {
+        expect('test').toBeTruthy();
+      }
+    );
+    startOnlineObs(500);
     const status = 500,
       statusText = 'connection';
-    switchOnOffline('offline');
-    startOnlineObs(1000);
-    service
-      .postReq()
-      .pipe(
-        catchError((e) => {
-          console.log(e);
-          return of(e);
-        })
-      )
-      .subscribe((boh) => {
-        console.log('subscribe');
-      });
     const req = controller.expectOne(environment.dbUrl);
     req.flush({ body: 'body' }, { status, statusText });
-    tick(3000);
+    tick(1000);
   }));
 });
 
