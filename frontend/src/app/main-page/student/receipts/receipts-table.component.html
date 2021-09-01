@@ -49,7 +49,7 @@
           {{ 'RECEIPTS.T_HEAD_4' | translate }}
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ element.emissionDate | date: 'dd MMMM yyyy' }}
+          {{ element.emissionDate | date: 'dd MMMM yyyy':'':transServ.currentLang }}
         </td>
       </ng-container>
       <ng-container matColumnDef="paymentDate">

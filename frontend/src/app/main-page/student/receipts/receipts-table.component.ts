@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
@@ -50,7 +51,8 @@ export class ReceiptsTableComponent implements OnInit {
     private updateDataS: UpdateDataService<Receipt>,
     private cdr: ChangeDetectorRef,
     private deleteDialog: DeleteConfirmationDialogService,
-    private receiptTotalsService: ReceiptTotalsService
+    private receiptTotalsService: ReceiptTotalsService,
+    public transServ: TranslateService
   ) {}
 
   ngOnInit() {
