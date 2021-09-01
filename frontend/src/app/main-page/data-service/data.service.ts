@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { BehaviorSubject, merge, Observable, of, throwError } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, delay, first, map, switchMap, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -29,11 +29,7 @@ export class DataService {
       tap((res) => {
         this.localStudentDb = [...res.payload];
         this.studentsSubj.next(this.localStudentDb);
-      }),
-      tap(() => {
-        // if (this.swUpdate && this.swUpdate.isEnabled) {
-        //   this.fetchAllStudentsDataInBackgroundForSw();
-        // }
+        this.getAllDataIfPwa(res.payload);
       }),
       map(() => true),
       catchError(() => of(false))
@@ -141,12 +137,11 @@ export class DataService {
     this.studentsSubj.next(this.localStudentDb);
   }
 
-  private fetchAllStudentsDataInBackgroundForSw() {
-    const tempS = merge(
-      this.localStudentDb.map((st) => this.getStudentWithReceipts(st.id).pipe(first()))
-    ).subscribe(() => {
-      alert('data fetched');
-      tempS.unsubscribe();
-    });
+  private getAllDataIfPwa(students: Student[]) {
+    if (this.swUpdate && this.swUpdate.isEnabled) {
+      forkJoin(students.map((s) => this.getStudentWithReceipts(s.id)))
+        .pipe(delay(3000), first())
+        .subscribe();
+    }
   }
 }
