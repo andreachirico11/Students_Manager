@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,6 +34,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
   private studentId: string;
   private receiptToUpdateId: string;
   private valueSub: Subscription;
+  private transSub: Subscription;
 
   constructor(
     dialog: MatDialog,
@@ -41,7 +43,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     private dataService: DataService,
     private router: Router,
     private updateDataService: UpdateDataService<Receipt>,
-    private location: Location
+    private location: Location,
+    private dateAd: DateAdapter<any>,
+    private tServ: TranslateService
   ) {
     super(dialog, translator);
   }
@@ -63,9 +67,14 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     this.valueSub = this.rForm.valueChanges.subscribe((x) => {
       this.canLeave = false;
     });
+    this.dateAd.setLocale(this.tServ.currentLang);
+    this.transSub = this.tServ.onLangChange.subscribe((ev) => {
+      this.dateAd.setLocale(ev.lang);
+    });
   }
 
   ngOnDestroy() {
+    this.transSub.unsubscribe();
     this.valueSub.unsubscribe();
   }
 

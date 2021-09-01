@@ -9,7 +9,7 @@ import { GlobalTranslationService } from './shared/global-translation.service';
 import { ThemeService } from './shared/theme-service/theme.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'body',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

@@ -37,9 +37,8 @@ $frontend-theme-dark: mat.define-dark-theme(
 @include mat.all-component-themes($frontend-theme);
 .dark-mode {
   @include mat.all-component-themes($frontend-theme-dark);
+  background-color: 'yellow';
 }
-
-/* You can add global styles to this file, and also import other style files */
 
 html,
 body {
@@ -51,6 +50,10 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   box-sizing: border-box;
   min-width: 250px;
+  background-color: map-get(map-get($frontend-theme, background), background);
+  &.dark-mode {
+    background-color: map-get(map-get($frontend-theme-dark, background), background);
+  }
 }
 
 mat-spinner {

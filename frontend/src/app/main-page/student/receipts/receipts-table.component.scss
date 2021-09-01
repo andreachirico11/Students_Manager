@@ -1,10 +1,12 @@
 .container {
   width: 100%;
+}
+
+.table-container {
   overflow: auto;
 }
 
 .counters {
-  margin-bottom: 2em;
   display: flex;
   justify-content: space-between;
 }

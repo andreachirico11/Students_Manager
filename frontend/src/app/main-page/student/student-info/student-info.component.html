@@ -5,7 +5,7 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <mat-card-subtitle *ngIf="student.dateOfBirth">
-    {{ student.dateOfBirth | date: 'dd MMMM yyyy' }}
+    {{ student.dateOfBirth | date: 'dd MMMM yyyy':'':transServ.currentLang }}
   </mat-card-subtitle>
   <mat-card-subtitle *ngIf="student.phoneNumber">
     {{ 'STUDENT_INFO.PHONE' | translate }}: {{ student.phoneNumber }}

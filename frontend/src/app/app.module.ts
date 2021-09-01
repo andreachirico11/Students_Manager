@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +19,11 @@ import { environment } from '../environments/environment';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { indexedDbConfig } from './shared/indexed-db.service';
 import { OfflineInterceptor } from './shared/offline-interceptor/offline.interceptor';
+import localeIt from '@angular/common/locales/it';
+import localeItExtra from '@angular/common/locales/extra/it';
+
+registerLocaleData(localeIt, 'it', localeItExtra);
+registerLocaleData(localeIt, 'it-IT', localeItExtra);
 
 const routes: Routes = [
   {
