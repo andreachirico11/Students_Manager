@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { BehaviorSubject, merge, Observable, of, throwError } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -30,20 +30,44 @@ export class DataService {
         this.localStudentDb = [...res.payload];
         this.studentsSubj.next(this.localStudentDb);
       }),
-      tap(() => {
-        // if (this.swUpdate && this.swUpdate.isEnabled) {
-        //   this.fetchAllStudentsDataInBackgroundForSw();
-        // }
+      switchMap((res) => {
+        if (this.swUpdate && this.swUpdate.isEnabled) {
+          console.log('enabled');
+
+          return this.getAllStudentsWithRecs(res.payload);
+        }
+        return of(null);
+      }),
+      tap((merge) => {
+        console.log(merge);
       }),
       map(() => true),
       catchError(() => of(false))
     );
   }
 
+  // public getStudents(): Observable<boolean> {
+  //   return this.http.get<IHttpResponse<Student[]>>(this.dbUrl + 'students').pipe(
+  //     first(),
+  //     tap((res) => {
+  //       this.localStudentDb = [...res.payload];
+  //       this.studentsSubj.next(this.localStudentDb);
+  //     }),
+  //     tap(() => {
+  //       // if (this.swUpdate && this.swUpdate.isEnabled) {
+  //       //   this.fetchAllStudentsDataInBackgroundForSw();
+  //       // }
+  //     }),
+  //     map(() => true),
+  //     catchError(() => of(false))
+  //   );
+  // }
+
   public getStudentWithReceipts(id: string): Observable<Student> {
     return this.http.get<IHttpResponse<Student>>(this.dbUrl + `students/${id}`).pipe(
       map((r) => {
         if (r.payload) {
+          console.log(r);
           return new Student(
             r.payload.name,
             r.payload.surname,
@@ -141,12 +165,7 @@ export class DataService {
     this.studentsSubj.next(this.localStudentDb);
   }
 
-  private fetchAllStudentsDataInBackgroundForSw() {
-    const tempS = merge(
-      this.localStudentDb.map((st) => this.getStudentWithReceipts(st.id).pipe(first()))
-    ).subscribe(() => {
-      alert('data fetched');
-      tempS.unsubscribe();
-    });
+  private getAllStudentsWithRecs(students: Student[]) {
+    return forkJoin(students.map((s) => this.getStudentWithReceipts(s.id)));
   }
 }
