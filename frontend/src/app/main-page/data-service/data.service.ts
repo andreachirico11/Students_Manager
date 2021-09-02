@@ -1,7 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { SwUpdate } from '@angular/service-worker';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, delay, first, map, switchMap, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -16,7 +17,7 @@ export class DataService {
   private localStudentDb: Student[] = [];
   public studentsSubj = new BehaviorSubject<Student[]>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private swUpdate: SwUpdate) {}
 
   public get studentDbObservable(): Observable<Student[]> {
     return this.studentsSubj.asObservable();
@@ -28,6 +29,7 @@ export class DataService {
       tap((res) => {
         this.localStudentDb = [...res.payload];
         this.studentsSubj.next(this.localStudentDb);
+        this.getAllDataIfPwa(res.payload);
       }),
       map(() => true),
       catchError(() => of(false))
@@ -133,5 +135,13 @@ export class DataService {
   private removeAndUpdateStudents(stId: string) {
     this.localStudentDb = this.localStudentDb.filter((s) => s.id !== stId);
     this.studentsSubj.next(this.localStudentDb);
+  }
+
+  private getAllDataIfPwa(students: Student[]) {
+    if (this.swUpdate && this.swUpdate.isEnabled) {
+      forkJoin(students.map((s) => this.getStudentWithReceipts(s.id)))
+        .pipe(delay(3000), first())
+        .subscribe();
+    }
   }
 }

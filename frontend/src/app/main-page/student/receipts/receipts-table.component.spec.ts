@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs/internal/observable/of';
 import { MaterialModule } from 'src/app/material.module';
@@ -50,6 +51,10 @@ describe('ReceiptsTableComponent', () => {
           {
             provide: MatDialog,
             useClass: MockMatDialog,
+          },
+          {
+            provide: SwUpdate,
+            useValue: {},
           },
         ],
       }).compileComponents();

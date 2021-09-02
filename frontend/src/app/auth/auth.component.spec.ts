@@ -44,6 +44,7 @@ describe('AuthComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthComponent);
     component = fixture.componentInstance;
+    component['cutTestMode'] = true;
     fixture.detectChanges();
   });
 
