@@ -24,7 +24,7 @@ export class AuthComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    if (environment.autoLogin && !this.cutTestMode) {
+    if (environment['autoLogin'] && !this.cutTestMode) {
       this.testAutoLogin();
     }
   }
