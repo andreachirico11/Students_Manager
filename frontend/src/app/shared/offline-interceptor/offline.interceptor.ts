@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { combineLatest, forkJoin, fromEvent, merge, Observable, of, timer } from 'rxjs';
+import { forkJoin, fromEvent, Observable, of, timer } from 'rxjs';
 import {
   defaultIfEmpty,
   first,
@@ -16,6 +16,7 @@ import {
   switchMap,
   switchMapTo,
   takeUntil,
+  tap,
 } from 'rxjs/operators';
 import { IHttpResponse } from '../models/IHttpResponse';
 
@@ -54,7 +55,6 @@ export class OfflineInterceptor implements HttpInterceptor {
       .get(TranslateService)
       .get('OFFLINE_INTERCEPTOR')
       .pipe(
-        takeUntil(timer(500)),
         first(),
         defaultIfEmpty({ MAIN_MESSAGE: 'No Connection' }),
         map((m) => m.MAIN_MESSAGE)
@@ -72,10 +72,14 @@ export class OfflineInterceptor implements HttpInterceptor {
     this.listening = true;
     this.windowOnlineObs()
       .pipe(first(), switchMapTo(forkJoin(this.stackOfRequests)))
-      .subscribe((r) => {
+      .subscribe(() => {
         this.listening = false;
         alert('reload?');
-        window.location.reload();
+        this.reload();
       });
+  }
+
+  private reload() {
+    window.location.reload();
   }
 }
