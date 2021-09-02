@@ -27,7 +27,8 @@
         "NO_ST_TITLE": "Spiacenti...",
         "NO_ST_CONTENT": "Non è stato trovato neanche uno studente",
         "NOTE_UP_FAIL": "Aggiornamento Note Fallito",
-        "NOTE_UP_SUCC": "Le note sono state aggiornate con successo"
+        "NOTE_UP_SUCC": "Le note sono state aggiornate con successo",
+        "NOTE_UP_OFFLINE": "Le Note saranno aggiornate al ritorno della connessione"
     },
     "STUDENT_INFO": {
         "PHONE": "Telefono",

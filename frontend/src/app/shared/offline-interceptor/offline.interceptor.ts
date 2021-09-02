@@ -7,17 +7,8 @@ import {
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, fromEvent, Observable, of, timer } from 'rxjs';
-import {
-  defaultIfEmpty,
-  first,
-  map,
-  mapTo,
-  switchMap,
-  switchMapTo,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { forkJoin, fromEvent, Observable, of } from 'rxjs';
+import { defaultIfEmpty, first, map, mapTo, switchMap, switchMapTo } from 'rxjs/operators';
 import { IHttpResponse } from '../models/IHttpResponse';
 
 @Injectable()
@@ -44,7 +35,10 @@ export class OfflineInterceptor implements HttpInterceptor {
       }
       return this.getTranslatedMessage().pipe(
         switchMap((message) => {
-          return this.getHttpRes(201, { message, isOffline: true });
+          return this.getHttpRes(request.method === 'POST' ? 201 : 200, {
+            message,
+            isOffline: true,
+          });
         })
       );
     }

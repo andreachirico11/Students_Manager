@@ -58,6 +58,10 @@
       <span>{{ 'STUDENT.NOTE_UP_SUCC' | translate }}</span>
       <mat-icon color="accent">done</mat-icon>
     </div>
+    <div class="note-update-container" *ngSwitchCase="'offline'">
+      <span>{{ 'STUDENT.NOTE_UP_OFFLINE' | translate }}</span>
+      <mat-icon color="warn">warning</mat-icon>
+    </div>
   </div>
 </ng-template>
 

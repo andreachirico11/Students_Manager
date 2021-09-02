@@ -27,7 +27,8 @@
         "NO_ST_TITLE": "Sorry...",
         "NO_ST_CONTENT": "No student was found",
         "NOTE_UP_FAIL": "Note Update Failed.",
-        "NOTE_UP_SUCC": "The Note Has Been Updated!"
+        "NOTE_UP_SUCC": "The Note Has Been Updated!",
+        "NOTE_UP_OFFLINE": "The Note Will Be Updated When the Connection Returns"
     },
     "STUDENT_INFO": {
         "PHONE": "Phone",

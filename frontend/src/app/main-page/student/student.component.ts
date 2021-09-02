@@ -16,7 +16,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   public isBadgeOpen = false;
   private paramsSub: Subscription;
   public isLoading = false;
-  public noteUpdating: 'updating' | 'fail' | 'success' = null;
+  public noteUpdating: 'updating' | 'fail' | 'success' | 'offline' = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,8 +53,10 @@ export class StudentComponent implements OnInit, OnDestroy {
     this.noteUpdating = 'updating';
     this.dbService.updateStudent(this.student).subscribe(
       (result) => {
-        if (result) {
+        if (result === true) {
           this.noteUpdating = 'success';
+        } else if (typeof result === 'string') {
+          this.noteUpdating = 'offline';
         } else {
           this.noteUpdating = 'fail';
         }
