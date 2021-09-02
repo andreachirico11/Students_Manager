@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, delay, first, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -79,22 +79,6 @@ export class DataService {
     );
   }
 
-  // public updateStudent(updated: Student): Observable<boolean> {
-  //   return this.http.put<IHttpResponse<null>>(this.dbUrl + `students/${updated.id}`, updated).pipe(
-  //     tap(() => {
-  //       const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
-  //       this.localStudentDb = [
-  //         ...this.localStudentDb.slice(0, index),
-  //         updated,
-  //         ...this.localStudentDb.slice(index + 1),
-  //       ];
-  //       this.studentsSubj.next(this.localStudentDb);
-  //     }),
-  //     map(() => true),
-  //     catchError(() => of(false))
-  //   );
-  // }
-
   public updateStudent(updated: Student): Observable<boolean | string> {
     return this.http.put<IHttpResponse<null>>(this.dbUrl + `students/${updated.id}`, updated).pipe(
       tap((res) => {
@@ -113,18 +97,20 @@ export class DataService {
     );
   }
 
-  public deleteStudent(id: string): Observable<boolean> {
+  public deleteStudent(id: string): Observable<boolean | string> {
     return this.http
       .delete<HttpResponse<IHttpResponse<null>>>(this.dbUrl + `students/${id}`, {
         observe: 'response',
       })
       .pipe(
         tap((r) => {
-          if (r.status === 200) {
+          if (r.status === 200 && !r.body['isOffline']) {
             this.removeAndUpdateStudents(id);
           }
         }),
-        map((r) => (r.status === 200 ? true : throwError(''))),
+        map((r) =>
+          r.status !== 200 ? throwError('') : r.body['isOffline'] ? r.body['message'] : true
+        ),
         catchError((e) => of(null))
       );
   }

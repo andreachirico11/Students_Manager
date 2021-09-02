@@ -95,6 +95,7 @@
         "ST_UPDT_ERR": "Ci sono stati problemi durante l'aggiornamento dello studente",
         "ST_ADD_SUCC": "Lo studente è stato aggiunto con successo",
         "ST_ADD_ERR": "Ci sono stati problemi durante l'aggiunta dello studente",
+        "ST_DEL_SUCC": "Studente Eliminato",
         "REC_UPDT_SUCC": "La ricevuta è stato aggiornata",
         "REC_UPDT_ERR": "Ci sono stati problemi durante l'aggiornamento della ricevuta",
         "REC_ADD_SUCC": "La ricevuta è stato aggiunta con successo",
