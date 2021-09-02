@@ -120,13 +120,15 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     this.onAddOrUpdateResp(this.dataService.addStudent(this.studentCreated));
   }
 
-  private onAddOrUpdateResp(rObs: Observable<boolean>) {
+  private onAddOrUpdateResp(rObs: Observable<boolean | string>) {
     rObs.subscribe((r) => {
       if (r) {
         this.canLeave = true;
         this.openDialog(
           () => this.navigateHome(),
-          this.studentUnderUpdate
+          typeof r === 'string'
+            ? r
+            : this.studentUnderUpdate
             ? this.translations['ST_UPDT_SUCC']
             : this.translations['ST_ADD_SUCC']
         );

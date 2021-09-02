@@ -66,13 +66,15 @@ export class DataService {
     );
   }
 
-  public addStudent(newStudent: Student): Observable<boolean> {
+  public addStudent(newStudent: Student): Observable<boolean | string> {
     return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
       tap((res) => {
-        this.localStudentDb.push(res.payload);
-        this.studentsSubj.next(this.localStudentDb);
+        if (!res.isOffline) {
+          this.localStudentDb.push(res.payload);
+          this.studentsSubj.next(this.localStudentDb);
+        }
       }),
-      map(() => true),
+      map((res) => (res.isOffline ? res.message : true)),
       catchError(() => of(false))
     );
   }
