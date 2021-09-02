@@ -1,18 +1,34 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { fromEvent, Observable, timer } from 'rxjs';
-import { defaultIfEmpty, first, map, mapTo, retryWhen, switchMap, takeUntil } from 'rxjs/operators';
+import { combineLatest, forkJoin, fromEvent, merge, Observable, of, timer } from 'rxjs';
+import {
+  defaultIfEmpty,
+  first,
+  map,
+  mapTo,
+  switchMap,
+  switchMapTo,
+  takeUntil,
+} from 'rxjs/operators';
+import { IHttpResponse } from '../models/IHttpResponse';
 
 @Injectable()
 export class OfflineInterceptor implements HttpInterceptor {
-  private message: string;
   private isOnline() {
     return navigator.onLine;
   }
   private windowOnlineObs() {
     return fromEvent(window, 'online').pipe(mapTo(true));
   }
+  private listening = false;
+  private stackOfRequests: Observable<HttpEvent<any>>[] = [];
 
   constructor(private injector: Injector) {}
 
@@ -21,10 +37,13 @@ export class OfflineInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
     if (!this.isOnline()) {
+      this.stackOfRequests.push(next.handle(request));
+      if (!this.listening) {
+        this.listenAndLoad();
+      }
       return this.getTranslatedMessage().pipe(
         switchMap((message) => {
-          alert(message);
-          return next.handle(request).pipe(retryWhen(() => this.windowOnlineObs()));
+          return this.getHttpRes(201, { message, isOffline: true });
         })
       );
     }
@@ -40,5 +59,23 @@ export class OfflineInterceptor implements HttpInterceptor {
         defaultIfEmpty({ MAIN_MESSAGE: 'No Connection' }),
         map((m) => m.MAIN_MESSAGE)
       );
+  }
+
+  private getHttpRes<T>(
+    status: number,
+    body: IHttpResponse<T>
+  ): Observable<HttpResponse<IHttpResponse<T>>> {
+    return of(new HttpResponse({ body, status }));
+  }
+
+  private listenAndLoad() {
+    this.listening = true;
+    this.windowOnlineObs()
+      .pipe(first(), switchMapTo(forkJoin(this.stackOfRequests)))
+      .subscribe((r) => {
+        this.listening = false;
+        alert('reload?');
+        window.location.reload();
+      });
   }
 }
