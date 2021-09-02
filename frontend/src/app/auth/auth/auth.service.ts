@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
-import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IUserRequest } from 'src/app/shared/models/IUserRequest';
 import { environment } from 'src/environments/environment';
