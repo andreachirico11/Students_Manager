@@ -151,7 +151,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
       .subscribe((r) => {
         if (r) {
           this.canLeave = true;
-          this.location.back();
+          this.goBack();
         }
       });
   }
@@ -184,5 +184,9 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     dialog.componentInstance.dialogTitle = title;
     dialog.componentInstance.onlyConfirmation = true;
     return dialog.afterClosed();
+  }
+
+  private goBack() {
+    this.location.back();
   }
 }
