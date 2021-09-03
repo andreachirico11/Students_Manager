@@ -97,9 +97,9 @@
         "ST_ADD_ERR": "Ci sono stati problemi durante l'aggiunta dello studente",
         "ST_DEL_SUCC": "Studente Eliminato",
         "REC_UPDT_SUCC": "La ricevuta è stato aggiornata",
-        "REC_UPDT_ERR": "Ci sono stati problemi durante l'aggiornamento della ricevuta",
         "REC_ADD_SUCC": "La ricevuta è stato aggiunta con successo",
-        "REC_ADD_ERR": "Ci sono stati problemi durante l'aggiunta della ricevuta",
+        "REC_ERR": "Ci sono stati problemi",
+        "REC_DEL_SUCC": "Ricevuta eliminata con successo",
         "DELETE_QUEST": "Sei sicuro di voler eliminare?"
     },
     "PAYMENT_TYPES": {
