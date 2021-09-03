@@ -25,7 +25,7 @@ export class OfflineInterceptor implements HttpInterceptor {
   constructor(private injector: Injector) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.isOnline() || request.method === 'GET') {
+    if (this.isOnline() || request.method === 'GET' || /login/.test(request.url)) {
       return next.handle(request);
     }
     if (!this.isOnline()) {
