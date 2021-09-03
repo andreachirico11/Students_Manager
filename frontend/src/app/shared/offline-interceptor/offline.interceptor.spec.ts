@@ -32,6 +32,7 @@ describe('OfflineInterceptor', () => {
     interceptor = TestBed.inject(HTTP_INTERCEPTORS).find(
       (int) => int instanceof OfflineInterceptor
     ) as OfflineInterceptor;
+    spyOn<any>(interceptor, 'browserConfirm').and.returnValue(true);
   });
 
   it('should be created', () => {

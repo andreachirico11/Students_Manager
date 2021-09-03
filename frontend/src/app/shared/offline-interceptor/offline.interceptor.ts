@@ -7,12 +7,14 @@ import {
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, fromEvent, Observable, of } from 'rxjs';
+import { forkJoin, fromEvent, Observable, of, Subscription } from 'rxjs';
 import { defaultIfEmpty, first, map, mapTo, switchMap, switchMapTo } from 'rxjs/operators';
 import { IHttpResponse } from '../models/IHttpResponse';
 
 @Injectable()
 export class OfflineInterceptor implements HttpInterceptor {
+  private sub: Subscription;
+
   private isOnline() {
     return navigator.onLine;
   }
@@ -64,16 +66,39 @@ export class OfflineInterceptor implements HttpInterceptor {
 
   private listenAndLoad() {
     this.listening = true;
-    this.windowOnlineObs()
-      .pipe(first(), switchMapTo(forkJoin(this.stackOfRequests)))
-      .subscribe(() => {
+    this.sub = this.windowOnlineObs()
+      .pipe(
+        first(),
+        switchMap(() => {
+          const resp = this.browserConfirm();
+          if (resp) {
+            return forkJoin(this.stackOfRequests);
+          }
+          return of(resp);
+        })
+      )
+      .subscribe((resp) => {
         this.listening = false;
-        alert('reload?');
-        this.reload();
+        this.destroy();
+        if (resp !== false) {
+          this.reload();
+        }
       });
   }
 
   private reload() {
     window.location.reload();
+  }
+
+  private browserConfirm(): boolean {
+    return confirm('reload ?');
+  }
+
+  private destroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    this.stackOfRequests = null;
+    this.stackOfRequests = [];
   }
 }
