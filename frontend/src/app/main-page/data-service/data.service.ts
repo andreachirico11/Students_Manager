@@ -115,25 +115,25 @@ export class DataService {
       );
   }
 
-  public addReceipt(studentId: string, r: Receipt): Observable<boolean> {
+  public addReceipt(studentId: string, r: Receipt): Observable<boolean | string> {
     return this.sharedPipe(
       this.http.post<IHttpResponse<Receipt>>(this.dbUrl + 'receipts/' + studentId, r)
     );
   }
 
-  public updateReceipt(updated: Receipt): Observable<boolean> {
+  public updateReceipt(updated: Receipt): Observable<boolean | string> {
     return this.sharedPipe(
       this.http.put<IHttpResponse<Receipt>>(this.dbUrl + `receipts/${updated.id}`, updated)
     );
   }
 
-  public deleteReceipt(id: string): Observable<boolean> {
+  public deleteReceipt(id: string): Observable<boolean | string> {
     return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
   }
 
-  private sharedPipe(obs: Observable<any>): Observable<boolean> {
+  private sharedPipe(obs: Observable<any>): Observable<boolean | string> {
     return obs.pipe(
-      map(() => true),
+      map((res) => (res.isOffline ? res.message : true)),
       catchError(() => of(false))
     );
   }
