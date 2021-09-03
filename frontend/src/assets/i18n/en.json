@@ -108,6 +108,11 @@
         "TRANSFER": "Transfer"
     },
     "OFFLINE_INTERCEPTOR": {
-        "MAIN_MESSAGE": "Actions will be completed when the connection returns"
+        "MAIN_MESSAGE": "Actions will be completed when the connection returns",
+        "DIALOG": {
+            "CONFIRM": "Confirm",
+            "DISCARD": "Discard",
+            "TITLE": "Number of actions waiting to be executed: "
+        }
     }
 }

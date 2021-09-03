@@ -1,12 +1,15 @@
 import { HttpClient, HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, flush, flushMicrotasks, TestBed, tick } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { forkJoin, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, delay, finalize, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { OfflineInterceptor } from './offline.interceptor';
+
+let MAT_DIALOG_RESPONSE;
 
 describe('OfflineInterceptor', () => {
   let service: FakeDataService, controller: HttpTestingController, interceptor: OfflineInterceptor;
@@ -16,15 +19,17 @@ describe('OfflineInterceptor', () => {
   };
 
   const startOnlineObs = (seconds: number) => {
-    spyOn<any>(interceptor, 'windowOnlineObs').and.returnValue(of(true));
+    spyOn<any>(interceptor, 'windowOnlineObs').and.returnValue(of(true).pipe(delay(seconds)));
   };
 
   beforeEach(() => {
+    MAT_DIALOG_RESPONSE = true;
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
         FakeDataService,
         { provide: HTTP_INTERCEPTORS, useClass: OfflineInterceptor, multi: true },
+        { provide: MatDialog, useClass: MockMatDialog },
       ],
     });
     controller = TestBed.inject(HttpTestingController);
@@ -33,6 +38,10 @@ describe('OfflineInterceptor', () => {
       (int) => int instanceof OfflineInterceptor
     ) as OfflineInterceptor;
     spyOn<any>(interceptor, 'browserConfirm').and.returnValue(true);
+  });
+
+  afterEach(() => {
+    MAT_DIALOG_RESPONSE = false;
   });
 
   it('should be created', () => {
@@ -128,13 +137,34 @@ describe('OfflineInterceptor', () => {
           })
         )
       )
-    ).subscribe(() => {
-      tick(200);
-      const req = controller.expectOne(environment.dbUrl);
-      req.flush({ body: 'body' }, { status: 201, statusText: 'created' });
-      expect(reloadSpy).toHaveBeenCalled();
-      expect(postCounter).toBe(4);
-    });
+    )
+      .pipe(
+        finalize(() => {
+          tick(200);
+          const req = controller.match(environment.dbUrl);
+          req.forEach((r) => r.flush({ body: 'body' }, { status: 201, statusText: 'created' }));
+          expect(reloadSpy).toHaveBeenCalled();
+          expect(postCounter).toBe(4);
+        })
+      )
+      .subscribe();
+  }));
+
+  it('shouldn"t resolve a group of stacked requests if the dialog returns false', fakeAsync(() => {
+    switchOnOffline('offline');
+    MAT_DIALOG_RESPONSE = false;
+    const reloadSpy = spyOn<any>(interceptor, 'reload');
+    startOnlineObs(100);
+    forkJoin([1, 2, 3, 4].map(() => service.postReq()))
+      .pipe(
+        finalize(() => {
+          tick(200);
+          controller.expectNone(environment.dbUrl);
+          expect(reloadSpy).not.toHaveBeenCalled();
+          expect(interceptor['stackOfRequests'].length).toBe(0);
+        })
+      )
+      .subscribe();
   }));
 });
 
@@ -148,5 +178,18 @@ class FakeDataService {
 
   postReq() {
     return this.http.post(environment.dbUrl, {});
+  }
+}
+
+class MockMatDialog {
+  open() {
+    return {
+      afterClosed() {
+        return of(MAT_DIALOG_RESPONSE);
+      },
+      componentInstance: {
+        dialogTitle: '',
+      },
+    };
   }
 }

@@ -108,6 +108,11 @@
         "TRANSFER": "Bonifico"
     },
     "OFFLINE_INTERCEPTOR": {
-        "MAIN_MESSAGE": "Le operazioni saranno completate al ritorno della connessione"
+        "MAIN_MESSAGE": "Le operazioni saranno completate al ritorno della connessione",
+        "DIALOG": {
+            "CONFIRM": "Conferma",
+            "DISCARD": "Elimina",
+            "TITLE": "Numero di azioni in attesa di essere eseguite: "
+        }
     }
 }

@@ -6,9 +6,11 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, fromEvent, Observable, of, Subscription } from 'rxjs';
 import { defaultIfEmpty, first, map, mapTo, switchMap, switchMapTo } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { IHttpResponse } from '../models/IHttpResponse';
 
 @Injectable()
@@ -30,6 +32,7 @@ export class OfflineInterceptor implements HttpInterceptor {
     if (this.isOnline() || request.method === 'GET' || /login/.test(request.url)) {
       return next.handle(request);
     }
+
     if (!this.isOnline()) {
       this.stackOfRequests.push(next.handle(request));
       if (!this.listening) {
@@ -69,8 +72,13 @@ export class OfflineInterceptor implements HttpInterceptor {
     this.sub = this.windowOnlineObs()
       .pipe(
         first(),
-        switchMap(() => {
-          const resp = this.browserConfirm();
+        switchMapTo(
+          this.injector
+            .get(TranslateService)
+            .get('OFFLINE_INTERCEPTOR', { numOfActions: this.stackOfRequests.length })
+        ),
+        switchMap((ts) => this.getMatDialog(ts)),
+        switchMap((resp) => {
           if (resp) {
             return forkJoin(this.stackOfRequests);
           }
@@ -86,12 +94,17 @@ export class OfflineInterceptor implements HttpInterceptor {
       });
   }
 
-  private reload() {
-    window.location.reload();
+  private getMatDialog(translations) {
+    const dialog = this.injector.get(MatDialog).open(ConfirmationDialogComponent);
+    dialog.componentInstance.dialogTitle =
+      translations['DIALOG']['TITLE'] + this.stackOfRequests.length;
+    dialog.componentInstance.successBtnLabel = translations['DIALOG']['CONFIRM'];
+    dialog.componentInstance.unsuccessBtnLabel = translations['DIALOG']['DISCARD'];
+    return dialog.afterClosed();
   }
 
-  private browserConfirm(): boolean {
-    return confirm('reload ?');
+  private reload() {
+    window.location.reload();
   }
 
   private destroy() {
