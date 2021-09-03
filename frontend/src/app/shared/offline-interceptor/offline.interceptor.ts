@@ -72,11 +72,7 @@ export class OfflineInterceptor implements HttpInterceptor {
     this.sub = this.windowOnlineObs()
       .pipe(
         first(),
-        switchMapTo(
-          this.injector
-            .get(TranslateService)
-            .get('OFFLINE_INTERCEPTOR', { numOfActions: this.stackOfRequests.length })
-        ),
+        switchMapTo(this.injector.get(TranslateService).get('OFFLINE_INTERCEPTOR')),
         switchMap((ts) => this.getMatDialog(ts)),
         switchMap((resp) => {
           if (resp) {

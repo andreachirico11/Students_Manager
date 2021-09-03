@@ -1,15 +1,13 @@
 import { HttpClient, HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Injectable } from '@angular/core';
-import { fakeAsync, flush, flushMicrotasks, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { forkJoin, of } from 'rxjs';
-import { catchError, delay, finalize, tap } from 'rxjs/operators';
+import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { OfflineInterceptor } from './offline.interceptor';
-
-let MAT_DIALOG_RESPONSE;
 
 describe('OfflineInterceptor', () => {
   let service: FakeDataService, controller: HttpTestingController, interceptor: OfflineInterceptor;
@@ -19,11 +17,12 @@ describe('OfflineInterceptor', () => {
   };
 
   const startOnlineObs = (seconds: number) => {
-    spyOn<any>(interceptor, 'windowOnlineObs').and.returnValue(of(true).pipe(delay(seconds)));
+    spyOn<any>(interceptor, 'windowOnlineObs').and.returnValue(
+      of(true).pipe(first(), delay(seconds))
+    );
   };
 
   beforeEach(() => {
-    MAT_DIALOG_RESPONSE = true;
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
@@ -37,11 +36,6 @@ describe('OfflineInterceptor', () => {
     interceptor = TestBed.inject(HTTP_INTERCEPTORS).find(
       (int) => int instanceof OfflineInterceptor
     ) as OfflineInterceptor;
-    spyOn<any>(interceptor, 'browserConfirm').and.returnValue(true);
-  });
-
-  afterEach(() => {
-    MAT_DIALOG_RESPONSE = false;
   });
 
   it('should be created', () => {
@@ -115,17 +109,20 @@ describe('OfflineInterceptor', () => {
   it('should resolves a single stacked request when connection returns', fakeAsync(() => {
     switchOnOffline('offline');
     const reloadSpy = spyOn<any>(interceptor, 'reload');
+    spyOn<any>(interceptor, 'getMatDialog').and.returnValue(of(true));
     startOnlineObs(100);
     service.postReq().subscribe(() => {
-      tick(100);
+      tick(200);
       const req = controller.expectOne(environment.dbUrl);
       req.flush({ body: 'body' }, { status: 201, statusText: 'created' });
+      flush();
       expect(reloadSpy).toHaveBeenCalled();
     });
   }));
 
   it('should resolves a group of stacked request when connection returns', fakeAsync(() => {
     switchOnOffline('offline');
+    spyOn<any>(interceptor, 'getMatDialog').and.returnValue(of(true));
     let postCounter = 0;
     const reloadSpy = spyOn<any>(interceptor, 'reload');
     startOnlineObs(100);
@@ -152,7 +149,7 @@ describe('OfflineInterceptor', () => {
 
   it('shouldn"t resolve a group of stacked requests if the dialog returns false', fakeAsync(() => {
     switchOnOffline('offline');
-    MAT_DIALOG_RESPONSE = false;
+    spyOn<any>(interceptor, 'getMatDialog').and.returnValue(of(false));
     const reloadSpy = spyOn<any>(interceptor, 'reload');
     startOnlineObs(100);
     forkJoin([1, 2, 3, 4].map(() => service.postReq()))
@@ -164,7 +161,7 @@ describe('OfflineInterceptor', () => {
           expect(interceptor['stackOfRequests'].length).toBe(0);
         })
       )
-      .subscribe();
+      .subscribe(() => {});
   }));
 });
 
@@ -185,7 +182,7 @@ class MockMatDialog {
   open() {
     return {
       afterClosed() {
-        return of(MAT_DIALOG_RESPONSE);
+        return of(null);
       },
       componentInstance: {
         dialogTitle: '',
