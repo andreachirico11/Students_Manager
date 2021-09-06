@@ -11,7 +11,12 @@
       <button mat-icon-button (click)="matLanSelect.open()">
         <mat-icon>language</mat-icon>
       </button>
-      <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)">
+      <mat-select
+        #matLanSelect
+        ngModel
+        (ngModelChange)="onLanChange($event)"
+        id="app-component-select"
+      >
         <mat-option value="en">English</mat-option>
         <mat-option value="it">Italiano</mat-option>
       </mat-select>
