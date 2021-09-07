@@ -5,7 +5,7 @@ import { ServerMessages, StudentMessages } from '../models/messageEnums';
 import { ReceiptModel } from '../models/receiptModel';
 import { StudentModel, StudentModelBuilder } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 export function getAllStudents(req: IRequest, res: Response) {
   StudentModel.find()
@@ -41,7 +41,7 @@ export function putStudent(req: IBackendRequest<IStudent>, res: Response) {
 
 export function deleteStudent(req: IRequest, res: Response) {
   const studentId = req.params.id;
-  StudentModel.deleteOne({ _id: new ObjectID(studentId) })
+  StudentModel.deleteOne({ _id: new ObjectId(studentId) })
     .then((r) => {
       if (r.deletedCount && r.deletedCount > 0) {
         return ReceiptModel.deleteMany({ _studentId: studentId });
@@ -49,7 +49,7 @@ export function deleteStudent(req: IRequest, res: Response) {
       throw new Error();
     })
     .then((r) => {
-      if (r.ok) {
+      if (r.deletedCount && r.deletedCount > 0) {
         return generateHttpRes(res, 200, StudentMessages.student_deleted);
       }
       throw new Error();
