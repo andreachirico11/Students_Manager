@@ -7,6 +7,7 @@ export class Student {
     public surname: string,
     public parent: Parent,
     public receipts: Receipt[],
+    public isWithRec: boolean,
     public dateOfBirth?: Date,
     public phoneNumber?: number,
     public fiscalCode?: string,

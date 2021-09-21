@@ -163,12 +163,14 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       parent,
       address,
       id,
+      isWithRec,
     } = obj;
     return new Student(
       name,
       surname,
       parent,
       [],
+      isWithRec,
       dateOfBirth,
       phoneNumber ? Number(phoneNumber) : null,
       fiscalCode,

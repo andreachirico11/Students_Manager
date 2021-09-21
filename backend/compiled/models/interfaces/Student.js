@@ -26,6 +26,7 @@ function parser(s) {
         address: s.address,
         notes: s.notes,
         receipts: receipts,
+        isWithRec: s.isWithRec,
     };
 }
 //# sourceMappingURL=Student.js.map

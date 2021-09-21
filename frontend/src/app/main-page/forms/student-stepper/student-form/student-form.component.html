@@ -13,6 +13,7 @@
       {{ 'FORMS.ERRORS.ONLY_LETTERS' | translate }}
     </mat-error>
   </mat-form-field>
+  <mat-checkbox formControlName="isWithRec">{{ 'FORMS.IS_WITH_R' | translate }}</mat-checkbox>
   <mat-form-field appearance="fill" (click)="picker.open()">
     <mat-label>{{ 'FORMS.DATE_BIRTH' | translate }}</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />

@@ -12,6 +12,10 @@ export const StudentModel: Model<IMongoStudent> = model(
       type: String,
       required: true,
     },
+    isWithRec: {
+      type: Boolean,
+      required: true,
+    },
     dateOfBirth: {
       type: Date,
     },

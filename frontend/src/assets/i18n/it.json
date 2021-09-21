@@ -66,6 +66,7 @@
         "SURNAME": "Cognome",
         "NUMBER": "Numero",
         "AMOUNT": "Importo",
+        "IS_WITH_R": "Con ricevuta",
         "DATE_EM": "Data di Emissione",
         "DATE_BIRTH": "Data di Nascita",
         "DATE_PAY": "Data di Pagamento",

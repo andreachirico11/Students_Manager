@@ -41,6 +41,7 @@ describe('StudentFormComponent', () => {
       fakeStudent.surname,
       fakeStudent.parent,
       fakeStudent.receipts,
+      true,
       fakeStudent.dateOfBirth,
       fakeStudent.phoneNumber,
       fakeStudent.fiscalCode,
@@ -146,6 +147,7 @@ describe('StudentFormComponent', () => {
       address: 'a',
       schoolClass: 'a',
       phoneNumber: 123,
+      isWithRec: true,
     };
     fixture.componentInstance.result.subscribe((p) => {
       expect(p).toEqual(st);

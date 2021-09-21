@@ -22,6 +22,10 @@ exports.StudentModel = mongoose_1.model('Student', new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    isWithRec: {
+        type: Boolean,
+        required: true,
+    },
     dateOfBirth: {
         type: Date,
     },
