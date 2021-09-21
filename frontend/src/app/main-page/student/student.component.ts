@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { switchMap, switchMapTo } from 'rxjs/operators';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Student } from 'src/app/shared/models/Student';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
@@ -16,14 +20,16 @@ export class StudentComponent implements OnInit, OnDestroy {
   public isBadgeOpen = false;
   private paramsSub: Subscription;
   public isLoading = false;
-  public noteUpdating: 'updating' | 'fail' | 'success' = null;
+  public noteUpdating: 'updating' | 'fail' | 'success' | 'offline' = null;
 
   constructor(
     private route: ActivatedRoute,
     private dbService: DataService,
     private router: Router,
     private updateDataService: UpdateDataService<Student>,
-    private deleteDialog: DeleteConfirmationDialogService
+    private translate: TranslateService,
+    private deleteDialog: DeleteConfirmationDialogService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -53,8 +59,10 @@ export class StudentComponent implements OnInit, OnDestroy {
     this.noteUpdating = 'updating';
     this.dbService.updateStudent(this.student).subscribe(
       (result) => {
-        if (result) {
+        if (result === true) {
           this.noteUpdating = 'success';
+        } else if (typeof result === 'string') {
+          this.noteUpdating = 'offline';
         } else {
           this.noteUpdating = 'fail';
         }
@@ -82,10 +90,32 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   private deleteStudent() {
-    this.dbService.deleteStudent(this.student.id).subscribe((result) => {
-      if (result) {
-        this.router.navigate(['']);
-      }
-    });
+    let res = null;
+    this.dbService
+      .deleteStudent(this.student.id)
+      .pipe(
+        switchMap((resp) => {
+          res = resp;
+          return this.translate.get('DIALOG');
+        }),
+        switchMap((translations) => {
+          if (res) {
+            const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+            if (typeof res === 'string') {
+              dialogRef.componentInstance.dialogTitle = res;
+            } else {
+              dialogRef.componentInstance.dialogTitle = translations['ST_DEL_SUCC'];
+            }
+            dialogRef.componentInstance.onlyConfirmation = true;
+            dialogRef.componentInstance.successBtnLabel = translations['YES'];
+            return dialogRef.afterClosed();
+          }
+        })
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.router.navigate(['']);
+        }
+      });
   }
 }

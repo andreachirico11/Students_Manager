@@ -95,6 +95,8 @@ describe('ReceiptsFormComponent', () => {
     updateDataService = TestBed.inject(UpdateDataService);
     component.ngOnInit();
     fixture.detectChanges();
+    spyOn<any>(component, 'goBack');
+    spyOn<any>(component, 'openConfirmationDialog').and.returnValue(of(true));
   });
 
   afterEach(() => {

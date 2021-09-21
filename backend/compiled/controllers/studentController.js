@@ -41,7 +41,7 @@ function putStudent(req, res) {
 exports.putStudent = putStudent;
 function deleteStudent(req, res) {
     var studentId = req.params.id;
-    studentModell_1.StudentModel.deleteOne({ _id: new mongodb_1.ObjectID(studentId) })
+    studentModell_1.StudentModel.deleteOne({ _id: new mongodb_1.ObjectId(studentId) })
         .then(function (r) {
         if (r.deletedCount && r.deletedCount > 0) {
             return receiptModel_1.ReceiptModel.deleteMany({ _studentId: studentId });
@@ -49,7 +49,7 @@ function deleteStudent(req, res) {
         throw new Error();
     })
         .then(function (r) {
-        if (r.ok) {
+        if (r.deletedCount && r.deletedCount > 0) {
             return httpRespGenerator_1.generateHttpRes(res, 200, messageEnums_1.StudentMessages.student_deleted);
         }
         throw new Error();

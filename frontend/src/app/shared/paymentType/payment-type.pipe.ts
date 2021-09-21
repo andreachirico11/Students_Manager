@@ -1,37 +1,25 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { PaymentType } from '../models/PaymentType';
 
 @Pipe({
   name: 'paymentType',
+  pure: false,
 })
 export class PaymentTypePipe implements PipeTransform {
-  private payments: { [key: string]: string };
-
-  constructor(translate: TranslateService) {
-    translate
-      .get('PAYMENT_TYPES')
-      .pipe(first())
-      .subscribe((value) => {
-        this.payments = value;
-      });
-  }
-
+  constructor(private translate: TranslateService) {}
   transform(value: PaymentType): string {
-    return this.getVal(value);
-  }
-
-  private getVal(valName?: PaymentType): string {
-    if (!valName) return '';
-    switch (valName) {
+    const payments = this.translate.instant('PAYMENT_TYPES');
+    if (!value) return '';
+    switch (value) {
       case 'atm':
-        return this.payments['ATM'];
+        return payments['ATM'];
       case 'money':
-        return this.payments['MONEY'];
+        return payments['MONEY'];
       case 'transfer':
       default:
-        return this.payments['TRANSFER'];
+        return payments['TRANSFER'];
     }
   }
 }

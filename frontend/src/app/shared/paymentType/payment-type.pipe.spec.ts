@@ -1,16 +1,13 @@
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
 import { PaymentTypePipe } from './payment-type.pipe';
 
-const fakeValues = {
-  MONEY: 'Money',
-  ATM: 'Atm',
-  TRANSFER: 'Transfer',
-};
-
 class fakeTranslate {
-  get() {
-    return of(fakeValues);
+  instant() {
+    return {
+      MONEY: 'Money',
+      ATM: 'Atm',
+      TRANSFER: 'Transfer',
+    };
   }
 }
 

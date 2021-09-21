@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, delay, first, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, delay, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
@@ -67,68 +67,74 @@ export class DataService {
     );
   }
 
-  public addStudent(newStudent: Student): Observable<boolean> {
+  public addStudent(newStudent: Student): Observable<boolean | string> {
     return this.http.post<IHttpResponse<Student>>(this.dbUrl + 'students', newStudent).pipe(
       tap((res) => {
-        this.localStudentDb.push(res.payload);
-        this.studentsSubj.next(this.localStudentDb);
+        if (!res.isOffline) {
+          this.localStudentDb.push(res.payload);
+          this.studentsSubj.next(this.localStudentDb);
+        }
       }),
-      map(() => true),
+      map((res) => (res.isOffline ? res.message : true)),
       catchError(() => of(false))
     );
   }
 
-  public updateStudent(updated: Student): Observable<boolean> {
+  public updateStudent(updated: Student): Observable<boolean | string> {
     return this.http.put<IHttpResponse<null>>(this.dbUrl + `students/${updated.id}`, updated).pipe(
-      tap(() => {
-        const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
-        this.localStudentDb = [
-          ...this.localStudentDb.slice(0, index),
-          updated,
-          ...this.localStudentDb.slice(index + 1),
-        ];
-        this.studentsSubj.next(this.localStudentDb);
+      tap((res) => {
+        if (!res.isOffline) {
+          const index = this.localStudentDb.findIndex((s) => updated.id === s.id);
+          this.localStudentDb = [
+            ...this.localStudentDb.slice(0, index),
+            updated,
+            ...this.localStudentDb.slice(index + 1),
+          ];
+          this.studentsSubj.next(this.localStudentDb);
+        }
       }),
-      map(() => true),
+      map((res) => (res.isOffline ? res.message : true)),
       catchError(() => of(false))
     );
   }
 
-  public deleteStudent(id: string): Observable<boolean> {
+  public deleteStudent(id: string): Observable<boolean | string> {
     return this.http
       .delete<HttpResponse<IHttpResponse<null>>>(this.dbUrl + `students/${id}`, {
         observe: 'response',
       })
       .pipe(
         tap((r) => {
-          if (r.status === 200) {
+          if (r.status === 200 && !r.body['isOffline']) {
             this.removeAndUpdateStudents(id);
           }
         }),
-        map((r) => (r.status === 200 ? true : throwError(''))),
+        map((r) =>
+          r.status !== 200 ? throwError('') : r.body['isOffline'] ? r.body['message'] : true
+        ),
         catchError((e) => of(null))
       );
   }
 
-  public addReceipt(studentId: string, r: Receipt): Observable<boolean> {
+  public addReceipt(studentId: string, r: Receipt): Observable<boolean | string> {
     return this.sharedPipe(
       this.http.post<IHttpResponse<Receipt>>(this.dbUrl + 'receipts/' + studentId, r)
     );
   }
 
-  public updateReceipt(updated: Receipt): Observable<boolean> {
+  public updateReceipt(updated: Receipt): Observable<boolean | string> {
     return this.sharedPipe(
       this.http.put<IHttpResponse<Receipt>>(this.dbUrl + `receipts/${updated.id}`, updated)
     );
   }
 
-  public deleteReceipt(id: string): Observable<boolean> {
+  public deleteReceipt(id: string): Observable<boolean | string> {
     return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
   }
 
-  private sharedPipe(obs: Observable<any>): Observable<boolean> {
+  private sharedPipe(obs: Observable<any>): Observable<boolean | string> {
     return obs.pipe(
-      map(() => true),
+      map((res) => (res.isOffline ? res.message : true)),
       catchError(() => of(false))
     );
   }

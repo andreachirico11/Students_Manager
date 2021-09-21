@@ -6,7 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator';
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
@@ -126,15 +127,33 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
   }
 
   private createAndAdd() {
-    this.dataService
-      .addReceipt(this.studentId, this.collectInputs())
-      .subscribe((r) => this.onResponse(r));
+    this.actionsPipe(this.dataService.addReceipt(this.studentId, this.collectInputs()));
   }
 
   private updateExistent() {
-    this.dataService
-      .updateReceipt({ ...this.collectInputs(), id: this.receiptToUpdateId })
-      .subscribe((r) => this.onResponse(r));
+    this.actionsPipe(
+      this.dataService.updateReceipt({ ...this.collectInputs(), id: this.receiptToUpdateId })
+    );
+  }
+
+  private actionsPipe(action: Observable<boolean | string>) {
+    action
+      .pipe(
+        switchMap((res) => {
+          if (res) {
+            const title = typeof res === 'string' ? res : null;
+            return this.successDialog(title);
+          }
+          throwError('');
+        }),
+        catchError(() => this.failDialog())
+      )
+      .subscribe((r) => {
+        if (r) {
+          this.canLeave = true;
+          this.goBack();
+        }
+      });
   }
 
   private collectInputs(): Receipt {
@@ -142,22 +161,32 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
     return new Receipt(amount, emissionDate, number || null, typeOfPayment || null, paymentDate);
   }
 
-  private onResponse(r: boolean) {
-    if (r) {
-      this.canLeave = true;
-      this.location.back();
-    } else {
-      this.onError();
-    }
+  private successDialog(title?: string) {
+    const dialogTitle = title
+      ? title
+      : this.studentId
+      ? this.translations['REC_ADD_SUCC']
+      : this.translations['REC_UPDT_SUCC'];
+    return this.openConfirmationDialog(dialogTitle);
   }
 
-  private onError() {
-    const componentInstance = this.dialog.open(ConfirmationDialogComponent).componentInstance;
-    componentInstance.successBtnLabel = this.translations['YES'];
-    componentInstance.unsuccessBtnLabel = this.translations['NO'];
-    componentInstance.dialogTitle = this.studentId
-      ? this.translations['REC_UPDT_ERR']
-      : this.translations['REC_ADD_ERR'];
-    componentInstance.onlyConfirmation = true;
+  private failDialog() {
+    const dialogTitle = this.studentId
+      ? this.translations['REC_ADD_ERR']
+      : this.translations['REC_UPDT_ERR'];
+    return this.openConfirmationDialog(dialogTitle);
+  }
+
+  private openConfirmationDialog(title: string) {
+    const dialog = this.dialog.open(ConfirmationDialogComponent);
+    dialog.componentInstance.successBtnLabel = this.translations['YES'];
+    dialog.componentInstance.unsuccessBtnLabel = this.translations['NO'];
+    dialog.componentInstance.dialogTitle = title;
+    dialog.componentInstance.onlyConfirmation = true;
+    return dialog.afterClosed();
+  }
+
+  private goBack() {
+    this.location.back();
   }
 }

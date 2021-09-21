@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { first, switchMap, switchMapTo } from 'rxjs/operators';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
@@ -52,7 +54,8 @@ export class ReceiptsTableComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private deleteDialog: DeleteConfirmationDialogService,
     private receiptTotalsService: ReceiptTotalsService,
-    public transServ: TranslateService
+    public transServ: TranslateService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -85,19 +88,36 @@ export class ReceiptsTableComponent implements OnInit {
   }
 
   public deleteReceipt(id: string) {
+    let resp: boolean | string;
     this.deleteDialog
       .open()
       .pipe(
-        switchMap((dialogChoice) =>
-          dialogChoice ? this.dataS.deleteReceipt(id) : of(dialogChoice)
-        )
+        first(),
+        switchMap((dialogChoice) => {
+          if (dialogChoice) {
+            return this.dataS.deleteReceipt(id).pipe(
+              switchMap((res) => {
+                resp = res;
+                return this.transServ.get('DIALOG');
+              }),
+              switchMap((translations) => {
+                let title = translations['REC_ERR'];
+                if (resp) {
+                  if (typeof resp === 'string') {
+                    title = resp;
+                  } else {
+                    title = translations['REC_DEL_SUCC'];
+                    this.receipts = this.receipts.filter((r) => r.id !== id);
+                    this.initDataSource();
+                  }
+                }
+                return this.openConfirmationDialog(translations, title);
+              })
+            );
+          }
+        })
       )
-      .subscribe((hasBeenDeleted) => {
-        if (hasBeenDeleted) {
-          this.receipts = this.receipts.filter((r) => r.id !== id);
-          this.initDataSource();
-        }
-      });
+      .subscribe();
   }
 
   private initDataSource() {
@@ -116,5 +136,14 @@ export class ReceiptsTableComponent implements OnInit {
     } else {
       this.tableDataSource = null;
     }
+  }
+
+  private openConfirmationDialog(translations: string, title: string) {
+    const dialog = this.dialog.open(ConfirmationDialogComponent);
+    dialog.componentInstance.successBtnLabel = translations['YES'];
+    dialog.componentInstance.unsuccessBtnLabel = translations['NO'];
+    dialog.componentInstance.dialogTitle = title;
+    dialog.componentInstance.onlyConfirmation = true;
+    return dialog.afterClosed();
   }
 }

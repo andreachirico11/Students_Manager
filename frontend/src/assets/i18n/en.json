@@ -27,7 +27,8 @@
         "NO_ST_TITLE": "Sorry...",
         "NO_ST_CONTENT": "No student was found",
         "NOTE_UP_FAIL": "Note Update Failed.",
-        "NOTE_UP_SUCC": "The Note Has Been Updated!"
+        "NOTE_UP_SUCC": "The Note Has Been Updated!",
+        "NOTE_UP_OFFLINE": "The Note Will Be Updated When the Connection Returns"
     },
     "STUDENT_INFO": {
         "PHONE": "Phone",
@@ -95,10 +96,11 @@
         "ST_UPDT_ERR": "There was a problem updating the student",
         "ST_ADD_SUCC": "Student added successfully",
         "ST_ADD_ERR": "There was a problem adding the student",
-        "REC_UPDT_SUCC": "Receipt updated successfully",
+        "ST_DEL_SUCC": "Student Deleted",
         "REC_UPDT_ERR": "There was a problem updating the receipt",
         "REC_ADD_SUCC": "Receipt added successfully",
-        "REC_ADD_ERR": "There was a problem adding the receipt",
+        "REC_ERR": "There was a problem",
+        "REC_DEL_SUCC": "Receipt successfully deleted",
         "DELETE_QUEST": "Do You Really Want To Delete?"
     },
     "PAYMENT_TYPES": {
@@ -107,6 +109,11 @@
         "TRANSFER": "Transfer"
     },
     "OFFLINE_INTERCEPTOR": {
-        "MAIN_MESSAGE": "Actions will be completed when the connection returns"
+        "MAIN_MESSAGE": "Actions will be completed when the connection returns",
+        "DIALOG": {
+            "CONFIRM": "Confirm",
+            "DISCARD": "Discard",
+            "TITLE": "Number of actions waiting to be executed: "
+        }
     }
 }

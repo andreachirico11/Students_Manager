@@ -17,8 +17,8 @@ mat-select {
   font-size: 0.8em !important;
 }
 
-::ng-deep .mat-select-arrow,
-::ng-deep .mat-select-min-line {
+::ng-deep #app-component-select .mat-select-arrow,
+::ng-deep #app-component-select .mat-select-min-line {
   display: none;
 }
 

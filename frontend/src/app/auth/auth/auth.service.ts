@@ -52,7 +52,7 @@ export class AuthService {
   logout() {
     this.cleanLocalTimers();
     localStorage.removeItem(localStorageDataName);
-    this.logoutSubject.next();
+    this.logoutSubject.next(null);
   }
 
   getItemFromLocalStorage() {
