@@ -8,8 +8,12 @@ import * as mongoose from 'mongoose';
 import { corsController } from './controllers/corsController';
 import { createAdminUser } from './controllers/userController';
 import { router } from './routes';
+import checkForAutoPing from './utils/autoPingFn';
+
+checkForAutoPing();
 
 const app = express();
+
 const connStr = process.env.MONGO_CONNECTION_STRING;
 let testUser: { password: string; email: string } | null = null;
 if (process.env.TEST_USER) {
@@ -42,4 +46,6 @@ if (testUser) {
   });
 }
 
-app.listen(process.env.PORT ?? 3210);
+app.listen(process.env.PORT ?? 3210, () => {
+  console.log('listening');
+});

@@ -10,6 +10,8 @@ var mongoose = require("mongoose");
 var corsController_1 = require("./controllers/corsController");
 var userController_1 = require("./controllers/userController");
 var routes_1 = require("./routes");
+var autoPingFn_1 = require("./utils/autoPingFn");
+autoPingFn_1.default();
 var app = express();
 var connStr = process.env.MONGO_CONNECTION_STRING;
 var testUser = null;
@@ -39,5 +41,7 @@ if (testUser) {
         password: testUser.password,
     });
 }
-app.listen((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3210);
+app.listen((_a = process.env.PORT) !== null && _a !== void 0 ? _a : 3210, function () {
+    console.log('listening');
+});
 //# sourceMappingURL=server.js.map
