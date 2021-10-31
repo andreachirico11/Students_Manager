@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getPdf } from './controllers/pdfPrintoutController';
 import { deleteReceipt, postReceipt, putReceipt } from './controllers/receiptController';
 import {
   deleteStudent,
@@ -23,5 +24,7 @@ router.get('/students', verifyToken, getAllStudents);
 router.post('/receipts/:studentId', verifyToken, postReceipt);
 router.put('/receipts/:receiptId', verifyToken, putReceipt);
 router.delete('/receipts/:id', verifyToken, deleteReceipt);
+
+router.get('/printout', getPdf);
 
 export { router };

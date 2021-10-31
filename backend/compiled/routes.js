@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 var express_1 = require("express");
+var pdfPrintoutController_1 = require("./controllers/pdfPrintoutController");
 var receiptController_1 = require("./controllers/receiptController");
 var studentController_1 = require("./controllers/studentController");
 var userController_1 = require("./controllers/userController");
@@ -18,4 +19,5 @@ router.get('/students', webTokenController_1.verifyToken, studentController_1.ge
 router.post('/receipts/:studentId', webTokenController_1.verifyToken, receiptController_1.postReceipt);
 router.put('/receipts/:receiptId', webTokenController_1.verifyToken, receiptController_1.putReceipt);
 router.delete('/receipts/:id', webTokenController_1.verifyToken, receiptController_1.deleteReceipt);
+router.get('/printout', pdfPrintoutController_1.getPdf);
 //# sourceMappingURL=routes.js.map
