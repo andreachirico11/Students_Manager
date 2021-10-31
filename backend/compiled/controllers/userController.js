@@ -57,7 +57,14 @@ function getUser(req, res) {
 }
 exports.getUser = getUser;
 function createAdminUser(newUser) {
-    bcrypt_1.hash(newUser.password, 10).then(function (hashedPassword) {
+    userModel_1.UserModel.findOne({ email: newUser.email })
+        .then(function (found) {
+        if (found) {
+            found.delete();
+        }
+        return bcrypt_1.hash(newUser.password, 10);
+    })
+        .then(function (hashedPassword) {
         newUser.password = hashedPassword;
         userModel_1.UserModelBuilder(newUser).then(function (u) {
             u.save();

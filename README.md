@@ -59,14 +59,15 @@ $ npm install
 
 > To run this application you have to create a Mongo Db empty Database.
 
-Go to the root folder and create a <i>.env</i> file with the following variables
+Go to backend folder and create a <i>.env</i> file with the following variables
 
 ```
-MONGO_CONNECTION_STRING=<your mongo connection string>
+MONGO_CONNECTION_STRING=<<mongodb://127.0.0.1:27017/YOUR_DB_NAME>>
 SECRET_AUTH_STRING=<the string used to hashing>
 TOKEN_EXPIRATION_DATE=<a token expiration date written as 1d, 1h etc>
-ALLOWED_ORIGINS=<the url of the frontend so http://localhost:<YOUT_PORT>>
+ALLOWED_ORIGINS=http://localhost:3333
 PORT=<the port wich Node Server will use>
+TEST_USER=admin@email,admin << compile with your credentials or leave these as default >>
 ```
 
 Then open <i>frontend/src/environments/environment.ts</i> and modify it as following
@@ -79,6 +80,8 @@ export const environment = {
 };
 ```
 
+Do the same with <i>frontend/src/environments/environment-pwa-test.ts</i>
+
 ## Run app
 
 ```bash
@@ -89,7 +92,14 @@ $ npm start
 
 # Go into the frontend repository
 $ cd Students_manager/frontend
+## If you only want to run the web app
 $ npm start
+## If you prefer to test the PWA version of the app
+$ npm run pwa
+
+
+
+
 
 ```
 
@@ -115,6 +125,12 @@ $ npm test # if you also want tests
 
 ```
 
+> Enter with the .env file test user credentials
+
+ <br>
+ <br>
+ <br>
+
 ---
 
-> GitHub [@andreachirico11](https://github.com/andreachirico11) &nbsp;&middot;&nbsp;
+GitHub [@andreachirico11](https://github.com/andreachirico11) &nbsp;&middot;&nbsp;

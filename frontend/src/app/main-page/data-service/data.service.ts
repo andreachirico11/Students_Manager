@@ -51,6 +51,7 @@ export class DataService {
               r.payload.parent.address
             ),
             r.payload.receipts,
+            r.payload.isWithRec,
             r.payload.dateOfBirth,
             r.payload.phoneNumber,
             r.payload.fiscalCode,

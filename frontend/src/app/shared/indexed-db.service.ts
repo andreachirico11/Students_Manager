@@ -73,7 +73,8 @@ export class IndexedDbService {
             if (prevConfig) {
               return this.indexedDbService.update(STORE_NAME, updatedConfig);
             }
-            return this.indexedDbService.addItem(STORE_NAME, updatedConfig);
+            // return this.indexedDbService.addItem(STORE_NAME, updatedConfig); // deprecation????
+            return this.indexedDbService.add(STORE_NAME, updatedConfig);
           })
         )
         .subscribe(() => {

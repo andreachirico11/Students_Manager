@@ -32,6 +32,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [],
+      isWithRec: true,
     },
     {
       id: 's_2',
@@ -68,6 +69,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
           typeOfPayment: 'atm',
         },
       ],
+      isWithRec: true,
       address: 'via gianni gianno',
     },
     {
@@ -78,6 +80,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       dateOfBirth: new Date(),
       fiscalCode: 'abcr',
       phoneNumber: 1,
+      isWithRec: true,
       parent: {
         name: 'Mauro',
         surname: 'Mauri',
@@ -206,6 +209,7 @@ function getStudent(i: number): Student {
     'Surname ' + i,
     getParent(i),
     getFakeReceipts(),
+    true,
     new Date(),
     getRand(20),
     getLongString(12),

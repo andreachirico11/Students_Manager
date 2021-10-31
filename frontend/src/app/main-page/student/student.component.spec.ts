@@ -34,6 +34,7 @@ describe('StudentComponent', () => {
         phoneNumber: 1111111111111111111,
       },
       [receipt],
+      true,
       new Date(),
       1,
       '',

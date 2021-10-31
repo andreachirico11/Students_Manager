@@ -92,6 +92,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             Validators.required,
             Validators.pattern(AllRegExp.onlyLettersReg),
           ]),
+          isWithRec: new FormControl(false, [Validators.required]),
           dateOfBirth: new FormControl(null),
           fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
           phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbersReg)]),
@@ -125,6 +126,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             phoneNumber: this.objectToUpdate.phoneNumber,
             address: this.objectToUpdate.address ?? null,
             schoolClass: this.objectToUpdate.schoolClass,
+            isWithRec: this.objectToUpdate.isWithRec,
           });
         }
         break;

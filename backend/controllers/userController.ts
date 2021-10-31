@@ -63,10 +63,17 @@ export function getUser(req: IBackendRequest<IUser>, res: Response) {
 }
 
 export function createAdminUser(newUser: IUser) {
-  hash(newUser.password, 10).then((hashedPassword) => {
-    newUser.password = hashedPassword;
-    UserModelBuilder(newUser).then((u) => {
-      u.save();
+  UserModel.findOne({ email: newUser.email })
+    .then((found) => {
+      if (found) {
+        found.delete();
+      }
+      return hash(newUser.password, 10);
+    })
+    .then((hashedPassword) => {
+      newUser.password = hashedPassword;
+      UserModelBuilder(newUser).then((u) => {
+        u.save();
+      });
     });
-  });
 }

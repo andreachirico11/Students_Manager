@@ -12,6 +12,7 @@ interface IStudentBase {
   parent: IParent;
   address?: string;
   notes?: string;
+  isWithRec: boolean;
 }
 
 export interface IStudent extends IStudentBase {
@@ -51,5 +52,6 @@ function parser(s: IMongoStudent): IFrontendStudent {
     address: s.address,
     notes: s.notes,
     receipts,
+    isWithRec: s.isWithRec,
   };
 }

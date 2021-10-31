@@ -38,6 +38,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      true,
       new Date(),
       1,
       '',
@@ -58,6 +59,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      true,
       new Date(),
       1,
       '',
@@ -78,6 +80,7 @@ describe('SidebarComponent', () => {
       },
 
       [],
+      true,
       new Date(),
       1,
       '',

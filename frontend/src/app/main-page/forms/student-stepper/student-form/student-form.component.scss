@@ -1,1 +1,10 @@
 @import '../../utils/form-common.scss';
+
+button {
+  grid-column: 1 / -1;
+}
+
+mat-checkbox {
+  display: flex !important;
+  align-items: center;
+}
