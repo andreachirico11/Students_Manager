@@ -23,6 +23,7 @@
         "ST_ACTION_1": "Update note",
         "ST_ACTION_2": "Edit",
         "ST_ACTION_3": "Remove",
+        "ST_ACTION_4": "Download",
         "NOTE_LABEL": "Note",
         "NO_ST_TITLE": "Sorry...",
         "NO_ST_CONTENT": "No student was found",
@@ -115,5 +116,9 @@
             "DISCARD": "Discard",
             "TITLE": "Number of actions waiting to be executed: "
         }
+    },
+    "PRINTOUT": {
+        "MAIN_TITLE": "Printout",
+        "DOWNLOAD_ALL": "Download all Receipts"
     }
 }
