@@ -11,6 +11,11 @@ import { router } from './routes';
 
 const app = express();
 const connStr = process.env.MONGO_CONNECTION_STRING;
+let testUser: { password: string; email: string } | null = null;
+if (process.env.TEST_USER) {
+  const [email, password] = process.env.TEST_USER.split(',');
+  testUser = { email, password };
+}
 
 if (connStr) {
   mongoose
@@ -29,11 +34,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController);
 app.use('/api', router);
 
-// createAdminUser({
-//   email: 'admin@email',
-//   name: 'admin',
-//   password: 'admin',
-// });
-// // // ACTUAL USER
+if (testUser) {
+  createAdminUser({
+    email: testUser.email,
+    name: 'admin',
+    password: testUser.password,
+  });
+}
 
 app.listen(process.env.PORT ?? 3210);
