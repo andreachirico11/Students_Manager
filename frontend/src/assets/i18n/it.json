@@ -23,6 +23,7 @@
         "ST_ACTION_1": "Aggiorna note",
         "ST_ACTION_2": "Modifica",
         "ST_ACTION_3": "Rimuovi",
+        "ST_ACTION_4": "Download",
         "NOTE_LABEL": "Note",
         "NO_ST_TITLE": "Spiacenti...",
         "NO_ST_CONTENT": "Non è stato trovato neanche uno studente",
@@ -115,5 +116,9 @@
             "DISCARD": "Elimina",
             "TITLE": "Numero di azioni in attesa di essere eseguite: "
         }
+    },
+    "PRINTOUT": {
+        "MAIN_TITLE": "Printout",
+        "DOWNLOAD_ALL": "Scarica le ricevute"
     }
 }

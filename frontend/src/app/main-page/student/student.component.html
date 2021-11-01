@@ -19,6 +19,9 @@
       <button mat-stroked-button (click)="onDeleteClick()" color="warn">
         {{ 'STUDENT.ST_ACTION_3' | translate }}
       </button>
+      <button mat-stroked-button routerLink="printout">
+        {{ 'STUDENT.ST_ACTION_4' | translate }}
+      </button>
     </mat-action-list>
 
     <mat-card-content>
@@ -28,6 +31,10 @@
       </mat-form-field>
     </mat-card-content>
   </mat-card>
+
+  <div>
+    <router-outlet></router-outlet>
+  </div>
 
   <mat-card class="receipts" *ngIf="student && student.receipts">
     <student-receipts [receipts]="student.receipts" [owner]="student"></student-receipts>
