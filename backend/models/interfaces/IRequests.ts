@@ -7,6 +7,7 @@ export interface IBackendRequest<T> extends IRequest {
 
 export interface IRequest extends Request {
   headers: headersWithAuth;
+  params: any;
 }
 
 interface headersWithAuth extends IncomingHttpHeaders {

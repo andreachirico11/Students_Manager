@@ -5,7 +5,7 @@
   "main": "compiled/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node compiled/server.js",
+    "start": "tsc && node compiled/server.js",
     "nodemon": "nodemon --watch compiled compiled/server.js",
     "mongo": "cd C:\\Program Files\\MongoDB\\Server\\4.4\\bin && mongod --dbpath C:\\ProgramData\\MongoDB\\data\\db"
   },
@@ -17,7 +17,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.4"
+    "mongoose": "^5.10.4",
+    "typescript": "^4.4.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
