@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node compiled/server.js",
-    "nodemon": "nodemon --watch compiled/server.js",
+    "nodemon": "nodemon --watch compiled compiled/server.js",
     "mongo": "cd C:\\Program Files\\MongoDB\\Server\\4.4\\bin && mongod --dbpath C:\\ProgramData\\MongoDB\\data\\db"
   },
   "author": "",

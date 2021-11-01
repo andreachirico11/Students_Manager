@@ -110,8 +110,7 @@ You can use editor like <a href="https://code.visualstudio.com/">Vs Code</a> wic
 ```bash
 # Go into the backend repository
 $ cd Students_manager/backend
-$ tsc -w # to watch changes in typescript backend files
-$ npm start
+$ npm run nodemon # will watch for changes in the compiled folder and launches the server
 
 ```
 
