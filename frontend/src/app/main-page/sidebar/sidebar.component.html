@@ -17,6 +17,18 @@
     <button mat-menu-item (click)="orderOnClick(4)">{{ 'SIDEBAR.ORDER_4' | translate }}</button>
   </mat-menu>
 </div>
+<div *ngIf="stats" class="statistics">
+  <span [matBadge]="stats.total" matBadgeOverlap="false">
+    <span class="mat-badge-text">
+      {{ 'SIDEBAR.TOTAL' | translate }}
+    </span>
+  </span>
+  <span [matBadge]="stats.totalMissing" matBadgeOverlap="false" matBadgeColor="warn">
+    <span class="mat-badge-text">
+      {{ 'SIDEBAR.MISSING_TOTAL' | translate }}
+    </span>
+  </span>
+</div>
 <mat-divider></mat-divider>
 
 <div class="sidebar-container">

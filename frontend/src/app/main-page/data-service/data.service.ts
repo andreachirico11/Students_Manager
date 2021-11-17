@@ -4,6 +4,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, delay, first, map, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
+import { IStats } from 'src/app/shared/models/IStats';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
@@ -130,6 +131,13 @@ export class DataService {
 
   public deleteReceipt(id: string): Observable<boolean | string> {
     return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
+  }
+
+  public getStats(): Observable<IStats> {
+    return this.http.get<IHttpResponse<IStats>>(this.dbUrl + 'stats').pipe(
+      map((res) => res.payload),
+      catchError(() => of(null))
+    );
   }
 
   private sharedPipe(obs: Observable<any>): Observable<boolean | string> {

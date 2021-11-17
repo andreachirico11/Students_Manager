@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, switchMap, switchMapTo, tap } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { IStats } from 'src/app/shared/models/IStats';
 import { SortOptions } from 'src/app/shared/models/sort-options';
 import { Student } from 'src/app/shared/models/Student';
 import { SortService } from '../forms/utils/sort-service/sort.service';
@@ -13,13 +14,14 @@ import { SortService } from '../forms/utils/sort-service/sort.service';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   public students: Student[] = [];
-  public sub: Subscription;
+  public stats: IStats;
 
   @Output()
   public linkPressed = new EventEmitter();
 
   private actualStudentIdLoaded: string = '';
   private actualSortOptions: SortOptions;
+  private sub: Subscription;
 
   constructor(
     private dbService: DataService,
@@ -32,13 +34,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       by: 'name',
       order: 'ascending',
     };
-    this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
-      this.actualStudentIdLoaded = '';
-      this.students = newS ?? [];
-      if (this.students.length > 0) {
-        this.changeSortOrder(this.actualSortOptions);
-      }
-    });
+    this.sub = this.dbService.studentDbObservable
+      .pipe(
+        tap((newS) => {
+          this.actualStudentIdLoaded = '';
+          this.students = newS ?? [];
+          if (this.students.length > 0) {
+            this.changeSortOrder(this.actualSortOptions);
+          }
+        }),
+        switchMapTo(this.dbService.getStats())
+      )
+      .subscribe((stats) => {
+        this.stats = stats;
+      });
     this.dbService.getStudents().subscribe();
   }
 
