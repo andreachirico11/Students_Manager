@@ -1,6 +1,7 @@
+import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription, switchMap, switchMapTo, tap } from 'rxjs';
+import { Subscription, switchMapTo, tap } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { IStats } from 'src/app/shared/models/IStats';
 import { SortOptions } from 'src/app/shared/models/sort-options';
@@ -11,6 +12,14 @@ import { SortService } from '../forms/utils/sort-service/sort.service';
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  animations: [
+    trigger('ngIfInAnimation', [
+      transition(':enter', [
+        style({ 'margin-top': -100, opacity: 0 }),
+        animate('1s ease-out', style({ 'margin-top': 0, opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   public students: Student[] = [];

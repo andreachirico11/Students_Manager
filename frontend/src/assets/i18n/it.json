@@ -60,7 +60,8 @@
         "ORDER_3": "Per Cognome Ascendente",
         "ORDER_4": "Per Cognome Discendente",
         "TOTAL": "Tot. Guardagno",
-        "MISSING_TOTAL": "Tot. Mancante"
+        "MISSING_TOTAL": "Tot. Mancante",
+        "MONTH_TOTAL": "Tot. Mese"
     },
     "FORMS": {
         "TITLE_1": "Modifica Ricevuta",

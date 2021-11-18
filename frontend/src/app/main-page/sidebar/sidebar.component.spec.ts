@@ -1,6 +1,10 @@
+import { trigger } from '@angular/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatBadge } from '@angular/material/badge';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -23,6 +27,11 @@ export class FakeDbService {
     return of(fakeStats);
   }
 }
+
+@Directive({
+  selector: '@ngIfInAnimation',
+})
+export class FakeAnimation {}
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -95,14 +104,19 @@ describe('SidebarComponent', () => {
     ),
   ];
   const getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
-  const getBadges = () => fixture.debugElement.queryAllNodes(By.css('.mat-badge-text'));
+  const getBadges = () => fixture.debugElement.queryAllNodes(By.directive(MatBadge));
 
   beforeEach(async () => {
     fakeStats = null;
     routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
-      imports: [HttpClientTestingModule, MaterialModule, TranslateModule.forRoot()],
+      declarations: [SidebarComponent, FakeAnimation],
+      imports: [
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        MaterialModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [
         {
           provide: Router,
@@ -166,15 +180,18 @@ describe('SidebarComponent', () => {
     'does visualize stats if data have been provided',
     waitForAsync(() => {
       const fakeS: IStats = {
-        total: 124,
-        totalMissing: 333,
+        yearTotal: 124,
+        missingTotal: 333,
+        monthTotal: 1,
       };
       fakeStats = {
         ...fakeS,
       };
       component.ngOnInit();
       fixture.detectChanges();
-      expect(getBadges().length).toBe(2);
+      fixture.whenStable().then(() => {
+        expect(getBadges().length).toBe(3);
+      });
     })
   );
 });

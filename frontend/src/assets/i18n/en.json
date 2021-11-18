@@ -60,7 +60,8 @@
         "ORDER_3": "Surname Ascending",
         "ORDER_4": "Surname Descending",
         "TOTAL": "Tot. Profit",
-        "MISSING_TOTAL": "Tot. Missing"
+        "MISSING_TOTAL": "Tot. Missing",
+        "MONTH_TOTAL": "Tot. Month"
     },
     "FORMS": {
         "TITLE_1": "Update Receipt",

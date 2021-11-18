@@ -1,4 +1,5 @@
 export interface IStats {
-  total: number;
-  totalMissing: number;
+  yearTotal: number;
+  monthTotal: number;
+  missingTotal: number;
 }
