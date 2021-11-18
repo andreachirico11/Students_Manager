@@ -33,7 +33,10 @@ export class DataService {
         this.getAllDataIfPwa(res.payload);
       }),
       map(() => true),
-      catchError(() => of(false))
+      catchError((e) => {
+        this.devErrorHandling(e);
+        return of(false);
+      })
     );
   }
 
@@ -64,7 +67,10 @@ export class DataService {
         }
         throwError(new Error(''));
       }),
-      catchError((e) => of(null))
+      catchError((e) => {
+        this.devErrorHandling(e);
+        return of(null);
+      })
     );
   }
 
@@ -77,7 +83,10 @@ export class DataService {
         }
       }),
       map((res) => (res.isOffline ? res.message : true)),
-      catchError(() => of(false))
+      catchError((e) => {
+        this.devErrorHandling(e);
+        return of(false);
+      })
     );
   }
 
@@ -95,7 +104,11 @@ export class DataService {
         }
       }),
       map((res) => (res.isOffline ? res.message : true)),
-      catchError(() => of(false))
+      catchError((e) => {
+        this.devErrorHandling(e);
+
+        return of(false);
+      })
     );
   }
 
@@ -113,7 +126,10 @@ export class DataService {
         map((r) =>
           r.status !== 200 ? throwError('') : r.body['isOffline'] ? r.body['message'] : true
         ),
-        catchError((e) => of(null))
+        catchError((e) => {
+          this.devErrorHandling(e);
+          return of(null);
+        })
       );
   }
 
@@ -146,7 +162,10 @@ export class DataService {
   private sharedPipe(obs: Observable<any>): Observable<boolean | string> {
     return obs.pipe(
       map((res) => (res.isOffline ? res.message : true)),
-      catchError(() => of(false))
+      catchError((e) => {
+        this.devErrorHandling(e);
+        return of(false);
+      })
     );
   }
 
