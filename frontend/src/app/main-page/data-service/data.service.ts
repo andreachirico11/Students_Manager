@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
@@ -136,7 +136,10 @@ export class DataService {
   public getStats(): Observable<IStats> {
     return this.http.get<IHttpResponse<IStats>>(this.dbUrl + 'stats').pipe(
       map((res) => res.payload),
-      catchError(() => of(null))
+      catchError((e) => {
+        this.devErrorHandling(e);
+        return of(null);
+      })
     );
   }
 
@@ -157,6 +160,13 @@ export class DataService {
       forkJoin(students.map((s) => this.getStudentWithReceipts(s.id)))
         .pipe(delay(3000), first())
         .subscribe();
+    }
+  }
+
+  private devErrorHandling(e: HttpErrorResponse) {
+    if (!environment.production) {
+      console.warn('ERRORRRRRR');
+      console.warn(e.error.message);
     }
   }
 }
