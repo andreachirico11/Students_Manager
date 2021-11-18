@@ -32,3 +32,11 @@ export enum ReceiptMessages {
   'receipt_found' = 'receipt_found',
   'receipt_not_found' = 'receipt_not_found',
 }
+
+export enum StatsMessage {
+  'stats_correctly_generated' = 'stats_correctly_generated',
+}
+
+export enum StatsError {
+  'error_during_stats_generation' = 'error_during_stats_generation',
+}
