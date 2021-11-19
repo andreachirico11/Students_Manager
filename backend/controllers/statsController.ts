@@ -20,3 +20,28 @@ export function getStats(req: IRequest, res: Response) {
 
   // TODO catch with statsErrorEnum
 }
+
+// db.collection.aggregate({
+//   "$group": {
+//     "_id": null,
+//     "yearTotal": {
+//       "$sum": "$amount"
+//     },
+//     "monthTotal": {
+//       "$sum": {
+//         "$cond": [
+//           {
+//             "$eq": [
+//               {
+//                 "$month": "$paymentDate"
+//               },
+//               11
+//             ]
+//           },
+//           "$amount",
+//           0
+//         ]
+//       }
+//     }
+//   }
+// })
