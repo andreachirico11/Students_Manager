@@ -24,6 +24,9 @@ export class FakeDbService {
     return of(true);
   }
   getStats() {
+    return of(true);
+  }
+  public get statsbObservable() {
     return of(fakeStats);
   }
 }

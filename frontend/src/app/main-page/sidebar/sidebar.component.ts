@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, switchMapTo, tap } from 'rxjs';
+import { Subscription, switchMapTo } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ngIfInAnimation } from 'src/app/shared/animations/ngIfInAnimation';
 import { IStats } from 'src/app/shared/models/IStats';
@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private actualStudentIdLoaded: string = '';
   private actualSortOptions: SortOptions;
   private sub: Subscription;
+  private statSub: Subscription;
 
   constructor(
     private dbService: DataService,
@@ -36,25 +37,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
       by: 'name',
       order: 'ascending',
     };
-    this.sub = this.dbService.studentDbObservable
-      .pipe(
-        tap((newS) => {
-          this.actualStudentIdLoaded = '';
-          this.students = newS ?? [];
-          if (this.students.length > 0) {
-            this.changeSortOrder(this.actualSortOptions);
-          }
-        }),
-        switchMapTo(this.dbService.getStats())
-      )
-      .subscribe((stats) => {
-        this.stats = stats;
-      });
-    this.dbService.getStudents().subscribe();
+    this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
+      this.actualStudentIdLoaded = '';
+      this.students = newS ?? [];
+      if (this.students.length > 0) {
+        this.changeSortOrder(this.actualSortOptions);
+      }
+    });
+    this.statSub = this.dbService.statsbObservable.subscribe((s) => (this.stats = s));
+    this.dbService.getStudents().pipe(switchMapTo(this.dbService.getStats())).subscribe();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.statSub.unsubscribe();
   }
 
   navigateToStudent(studentId: string): void {

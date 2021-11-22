@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, delay, first, map, tap } from 'rxjs/operators';
+import { catchError, delay, first, map, mapTo, switchMapTo, tap } from 'rxjs/operators';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IStats } from 'src/app/shared/models/IStats';
 import { Parent } from 'src/app/shared/models/Parent';
@@ -16,12 +16,18 @@ import { environment } from 'src/environments/environment';
 export class DataService {
   private dbUrl = environment.dbUrl;
   private localStudentDb: Student[] = [];
-  public studentsSubj = new BehaviorSubject<Student[]>(null);
+  private localStats: IStats = null;
+  private studentsSubj = new BehaviorSubject<Student[]>(null);
+  private statsSubj = new BehaviorSubject<IStats>(null);
 
   constructor(private http: HttpClient, private swUpdate: SwUpdate) {}
 
   public get studentDbObservable(): Observable<Student[]> {
     return this.studentsSubj.asObservable();
+  }
+
+  public get statsbObservable(): Observable<IStats> {
+    return this.statsSubj.asObservable();
   }
 
   public getStudents(): Observable<boolean> {
@@ -32,7 +38,7 @@ export class DataService {
         this.studentsSubj.next(this.localStudentDb);
         this.getAllDataIfPwa(res.payload);
       }),
-      map(() => true),
+      mapTo(true),
       catchError((e) => {
         this.devErrorHandling(e);
         return of(false);
@@ -126,6 +132,7 @@ export class DataService {
         map((r) =>
           r.status !== 200 ? throwError('') : r.body['isOffline'] ? r.body['message'] : true
         ),
+        switchMapTo(this.getStats()),
         catchError((e) => {
           this.devErrorHandling(e);
           return of(null);
@@ -149,9 +156,13 @@ export class DataService {
     return this.sharedPipe(this.http.delete<IHttpResponse<null>>(this.dbUrl + `receipts/${id}`));
   }
 
-  public getStats(): Observable<IStats> {
+  public getStats(): Observable<boolean> {
     return this.http.get<IHttpResponse<IStats>>(this.dbUrl + 'stats').pipe(
-      map((res) => res.payload),
+      tap((res) => {
+        this.localStats = res.payload;
+        this.statsSubj.next(this.localStats);
+      }),
+      mapTo(true),
       catchError((e) => {
         this.devErrorHandling(e);
         return of(null);
@@ -162,6 +173,8 @@ export class DataService {
   private sharedPipe(obs: Observable<any>): Observable<boolean | string> {
     return obs.pipe(
       map((res) => (res.isOffline ? res.message : true)),
+      switchMapTo(this.getStats()),
+      mapTo(true),
       catchError((e) => {
         this.devErrorHandling(e);
         return of(false);
