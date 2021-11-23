@@ -59,7 +59,10 @@
         "ORDER_1": "Per Nome Ascendente",
         "ORDER_2": "Per Nome Discendente",
         "ORDER_3": "Per Cognome Ascendente",
-        "ORDER_4": "Per Cognome Discendente"
+        "ORDER_4": "Per Cognome Discendente",
+        "TOTAL": "Tot. Anno",
+        "MISSING_TOTAL": "Tot. Mancante",
+        "MONTH_TOTAL": "Tot. Mese"
     },
     "FORMS": {
         "TITLE_1": "Modifica Ricevuta",

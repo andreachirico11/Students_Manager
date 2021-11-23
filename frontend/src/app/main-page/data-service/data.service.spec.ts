@@ -52,7 +52,6 @@ describe('DataService', () => {
     });
     const req = controller.expectOne(dbUrl + 'students');
     req.flush(studenfFakeResps.getAllStudents());
-    controller.verify();
   });
 
   it('should return a student with his receipts', () => {
@@ -64,7 +63,6 @@ describe('DataService', () => {
     });
     const req = controller.expectOne(dbUrl + 'students/' + id);
     req.flush(studenfFakeResps.getStudent(id));
-    controller.verify();
   });
 
   it('should add a new student', () => {
@@ -75,7 +73,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'students');
     req.flush(studenfFakeResps.postStudent(studentToAdd));
     expect(req.request.method).toBe('POST');
-    controller.verify();
   });
 
   it('should update the student', () => {
@@ -86,7 +83,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'students/' + studentWithUpdate.id);
     req.flush(studenfFakeResps.putStudent(studentWithUpdate));
     expect(req.request.method).toBe('PUT');
-    controller.verify();
   });
 
   it('should delete the student', () => {
@@ -96,7 +92,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'students/1');
     req.flush(studenfFakeResps.deleteStudent(''));
     expect(req.request.method).toBe('DELETE');
-    controller.verify();
   });
 
   it('should update the local db without the deleted student', () => {
@@ -108,7 +103,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'students/' + idToDelete);
     req.flush(studenfFakeResps.deleteStudent(idToDelete));
     expect(req.request.method).toBe('DELETE');
-    controller.verify();
   });
 
   it('should add a new receipt', () => {
@@ -120,7 +114,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'receipts/' + owner.id);
     req.flush(receiptsFakeResps.postReceipt(owner.id, receiptToAdd));
     expect(req.request.method).toBe('POST');
-    controller.verify();
   });
 
   it('should return false if error is returned', () => {
@@ -131,7 +124,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'receipts/' + '123');
     req.error(new ErrorEvent(''));
     expect(req.request.method).toBe('POST');
-    controller.verify();
   });
 
   it('should update the receipt', () => {
@@ -142,7 +134,6 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'receipts/' + receiptToUpdate.id);
     req.flush(receiptsFakeResps.putReceipt(receiptToUpdate));
     expect(req.request.method).toBe('PUT');
-    controller.verify();
   });
 
   it('should delete the receipt', () => {
@@ -154,6 +145,5 @@ describe('DataService', () => {
     const req = controller.expectOne(dbUrl + 'receipts/' + rid);
     req.flush(receiptsFakeResps.deleteReceipt(rid));
     expect(req.request.method).toBe('DELETE');
-    controller.verify();
   });
 });

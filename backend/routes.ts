@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getPdf } from './controllers/pdfPrintoutController';
 import { deleteReceipt, postReceipt, putReceipt } from './controllers/receiptController';
+import { getStats } from './controllers/statsController';
 import {
   deleteStudent,
   getAllStudents,
@@ -26,5 +27,6 @@ router.put('/receipts/:receiptId', verifyToken, putReceipt);
 router.delete('/receipts/:id', verifyToken, deleteReceipt);
 
 router.get('/printout', verifyToken, getPdf);
+router.get('/stats', verifyToken, getStats);
 
 export { router };

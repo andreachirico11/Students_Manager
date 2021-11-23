@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMapTo } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { ngIfInAnimation } from 'src/app/shared/animations/ngIfInAnimation';
+import { IStats } from 'src/app/shared/models/IStats';
 import { SortOptions } from 'src/app/shared/models/sort-options';
 import { Student } from 'src/app/shared/models/Student';
 import { SortService } from '../forms/utils/sort-service/sort.service';
@@ -10,16 +12,19 @@ import { SortService } from '../forms/utils/sort-service/sort.service';
   selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  animations: [ngIfInAnimation],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   public students: Student[] = [];
-  public sub: Subscription;
+  public stats: IStats;
 
   @Output()
   public linkPressed = new EventEmitter();
 
   private actualStudentIdLoaded: string = '';
   private actualSortOptions: SortOptions;
+  private sub: Subscription;
+  private statSub: Subscription;
 
   constructor(
     private dbService: DataService,
@@ -39,11 +44,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.changeSortOrder(this.actualSortOptions);
       }
     });
-    this.dbService.getStudents().subscribe();
+    this.statSub = this.dbService.statsbObservable.subscribe((s) => (this.stats = s));
+    this.dbService.getStudents().pipe(switchMapTo(this.dbService.getStats())).subscribe();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.statSub.unsubscribe();
   }
 
   navigateToStudent(studentId: string): void {

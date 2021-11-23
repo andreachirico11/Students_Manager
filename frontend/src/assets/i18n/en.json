@@ -59,7 +59,10 @@
         "ORDER_1": "Name Ascending",
         "ORDER_2": "Name Descending",
         "ORDER_3": "Surname Ascending",
-        "ORDER_4": "Surname Descending"
+        "ORDER_4": "Surname Descending",
+        "TOTAL": "Tot. Year",
+        "MISSING_TOTAL": "Tot. Missing",
+        "MONTH_TOTAL": "Tot. Month"
     },
     "FORMS": {
         "TITLE_1": "Update Receipt",

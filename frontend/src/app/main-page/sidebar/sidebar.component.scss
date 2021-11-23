@@ -13,3 +13,16 @@
   overflow-y: scroll;
   flex-grow: 1;
 }
+
+.statistics {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 4em;
+  padding: 0.5em;
+  span {
+    width: max-content;
+    margin-bottom: 1em;
+    padding: 0 0.5em;
+  }
+}

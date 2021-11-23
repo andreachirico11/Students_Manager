@@ -20,6 +20,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatBadgeModule } from '@angular/material/badge';
+
 @NgModule({
   exports: [
     MatButtonModule,
@@ -43,6 +45,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatToolbarModule,
     MatCheckboxModule,
+    MatBadgeModule,
   ],
 })
 export class MaterialModule {}

@@ -1,15 +1,20 @@
+import { trigger } from '@angular/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Directive } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatBadge } from '@angular/material/badge';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
+import { IStats } from 'src/app/shared/models/IStats';
 import { Student } from 'src/app/shared/models/Student';
 import { MaterialModule } from '../../material.module';
 import { SidebarComponent } from './sidebar.component';
 
-let fakeStudentsDb;
+let fakeStudentsDb, fakeStats: IStats;
 
 export class FakeDbService {
   get studentDbObservable() {
@@ -18,7 +23,18 @@ export class FakeDbService {
   getStudents() {
     return of(true);
   }
+  getStats() {
+    return of(true);
+  }
+  public get statsbObservable() {
+    return of(fakeStats);
+  }
 }
+
+@Directive({
+  selector: '@ngIfInAnimation',
+})
+export class FakeAnimation {}
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -91,12 +107,19 @@ describe('SidebarComponent', () => {
     ),
   ];
   const getListOptions = () => fixture.debugElement.queryAllNodes(By.css('mat-list-option'));
+  const getBadges = () => fixture.debugElement.queryAllNodes(By.directive(MatBadge));
 
   beforeEach(async () => {
+    fakeStats = null;
     routerSpy = jasmine.createSpy('navigate');
     await TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
-      imports: [HttpClientTestingModule, MaterialModule, TranslateModule.forRoot()],
+      declarations: [SidebarComponent, FakeAnimation],
+      imports: [
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        MaterialModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [
         {
           provide: Router,
@@ -148,4 +171,30 @@ describe('SidebarComponent', () => {
     getListOptions()[0].nativeNode.click();
     expect(emitsPy).toHaveBeenCalled();
   });
+
+  it(
+    'does not visualize stats if there are no data',
+    waitForAsync(() => {
+      expect(getBadges().length).toBe(0);
+    })
+  );
+
+  it(
+    'does visualize stats if data have been provided',
+    waitForAsync(() => {
+      const fakeS: IStats = {
+        yearTotal: 124,
+        missingTotal: 333,
+        monthTotal: 1,
+      };
+      fakeStats = {
+        ...fakeS,
+      };
+      component.ngOnInit();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(getBadges().length).toBe(3);
+      });
+    })
+  );
 });
