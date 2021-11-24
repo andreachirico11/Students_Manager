@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Printout</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        --border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+      body {
+        font-family: Roboto;
+      }
+      h2 {
+        text-align: center;
+        font-size: 18px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: white;
+        padding: 30px 0;
+      }
+
+      /* Table Styles */
+
+      .table-wrapper {
+        margin: 10px 70px 70px;
+      }
+
+      .fl-table {
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: normal;
+        border: none;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100%;
+        white-space: nowrap;
+        background-color: white;
+        border: var(--border);
+      }
+
+      .fl-table td,
+      .fl-table th {
+        text-align: center;
+        padding: 8px;
+      }
+
+      .fl-table td {
+        font-size: 12px;
+      }
+
+      .fl-table td:not(:first-child) {
+        border-left: var(--border);
+      }
+
+      .fl-table thead th {
+        color: #ffffff;
+        background: #1565c0;
+      }
+
+      tr.not-payed {
+        background-color: var(--border);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="table-wrapper">
+      <table class="fl-table">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Totale</th>
+            <th>Data Emissione</th>
+            <th>Data Pagamento</th>
+            <th>Metodo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let rec of receipts) { %>
+          <tr>
+            <td><%= rec.number %></td>
+            <td><%= rec.amount %></td>
+            <td><%= rec.emissionDateString %></td>
+            <td><%= rec.paymentDateString %></td>
+            <td><%= rec.typeOfPayment %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

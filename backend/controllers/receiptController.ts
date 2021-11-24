@@ -6,6 +6,8 @@ import { ReceiptModel, ReceiptModelBuilder } from '../models/receiptModel';
 import { StudentModel } from '../models/studentModell';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 
+export function getAllReceipts(req: IBackendRequest<{}>, res: Response) {}
+
 export function postReceipt(req: IBackendRequest<IReceipt>, res: Response) {
   let receiptToSend: IReceipt;
   ReceiptModelBuilder(req.body, req.params.studentId)
