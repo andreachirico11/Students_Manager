@@ -3,16 +3,18 @@ import { readFile, unlinkSync } from 'fs';
 import { create } from 'html-pdf';
 import { join } from 'path';
 import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
+import { renderFile } from 'ejs';
 
 export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   // the path is calculated from inside the compiled folder
   res.setHeader('Content-Type', 'application/pdf');
   const fileName = 'pdf-wella.pdf';
-  readFile(
-    join(__dirname, '..', '..', 'pdf-views', 'html-sample.html'),
-    'utf-8',
+
+  renderFile(
+    join(__dirname, '..', '..', 'pdf-views', 'ejs-sample.ejs'),
+    { title: 'bella li' },
     function (err, file) {
-      handleError(err, 'reading');
+      handleError(err, 'ejs');
       create(file).toFile(fileName, function (err, file) {
         handleError(err, 'creating');
         res.setHeader('file-name', 'mega-printout');
