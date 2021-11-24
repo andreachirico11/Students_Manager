@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, first, tap } from 'rxjs';
+import { catchError, first, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,12 +13,16 @@ export class PrintoutService {
 
   getPdf() {
     return this.http
-      .get<Blob>(this.dbUrl + 'printout', { observe: 'body', responseType: 'blob' as 'json' })
+      .get<{ file: Blob; title: string }>(this.dbUrl + 'printout', {
+        observe: 'response',
+        responseType: 'blob' as 'json',
+      })
       .pipe(
         first(),
-        tap((file) => {
-          // verify pdf validity
-        }),
+        map((res) => ({
+          file: res.body,
+          title: res.headers.get('file-name') ?? 'default title',
+        })),
         catchError((e) => {
           console.log('printout service: ', e);
           throw e;

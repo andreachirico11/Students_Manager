@@ -1,27 +1,33 @@
 import { Response } from 'express';
+import { readFile, unlinkSync } from 'fs';
+import { create } from 'html-pdf';
 import { join } from 'path';
 import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
-import { create } from 'html-pdf';
-import { readFile, readFileSync } from 'fs';
 
 export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   // the path is calculated from inside the compiled folder
   res.setHeader('Content-Type', 'application/pdf');
-
-  readFile(join(__dirname, '..', '..', 'pdf-views', 'html-sample.html'), function (err, file) {
-    if (err) {
-      console.log('E R R O R:', err);
+  const fileName = 'pdf-wella.pdf';
+  readFile(
+    join(__dirname, '..', '..', 'pdf-views', 'html-sample.html'),
+    'utf-8',
+    function (err, file) {
+      handleError(err, 'reading');
+      create(file).toFile(fileName, function (err, file) {
+        handleError(err, 'creating');
+        res.setHeader('file-name', 'mega-printout');
+        res.sendFile(file.filename, function (err) {
+          handleError(err, 'sending');
+          unlinkSync(fileName);
+        });
+      });
     }
-    console.log(file);
-  });
+  );
+}
 
-  return;
-
-  res.sendFile(join(__dirname, '..', '..', 'pdf-views', 'pdf-sample.pdf'), function (err) {
-    if (err) {
-      console.log('err: ', err);
-    } else {
-      console.log('success');
-    }
-  });
+function handleError(err, msg) {
+  if (err) {
+    console.log('err' + msg + ': ', err);
+    throw err;
+  }
 }

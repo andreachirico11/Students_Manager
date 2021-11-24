@@ -13,11 +13,11 @@ export class PrintoutPageComponent {
   constructor(private printoutService: PrintoutService) {}
 
   onDownloadAll() {
-    this.printoutService.getPdf().subscribe((fileBlob) => {
+    this.printoutService.getPdf().subscribe((resp) => {
       try {
-        const objUrl = URL.createObjectURL(fileBlob);
+        const objUrl = URL.createObjectURL(resp.file);
         this.downloader.nativeElement.href = objUrl;
-        this.downloader.nativeElement.download = 'titleee';
+        this.downloader.nativeElement.download = resp.title;
         this.downloader.nativeElement.click();
         this.downloader.nativeElement.href = null;
         this.downloader.nativeElement.download = null;
