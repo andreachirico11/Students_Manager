@@ -15,8 +15,29 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   res.setHeader('Content-Type', 'application/pdf');
   const fileName = 'pdf-wella.pdf';
 
-  ReceiptModel.find()
+  ReceiptModel.aggregate([
+    {
+      $lookup: {
+        from: 'students',
+        localField: '_studentId',
+        foreignField: '_id',
+        as: 'studentInfo',
+      },
+    },
+    {
+      $unwind: '$studentInfo',
+    },
+    {
+      $addFields: {
+        studentName: {
+          $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
+        },
+      },
+    },
+  ])
     .then((receipts: IReceipt[]) => {
+      console.log(receipts);
+
       renderFile(
         join(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'),
         { receipts: parseReceipts(receipts) },

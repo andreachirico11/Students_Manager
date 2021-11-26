@@ -12,8 +12,28 @@ function getPdf(eq, res) {
     // the path is calculated from inside the compiled folder
     res.setHeader('Content-Type', 'application/pdf');
     var fileName = 'pdf-wella.pdf';
-    receiptModel_1.ReceiptModel.find()
+    receiptModel_1.ReceiptModel.aggregate([
+        {
+            $lookup: {
+                from: 'students',
+                localField: '_studentId',
+                foreignField: '_id',
+                as: 'studentInfo',
+            },
+        },
+        {
+            $unwind: '$studentInfo',
+        },
+        {
+            $addFields: {
+                studentName: {
+                    $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
+                },
+            },
+        },
+    ])
         .then(function (receipts) {
+        console.log(receipts);
         (0, ejs_1.renderFile)((0, path_1.join)(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'), { receipts: parseReceipts(receipts) }, function (err, file) {
             handleError(err, res, messageEnums_1.PdfMessages.err_pdf_ejs);
             (0, html_pdf_1.create)(file, {
