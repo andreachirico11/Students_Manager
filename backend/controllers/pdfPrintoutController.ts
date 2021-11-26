@@ -32,15 +32,19 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
         studentName: {
           $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
         },
+        paymentDateString: {
+          $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
+        },
+        emissionDateString: {
+          $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
+        },
       },
     },
   ])
-    .then((receipts: IReceipt[]) => {
-      console.log(receipts);
-
+    .then((receipts: IPdfReceipt[]) => {
       renderFile(
         join(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'),
-        { receipts: parseReceipts(receipts) },
+        { receipts, withStudentName: true },
         function (err, file) {
           handleError(err, res, PdfMessages.err_pdf_ejs);
           create(file, {
@@ -68,16 +72,4 @@ function handleError(err, res: Response, message: PdfMessages) {
   if (err) {
     return generateHttpRes(res, 500, message);
   }
-}
-
-function parseReceipts(recs: IReceipt[]): IPdfReceipt[] {
-  return recs.map((r) => ({
-    number: r.number,
-    amount: r.amount,
-    emissionDate: r.emissionDate,
-    paymentDate: r.paymentDate,
-    typeOfPayment: r.typeOfPayment,
-    emissionDateString: r.emissionDate ? new Date(r.emissionDate).toDateString() : '',
-    paymentDateString: r.paymentDate ? new Date(r.paymentDate).toDateString() : '',
-  }));
 }

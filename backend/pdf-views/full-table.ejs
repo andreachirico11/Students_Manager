@@ -8,7 +8,6 @@
     <style>
       * {
         box-sizing: border-box;
-        --border: 1px solid rgba(0, 0, 0, 0.12);
       }
       body {
         font-family: Roboto;
@@ -38,7 +37,6 @@
         max-width: 100%;
         white-space: nowrap;
         background-color: white;
-        border: var(--border);
       }
 
       .fl-table td,
@@ -47,12 +45,25 @@
         padding: 8px;
       }
 
+      .fl-table th {
+        border-right: 1px solid #1565c0;
+        border-left: 1px solid #1565c0;
+      }
+
       .fl-table td {
         font-size: 12px;
       }
 
-      .fl-table td:not(:first-child) {
-        border-left: var(--border);
+      .fl-table td {
+        border-left: 1px solid rgba(0, 0, 0, 0.4);
+      }
+
+      .fl-table td:last-child {
+        border-right: 1px solid rgba(0, 0, 0, 0.4);
+      }
+
+      .fl-table tbody tr:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
       }
 
       .fl-table thead th {
@@ -61,7 +72,7 @@
       }
 
       tr.not-payed {
-        background-color: var(--border);
+        background-color: rgba(250, 84, 84, 0.3);
       }
     </style>
   </head>
@@ -70,6 +81,9 @@
       <table class="fl-table">
         <thead>
           <tr>
+            <% if (withStudentName) { %>
+            <th>Nome</th>
+            <% } %>
             <th>No.</th>
             <th>Totale</th>
             <th>Data Emissione</th>
@@ -79,7 +93,10 @@
         </thead>
         <tbody>
           <% for(let rec of receipts) { %>
-          <tr>
+          <tr class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
+            <% if (withStudentName) { %>
+            <td><%= rec.studentName %></td>
+            <% } %>
             <td><%= rec.number %></td>
             <td><%= rec.amount %></td>
             <td><%= rec.emissionDateString %></td>

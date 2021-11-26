@@ -29,12 +29,17 @@ function getPdf(eq, res) {
                 studentName: {
                     $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
                 },
+                paymentDateString: {
+                    $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
+                },
+                emissionDateString: {
+                    $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
+                },
             },
         },
     ])
         .then(function (receipts) {
-        console.log(receipts);
-        (0, ejs_1.renderFile)((0, path_1.join)(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'), { receipts: parseReceipts(receipts) }, function (err, file) {
+        (0, ejs_1.renderFile)((0, path_1.join)(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'), { receipts: receipts, withStudentName: true }, function (err, file) {
             handleError(err, res, messageEnums_1.PdfMessages.err_pdf_ejs);
             (0, html_pdf_1.create)(file, {
                 format: 'A4',
@@ -60,16 +65,5 @@ function handleError(err, res, message) {
     if (err) {
         return (0, httpRespGenerator_1.generateHttpRes)(res, 500, message);
     }
-}
-function parseReceipts(recs) {
-    return recs.map(function (r) { return ({
-        number: r.number,
-        amount: r.amount,
-        emissionDate: r.emissionDate,
-        paymentDate: r.paymentDate,
-        typeOfPayment: r.typeOfPayment,
-        emissionDateString: r.emissionDate ? new Date(r.emissionDate).toDateString() : '',
-        paymentDateString: r.paymentDate ? new Date(r.paymentDate).toDateString() : '',
-    }); });
 }
 //# sourceMappingURL=pdfPrintoutController.js.map
