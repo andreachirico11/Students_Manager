@@ -1,13 +1,14 @@
+import { renderFile } from 'ejs';
 import { Response } from 'express';
-import { readFile, unlinkSync } from 'fs';
+import { unlinkSync } from 'fs';
 import { create } from 'html-pdf';
 import { join } from 'path';
-import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
-import { renderFile } from 'ejs';
-import { ReceiptModel } from '../models/receiptModel';
-import { IReceipt } from '../models/interfaces/Receipt';
-import { generateHttpRes } from '../utils/httpRespGenerator';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
+import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
+import { IReceipt } from '../models/interfaces/Receipt';
+import { PdfMessages } from '../models/messageEnums';
+import { ReceiptModel } from '../models/receiptModel';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   // the path is calculated from inside the compiled folder
@@ -20,7 +21,7 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
         join(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'),
         { receipts: parseReceipts(receipts) },
         function (err, file) {
-          handleError(err, 'ejs');
+          handleError(err, res, PdfMessages.err_pdf_ejs);
           create(file, {
             format: 'A4',
             orientation: 'portrait',
@@ -29,23 +30,22 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
               bottom: '50px',
             },
           }).toFile(fileName, function (err, file) {
-            handleError(err, 'creating');
+            handleError(err, res, PdfMessages.err_during_pdf_creation);
             res.setHeader('file-name', 'mega-printout');
             res.sendFile(file.filename, function (err) {
-              handleError(err, 'sending');
+              handleError(err, res, PdfMessages.err_pdf_sending);
               unlinkSync(fileName);
             });
           });
         }
       );
     })
-    .catch(() => generateHttpRes(res, 500, 'cannot create pdf'));
+    .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
 }
 
-function handleError(err, msg) {
+function handleError(err, res: Response, message: PdfMessages) {
   if (err) {
-    console.log('err' + msg + ': ', err);
-    throw err;
+    return generateHttpRes(res, 500, message);
   }
 }
 

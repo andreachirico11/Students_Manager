@@ -32,3 +32,14 @@ export enum ReceiptMessages {
   'receipt_found' = 'receipt_found',
   'receipt_not_found' = 'receipt_not_found',
 }
+
+export enum StatsError {
+  'error_during_stats_generation' = 'error_during_stats_generation',
+}
+
+export enum PdfMessages {
+  'err_during_pdf_creation' = 'err_during_pdf_creation',
+  'err_pdf_fetching_data' = 'err_pdf_fetching_data',
+  'err_pdf_ejs' = 'err_pdf_ejs',
+  'err_pdf_sending' = 'err_pdf_sending',
+}
