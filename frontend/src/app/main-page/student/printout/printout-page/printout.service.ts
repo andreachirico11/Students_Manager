@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { catchError, first, map, of, tap } from 'rxjs';
 import { devErrorHandling } from 'src/app/shared/devErrorHandler';
+import { IHttpPdfParams } from 'src/app/shared/models/IHttpPdfParams';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,11 +12,12 @@ import { environment } from 'src/environments/environment';
 export class PrintoutService {
   private dbUrl = environment.dbUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private translateS: TranslateService) {}
 
   getPdf() {
     return this.http
       .get<{ file: Blob; title: string }>(this.dbUrl + 'printout', {
+        params: this.getParams({ locale: this.translateS.currentLang }),
         observe: 'response',
         responseType: 'blob' as 'json',
       })
@@ -29,5 +32,9 @@ export class PrintoutService {
           return of(null);
         })
       );
+  }
+
+  private getParams(pars: IHttpPdfParams): HttpParams {
+    return Object.keys(pars).reduce((acc, key) => acc.append(key, pars[key]), new HttpParams());
   }
 }

@@ -1,20 +1,15 @@
 import { renderFile } from 'ejs';
 import { Response } from 'express';
-import { unlinkSync } from 'fs';
+import { readFileSync, unlinkSync } from 'fs';
 import { create } from 'html-pdf';
 import { join } from 'path';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
-import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
-import { IReceipt } from '../models/interfaces/Receipt';
+import { IPdfRequest } from '../models/interfaces/IRequests';
 import { PdfMessages } from '../models/messageEnums';
 import { ReceiptModel } from '../models/receiptModel';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 
-export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
-  // the path is calculated from inside the compiled folder
-  res.setHeader('Content-Type', 'application/pdf');
-  const fileName = 'pdf-wella.pdf';
-
+export function getPdf(req: IPdfRequest, res: Response) {
   ReceiptModel.aggregate([
     {
       $lookup: {
@@ -43,23 +38,30 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   ])
     .then((receipts: IPdfReceipt[]) => {
       renderFile(
-        join(__dirname, '..', '..', 'pdf-views', 'full-table.ejs'),
-        { receipts, withStudentName: true },
-        function (err, file) {
-          handleError(err, res, PdfMessages.err_pdf_ejs);
-          create(file, {
+        getFilePathIntoPdfFolder('views', 'full-table.ejs'),
+        { receipts, withStudentName: true, translations: getParsedTranslations(req.query.locale) },
+        function (err, htmlFile) {
+          if (err) {
+            return handleError(err, res, PdfMessages.err_pdf_ejs);
+          }
+          create(htmlFile, {
             format: 'A4',
             orientation: 'portrait',
             border: {
               top: '50px',
               bottom: '50px',
             },
-          }).toFile(fileName, function (err, file) {
-            handleError(err, res, PdfMessages.err_during_pdf_creation);
+          }).toFile('temp.pdf', function (err, file) {
+            if (err) {
+              return handleError(err, res, PdfMessages.err_during_pdf_creation);
+            }
+            res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('file-name', 'mega-printout');
             res.sendFile(file.filename, function (err) {
-              handleError(err, res, PdfMessages.err_pdf_sending);
-              unlinkSync(fileName);
+              if (err) {
+                return handleError(err, res, PdfMessages.err_pdf_sending);
+              }
+              unlinkSync('temp.pdf');
             });
           });
         }
@@ -68,8 +70,20 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
     .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
 }
 
+function getFilePathIntoPdfFolder(...fileNames: string[]): string {
+  return join(__dirname, '..', '..', 'pdf', ...fileNames);
+}
+
+function getParsedTranslations(locale: string) {
+  return JSON.parse(
+    readFileSync(getFilePathIntoPdfFolder('translations', (locale || 'en') + '.json'), 'utf8')
+  );
+}
+
 function handleError(err, res: Response, message: PdfMessages) {
   if (err) {
+    console.log(message);
+
     return generateHttpRes(res, 500, message);
   }
 }

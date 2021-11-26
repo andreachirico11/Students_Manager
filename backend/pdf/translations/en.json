@@ -1,0 +1,15 @@
+{
+    "HEADERS": {
+        "NUMBER": "No.",
+        "NAME": "Name",
+        "TOT": "Total",
+        "DATE_P": "Payment Date",
+        "DATE_EM": "Emission Date",
+        "METHOD": "Method"
+    },
+    "PAYMENTS": {
+        "money": "Money",
+        "transfer": "Transfer",
+        "atm": "Atm"
+    }
+}

@@ -82,13 +82,13 @@
         <thead>
           <tr>
             <% if (withStudentName) { %>
-            <th>Nome</th>
+            <th><%= translations.HEADERS.NAME %></th>
             <% } %>
-            <th>No.</th>
-            <th>Totale</th>
-            <th>Data Emissione</th>
-            <th>Data Pagamento</th>
-            <th>Metodo</th>
+            <th><%= translations.HEADERS.NUMBER %></th>
+            <th><%= translations.HEADERS.TOT %></th>
+            <th><%= translations.HEADERS.DATE_EM %></th>
+            <th><%= translations.HEADERS.DATE_P %></th>
+            <th><%= translations.HEADERS.METHOD %></th>
           </tr>
         </thead>
         <tbody>
@@ -101,7 +101,7 @@
             <td><%= rec.amount %></td>
             <td><%= rec.emissionDateString %></td>
             <td><%= rec.paymentDateString %></td>
-            <td><%= rec.typeOfPayment %></td>
+            <td><%= rec.typeOfPayment ? translations.PAYMENTS[rec.typeOfPayment] : '' %></td>
           </tr>
           <% } %>
         </tbody>
