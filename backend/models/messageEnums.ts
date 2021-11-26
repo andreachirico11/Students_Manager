@@ -40,3 +40,7 @@ export enum StatsMessage {
 export enum StatsError {
   'error_during_stats_generation' = 'error_during_stats_generation',
 }
+
+export enum PdfMessages {
+  'err_during_pdf_creation' = 'err_during_pdf_creation',
+}

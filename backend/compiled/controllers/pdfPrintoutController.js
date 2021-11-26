@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPdf = void 0;
+var ejs_1 = require("ejs");
 var fs_1 = require("fs");
 var html_pdf_1 = require("html-pdf");
 var path_1 = require("path");
-var ejs_1 = require("ejs");
+var messageEnums_1 = require("../models/messageEnums");
 var receiptModel_1 = require("../models/receiptModel");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
 function getPdf(eq, res) {
@@ -32,13 +33,13 @@ function getPdf(eq, res) {
             });
         });
     })
-        .catch(function () { return (0, httpRespGenerator_1.generateHttpRes)(res, 500, 'cannot create pdf'); });
+        .catch(function (e) { return handleError(e, res); });
 }
 exports.getPdf = getPdf;
-function handleError(err, msg) {
+function handleError(err, res) {
     if (err) {
-        console.log('err' + msg + ': ', err);
-        throw err;
+        console.log(messageEnums_1.PdfMessages.err_during_pdf_creation);
+        return (0, httpRespGenerator_1.generateHttpRes)(res, 500, messageEnums_1.PdfMessages.err_during_pdf_creation);
     }
 }
 function parseReceipts(recs) {

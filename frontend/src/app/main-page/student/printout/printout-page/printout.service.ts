@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, first, map, tap } from 'rxjs';
+import { catchError, first, map, of, tap } from 'rxjs';
+import { devErrorHandling } from 'src/app/shared/devErrorHandler';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -24,8 +25,8 @@ export class PrintoutService {
           title: res.headers.get('file-name') ?? 'default title',
         })),
         catchError((e) => {
-          console.log('printout service: ', e);
-          throw e;
+          devErrorHandling(e);
+          return of(null);
         })
       );
   }

@@ -1,13 +1,14 @@
+import { renderFile } from 'ejs';
 import { Response } from 'express';
-import { readFile, unlinkSync } from 'fs';
+import { unlinkSync } from 'fs';
 import { create } from 'html-pdf';
 import { join } from 'path';
-import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
-import { renderFile } from 'ejs';
-import { ReceiptModel } from '../models/receiptModel';
-import { IReceipt } from '../models/interfaces/Receipt';
-import { generateHttpRes } from '../utils/httpRespGenerator';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
+import { IBackendRequest, IPdfRequest } from '../models/interfaces/IRequests';
+import { IReceipt } from '../models/interfaces/Receipt';
+import { PdfMessages } from '../models/messageEnums';
+import { ReceiptModel } from '../models/receiptModel';
+import { generateHttpRes } from '../utils/httpRespGenerator';
 
 export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
   // the path is calculated from inside the compiled folder
@@ -39,13 +40,13 @@ export function getPdf(eq: IBackendRequest<IPdfRequest>, res: Response) {
         }
       );
     })
-    .catch(() => generateHttpRes(res, 500, 'cannot create pdf'));
+    .catch((e) => handleError(e, res));
 }
 
-function handleError(err, msg) {
+function handleError(err, res: Response) {
   if (err) {
-    console.log('err' + msg + ': ', err);
-    throw err;
+    console.log(PdfMessages.err_during_pdf_creation);
+    return generateHttpRes(res, 500, PdfMessages.err_during_pdf_creation);
   }
 }
 
