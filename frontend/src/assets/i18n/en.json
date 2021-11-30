@@ -44,12 +44,14 @@
             "2": "Payable Total",
             "3": "Actual Month Total"
         },
-        "T_HEAD_1": "Payed",
-        "T_HEAD_2": "No.",
-        "T_HEAD_3": "Total",
-        "T_HEAD_4": "Emission",
-        "T_HEAD_5": "Payment",
-        "T_HEAD_6": "Method"
+        "HEADS": {
+            "isPayed": "Payed",
+            "number": "No.",
+            "amount": "Total",
+            "emissionDate": "Emission",
+            "paymentDate": "Payment",
+            "typeOfPayment": "Method"
+        }
     },
     "RECEIPTS_AC": {
         "BTN_1": "Update",
@@ -122,6 +124,14 @@
     },
     "PRINTOUT": {
         "MAIN_TITLE": "Printout",
-        "DOWNLOAD_ALL": "Download all Receipts"
+        "GENERATE": "Generate Pdf",
+        "FILTERS": "Filters",
+        "ORDERBY": "Order By",
+        "FILTERS_VALUES": {
+            "isPayed": "payed",
+            "notPayed": "not payed",
+            "thisMonth": "this Month",
+            "thisYear": "this Year"
+        }
     }
 }

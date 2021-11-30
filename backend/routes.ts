@@ -26,6 +26,7 @@ router.post('/receipts/:studentId', verifyToken, postReceipt);
 router.put('/receipts/:receiptId', verifyToken, putReceipt);
 router.delete('/receipts/:id', verifyToken, deleteReceipt);
 
+// @ts-ignore
 router.get('/printout', verifyToken, getPdf);
 router.get('/stats', verifyToken, getStats);
 

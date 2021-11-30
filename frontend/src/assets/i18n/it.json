@@ -44,12 +44,14 @@
             "2": "Totale da Pagare",
             "3": "Totale del Mese"
         },
-        "T_HEAD_1": "Pagato",
-        "T_HEAD_2": "No.",
-        "T_HEAD_3": "Totale",
-        "T_HEAD_4": "Emissione",
-        "T_HEAD_5": "Pagamento",
-        "T_HEAD_6": "Metodo"
+        "HEADS": {
+            "isPayed": "Pagato",
+            "number": "No.",
+            "amount": "Totale",
+            "emissionDate": "Emissione",
+            "paymentDate": "Pagamento",
+            "typeOfPayment": "Metodo"
+        }
     },
     "RECEIPTS_AC": {
         "BTN_1": "Modifica",
@@ -122,6 +124,14 @@
     },
     "PRINTOUT": {
         "MAIN_TITLE": "Printout",
-        "DOWNLOAD_ALL": "Scarica le ricevute"
+        "GENERATE": "Genera Pdf",
+        "FILTERS": "Filtri",
+        "ORDERBY": "Ordinati per",
+        "FILTERS_VALUES": {
+            "isPayed": "pagate",
+            "notPayed": "non pagate",
+            "thisMonth": "mensili",
+            "thisYear": "annuali"
+        }
     }
 }

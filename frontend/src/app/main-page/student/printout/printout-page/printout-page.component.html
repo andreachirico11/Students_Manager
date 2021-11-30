@@ -4,9 +4,28 @@
       {{ 'PRINTOUT.MAIN_TITLE' | translate }}
     </mat-card-title>
   </mat-card-header>
+
+  <mat-card-content [formGroup]="form">
+    <div formGroupName="columns" class="columns">
+      <mat-checkbox *ngFor="let colName of columnNames" [formControlName]="colName">
+        {{ 'RECEIPTS.HEADS.' + colName | translate }}
+      </mat-checkbox>
+    </div>
+    <div class="others">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.FILTERS' | translate }}</mat-label>
+        <mat-select formControlName="filters">
+          <mat-option *ngFor="let f of filters" [value]="f">
+            {{ 'PRINTOUT.FILTER_VALUES.' + value | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+
   <mat-action-list>
-    <button mat-stroked-button (click)="onDownloadAll()" color="primary">
-      {{ 'PRINTOUT.DOWNLOAD_ALL' | translate }}
+    <button mat-stroked-button (click)="onGenerate()" color="primary">
+      {{ 'PRINTOUT.GENERATE' | translate }}
     </button>
   </mat-action-list>
 </mat-card>
