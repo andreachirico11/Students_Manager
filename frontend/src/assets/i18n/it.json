@@ -127,7 +127,7 @@
         "GENERATE": "Genera Pdf",
         "FILTERS": "Filtri",
         "ORDERBY": "Ordinati per",
-        "FILTERS_VALUES": {
+        "FILTER_VALUES": {
             "isPayed": "pagate",
             "notPayed": "non pagate",
             "thisMonth": "mensili",

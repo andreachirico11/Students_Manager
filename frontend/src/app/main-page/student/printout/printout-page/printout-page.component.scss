@@ -1,8 +1,15 @@
-.columns {
+.printout-form-row {
   display: flex;
   justify-content: left;
   flex-wrap: wrap;
-  mat-checkbox {
+  margin-bottom: 1em;
+  mat-checkbox,
+  mat-form-field,
+  button {
     margin: 0.5em 2em;
+  }
+  mat-form-field {
+    margin-bottom: 0;
+    margin-top: 0;
   }
 }

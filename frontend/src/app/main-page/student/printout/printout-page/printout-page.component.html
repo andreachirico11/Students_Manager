@@ -6,27 +6,32 @@
   </mat-card-header>
 
   <mat-card-content [formGroup]="form">
-    <div formGroupName="columns" class="columns">
+    <div formGroupName="columns" class="printout-form-row">
       <mat-checkbox *ngFor="let colName of columnNames" [formControlName]="colName">
         {{ 'RECEIPTS.HEADS.' + colName | translate }}
       </mat-checkbox>
     </div>
-    <div class="others">
+    <div class="printout-form-row">
       <mat-form-field appearance="fill">
         <mat-label>{{ 'PRINTOUT.FILTERS' | translate }}</mat-label>
         <mat-select formControlName="filters">
           <mat-option *ngFor="let f of filters" [value]="f">
-            {{ 'PRINTOUT.FILTER_VALUES.' + value | translate }}
+            {{ 'PRINTOUT.FILTER_VALUES.' + f | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.ORDERBY' | translate }}</mat-label>
+        <mat-select formControlName="orderBy">
+          <mat-option *ngFor="let c of columnNames" [value]="c">
+            {{ 'RECEIPTS.HEADS.' + c | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-stroked-button (click)="onGenerate()" color="primary">
+        {{ 'PRINTOUT.GENERATE' | translate }}
+      </button>
     </div>
   </mat-card-content>
-
-  <mat-action-list>
-    <button mat-stroked-button (click)="onGenerate()" color="primary">
-      {{ 'PRINTOUT.GENERATE' | translate }}
-    </button>
-  </mat-action-list>
 </mat-card>
 <a #downloadAnchor style="display: none"></a>

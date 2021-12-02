@@ -3,4 +3,5 @@ export enum ReceiptsFilters {
   notPayed = 'notPayed',
   thisMonth = 'thisMonth',
   thisYear = 'thisYear',
+  dateRange = 'dateRange',
 }

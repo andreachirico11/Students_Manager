@@ -34,6 +34,8 @@ export class PrintoutService {
       );
   }
 
+  getStudentReceipts() {}
+
   private getParams(pars: IHttpPdfParams): HttpParams {
     return Object.keys(pars).reduce((acc, key) => acc.append(key, pars[key]), new HttpParams());
   }

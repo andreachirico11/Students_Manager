@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
 import { PrintoutService } from './printout.service';
@@ -17,12 +18,16 @@ export class PrintoutPageComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private printoutService: PrintoutService) {}
+  constructor(private printoutService: PrintoutService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.form = this.addFilters(
       this.addOrderBy(this.addColumns(this.buildForm(), this.columnNames))
     );
+    console.log(this.route.snapshot);
+    this.route.paramMap.subscribe((r) => {
+      console.log(r);
+    });
   }
 
   onDownloadAll() {
@@ -42,7 +47,7 @@ export class PrintoutPageComponent implements OnInit {
   }
 
   onGenerate() {
-    console.log(this.form);
+    this.printoutService;
   }
 
   private buildForm(): FormGroup {
@@ -54,13 +59,13 @@ export class PrintoutPageComponent implements OnInit {
 
   private addColumns(f: FormGroup, columnNames: string[]) {
     columnNames.forEach((colName) => {
-      (f.get('columns') as FormGroup).addControl(colName, new FormControl(false));
+      (f.get('columns') as FormGroup).addControl(colName, new FormControl(true));
     });
     return f;
   }
 
   private addFilters(f: FormGroup): FormGroup {
-    f.addControl('filter', new FormControl(null));
+    f.addControl('filters', new FormControl(null));
     return f;
   }
 
