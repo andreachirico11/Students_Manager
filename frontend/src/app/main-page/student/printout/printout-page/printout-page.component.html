@@ -6,15 +6,52 @@
   </mat-card-header>
 
   <mat-card-content [formGroup]="form">
+    <!-- COLUMNS -->
     <div formGroupName="columns" class="printout-form-row">
       <mat-checkbox *ngFor="let colName of columnNames" [formControlName]="colName">
         {{ 'RECEIPTS.HEADS.' + colName | translate }}
       </mat-checkbox>
     </div>
+    <!-- RANGES -->
+    <div *ngIf="showDateRange" class="printout-form-row" formGroupName="dateRange">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.DATE_RANGES.startDate' | translate }}</mat-label>
+        <input
+          matInput
+          #startInput
+          (focus)="startInput.blur()"
+          (click)="startPicker.open()"
+          [matDatepicker]="startPicker"
+          formControlName="startDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker
+          [touchUi]="isTouchUiActivate"
+          #startPicker
+          disabled="false"
+        ></mat-datepicker>
+        <mat-error>{{ 'PRINTOUT.DATE_RANGES.dateErr' | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.DATE_RANGES.endDate' | translate }}</mat-label>
+        <input
+          matInput
+          #endInput
+          (focus)="endInput.blur()"
+          (click)="endPicker.open()"
+          [matDatepicker]="endPicker"
+          formControlName="endDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
+        <mat-error>{{ 'PRINTOUT.DATE_RANGES.dateErr' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+    <!-- FILTERS -->
     <div class="printout-form-row">
       <mat-form-field appearance="fill">
         <mat-label>{{ 'PRINTOUT.FILTERS' | translate }}</mat-label>
-        <mat-select formControlName="filters">
+        <mat-select formControlName="filters" multiple="true">
           <mat-option *ngFor="let f of filters" [value]="f">
             {{ 'PRINTOUT.FILTER_VALUES.' + f | translate }}
           </mat-option>

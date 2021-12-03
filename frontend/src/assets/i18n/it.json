@@ -128,10 +128,16 @@
         "FILTERS": "Filtri",
         "ORDERBY": "Ordinati per",
         "FILTER_VALUES": {
-            "isPayed": "pagate",
-            "notPayed": "non pagate",
-            "thisMonth": "mensili",
-            "thisYear": "annuali"
+            "isPayed": "Pagate",
+            "notPayed": "Non Pagate",
+            "thisMonth": "Aensili",
+            "thisYear": "Annuali",
+            "dateRange": "Intervallo di Date",
+            "DATE_RANGES": {
+                "startDate": "Date Inizio",
+                "endDate": "Data Fine",
+                "dateErr": "Obbligatorio"
+            }
         }
     }
 }

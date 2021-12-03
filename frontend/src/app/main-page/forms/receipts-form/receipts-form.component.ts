@@ -13,6 +13,7 @@ import { formDateComparerValidator } from 'src/app/shared/dateComparerValidator'
 import { PaymentTypeValues } from 'src/app/shared/models/PaymentType';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
+import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { DataService } from '../../data-service/data.service';
 import { AllRegExp } from '../utils/allRegExp';
 import { ComponentGuarded } from '../utils/guard-base.component';
@@ -29,7 +30,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
   public matSelectValues = PaymentTypeValues;
 
   get isTouchUiActivate() {
-    return window.innerWidth < 500 ? true : false;
+    return UtilsService.getIfTouchUiIsActivated();
   }
 
   private studentId: string;

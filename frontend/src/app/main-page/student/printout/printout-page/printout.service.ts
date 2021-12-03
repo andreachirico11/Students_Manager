@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError, first, map, of, tap } from 'rxjs';
+import { catchError, first, map, of } from 'rxjs';
+import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
 import { devErrorHandling } from 'src/app/shared/devErrorHandler';
-import { IHttpPdfParams } from 'src/app/shared/models/IHttpPdfParams';
 import { environment } from 'src/environments/environment';
+import { IStudentPdfParas } from '../IStudentPdfParams';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,11 @@ export class PrintoutService {
       );
   }
 
-  getStudentReceipts() {}
+  getStudentRecsPdf(params: IStudentPdfParas) {
+    console.log(params);
+
+    return of({ file: new Blob(), title: '' });
+  }
 
   private getParams(pars: IHttpPdfParams): HttpParams {
     return Object.keys(pars).reduce((acc, key) => acc.append(key, pars[key]), new HttpParams());

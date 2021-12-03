@@ -128,10 +128,16 @@
         "FILTERS": "Filters",
         "ORDERBY": "Order By",
         "FILTER_VALUES": {
-            "isPayed": "payed",
-            "notPayed": "not payed",
-            "thisMonth": "this Month",
-            "thisYear": "this Year"
+            "isPayed": "Payed",
+            "notPayed": "Not Payed",
+            "thisMonth": "This Month",
+            "thisYear": "This Year",
+            "dateRange": "Date Range"
+        },
+        "DATE_RANGES": {
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "dateErr": "Required"
         }
     }
 }
