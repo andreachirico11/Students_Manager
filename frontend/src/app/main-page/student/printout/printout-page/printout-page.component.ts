@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { pairwise, startWith, Subscription } from 'rxjs';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
 import { IStudentPdfParas } from '../IStudentPdfParams';
@@ -70,20 +70,71 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
   }
 
   private onFiltersInputChange(): Subscription {
-    return this.form.get('filters').valueChanges.subscribe((val: ReceiptsFilters[]) => {
-      const hasFilter = this.filterChecker(val);
-      if (hasFilter(ReceiptsFilters.dateRange)) {
-        if (hasFilter(ReceiptsFilters.thisMonth)) {
-          //TODO creare tutti i casi
+    const filtersField = this.form.get('filters');
+    return filtersField.valueChanges
+      .pipe(startWith(null), pairwise())
+      .subscribe(([prev, actal]) => {
+        const actualHasFilter = this.filterChecker(actal);
+        if (!prev) {
+          if (actualHasFilter(ReceiptsFilters.dateRange)) {
+            this.addDateRangeGroup(this.form);
+          }
+          return;
         }
-      }
-      if (hasFilter(ReceiptsFilters.thisMonth) || hasFilter(ReceiptsFilters.thisYear)) {
-      }
-    });
+        const prevHasFilter = this.filterChecker(prev);
+        if (
+          prevHasFilter(ReceiptsFilters.dateRange) &&
+          !actualHasFilter(ReceiptsFilters.dateRange)
+        ) {
+          this.removeDateRangeGroup(this.form);
+        } else if (
+          actualHasFilter(ReceiptsFilters.dateRange) &&
+          (!prev || !prevHasFilter(ReceiptsFilters.dateRange))
+        ) {
+          this.removeValuesFromCtrl(
+            filtersField,
+            ReceiptsFilters.thisMonth,
+            ReceiptsFilters.thisYear
+          );
+          this.addDateRangeGroup(this.form);
+        }
+        if (
+          actualHasFilter(ReceiptsFilters.thisMonth) &&
+          (prevHasFilter(ReceiptsFilters.thisYear) || prevHasFilter(ReceiptsFilters.dateRange))
+        ) {
+          this.removeValuesFromCtrl(
+            filtersField,
+            ReceiptsFilters.thisYear,
+            ReceiptsFilters.dateRange
+          );
+          if (prevHasFilter(ReceiptsFilters.dateRange)) {
+            this.removeDateRangeGroup(this.form);
+          }
+        }
+        if (
+          actualHasFilter(ReceiptsFilters.thisYear) &&
+          (prevHasFilter(ReceiptsFilters.thisMonth) || prevHasFilter(ReceiptsFilters.dateRange))
+        ) {
+          this.removeValuesFromCtrl(
+            filtersField,
+            ReceiptsFilters.thisMonth,
+            ReceiptsFilters.dateRange
+          );
+          if (prevHasFilter(ReceiptsFilters.dateRange)) {
+            this.removeDateRangeGroup(this.form);
+          }
+        }
+      });
   }
 
   private filterChecker(val: string[]): Function {
-    return (required: ReceiptsFilters) => !!val.findIndex((f) => f === required);
+    return (required: ReceiptsFilters): boolean => val.findIndex((f) => f === required) >= 0;
+  }
+
+  private removeValuesFromCtrl(ctrl: AbstractControl, ...values: string[]) {
+    values.forEach((v) => {
+      ctrl.setValue((ctrl.value as string[]).filter((vl) => vl !== v));
+    });
   }
 
   private addDateRangeGroup(f: FormGroup) {

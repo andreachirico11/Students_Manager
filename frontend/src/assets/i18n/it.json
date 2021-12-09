@@ -130,7 +130,7 @@
         "FILTER_VALUES": {
             "isPayed": "Pagate",
             "notPayed": "Non Pagate",
-            "thisMonth": "Aensili",
+            "thisMonth": "Mensili",
             "thisYear": "Annuali",
             "dateRange": "Intervallo di Date",
             "DATE_RANGES": {
