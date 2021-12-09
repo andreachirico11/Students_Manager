@@ -65,7 +65,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-stroked-button (click)="onGenerate()" color="primary">
+      <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
         {{ 'PRINTOUT.GENERATE' | translate }}
       </button>
     </div>

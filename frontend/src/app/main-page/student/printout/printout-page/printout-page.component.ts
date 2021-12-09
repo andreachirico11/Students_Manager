@@ -97,8 +97,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
             ReceiptsFilters.thisYear
           );
           this.addDateRangeGroup(this.form);
-        }
-        if (
+        } else if (
           actualHasFilter(ReceiptsFilters.thisMonth) &&
           (prevHasFilter(ReceiptsFilters.thisYear) || prevHasFilter(ReceiptsFilters.dateRange))
         ) {
@@ -110,8 +109,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
           if (prevHasFilter(ReceiptsFilters.dateRange)) {
             this.removeDateRangeGroup(this.form);
           }
-        }
-        if (
+        } else if (
           actualHasFilter(ReceiptsFilters.thisYear) &&
           (prevHasFilter(ReceiptsFilters.thisMonth) || prevHasFilter(ReceiptsFilters.dateRange))
         ) {
@@ -124,6 +122,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
             this.removeDateRangeGroup(this.form);
           }
         }
+        this.form.updateValueAndValidity();
       });
   }
 
@@ -133,7 +132,10 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
 
   private removeValuesFromCtrl(ctrl: AbstractControl, ...values: string[]) {
     values.forEach((v) => {
-      ctrl.setValue((ctrl.value as string[]).filter((vl) => vl !== v));
+      ctrl.setValue(
+        (ctrl.value as string[]).filter((vl) => vl !== v),
+        { emitEvent: false }
+      );
     });
   }
 
@@ -141,10 +143,20 @@ export class PrintoutPageComponent implements OnInit, OnDestroy {
     f.addControl(
       'dateRange',
       new FormGroup({
-        startDate: new FormControl(null, Validators.required),
-        endDate: new FormControl(null, Validators.required),
+        startDate: new FormControl(null),
+        endDate: new FormControl(null),
       })
     );
+    setTimeout(() => {
+      f.get('dateRange.startDate').setValidators([
+        Validators.required,
+        Validators.max(f.get('dateRange.endDate').value),
+      ]);
+      f.get('dateRange.endDate').setValidators([
+        Validators.required,
+        Validators.min(f.get('dateRange.startDate').value),
+      ]);
+    });
     this.showDateRange = true;
   }
 
