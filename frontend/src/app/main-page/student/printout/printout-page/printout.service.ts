@@ -5,7 +5,7 @@ import { catchError, first, map, of } from 'rxjs';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
 import { devErrorHandling } from 'src/app/shared/devErrorHandler';
 import { environment } from 'src/environments/environment';
-import { IStudentPdfParas } from '../IStudentPdfParams';
+import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +35,9 @@ export class PrintoutService {
       );
   }
 
-  getStudentRecsPdf(body: IStudentPdfParas) {
+  getStudentRecsPdf(body: IStudentPdfReqBody) {
     return this.http
-      .post<{ file: Blob; title: string }>(this.dbUrl + 'printout/studentRecap', body, {
+      .post<Blob>(this.dbUrl + 'printout/studentRecap', body, {
         observe: 'response',
         responseType: 'blob' as 'json',
       })

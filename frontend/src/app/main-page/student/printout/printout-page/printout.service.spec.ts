@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
-import { IStudentPdfParas } from '../IStudentPdfParams';
+import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
 
 describe('PrintoutService', () => {
@@ -37,8 +37,8 @@ describe('PrintoutService', () => {
 
   it('should send a basic student request', () => {
     const title = 'aaaaaaaaaaaa';
-    const body: IStudentPdfParas = {
-      _studentid: 'abc',
+    const body: IStudentPdfReqBody = {
+      _studentId: 'abc',
       locale: 'it',
       columns: ['a', 'b'],
     };
@@ -54,8 +54,8 @@ describe('PrintoutService', () => {
 
   it('should retrieve file title from request', () => {
     const title = 'aaaaaaaaaaaa';
-    const body: IStudentPdfParas = {
-      _studentid: 'abc',
+    const body: IStudentPdfReqBody = {
+      _studentId: 'abc',
       locale: 'it',
       columns: ['a', 'b'],
     };

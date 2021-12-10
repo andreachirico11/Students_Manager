@@ -9,7 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPdf = void 0;
+exports.getPdf = exports.getStudentRecap = void 0;
 var ejs_1 = require("ejs");
 var fs_1 = require("fs");
 var html_pdf_1 = require("html-pdf");
@@ -17,6 +17,63 @@ var path_1 = require("path");
 var messageEnums_1 = require("../models/messageEnums");
 var receiptModel_1 = require("../models/receiptModel");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
+function getStudentRecap(req, res) {
+    receiptModel_1.ReceiptModel.aggregate([
+        {
+            $lookup: {
+                from: 'students',
+                localField: '_studentId',
+                foreignField: '_id',
+                as: 'studentInfo',
+            },
+        },
+        {
+            $unwind: '$studentInfo',
+        },
+        {
+            $addFields: {
+                studentName: {
+                    $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
+                },
+                paymentDateString: {
+                    $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
+                },
+                emissionDateString: {
+                    $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
+                },
+            },
+        },
+    ])
+        .then(function (receipts) {
+        (0, ejs_1.renderFile)(getFilePathIntoPdfFolder('views', 'full-table.ejs'), { receipts: receipts, withStudentName: true, translations: getParsedTranslations(req.body.locale) }, function (err, htmlFile) {
+            if (err) {
+                return handleError(err, res, messageEnums_1.PdfMessages.err_pdf_ejs);
+            }
+            (0, html_pdf_1.create)(htmlFile, {
+                format: 'A4',
+                orientation: 'portrait',
+                border: {
+                    top: '50px',
+                    bottom: '50px',
+                },
+            }).toFile('temp.pdf', function (err, file) {
+                if (err) {
+                    return handleError(err, res, messageEnums_1.PdfMessages.err_during_pdf_creation);
+                }
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('file-name', 'mega-printout');
+                res.sendFile(file.filename, function (err) {
+                    if (err) {
+                        return handleError(err, res, messageEnums_1.PdfMessages.err_pdf_sending);
+                    }
+                    (0, fs_1.unlinkSync)('temp.pdf');
+                });
+            });
+        });
+    })
+        .catch(function (e) { return handleError(e, res, messageEnums_1.PdfMessages.err_pdf_fetching_data); });
+}
+exports.getStudentRecap = getStudentRecap;
 function getPdf(req, res) {
     receiptModel_1.ReceiptModel.aggregate([
         {

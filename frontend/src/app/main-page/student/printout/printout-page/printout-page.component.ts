@@ -4,9 +4,10 @@ import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { pairwise, startWith, Subscription } from 'rxjs';
+import { devErrorHandlingAny } from 'src/app/shared/devErrorHandler';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
-import { IStudentPdfParas } from '../IStudentPdfParams';
+import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
 
 @Component({
@@ -48,8 +49,8 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onGenerate() {
     const { filters, orderBy, columns, dateRange } = this.form.value;
-    const params: IStudentPdfParas = {
-      _studentid: this.route.snapshot.parent.params.id,
+    const params: IStudentPdfReqBody = {
+      _studentId: this.route.snapshot.parent.params.id,
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
     };
@@ -62,7 +63,11 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (orderBy) {
       params.orderBy = orderBy;
     }
-    this.printoutService.getStudentRecsPdf(params).subscribe();
+    this.printoutService.getStudentRecsPdf(params).subscribe((r) => {
+      if (r) {
+        this.onDownloadResponse(r.file, r.title);
+      }
+    });
   }
 
   private addColumns(f: FormGroup, columnNames: string[]) {
@@ -145,20 +150,20 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   private getActiveColumns(columnObj: Object): string[] {
     return Object.keys(columnObj).filter((key) => columnObj[key]);
   }
-}
 
-// onDownloadAll() {
-//   this.printoutService.getPdf().subscribe((resp) => {
-//     try {
-//       const objUrl = URL.createObjectURL(resp.file);
-//       this.downloader.nativeElement.href = objUrl;
-//       this.downloader.nativeElement.download = resp.title;
-//       this.downloader.nativeElement.click();
-//       this.downloader.nativeElement.href = null;
-//       this.downloader.nativeElement.download = null;
-//       URL.revokeObjectURL(objUrl);
-//     } catch (error) {
-//       console.warn('catch =>', error);
-//     }
-//   });
-// }
+  private onDownloadResponse(blob: Blob, title: string) {
+    let objUrl: string;
+    try {
+      objUrl = URL.createObjectURL(blob);
+      this.downloader.nativeElement.href = objUrl;
+      this.downloader.nativeElement.download = title;
+      this.downloader.nativeElement.click();
+      this.downloader.nativeElement.href = null;
+      this.downloader.nativeElement.download = null;
+      URL.revokeObjectURL(objUrl);
+    } catch (error) {
+      URL.revokeObjectURL(objUrl);
+      devErrorHandlingAny(error);
+    }
+  }
+}

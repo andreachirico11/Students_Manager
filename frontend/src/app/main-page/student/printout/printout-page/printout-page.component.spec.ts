@@ -7,11 +7,9 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FormsModule } from 'src/app/main-page/forms/forms.module';
 import { MaterialModule } from 'src/app/material.module';
-import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
-import { IStudentPdfParas } from '../IStudentPdfParams';
+import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutPageComponent } from './printout-page.component';
 import { PrintoutService } from './printout.service';
 
@@ -110,9 +108,9 @@ describe('PrintoutPageComponent', () => {
   );
 
   it('should send the correct data', () => {
-    const data: IStudentPdfParas = {
+    const data: IStudentPdfReqBody = {
       columns: ['number', 'typeOfPayment'],
-      _studentid: 'abc',
+      _studentId: 'abc',
       locale: 'it',
       filters: ['thisMonth', 'isPayed'],
       orderBy: 'number',
@@ -137,9 +135,9 @@ describe('PrintoutPageComponent', () => {
   it('should send the correct data with dates', () => {
     const startDate = new Date(),
       endDate = new Date();
-    const data: IStudentPdfParas = {
+    const data: IStudentPdfReqBody = {
       columns: ['number', 'typeOfPayment'],
-      _studentid: 'abc',
+      _studentId: 'abc',
       locale: 'it',
       filters: ['dateRange', 'isPayed'],
       orderBy: 'number',
