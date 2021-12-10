@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { map, mapTo, pairwise, startWith, Subscription } from 'rxjs';
+import { pairwise, startWith, Subscription } from 'rxjs';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
 import { IStudentPdfParas } from '../IStudentPdfParams';
@@ -22,9 +22,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   showDateRange = false;
   form: FormGroup;
   filtersSub: Subscription;
-
-  @ViewChild(MatSelect)
-  filtersSelect: MatSelect;
+  valueSub: Subscription;
 
   constructor(
     private printoutService: PrintoutService,
@@ -40,14 +38,16 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.filtersSub = this.onFiltersInputChange();
+    this.valueSub = this.onValueChange();
   }
 
   ngOnDestroy() {
     this.filtersSub.unsubscribe();
+    this.valueSub.unsubscribe();
   }
 
   onGenerate() {
-    const { filters, orderBy, columns } = this.form.value;
+    const { filters, orderBy, columns, dateRange } = this.form.value;
     const params: IStudentPdfParas = {
       _studentid: this.route.snapshot.parent.params.id,
       filters,
@@ -55,6 +55,9 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
     };
+    if (filters.find((f) => f === ReceiptsFilters.dateRange)) {
+      params.dateRange = dateRange;
+    }
     this.printoutService.getStudentRecsPdf(params).subscribe();
   }
 
@@ -81,17 +84,15 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     return filtersField.valueChanges.pipe(startWith([]), pairwise()).subscribe(([prev, actual]) => {
       const verifyForNewValue = this.hasANewValue(prev, actual),
         filtersCtrl = this.form.get('filters');
-      this.removeDateRangeGroup(this.form);
       if (verifyForNewValue(ReceiptsFilters.dateRange)) {
         this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisMonth, ReceiptsFilters.thisYear);
-        this.addDateRangeGroup(this.form);
       } else if (verifyForNewValue(ReceiptsFilters.thisMonth)) {
-        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.dateRange, ReceiptsFilters.thisYear);
+        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisYear, ReceiptsFilters.dateRange);
       } else if (verifyForNewValue(ReceiptsFilters.thisYear)) {
         this.removeValuesFromCtrl(
           filtersCtrl,
-          ReceiptsFilters.dateRange,
-          ReceiptsFilters.thisMonth
+          ReceiptsFilters.thisMonth,
+          ReceiptsFilters.dateRange
         );
       } else if (verifyForNewValue(ReceiptsFilters.isPayed)) {
         this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.notPayed);
@@ -101,16 +102,23 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  private onValueChange(): Subscription {
+    return this.form.get('filters').valueChanges.subscribe((newVal: string[]) => {
+      if (newVal.find((v) => v === ReceiptsFilters.dateRange)) {
+        this.addDateRangeGroup(this.form);
+      } else {
+        this.removeDateRangeGroup(this.form);
+      }
+    });
+  }
+
   private hasANewValue(prev: string[], next: string[]): Function {
     return (requiredVal: ReceiptsFilters): boolean =>
-      !(prev.findIndex((f) => f === requiredVal) >= 0) &&
-      next.findIndex((f) => f === requiredVal) >= 0;
+      prev.findIndex((f) => f === requiredVal) < 0 && next.findIndex((f) => f === requiredVal) >= 0;
   }
 
   private removeValuesFromCtrl(ctrl: AbstractControl, ...values: string[]) {
-    values.forEach((v) => {
-      ctrl.setValue((ctrl.value as string[]).filter((vl) => vl !== v));
-    });
+    ctrl.setValue((ctrl.value as string[]).filter((vl) => !values.includes(vl)));
   }
 
   private addDateRangeGroup(f: FormGroup) {
@@ -119,14 +127,15 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
       new FormGroup({
         startDate: new FormControl(null, Validators.required),
         endDate: new FormControl(null, Validators.required),
-      })
+      }),
+      { emitEvent: false }
     );
     this.showDateRange = true;
   }
 
   private removeDateRangeGroup(f: FormGroup) {
     this.showDateRange = false;
-    f.removeControl('dateRange');
+    f.removeControl('dateRange', { emitEvent: false });
   }
 
   private getActiveColumns(columnObj: Object): string[] {

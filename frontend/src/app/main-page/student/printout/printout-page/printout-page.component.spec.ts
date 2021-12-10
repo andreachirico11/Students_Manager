@@ -1,21 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormsModule } from 'src/app/main-page/forms/forms.module';
 import { MaterialModule } from 'src/app/material.module';
+import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
 import { IStudentPdfParas } from '../IStudentPdfParams';
-
 import { PrintoutPageComponent } from './printout-page.component';
+import { PrintoutService } from './printout.service';
 
 describe('PrintoutPageComponent', () => {
   let component: PrintoutPageComponent;
   let fixture: ComponentFixture<PrintoutPageComponent>;
+  let printoutService: PrintoutService;
+  let trans: TranslateService;
 
   const areDateRangesVisibles = () =>
     fixture.debugElement.queryAll(By.directive(MatDatepicker)).length === 2;
@@ -24,12 +28,12 @@ describe('PrintoutPageComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PrintoutPageComponent],
       imports: [
-        TranslateModule.forRoot(),
-        FormsModule,
         CommonModule,
         MaterialModule,
+        ReactiveFormsModule,
         BrowserAnimationsModule,
         HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
       providers: [
         {
@@ -45,7 +49,10 @@ describe('PrintoutPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PrintoutPageComponent);
     component = fixture.componentInstance;
+    printoutService = TestBed.inject(PrintoutService);
+    trans = TestBed.inject(TranslateService);
     fixture.detectChanges();
+    trans.use('it');
   });
 
   it('should create', () => {
@@ -102,11 +109,63 @@ describe('PrintoutPageComponent', () => {
     })
   );
 
-  // it('should send the correct data', () => {
-  //   const data: IStudentPdfParas = {
-  //     _studentid: 'abc',
-  //     filters: [ReceiptsFilters.dateRange, ReceiptsFilters.isPayed],
-  //     orderBy: 'amount'
-  //   }
-  // })
+  it('should send the correct data', () => {
+    const data: IStudentPdfParas = {
+      columns: ['number', 'typeOfPayment'],
+      _studentid: 'abc',
+      locale: 'it',
+      filters: ['thisMonth', 'isPayed'],
+      orderBy: 'number',
+    };
+    component.form.patchValue({
+      columns: {
+        number: true,
+        amount: false,
+        emissionDate: false,
+        paymentDate: false,
+        typeOfPayment: true,
+      },
+      filters: ['thisMonth', 'isPayed'],
+      orderBy: 'number',
+    });
+    fixture.detectChanges();
+    const spy = spyOn(printoutService, 'getStudentRecsPdf').and.callThrough();
+    component.onGenerate();
+    expect(spy).toHaveBeenCalledWith(data);
+  });
+
+  it('should send the correct data with dates', () => {
+    const startDate = new Date(),
+      endDate = new Date();
+    const data: IStudentPdfParas = {
+      columns: ['number', 'typeOfPayment'],
+      _studentid: 'abc',
+      locale: 'it',
+      filters: ['dateRange', 'isPayed'],
+      orderBy: 'number',
+      dateRange: {
+        startDate,
+        endDate,
+      },
+    };
+    component.form.patchValue({
+      columns: {
+        number: true,
+        amount: false,
+        emissionDate: false,
+        paymentDate: false,
+        typeOfPayment: true,
+      },
+      filters: ['dateRange', 'isPayed'],
+      orderBy: 'number',
+    });
+    fixture.detectChanges();
+    component.form.get('dateRange').patchValue({
+      startDate,
+      endDate,
+    });
+    const spy = spyOn(printoutService, 'getStudentRecsPdf').and.callThrough();
+    component.onGenerate();
+    expect(spy).toHaveBeenCalledWith(data);
+  });
 });

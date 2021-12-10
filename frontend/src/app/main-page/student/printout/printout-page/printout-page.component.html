@@ -15,7 +15,7 @@
     <!-- RANGES -->
     <div *ngIf="showDateRange" class="printout-form-row" formGroupName="dateRange">
       <mat-form-field appearance="fill">
-        <mat-label>{{ 'PRINTOUT.DATE_RANGES.startDate' | translate }}</mat-label>
+        <mat-label>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.startDate' | translate }}</mat-label>
         <input
           matInput
           #startInput
@@ -31,10 +31,10 @@
           #startPicker
           disabled="false"
         ></mat-datepicker>
-        <mat-error>{{ 'PRINTOUT.DATE_RANGES.dateErr' | translate }}</mat-error>
+        <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' | translate }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>{{ 'PRINTOUT.DATE_RANGES.endDate' | translate }}</mat-label>
+        <mat-label>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.endDate' | translate }}</mat-label>
         <input
           matInput
           #endInput
@@ -46,7 +46,7 @@
         />
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
-        <mat-error>{{ 'PRINTOUT.DATE_RANGES.dateErr' | translate }}</mat-error>
+        <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' | translate }}</mat-error>
       </mat-form-field>
     </div>
     <!-- FILTERS -->
