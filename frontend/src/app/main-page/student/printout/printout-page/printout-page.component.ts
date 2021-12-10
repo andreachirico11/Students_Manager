@@ -50,13 +50,17 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     const { filters, orderBy, columns, dateRange } = this.form.value;
     const params: IStudentPdfParas = {
       _studentid: this.route.snapshot.parent.params.id,
-      filters,
-      orderBy,
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
     };
-    if (filters.find((f) => f === ReceiptsFilters.dateRange)) {
-      params.dateRange = dateRange;
+    if (filters) {
+      params.filters = filters;
+      if (filters.find((f) => f === ReceiptsFilters.dateRange)) {
+        params.dateRange = dateRange;
+      }
+    }
+    if (orderBy) {
+      params.orderBy = orderBy;
     }
     this.printoutService.getStudentRecsPdf(params).subscribe();
   }

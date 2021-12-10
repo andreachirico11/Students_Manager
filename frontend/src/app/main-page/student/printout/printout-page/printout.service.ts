@@ -35,10 +35,23 @@ export class PrintoutService {
       );
   }
 
-  getStudentRecsPdf(params: IStudentPdfParas) {
-    console.log(params);
-
-    return of({ file: new Blob(), title: '' });
+  getStudentRecsPdf(body: IStudentPdfParas) {
+    return this.http
+      .post<{ file: Blob; title: string }>(this.dbUrl + 'printout/studentRecap', body, {
+        observe: 'response',
+        responseType: 'blob' as 'json',
+      })
+      .pipe(
+        first(),
+        map((res) => ({
+          file: res.body,
+          title: res.headers.get('file-name') ?? 'default title',
+        })),
+        catchError((e) => {
+          devErrorHandling(e);
+          return of(null);
+        })
+      );
   }
 
   private getParams(pars: IHttpPdfParams): HttpParams {

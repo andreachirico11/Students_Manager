@@ -1,8 +1,9 @@
+import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
-
+import { IStudentPdfParas } from '../IStudentPdfParams';
 import { PrintoutService } from './printout.service';
 
 describe('PrintoutService', () => {
@@ -32,5 +33,38 @@ describe('PrintoutService', () => {
         return true;
       })
       .flush(new Blob());
+  });
+
+  it('should send a basic student request', () => {
+    const title = 'aaaaaaaaaaaa';
+    const body: IStudentPdfParas = {
+      _studentid: 'abc',
+      locale: 'it',
+      columns: ['a', 'b'],
+    };
+    service.getStudentRecsPdf(body).subscribe();
+    controller
+      .expectOne((req) => {
+        expect(req.body).toBeTruthy();
+        expect(req.body).toEqual(body);
+        return true;
+      })
+      .flush(new Blob());
+  });
+
+  it('should retrieve file title from request', () => {
+    const title = 'aaaaaaaaaaaa';
+    const body: IStudentPdfParas = {
+      _studentid: 'abc',
+      locale: 'it',
+      columns: ['a', 'b'],
+    };
+    service.getStudentRecsPdf(body).subscribe((result) => {
+      expect(result.title).toBe(title);
+    });
+    const req = controller.expectOne(environment.dbUrl + 'printout/studentRecap');
+    req.flush(new Blob(), {
+      headers: new HttpHeaders({ 'file-name': title }),
+    });
   });
 });
