@@ -19,10 +19,11 @@
         <input
           matInput
           #startInput
+          formControlName="startDate"
+          [max]="form.get('dateRange.endDate').value"
+          [matDatepicker]="startPicker"
           (focus)="startInput.blur()"
           (click)="startPicker.open()"
-          [matDatepicker]="startPicker"
-          formControlName="startDate"
         />
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker
@@ -37,10 +38,11 @@
         <input
           matInput
           #endInput
+          formControlName="endDate"
+          [min]="form.get('dateRange.startDate').value"
+          [matDatepicker]="endPicker"
           (focus)="endInput.blur()"
           (click)="endPicker.open()"
-          [matDatepicker]="endPicker"
-          formControlName="endDate"
         />
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
@@ -51,7 +53,7 @@
     <div class="printout-form-row">
       <mat-form-field appearance="fill">
         <mat-label>{{ 'PRINTOUT.FILTERS' | translate }}</mat-label>
-        <mat-select formControlName="filters" multiple="true">
+        <mat-select #filtersSelect formControlName="filters" multiple="true">
           <mat-option *ngFor="let f of filters" [value]="f">
             {{ 'PRINTOUT.FILTER_VALUES.' + f | translate }}
           </mat-option>
