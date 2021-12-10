@@ -1,134 +1,128 @@
 import { renderFile } from 'ejs';
 import { Response } from 'express';
 import { readFileSync, unlinkSync } from 'fs';
-import { create } from 'html-pdf';
+import { create, CreateOptions } from 'html-pdf';
 import { join } from 'path';
+import { HttpResponse } from '../models/httpResponse';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
 import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
 import { PdfMessages } from '../models/messageEnums';
+import { PdfCreationErrorObj } from '../models/pdfCreationError';
 import { ReceiptModel } from '../models/receiptModel';
 import { generateHttpRes } from '../utils/httpRespGenerator';
+import { ReceiptsMongoQueries } from '../utils/receiptsMongoQueries';
+
+const fileOptions: CreateOptions = {
+  format: 'A4',
+  orientation: 'portrait',
+  border: {
+    top: '50px',
+    bottom: '50px',
+  },
+};
+
+// export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
+//   const queries = new ReceiptsMongoQueries(req.body);
+//   queries.allReceipts
+//     .then((receipts: IPdfReceipt[]) => {
+//       renderFile(
+//         getFilePathIntoPdfFolder('views', 'full-table.ejs'),
+//         { receipts, translations: getParsedTranslations(req.body.locale) },
+//         function (err, htmlFile) {
+//           if (err) {
+//             return handleError(err, res, PdfMessages.err_pdf_ejs);
+//           }
+//           create(htmlFile, fileOptions).toFile('temp.pdf', function (err, file) {
+//             if (err) {
+//               return handleError(err, res, PdfMessages.err_during_pdf_creation);
+//             }
+//             res.setHeader('Content-Type', 'application/pdf');
+//             res.setHeader('file-name', 'mega-printout');
+//             res.sendFile(file.filename, function (err) {
+//               if (err) {
+//                 return handleError(err, res, PdfMessages.err_pdf_sending);
+//               }
+//               unlinkSync('temp.pdf');
+//             });
+//           });
+//         }
+//       );
+//     })
+//     .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
+// }
 
 export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
-  ReceiptModel.aggregate([
-    {
-      $lookup: {
-        from: 'students',
-        localField: '_studentId',
-        foreignField: '_id',
-        as: 'studentInfo',
-      },
-    },
-    {
-      $unwind: '$studentInfo',
-    },
-    {
-      $addFields: {
-        studentName: {
-          $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
-        },
-        paymentDateString: {
-          $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
-        },
-        emissionDateString: {
-          $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
-        },
-      },
-    },
-  ])
-    .then((receipts: IPdfReceipt[]) => {
-      renderFile(
-        getFilePathIntoPdfFolder('views', 'full-table.ejs'),
-        { receipts, withStudentName: true, translations: getParsedTranslations(req.body.locale) },
-        function (err, htmlFile) {
-          if (err) {
-            return handleError(err, res, PdfMessages.err_pdf_ejs);
-          }
-          create(htmlFile, {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-              top: '50px',
-              bottom: '50px',
-            },
-          }).toFile('temp.pdf', function (err, file) {
-            if (err) {
-              return handleError(err, res, PdfMessages.err_during_pdf_creation);
-            }
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('file-name', 'mega-printout');
-            res.sendFile(file.filename, function (err) {
-              if (err) {
-                return handleError(err, res, PdfMessages.err_pdf_sending);
-              }
-              unlinkSync('temp.pdf');
-            });
-          });
+  const queries = new ReceiptsMongoQueries(req.body);
+  queries.allReceipts
+    .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
+    .then((htmlFile) => {
+      create(htmlFile as string, fileOptions).toFile('temp.pdf', function (err, file) {
+        if (err) {
+          // return handleError(err, res, PdfMessages.err_during_pdf_creation);
         }
-      );
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('file-name', 'mega-printout');
+        res.sendFile(file.filename, function (err) {
+          if (err) {
+            // return handleError(err, res, PdfMessages.err_pdf_sending);
+          }
+          unlinkSync('temp.pdf');
+        });
+      });
     })
-    .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
+    .catch((e) => res.status(500).json(new HttpResponse(e, e)));
+}
+
+function createHtmlFile(
+  receipts: IPdfReceipt[],
+  locale: string
+): Promise<string | PdfCreationErrorObj> {
+  return new Promise<string | PdfCreationErrorObj>((res, rej) => {
+    renderFile(
+      getFilePathIntoPdfFolder('views', 'full-table.ejs'),
+      {
+        receipts,
+        withStudentName: false,
+        translations: getParsedTranslations(locale),
+      },
+      function (err, htmlFile) {
+        if (err) {
+          rej(new PdfCreationErrorObj(PdfMessages.err_pdf_ejs, err));
+        }
+        res(htmlFile);
+      }
+    );
+  });
 }
 
 export function getPdf(req: IPdfRequest, res: Response) {
-  ReceiptModel.aggregate([
-    {
-      $lookup: {
-        from: 'students',
-        localField: '_studentId',
-        foreignField: '_id',
-        as: 'studentInfo',
-      },
-    },
-    {
-      $unwind: '$studentInfo',
-    },
-    {
-      $addFields: {
-        studentName: {
-          $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
-        },
-        paymentDateString: {
-          $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
-        },
-        emissionDateString: {
-          $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
-        },
-      },
-    },
-  ])
-    .then((receipts: IPdfReceipt[]) => {
-      renderFile(
-        getFilePathIntoPdfFolder('views', 'full-table.ejs'),
-        { receipts, withStudentName: true, translations: getParsedTranslations(req.query.locale) },
-        function (err, htmlFile) {
-          if (err) {
-            return handleError(err, res, PdfMessages.err_pdf_ejs);
-          }
-          create(htmlFile, {
-            format: 'A4',
-            orientation: 'portrait',
-            border: {
-              top: '50px',
-              bottom: '50px',
-            },
-          }).toFile('temp.pdf', function (err, file) {
-            if (err) {
-              return handleError(err, res, PdfMessages.err_during_pdf_creation);
-            }
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('file-name', 'mega-printout');
-            res.sendFile(file.filename, function (err) {
-              if (err) {
-                return handleError(err, res, PdfMessages.err_pdf_sending);
-              }
-              unlinkSync('temp.pdf');
-            });
-          });
-        }
-      );
-    })
-    .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
+  // const queries = new ReceiptsMongoQueries(req.body);
+  // queries.allReceipts
+  //   .then((receipts: IPdfReceipt[]) => {
+  //     renderFile(
+  //       getFilePathIntoPdfFolder('views', 'full-table.ejs'),
+  //       { receipts, withStudentName: true, translations: getParsedTranslations(req.query.locale) },
+  //       function (err, htmlFile) {
+  //         if (err) {
+  //           return handleError(err, res, PdfMessages.err_pdf_ejs);
+  //         }
+  //         create(htmlFile, fileOptions).toFile('temp.pdf', function (err, file) {
+  //           if (err) {
+  //             return handleError(err, res, PdfMessages.err_during_pdf_creation);
+  //           }
+  //           res.setHeader('Content-Type', 'application/pdf');
+  //           res.setHeader('file-name', 'mega-printout');
+  //           res.sendFile(file.filename, function (err) {
+  //             if (err) {
+  //               return handleError(err, res, PdfMessages.err_pdf_sending);
+  //             }
+  //             unlinkSync('temp.pdf');
+  //           });
+  //         });
+  //       }
+  //     );
+  //   })
+  //   .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
 }
 
 function getFilePathIntoPdfFolder(...fileNames: string[]): string {
@@ -141,10 +135,9 @@ function getParsedTranslations(locale: string) {
   );
 }
 
-function handleError(err, res: Response, message: PdfMessages) {
+function handleError(err: PdfCreationErrorObj, res: Response) {
   if (err) {
-    console.log(message);
-
-    return generateHttpRes(res, 500, message);
+    console.log(err.type, err);
+    return generateHttpRes(res, 500, err.type);
   }
 }
