@@ -1,18 +1,18 @@
 import { renderFile } from 'ejs';
 import { Response } from 'express';
 import { readFileSync, unlinkSync } from 'fs';
-import { create, CreateOptions } from 'html-pdf';
+import { create, CreateOptions, FileInfo } from 'html-pdf';
 import { join } from 'path';
-import { HttpResponse } from '../models/httpResponse';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
 import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
 import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
-import { ReceiptModel } from '../models/receiptModel';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from '../utils/receiptsMongoQueries';
+
+const TEMPORARY_PDF_NAME = 'temp.pdf';
 
 const fileOptions: CreateOptions = {
   format: 'A4',
@@ -49,22 +49,29 @@ export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
   const queries = new ReceiptsMongoQueries(req.body);
   queries.allReceipts
     .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
-    .then((htmlFile) => {
-      create(htmlFile as string, fileOptions).toFile('temp.pdf', function (err, file) {
+    .then((htmlFile: string) => createPdfFile(htmlFile))
+    .then((file: FileInfo) => {
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('file-name', 'mega-printout');
+      res.sendFile(file.filename, function (err) {
         if (err) {
-          // return handleError(err, res, PdfMessages.err_during_pdf_creation);
+          throw new PdfCreationErrorObj(PdfMessages.err_pdf_sending, err);
         }
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('file-name', 'mega-printout');
-        res.sendFile(file.filename, function (err) {
-          if (err) {
-            // return handleError(err, res, PdfMessages.err_pdf_sending);
-          }
-          unlinkSync('temp.pdf');
-        });
+        unlinkSync(TEMPORARY_PDF_NAME);
       });
     })
-    .catch((e: PdfCreationErrorObj) => sendErrorResponse(res, 500, e.type));
+    .catch((e: PdfCreationErrorObj) => handleError(e, res));
+}
+
+function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
+  return new Promise((res, rej) => {
+    create(htmlFile as string, fileOptions).toFile(TEMPORARY_PDF_NAME, function (err, file) {
+      if (err) {
+        rej(new PdfCreationErrorObj(PdfMessages.err_during_pdf_creation, err));
+      }
+      res(file);
+    });
+  });
 }
 
 function createHtmlFile(
@@ -91,6 +98,23 @@ function createHtmlFile(
 
 function switchQueryAccordingToParams(params: IStudentPdfReqBody) {
   // TODO
+}
+
+function getFilePathIntoPdfFolder(...fileNames: string[]): string {
+  return join(__dirname, '..', '..', 'pdf', ...fileNames);
+}
+
+function getParsedTranslations(locale: string) {
+  return JSON.parse(
+    readFileSync(getFilePathIntoPdfFolder('translations', (locale || 'en') + '.json'), 'utf8')
+  );
+}
+
+function handleError(err: PdfCreationErrorObj, res: Response) {
+  if (err) {
+    console.log(err.type, err);
+    return sendErrorResponse(res, 500, err.type);
+  }
 }
 
 export function getPdf(req: IPdfRequest, res: Response) {
@@ -121,21 +145,4 @@ export function getPdf(req: IPdfRequest, res: Response) {
   //     );
   //   })
   //   .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
-}
-
-function getFilePathIntoPdfFolder(...fileNames: string[]): string {
-  return join(__dirname, '..', '..', 'pdf', ...fileNames);
-}
-
-function getParsedTranslations(locale: string) {
-  return JSON.parse(
-    readFileSync(getFilePathIntoPdfFolder('translations', (locale || 'en') + '.json'), 'utf8')
-  );
-}
-
-function handleError(err: PdfCreationErrorObj, res: Response) {
-  if (err) {
-    console.log(err.type, err);
-    return generateHttpRes(res, 500, err.type);
-  }
 }
