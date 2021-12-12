@@ -73,6 +73,7 @@ function getStudentRecap(req, res) {
                     return [4 /*yield*/, switchQueryAccordingToParams(req.body)];
                 case 1:
                     receipts = _a.sent();
+                    console.log(receipts);
                     return [4 /*yield*/, createHtmlFile(receipts, req.body.locale)];
                 case 2:
                     htmlFile = (_a.sent());
@@ -112,8 +113,19 @@ function switchQueryAccordingToParams(params) {
     return __awaiter(this, void 0, void 0, function () {
         var queries;
         return __generator(this, function (_a) {
-            queries = new receiptsMongoQueries_1.ReceiptsMongoQueries(params);
-            return [2 /*return*/, queries.allReceipts];
+            queries = new receiptsMongoQueries_1.ReceiptsMongoQueries();
+            // if (params.filters && params.dateRange && params.orderBy) {
+            //   // TODO
+            // } else if (params.filters && params.dateRange && !params.orderBy) {
+            //   // TODO
+            // } else if (params.filters && !params.dateRange && params.orderBy) {
+            //   // TODO
+            // } else if (!params.filters && !params.dateRange && params.orderBy) {
+            //   // TODO
+            // } else if (params.filters && !params.dateRange && !params.orderBy) {
+            //   // TODO
+            // } else {
+            return [2 /*return*/, queries.allReceiptsForStudent(params)];
         });
     });
 }
@@ -151,7 +163,9 @@ function getParsedTranslations(locale) {
 }
 function handleError(err, res) {
     if (err) {
-        console.log(err.type, err);
+        console.log('\n\n\n\n\n\n');
+        console.log(err.type);
+        console.log(err);
         return (0, httpResWithErrorHeader_1.sendErrorResponse)(res, 500, err.type);
     }
 }

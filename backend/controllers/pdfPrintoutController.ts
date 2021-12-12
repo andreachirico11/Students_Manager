@@ -25,6 +25,8 @@ const fileOptions: CreateOptions = {
 export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
   try {
     const receipts = await switchQueryAccordingToParams(req.body);
+    console.log(receipts);
+
     const htmlFile = (await createHtmlFile(receipts, req.body.locale)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, 'mega_title');
@@ -57,21 +59,20 @@ function createHtmlFile(
 }
 
 async function switchQueryAccordingToParams(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
-  const queries = new ReceiptsMongoQueries(params);
-  return queries.allReceipts;
-  if (params.filters && params.dateRange && params.orderBy) {
-    // TODO
-  } else if (params.filters && params.dateRange && !params.orderBy) {
-    // TODO
-  } else if (params.filters && !params.dateRange && params.orderBy) {
-    // TODO
-  } else if (!params.filters && !params.dateRange && params.orderBy) {
-    // TODO
-  } else if (params.filters && !params.dateRange && !params.orderBy) {
-    // TODO
-  } else {
-    // TODO
-  }
+  const queries = new ReceiptsMongoQueries();
+  // if (params.filters && params.dateRange && params.orderBy) {
+  //   // TODO
+  // } else if (params.filters && params.dateRange && !params.orderBy) {
+  //   // TODO
+  // } else if (params.filters && !params.dateRange && params.orderBy) {
+  //   // TODO
+  // } else if (!params.filters && !params.dateRange && params.orderBy) {
+  //   // TODO
+  // } else if (params.filters && !params.dateRange && !params.orderBy) {
+  //   // TODO
+  // } else {
+  return queries.allReceiptsForStudent(params);
+  // }
 }
 
 function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
@@ -110,7 +111,9 @@ function getParsedTranslations(locale: string) {
 
 function handleError(err: PdfCreationErrorObj, res: Response) {
   if (err) {
-    console.log(err.type, err);
+    console.log('\n\n\n\n\n\n');
+    console.log(err.type);
+    console.log(err);
     return sendErrorResponse(res, 500, err.type);
   }
 }
