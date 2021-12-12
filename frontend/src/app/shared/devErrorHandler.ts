@@ -4,7 +4,13 @@ import { environment } from 'src/environments/environment';
 export function devErrorHandling(e: HttpErrorResponse) {
   if (!environment.production) {
     console.warn('ERRORRRRRR');
-    // TODO the error is sent but cannot be read
+  }
+}
+
+export function devErrorHandlingPdf(e: HttpErrorResponse) {
+  if (!environment.production) {
+    console.warn('ERRORRRRRR');
+    console.warn(e.headers.get('err-name'));
   }
 }
 

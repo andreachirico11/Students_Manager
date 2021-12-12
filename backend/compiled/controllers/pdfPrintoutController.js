@@ -14,10 +14,10 @@ var ejs_1 = require("ejs");
 var fs_1 = require("fs");
 var html_pdf_1 = require("html-pdf");
 var path_1 = require("path");
-var httpResponse_1 = require("../models/httpResponse");
 var messageEnums_1 = require("../models/messageEnums");
 var pdfCreationError_1 = require("../models/pdfCreationError");
 var httpRespGenerator_1 = require("../utils/httpRespGenerator");
+var httpResWithErrorHeader_1 = require("../utils/httpResWithErrorHeader");
 var receiptsMongoQueries_1 = require("../utils/receiptsMongoQueries");
 var fileOptions = {
     format: 'A4',
@@ -30,31 +30,23 @@ var fileOptions = {
 // export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 //   const queries = new ReceiptsMongoQueries(req.body);
 //   queries.allReceipts
-//     .then((receipts: IPdfReceipt[]) => {
-//       renderFile(
-//         getFilePathIntoPdfFolder('views', 'full-table.ejs'),
-//         { receipts, translations: getParsedTranslations(req.body.locale) },
-//         function (err, htmlFile) {
-//           if (err) {
-//             return handleError(err, res, PdfMessages.err_pdf_ejs);
-//           }
-//           create(htmlFile, fileOptions).toFile('temp.pdf', function (err, file) {
-//             if (err) {
-//               return handleError(err, res, PdfMessages.err_during_pdf_creation);
-//             }
-//             res.setHeader('Content-Type', 'application/pdf');
-//             res.setHeader('file-name', 'mega-printout');
-//             res.sendFile(file.filename, function (err) {
-//               if (err) {
-//                 return handleError(err, res, PdfMessages.err_pdf_sending);
-//               }
-//               unlinkSync('temp.pdf');
-//             });
-//           });
+//     .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
+//     .then((htmlFile) => {
+//       create(htmlFile as string, fileOptions).toFile('temp.pdf', function (err, file) {
+//         if (err) {
+//           // return handleError(err, res, PdfMessages.err_during_pdf_creation);
 //         }
-//       );
+//         res.setHeader('Content-Type', 'application/pdf');
+//         res.setHeader('file-name', 'mega-printout');
+//         res.sendFile(file.filename, function (err) {
+//           if (err) {
+//             // return handleError(err, res, PdfMessages.err_pdf_sending);
+//           }
+//           unlinkSync('temp.pdf');
+//         });
+//       });
 //     })
-//     .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
+//     .catch((e) => res.status(500).json(new HttpResponse(e, e)));
 // }
 function getStudentRecap(req, res) {
     var queries = new receiptsMongoQueries_1.ReceiptsMongoQueries(req.body);
@@ -75,7 +67,7 @@ function getStudentRecap(req, res) {
             });
         });
     })
-        .catch(function (e) { return res.status(500).json(new httpResponse_1.HttpResponse(e, e)); });
+        .catch(function (e) { return (0, httpResWithErrorHeader_1.sendErrorResponse)(res, 500, e.type); });
 }
 exports.getStudentRecap = getStudentRecap;
 function createHtmlFile(receipts, locale) {
@@ -91,6 +83,9 @@ function createHtmlFile(receipts, locale) {
             res(htmlFile);
         });
     });
+}
+function switchQueryAccordingToParams(params) {
+    // TODO
 }
 function getPdf(req, res) {
     // const queries = new ReceiptsMongoQueries(req.body);

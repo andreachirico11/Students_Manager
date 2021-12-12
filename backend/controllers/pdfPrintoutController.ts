@@ -6,10 +6,12 @@ import { join } from 'path';
 import { HttpResponse } from '../models/httpResponse';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
 import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
+import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
 import { ReceiptModel } from '../models/receiptModel';
 import { generateHttpRes } from '../utils/httpRespGenerator';
+import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from '../utils/receiptsMongoQueries';
 
 const fileOptions: CreateOptions = {
@@ -24,31 +26,23 @@ const fileOptions: CreateOptions = {
 // export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 //   const queries = new ReceiptsMongoQueries(req.body);
 //   queries.allReceipts
-//     .then((receipts: IPdfReceipt[]) => {
-//       renderFile(
-//         getFilePathIntoPdfFolder('views', 'full-table.ejs'),
-//         { receipts, translations: getParsedTranslations(req.body.locale) },
-//         function (err, htmlFile) {
-//           if (err) {
-//             return handleError(err, res, PdfMessages.err_pdf_ejs);
-//           }
-//           create(htmlFile, fileOptions).toFile('temp.pdf', function (err, file) {
-//             if (err) {
-//               return handleError(err, res, PdfMessages.err_during_pdf_creation);
-//             }
-//             res.setHeader('Content-Type', 'application/pdf');
-//             res.setHeader('file-name', 'mega-printout');
-//             res.sendFile(file.filename, function (err) {
-//               if (err) {
-//                 return handleError(err, res, PdfMessages.err_pdf_sending);
-//               }
-//               unlinkSync('temp.pdf');
-//             });
-//           });
+//     .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
+//     .then((htmlFile) => {
+//       create(htmlFile as string, fileOptions).toFile('temp.pdf', function (err, file) {
+//         if (err) {
+//           // return handleError(err, res, PdfMessages.err_during_pdf_creation);
 //         }
-//       );
+//         res.setHeader('Content-Type', 'application/pdf');
+//         res.setHeader('file-name', 'mega-printout');
+//         res.sendFile(file.filename, function (err) {
+//           if (err) {
+//             // return handleError(err, res, PdfMessages.err_pdf_sending);
+//           }
+//           unlinkSync('temp.pdf');
+//         });
+//       });
 //     })
-//     .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
+//     .catch((e) => res.status(500).json(new HttpResponse(e, e)));
 // }
 
 export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
@@ -70,7 +64,7 @@ export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
         });
       });
     })
-    .catch((e) => res.status(500).json(new HttpResponse(e, e)));
+    .catch((e: PdfCreationErrorObj) => sendErrorResponse(res, 500, e.type));
 }
 
 function createHtmlFile(
@@ -93,6 +87,10 @@ function createHtmlFile(
       }
     );
   });
+}
+
+function switchQueryAccordingToParams(params: IStudentPdfReqBody) {
+  // TODO
 }
 
 export function getPdf(req: IPdfRequest, res: Response) {

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, first, map, of } from 'rxjs';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
-import { devErrorHandling } from 'src/app/shared/devErrorHandler';
+import { devErrorHandling, devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
 import { environment } from 'src/environments/environment';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 
@@ -48,7 +48,7 @@ export class PrintoutService {
           title: res.headers.get('file-name') ?? 'default title',
         })),
         catchError((e) => {
-          devErrorHandling(e);
+          devErrorHandlingPdf(e);
           return of(null);
         })
       );
