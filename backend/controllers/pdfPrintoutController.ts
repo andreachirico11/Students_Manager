@@ -8,7 +8,6 @@ import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
 import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
-import { generateHttpRes } from '../utils/httpRespGenerator';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from '../utils/receiptsMongoQueries';
 
@@ -23,55 +22,16 @@ const fileOptions: CreateOptions = {
   },
 };
 
-// export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
-//   const queries = new ReceiptsMongoQueries(req.body);
-//   queries.allReceipts
-//     .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
-//     .then((htmlFile) => {
-//       create(htmlFile as string, fileOptions).toFile('temp.pdf', function (err, file) {
-//         if (err) {
-//           // return handleError(err, res, PdfMessages.err_during_pdf_creation);
-//         }
-//         res.setHeader('Content-Type', 'application/pdf');
-//         res.setHeader('file-name', 'mega-printout');
-//         res.sendFile(file.filename, function (err) {
-//           if (err) {
-//             // return handleError(err, res, PdfMessages.err_pdf_sending);
-//           }
-//           unlinkSync('temp.pdf');
-//         });
-//       });
-//     })
-//     .catch((e) => res.status(500).json(new HttpResponse(e, e)));
-// }
-
-export function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
-  const queries = new ReceiptsMongoQueries(req.body);
-  queries.allReceipts
-    .then((receipts: IPdfReceipt[]) => createHtmlFile(receipts, req.body.locale))
-    .then((htmlFile: string) => createPdfFile(htmlFile))
-    .then((file: FileInfo) => {
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('file-name', 'mega-printout');
-      res.sendFile(file.filename, function (err) {
-        if (err) {
-          throw new PdfCreationErrorObj(PdfMessages.err_pdf_sending, err);
-        }
-        unlinkSync(TEMPORARY_PDF_NAME);
-      });
-    })
-    .catch((e: PdfCreationErrorObj) => handleError(e, res));
-}
-
-function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
-  return new Promise((res, rej) => {
-    create(htmlFile as string, fileOptions).toFile(TEMPORARY_PDF_NAME, function (err, file) {
-      if (err) {
-        rej(new PdfCreationErrorObj(PdfMessages.err_during_pdf_creation, err));
-      }
-      res(file);
-    });
-  });
+export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
+  try {
+    const receipts = await switchQueryAccordingToParams(req.body);
+    const htmlFile = (await createHtmlFile(receipts, req.body.locale)) as string;
+    const file = (await createPdfFile(htmlFile)) as FileInfo;
+    await sendFile(res, file, 'mega_title');
+    unlinkSync(TEMPORARY_PDF_NAME);
+  } catch (e) {
+    handleError(e, res);
+  }
 }
 
 function createHtmlFile(
@@ -96,8 +56,46 @@ function createHtmlFile(
   });
 }
 
-function switchQueryAccordingToParams(params: IStudentPdfReqBody) {
-  // TODO
+async function switchQueryAccordingToParams(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
+  const queries = new ReceiptsMongoQueries(params);
+  return queries.allReceipts;
+  if (params.filters && params.dateRange && params.orderBy) {
+    // TODO
+  } else if (params.filters && params.dateRange && !params.orderBy) {
+    // TODO
+  } else if (params.filters && !params.dateRange && params.orderBy) {
+    // TODO
+  } else if (!params.filters && !params.dateRange && params.orderBy) {
+    // TODO
+  } else if (params.filters && !params.dateRange && !params.orderBy) {
+    // TODO
+  } else {
+    // TODO
+  }
+}
+
+function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
+  return new Promise((res, rej) => {
+    create(htmlFile as string, fileOptions).toFile(TEMPORARY_PDF_NAME, function (err, file) {
+      if (err) {
+        rej(new PdfCreationErrorObj(PdfMessages.err_during_pdf_creation, err));
+      }
+      res(file);
+    });
+  });
+}
+
+function sendFile(res: Response, file: FileInfo, title: string): Promise<null | Error> {
+  return new Promise((resolve, rej) => {
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('file-name', title);
+    res.sendFile(file.filename, function (err) {
+      if (err) {
+        rej(new PdfCreationErrorObj(PdfMessages.err_pdf_sending, err));
+      }
+      resolve(null);
+    });
+  });
 }
 
 function getFilePathIntoPdfFolder(...fileNames: string[]): string {
@@ -117,32 +115,4 @@ function handleError(err: PdfCreationErrorObj, res: Response) {
   }
 }
 
-export function getPdf(req: IPdfRequest, res: Response) {
-  // const queries = new ReceiptsMongoQueries(req.body);
-  // queries.allReceipts
-  //   .then((receipts: IPdfReceipt[]) => {
-  //     renderFile(
-  //       getFilePathIntoPdfFolder('views', 'full-table.ejs'),
-  //       { receipts, withStudentName: true, translations: getParsedTranslations(req.query.locale) },
-  //       function (err, htmlFile) {
-  //         if (err) {
-  //           return handleError(err, res, PdfMessages.err_pdf_ejs);
-  //         }
-  //         create(htmlFile, fileOptions).toFile('temp.pdf', function (err, file) {
-  //           if (err) {
-  //             return handleError(err, res, PdfMessages.err_during_pdf_creation);
-  //           }
-  //           res.setHeader('Content-Type', 'application/pdf');
-  //           res.setHeader('file-name', 'mega-printout');
-  //           res.sendFile(file.filename, function (err) {
-  //             if (err) {
-  //               return handleError(err, res, PdfMessages.err_pdf_sending);
-  //             }
-  //             unlinkSync('temp.pdf');
-  //           });
-  //         });
-  //       }
-  //     );
-  //   })
-  //   .catch((e) => handleError(e, res, PdfMessages.err_pdf_fetching_data));
-}
+export function getPdf(req: IPdfRequest, res: Response) {}
