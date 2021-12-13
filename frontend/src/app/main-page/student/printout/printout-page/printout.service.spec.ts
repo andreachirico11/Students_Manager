@@ -41,6 +41,7 @@ describe('PrintoutService', () => {
       _studentId: 'abc',
       locale: 'it',
       columns: ['a', 'b'],
+      ascending: true,
     };
     service.getStudentRecsPdf(body).subscribe();
     controller
@@ -58,6 +59,7 @@ describe('PrintoutService', () => {
       _studentId: 'abc',
       locale: 'it',
       columns: ['a', 'b'],
+      ascending: true,
     };
     service.getStudentRecsPdf(body).subscribe((result) => {
       expect(result.title).toBe(title);

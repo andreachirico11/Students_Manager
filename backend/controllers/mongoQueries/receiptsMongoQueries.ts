@@ -51,7 +51,7 @@ export class ReceiptsMongoQueries {
           emissionDateString: this.dateToString('emissionDate'),
         },
       },
-      this.sortBy(params.orderBy),
+      this.sortBy(params.orderBy, params.ascending),
     ]).catch((e) => {
       throw this.errHandling(e);
     });
@@ -90,9 +90,9 @@ export class ReceiptsMongoQueries {
     return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
   }
 
-  private sortBy(fieldName: string) {
+  private sortBy(fieldName: string, inAScendingOrder: boolean) {
     const sortObj = {};
-    sortObj[fieldName] = 1;
+    sortObj[fieldName] = inAScendingOrder ? 1 : -1;
     return { $sort: sortObj };
   }
 

@@ -49,11 +49,12 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onGenerate() {
-    const { filters, orderBy, columns, dateRange } = this.form.value;
+    const { filters, orderBy, columns, dateRange, ascending } = this.form.value;
     const params: IStudentPdfReqBody = {
       _studentId: this.route.snapshot.parent.params.id,
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
+      ascending,
     };
     if (filters.length > 0) {
       params.filters = filters;
@@ -86,6 +87,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private addOrderBy(f: FormGroup): FormGroup {
     f.addControl('orderBy', new FormControl(null));
+    f.addControl('ascending', new FormControl(true));
     return f;
   }
 

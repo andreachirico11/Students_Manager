@@ -114,6 +114,7 @@ describe('PrintoutPageComponent', () => {
       locale: 'it',
       filters: ['thisMonth', 'isPayed'],
       orderBy: 'number',
+      ascending: true,
     };
     component.form.patchValue({
       columns: {
@@ -145,6 +146,7 @@ describe('PrintoutPageComponent', () => {
         startDate,
         endDate,
       },
+      ascending: true,
     };
     component.form.patchValue({
       columns: {

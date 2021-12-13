@@ -71,6 +71,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-checkbox formControlName="ascending">
+        {{ 'PRINTOUT.ORDER.' + (form.get('ascending').value ? 'asc' : 'desc') | translate }}
+      </mat-checkbox>
       <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
         {{ 'PRINTOUT.GENERATE' | translate }}
       </button>

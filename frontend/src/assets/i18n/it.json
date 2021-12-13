@@ -127,6 +127,10 @@
         "GENERATE": "Genera Pdf",
         "FILTERS": "Filtri",
         "ORDERBY": "Ordinati per",
+        "ORDER": {
+            "asc": "Ascendente",
+            "desc": "Discendente"
+        },
         "FILTER_VALUES": {
             "isPayed": "Pagate",
             "notPayed": "Non Pagate",
