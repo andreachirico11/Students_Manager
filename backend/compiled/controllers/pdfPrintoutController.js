@@ -71,6 +71,7 @@ function getStudentRecap(req, res) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 6, , 7]);
+                    verifyReqParams(req.body);
                     return [4 /*yield*/, new studentstsMongoQueries_1.StudentMongoQueries().studentById(req.body._studentId)];
                 case 1:
                     student = (_a.sent());
@@ -98,6 +99,11 @@ function getStudentRecap(req, res) {
     });
 }
 exports.getStudentRecap = getStudentRecap;
+function verifyReqParams(params) {
+    if (params.columns.length === 0) {
+        throw new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_in_pdf_req_params, '');
+    }
+}
 function createHtmlFile(receipts, params, student) {
     return new Promise(function (res, rej) {
         (0, ejs_1.renderFile)(getFilePathIntoPdfFolder('views', 'full-table.ejs'), {
@@ -171,7 +177,7 @@ function handleError(err, res) {
         console.log('\n\n\n\n\n\n');
         console.log(err.type);
         console.log('');
-        console.log(err);
+        console.log(err.err);
         return (0, httpResWithErrorHeader_1.sendErrorResponse)(res, 500, err.type);
     }
 }

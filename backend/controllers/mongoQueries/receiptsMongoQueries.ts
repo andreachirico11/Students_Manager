@@ -26,27 +26,25 @@ export class ReceiptsMongoQueries {
   recsForStudentWithColFilter(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
     return ReceiptModel.aggregate([
       this.matchByStudentId(params._studentId),
+      this.projectDesiredColumns(params.columns),
       {
         $addFields: {
           paymentDateString: this.dateToString('paymentDate'),
           emissionDateString: this.dateToString('emissionDate'),
         },
       },
-      this.projectDesiredColumns(params.columns),
     ]).catch((e) => {
       throw this.errHandling(e);
     });
   }
 
   private projectDesiredColumns(columns: string[]) {
+    const projectObj = {};
+    columns.forEach((col) => {
+      projectObj[col] = 1;
+    });
     return {
-      $project: {
-        number: this.showOrNot(columns, 'number'),
-        amount: this.showOrNot(columns, 'amount'),
-        emissionDate: this.showOrNot(columns, 'emissionDate'),
-        paymentDate: this.showOrNot(columns, 'paymentDate'),
-        typeOfPayment: this.showOrNot(columns, 'typeOfPayment'),
-      },
+      $project: { ...projectObj },
     };
   }
 

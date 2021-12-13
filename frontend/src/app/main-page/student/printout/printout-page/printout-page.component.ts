@@ -7,6 +7,7 @@ import { pairwise, startWith, Subscription } from 'rxjs';
 import { devErrorHandlingAny } from 'src/app/shared/devErrorHandler';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
+import { atLeastOneCol } from '../atLeastOneCol.validator';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
 
@@ -71,7 +72,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private addColumns(f: FormGroup, columnNames: string[]) {
-    f.addControl('columns', new FormGroup({}));
+    f.addControl('columns', new FormGroup({}, atLeastOneCol));
     columnNames.forEach((colName) => {
       (f.get('columns') as FormGroup).addControl(colName, new FormControl(true));
     });

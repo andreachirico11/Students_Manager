@@ -26,6 +26,7 @@ const fileOptions: CreateOptions = {
 
 export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
   try {
+    verifyReqParams(req.body);
     const student = (await new StudentMongoQueries().studentById(
       req.body._studentId
     )) as IMongoStudent;
@@ -36,6 +37,12 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     unlinkSync(TEMPORARY_PDF_NAME);
   } catch (e) {
     handleError(e, res);
+  }
+}
+
+function verifyReqParams(params: IStudentPdfReqBody) {
+  if (params.columns.length === 0) {
+    throw new PdfCreationErrorObj(PdfMessages.err_in_pdf_req_params, '');
   }
 }
 
@@ -120,7 +127,7 @@ function handleError(err: PdfCreationErrorObj, res: Response) {
     console.log('\n\n\n\n\n\n');
     console.log(err.type);
     console.log('');
-    console.log(err);
+    console.log(err.err);
     return sendErrorResponse(res, 500, err.type);
   }
 }
