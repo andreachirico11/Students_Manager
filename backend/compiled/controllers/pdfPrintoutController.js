@@ -77,8 +77,7 @@ function getStudentRecap(req, res) {
                     return [4 /*yield*/, switchQueryAccordingToParams(req.body)];
                 case 2:
                     receipts = _a.sent();
-                    console.log(receipts);
-                    return [4 /*yield*/, createHtmlFile(receipts, req.body.locale, student)];
+                    return [4 /*yield*/, createHtmlFile(receipts, req.body, student)];
                 case 3:
                     htmlFile = (_a.sent());
                     return [4 /*yield*/, createPdfFile(htmlFile)];
@@ -99,13 +98,14 @@ function getStudentRecap(req, res) {
     });
 }
 exports.getStudentRecap = getStudentRecap;
-function createHtmlFile(receipts, locale, student) {
+function createHtmlFile(receipts, params, student) {
     return new Promise(function (res, rej) {
         (0, ejs_1.renderFile)(getFilePathIntoPdfFolder('views', 'full-table.ejs'), {
             receipts: receipts,
             withStudentName: false,
-            translations: getParsedTranslations(locale),
+            translations: getParsedTranslations(params.locale),
             student: student,
+            params: params,
         }, function (err, htmlFile) {
             if (err) {
                 rej(new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_pdf_ejs, err));

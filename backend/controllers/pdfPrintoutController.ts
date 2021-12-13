@@ -30,9 +30,7 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
       req.body._studentId
     )) as IMongoStudent;
     const receipts = await switchQueryAccordingToParams(req.body);
-    console.log(receipts);
-
-    const htmlFile = (await createHtmlFile(receipts, req.body.locale, student)) as string;
+    const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, 'mega_title');
     unlinkSync(TEMPORARY_PDF_NAME);
@@ -43,7 +41,7 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 
 function createHtmlFile(
   receipts: IPdfReceipt[],
-  locale: string,
+  params: IStudentPdfReqBody,
   student?: IMongoStudent
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
@@ -52,8 +50,9 @@ function createHtmlFile(
       {
         receipts,
         withStudentName: false,
-        translations: getParsedTranslations(locale),
+        translations: getParsedTranslations(params.locale),
         student,
+        params,
       },
       function (err, htmlFile) {
         if (err) {

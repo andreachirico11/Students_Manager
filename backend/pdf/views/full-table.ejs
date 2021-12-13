@@ -89,12 +89,17 @@
           <tr>
             <% if (withStudentName) { %>
             <th><%= translations.HEADERS.NAME %></th>
-            <% } %>
+            <% } %> <% if (params.columns.find(p => p === "number")) { %>
             <th><%= translations.HEADERS.NUMBER %></th>
+            <% } %> <% if (params.columns.find(p => p === "amount")) { %>
             <th><%= translations.HEADERS.TOT %></th>
+            <% } %> <% if (params.columns.find(p => p === "emissionDate")) { %>
             <th><%= translations.HEADERS.DATE_EM %></th>
+            <% } %> <% if (params.columns.find(p => p === "paymentDate")) { %>
             <th><%= translations.HEADERS.DATE_P %></th>
+            <% } %> <% if (params.columns.find(p => p === "typeOfPayment")) { %>
             <th><%= translations.HEADERS.METHOD %></th>
+            <% } %>
           </tr>
         </thead>
         <tbody>
@@ -102,12 +107,17 @@
           <tr class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
             <% if (withStudentName) { %>
             <td><%= rec.studentName %></td>
-            <% } %>
+            <% } %> <% if (rec.number) { %>
             <td><%= rec.number %></td>
+            <% } %> <% if (rec.amount) { %>
             <td><%= rec.amount %></td>
+            <% } %> <% if (rec.emissionDateString) { %>
             <td><%= rec.emissionDateString %></td>
+            <% } %> <% if (rec.paymentDateString) { %>
             <td><%= rec.paymentDateString %></td>
+            <% } %> <% if (rec.typeOfPayment) { %>
             <td><%= rec.typeOfPayment ? translations.PAYMENTS[rec.typeOfPayment] : '' %></td>
+            <% } %>
           </tr>
           <% } %>
         </tbody>

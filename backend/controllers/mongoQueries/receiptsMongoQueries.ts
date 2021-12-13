@@ -7,64 +7,74 @@ import { ReceiptModel } from '../../models/receiptModel';
 export class ReceiptsMongoQueries {
   get allReceipts(): Promise<IPdfReceipt[]> {
     return ReceiptModel.aggregate([
-      {
-        $lookup: {
-          from: 'students',
-          localField: '_studentId',
-          foreignField: '_id',
-          as: 'studentInfo',
-        },
-      },
+      this.lookupForStudetInfo(),
       {
         $unwind: '$studentInfo',
       },
       {
         $addFields: {
-          studentName: {
-            $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
-          },
-          paymentDateString: {
-            $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
-          },
-          emissionDateString: {
-            $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
-          },
+          studentName: this.concatStudentName('studentInfo'),
+          paymentDateString: this.dateToString('paymentDate'),
+          emissionDateString: this.dateToString('emissionDate'),
         },
       },
-    ]).catch((err) => {
-      throw new PdfCreationErrorObj(PdfMessages.err_pdf_fetching_data, err);
+    ]).catch((e) => {
+      throw this.errHandling(e);
     });
   }
 
   allReceiptsForStudent(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
     return ReceiptModel.aggregate([
-      { $match: { $expr: { $eq: ['$_studentId', { $toObjectId: params._studentId }] } } },
-      // {
-      //   $lookup: {
-      //     from: 'students',
-      //     localField: '_studentId',
-      //     foreignField: '_id',
-      //     as: 'studentInfo',
-      //   },
-      // },
-      // {
-      //   $unwind: '$studentInfo',
-      // },
+      this.matchByStudentId(params._studentId),
       {
         $addFields: {
-          // studentName: {
-          //   $concat: ['$studentInfo.name', ' ', '$studentInfo.surname'],
-          // },
-          paymentDateString: {
-            $dateToString: { format: '%d %m %Y', date: '$paymentDate' },
-          },
-          emissionDateString: {
-            $dateToString: { format: '%d %m %Y', date: '$emissionDate' },
-          },
+          paymentDateString: this.dateToString('paymentDate'),
+          emissionDateString: this.dateToString('emissionDate'),
         },
       },
-    ]).catch((err) => {
-      throw new PdfCreationErrorObj(PdfMessages.err_pdf_fetching_data, err);
+    ]).catch((e) => {
+      throw this.errHandling(e);
     });
+  }
+
+  recsForStudentWithColFilter(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
+    return ReceiptModel.aggregate([
+      this.matchByStudentId(params._studentId),
+      {
+        $addFields: {
+          paymentDateString: this.dateToString('paymentDate'),
+          emissionDateString: this.dateToString('emissionDate'),
+        },
+      },
+    ]).catch((e) => {
+      throw this.errHandling(e);
+    });
+  }
+
+  private lookupForStudetInfo() {
+    return {
+      $lookup: {
+        from: 'students',
+        localField: '_studentId',
+        foreignField: '_id',
+        as: 'studentInfo',
+      },
+    };
+  }
+
+  private concatStudentName(studentPropName: string) {
+    return { $concat: ['$' + studentPropName + '.name', ' ', '$' + studentPropName + '.surname'] };
+  }
+
+  private matchByStudentId(id: string) {
+    return { $match: { $expr: { $eq: ['$_studentId', { $toObjectId: id }] } } };
+  }
+
+  private dateToString(dateFieldName: string) {
+    return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
+  }
+
+  private errHandling(err: any) {
+    return new PdfCreationErrorObj(PdfMessages.err_pdf_fetching_data, err);
   }
 }
