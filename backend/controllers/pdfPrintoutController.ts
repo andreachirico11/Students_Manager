@@ -41,7 +41,10 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 }
 
 function verifyReqParams(params: IStudentPdfReqBody) {
-  if (params.columns.length === 0) {
+  if (
+    params.columns.length === 0 ||
+    (params.orderBy && !params.columns.find((c) => c === params.orderBy))
+  ) {
     throw new PdfCreationErrorObj(PdfMessages.err_in_pdf_req_params, '');
   }
 }
@@ -73,19 +76,19 @@ function createHtmlFile(
 
 async function switchQueryAccordingToParams(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
   const queries = new ReceiptsMongoQueries();
-  // if (params.filters && params.dateRange && params.orderBy) {
-  //   // TODO
-  // } else if (params.filters && params.dateRange && !params.orderBy) {
-  //   // TODO
-  // } else if (params.filters && !params.dateRange && params.orderBy) {
-  //   // TODO
-  // } else if (!params.filters && !params.dateRange && params.orderBy) {
-  //   // TODO
-  // } else if (params.filters && !params.dateRange && !params.orderBy) {
-  //   // TODO
-  // } else {
-  return queries.recsForStudentWithColFilter(params);
-  // }
+  if (!params.filters && !params.dateRange && params.orderBy) {
+    return queries.recsForStudentOrderedBy(params);
+    // } else if (params.filters && params.dateRange && !params.orderBy) {
+    //   // TODO
+    // } else if (params.filters && !params.dateRange && params.orderBy) {
+    //   // TODO
+    // } else if (params.filters && params.dateRange && params.orderBy) {
+    //   // TODO
+    // } else if (params.filters && !params.dateRange && !params.orderBy) {
+    //   // TODO
+  } else {
+    return queries.recsForStudentWithColProjectionOnly(params);
+  }
 }
 
 function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {

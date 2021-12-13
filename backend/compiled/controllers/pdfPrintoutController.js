@@ -100,7 +100,8 @@ function getStudentRecap(req, res) {
 }
 exports.getStudentRecap = getStudentRecap;
 function verifyReqParams(params) {
-    if (params.columns.length === 0) {
+    if (params.columns.length === 0 ||
+        (params.orderBy && !params.columns.find(function (c) { return c === params.orderBy; }))) {
         throw new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_in_pdf_req_params, '');
     }
 }
@@ -125,18 +126,21 @@ function switchQueryAccordingToParams(params) {
         var queries;
         return __generator(this, function (_a) {
             queries = new receiptsMongoQueries_1.ReceiptsMongoQueries();
-            // if (params.filters && params.dateRange && params.orderBy) {
-            //   // TODO
-            // } else if (params.filters && params.dateRange && !params.orderBy) {
-            //   // TODO
-            // } else if (params.filters && !params.dateRange && params.orderBy) {
-            //   // TODO
-            // } else if (!params.filters && !params.dateRange && params.orderBy) {
-            //   // TODO
-            // } else if (params.filters && !params.dateRange && !params.orderBy) {
-            //   // TODO
-            // } else {
-            return [2 /*return*/, queries.recsForStudentWithColFilter(params)];
+            if (!params.filters && !params.dateRange && params.orderBy) {
+                return [2 /*return*/, queries.recsForStudentOrderedBy(params)];
+                // } else if (params.filters && params.dateRange && !params.orderBy) {
+                //   // TODO
+                // } else if (params.filters && !params.dateRange && params.orderBy) {
+                //   // TODO
+                // } else if (params.filters && params.dateRange && params.orderBy) {
+                //   // TODO
+                // } else if (params.filters && !params.dateRange && !params.orderBy) {
+                //   // TODO
+            }
+            else {
+                return [2 /*return*/, queries.recsForStudentWithColProjectionOnly(params)];
+            }
+            return [2 /*return*/];
         });
     });
 }

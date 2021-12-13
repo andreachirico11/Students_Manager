@@ -55,7 +55,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
     };
-    if (filters) {
+    if (filters.length > 0) {
       params.filters = filters;
       if (filters.find((f) => f === ReceiptsFilters.dateRange)) {
         params.dateRange = dateRange;

@@ -23,7 +23,7 @@ export class ReceiptsMongoQueries {
     });
   }
 
-  recsForStudentWithColFilter(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
+  recsForStudentWithColProjectionOnly(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
     return ReceiptModel.aggregate([
       this.matchByStudentId(params._studentId),
       this.projectDesiredColumns(params.columns),
@@ -33,6 +33,25 @@ export class ReceiptsMongoQueries {
           emissionDateString: this.dateToString('emissionDate'),
         },
       },
+    ]).catch((e) => {
+      throw this.errHandling(e);
+    });
+  }
+
+  recsForStudentOrderedBy(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
+    if (!params.orderBy) {
+      throw this.errHandling(null);
+    }
+    return ReceiptModel.aggregate([
+      this.matchByStudentId(params._studentId),
+      this.projectDesiredColumns(params.columns),
+      {
+        $addFields: {
+          paymentDateString: this.dateToString('paymentDate'),
+          emissionDateString: this.dateToString('emissionDate'),
+        },
+      },
+      this.sortBy(params.orderBy),
     ]).catch((e) => {
       throw this.errHandling(e);
     });
@@ -71,8 +90,10 @@ export class ReceiptsMongoQueries {
     return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
   }
 
-  private showOrNot(columns: string[], colName: string): number {
-    return columns.find((c) => c === colName) ? 1 : 0;
+  private sortBy(fieldName: string) {
+    const sortObj = {};
+    sortObj[fieldName] = 1;
+    return { $sort: sortObj };
   }
 
   private errHandling(err: any) {

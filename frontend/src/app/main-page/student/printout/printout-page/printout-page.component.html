@@ -62,7 +62,11 @@
       <mat-form-field appearance="fill">
         <mat-label>{{ 'PRINTOUT.ORDERBY' | translate }}</mat-label>
         <mat-select formControlName="orderBy">
-          <mat-option *ngFor="let c of columnNames" [value]="c">
+          <mat-option
+            *ngFor="let c of columnNames"
+            [value]="c"
+            [disabled]="!form.get('columns').get(c).value"
+          >
             {{ 'RECEIPTS.HEADS.' + c | translate }}
           </mat-option>
         </mat-select>
