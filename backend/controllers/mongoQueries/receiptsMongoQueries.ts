@@ -23,20 +23,6 @@ export class ReceiptsMongoQueries {
     });
   }
 
-  allReceiptsForStudent(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
-    return ReceiptModel.aggregate([
-      this.matchByStudentId(params._studentId),
-      {
-        $addFields: {
-          paymentDateString: this.dateToString('paymentDate'),
-          emissionDateString: this.dateToString('emissionDate'),
-        },
-      },
-    ]).catch((e) => {
-      throw this.errHandling(e);
-    });
-  }
-
   recsForStudentWithColFilter(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
     return ReceiptModel.aggregate([
       this.matchByStudentId(params._studentId),
@@ -46,9 +32,22 @@ export class ReceiptsMongoQueries {
           emissionDateString: this.dateToString('emissionDate'),
         },
       },
+      this.projectDesiredColumns(params.columns),
     ]).catch((e) => {
       throw this.errHandling(e);
     });
+  }
+
+  private projectDesiredColumns(columns: string[]) {
+    return {
+      $project: {
+        number: this.showOrNot(columns, 'number'),
+        amount: this.showOrNot(columns, 'amount'),
+        emissionDate: this.showOrNot(columns, 'emissionDate'),
+        paymentDate: this.showOrNot(columns, 'paymentDate'),
+        typeOfPayment: this.showOrNot(columns, 'typeOfPayment'),
+      },
+    };
   }
 
   private lookupForStudetInfo() {
@@ -72,6 +71,10 @@ export class ReceiptsMongoQueries {
 
   private dateToString(dateFieldName: string) {
     return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
+  }
+
+  private showOrNot(columns: string[], colName: string): number {
+    return columns.find((c) => c === colName) ? 1 : 0;
   }
 
   private errHandling(err: any) {

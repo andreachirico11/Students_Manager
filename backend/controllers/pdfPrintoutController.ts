@@ -77,7 +77,7 @@ async function switchQueryAccordingToParams(params: IStudentPdfReqBody): Promise
   // } else if (params.filters && !params.dateRange && !params.orderBy) {
   //   // TODO
   // } else {
-  return queries.allReceiptsForStudent(params);
+  return queries.recsForStudentWithColFilter(params);
   // }
 }
 
@@ -119,6 +119,7 @@ function handleError(err: PdfCreationErrorObj, res: Response) {
   if (err) {
     console.log('\n\n\n\n\n\n');
     console.log(err.type);
+    console.log('');
     console.log(err);
     return sendErrorResponse(res, 500, err.type);
   }

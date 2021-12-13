@@ -130,7 +130,7 @@ function switchQueryAccordingToParams(params) {
             // } else if (params.filters && !params.dateRange && !params.orderBy) {
             //   // TODO
             // } else {
-            return [2 /*return*/, queries.allReceiptsForStudent(params)];
+            return [2 /*return*/, queries.recsForStudentWithColFilter(params)];
         });
     });
 }
@@ -170,6 +170,7 @@ function handleError(err, res) {
     if (err) {
         console.log('\n\n\n\n\n\n');
         console.log(err.type);
+        console.log('');
         console.log(err);
         return (0, httpResWithErrorHeader_1.sendErrorResponse)(res, 500, err.type);
     }
