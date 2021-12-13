@@ -53,7 +53,8 @@ var path_1 = require("path");
 var messageEnums_1 = require("../models/messageEnums");
 var pdfCreationError_1 = require("../models/pdfCreationError");
 var httpResWithErrorHeader_1 = require("../utils/httpResWithErrorHeader");
-var receiptsMongoQueries_1 = require("../utils/receiptsMongoQueries");
+var receiptsMongoQueries_1 = require("./mongoQueries/receiptsMongoQueries");
+var studentstsMongoQueries_1 = require("./mongoQueries/studentstsMongoQueries");
 var TEMPORARY_PDF_NAME = 'temp.pdf';
 var fileOptions = {
     format: 'A4',
@@ -65,42 +66,46 @@ var fileOptions = {
 };
 function getStudentRecap(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var receipts, htmlFile, file, e_1;
+        var student, receipts, htmlFile, file, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 6]);
-                    return [4 /*yield*/, switchQueryAccordingToParams(req.body)];
+                    _a.trys.push([0, 6, , 7]);
+                    return [4 /*yield*/, new studentstsMongoQueries_1.StudentMongoQueries().studentById(req.body._studentId)];
                 case 1:
+                    student = (_a.sent());
+                    return [4 /*yield*/, switchQueryAccordingToParams(req.body)];
+                case 2:
                     receipts = _a.sent();
                     console.log(receipts);
-                    return [4 /*yield*/, createHtmlFile(receipts, req.body.locale)];
-                case 2:
+                    return [4 /*yield*/, createHtmlFile(receipts, req.body.locale, student)];
+                case 3:
                     htmlFile = (_a.sent());
                     return [4 /*yield*/, createPdfFile(htmlFile)];
-                case 3:
+                case 4:
                     file = (_a.sent());
                     return [4 /*yield*/, sendFile(res, file, 'mega_title')];
-                case 4:
+                case 5:
                     _a.sent();
                     (0, fs_1.unlinkSync)(TEMPORARY_PDF_NAME);
-                    return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 7];
+                case 6:
                     e_1 = _a.sent();
                     handleError(e_1, res);
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
 exports.getStudentRecap = getStudentRecap;
-function createHtmlFile(receipts, locale) {
+function createHtmlFile(receipts, locale, student) {
     return new Promise(function (res, rej) {
         (0, ejs_1.renderFile)(getFilePathIntoPdfFolder('views', 'full-table.ejs'), {
             receipts: receipts,
             withStudentName: false,
             translations: getParsedTranslations(locale),
+            student: student,
         }, function (err, htmlFile) {
             if (err) {
                 rej(new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_pdf_ejs, err));

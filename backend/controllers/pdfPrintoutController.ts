@@ -6,10 +6,12 @@ import { join } from 'path';
 import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
 import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
 import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
+import { IMongoStudent } from '../models/interfaces/Student';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
-import { ReceiptsMongoQueries } from '../utils/receiptsMongoQueries';
+import { ReceiptsMongoQueries } from './mongoQueries/receiptsMongoQueries';
+import { StudentMongoQueries } from './mongoQueries/studentstsMongoQueries';
 
 const TEMPORARY_PDF_NAME = 'temp.pdf';
 
@@ -24,10 +26,13 @@ const fileOptions: CreateOptions = {
 
 export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
   try {
+    const student = (await new StudentMongoQueries().studentById(
+      req.body._studentId
+    )) as IMongoStudent;
     const receipts = await switchQueryAccordingToParams(req.body);
     console.log(receipts);
 
-    const htmlFile = (await createHtmlFile(receipts, req.body.locale)) as string;
+    const htmlFile = (await createHtmlFile(receipts, req.body.locale, student)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, 'mega_title');
     unlinkSync(TEMPORARY_PDF_NAME);
@@ -38,7 +43,8 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 
 function createHtmlFile(
   receipts: IPdfReceipt[],
-  locale: string
+  locale: string,
+  student?: IMongoStudent
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
     renderFile(
@@ -47,6 +53,7 @@ function createHtmlFile(
         receipts,
         withStudentName: false,
         translations: getParsedTranslations(locale),
+        student,
       },
       function (err, htmlFile) {
         if (err) {

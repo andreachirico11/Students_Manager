@@ -1,8 +1,8 @@
-import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
-import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
-import { PdfMessages } from '../models/messageEnums';
-import { PdfCreationErrorObj } from '../models/pdfCreationError';
-import { ReceiptModel } from '../models/receiptModel';
+import { IPdfReceipt } from '../../models/interfaces/IPdfReceipt';
+import { IStudentPdfReqBody } from '../../models/interfaces/IStudentPdfReqBody';
+import { PdfMessages } from '../../models/messageEnums';
+import { PdfCreationErrorObj } from '../../models/pdfCreationError';
+import { ReceiptModel } from '../../models/receiptModel';
 
 export class ReceiptsMongoQueries {
   get allReceipts(): Promise<IPdfReceipt[]> {
