@@ -107,15 +107,15 @@
           <tr class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
             <% if (withStudentName) { %>
             <td><%= rec.studentName %></td>
-            <% } %> <% if (rec.number) { %>
-            <td><%= rec.number %></td>
-            <% } %> <% if (rec.amount) { %>
-            <td><%= rec.amount %></td>
-            <% } %> <% if (rec.emissionDateString) { %>
-            <td><%= rec.emissionDateString %></td>
-            <% } %> <% if (rec.paymentDateString) { %>
-            <td><%= rec.paymentDateString %></td>
-            <% } %> <% if (rec.typeOfPayment) { %>
+            <% } %> <% if (params.columns.find(p => p === "number")) { %>
+            <td><%= rec.number ? rec.number : '' %></td>
+            <% } %> <% if (params.columns.find(p => p === "amount")) { %>
+            <td><%= rec.amount ? rec.amount : '' %></td>
+            <% } %> <% if (params.columns.find(p => p === "emissionDate")) { %>
+            <td><%= rec.emissionDate ? rec.emissionDateString : '' %></td>
+            <% } %> <% if (params.columns.find(p => p === "paymentDate")) { %>
+            <td><%= rec.paymentDate ? rec.paymentDateString : '' %></td>
+            <% } %> <% if (params.columns.find(p => p === "typeOfPayment")) { %>
             <td><%= rec.typeOfPayment ? translations.PAYMENTS[rec.typeOfPayment] : '' %></td>
             <% } %>
           </tr>
