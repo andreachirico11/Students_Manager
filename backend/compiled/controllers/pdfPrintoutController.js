@@ -52,6 +52,7 @@ var html_pdf_1 = require("html-pdf");
 var path_1 = require("path");
 var messageEnums_1 = require("../models/messageEnums");
 var pdfCreationError_1 = require("../models/pdfCreationError");
+var receiptsFilters_1 = require("../models/receiptsFilters");
 var httpResWithErrorHeader_1 = require("../utils/httpResWithErrorHeader");
 var receiptsMongoQueries_1 = require("./mongoQueries/receiptsMongoQueries");
 var studentstsMongoQueries_1 = require("./mongoQueries/studentstsMongoQueries");
@@ -66,7 +67,7 @@ var fileOptions = {
 };
 function getStudentRecap(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var student, receipts, htmlFile, file, e_1;
+        var student, allRecsQueries, receipts, htmlFile, file, e_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -75,7 +76,8 @@ function getStudentRecap(req, res) {
                     return [4 /*yield*/, new studentstsMongoQueries_1.StudentMongoQueries().studentById(req.body._studentId)];
                 case 1:
                     student = (_a.sent());
-                    return [4 /*yield*/, switchQueryAccordingToParams(req.body)];
+                    allRecsQueries = new receiptsMongoQueries_1.ReceiptsMongoQueries();
+                    return [4 /*yield*/, allRecsQueries.receiptsForStudentWithParams(req.body)];
                 case 2:
                     receipts = _a.sent();
                     return [4 /*yield*/, createHtmlFile(receipts, req.body, student)];
@@ -100,8 +102,15 @@ function getStudentRecap(req, res) {
 }
 exports.getStudentRecap = getStudentRecap;
 function verifyReqParams(params) {
+    var _a, _b, _c, _d, _e, _f;
     if (params.columns.length === 0 ||
-        (params.orderBy && !params.columns.find(function (c) { return c === params.orderBy; }))) {
+        (params.orderBy && !params.columns.find(function (c) { return c === params.orderBy; })) ||
+        (((_a = params.filters) === null || _a === void 0 ? void 0 : _a.includes(receiptsFilters_1.ReceiptsFilters.dateRange)) &&
+            ((_b = params.filters) === null || _b === void 0 ? void 0 : _b.includes(receiptsFilters_1.ReceiptsFilters.thisYear))) ||
+        (((_c = params.filters) === null || _c === void 0 ? void 0 : _c.includes(receiptsFilters_1.ReceiptsFilters.dateRange)) &&
+            ((_d = params.filters) === null || _d === void 0 ? void 0 : _d.includes(receiptsFilters_1.ReceiptsFilters.thisMonth))) ||
+        (((_e = params.filters) === null || _e === void 0 ? void 0 : _e.includes(receiptsFilters_1.ReceiptsFilters.thisMonth)) &&
+            ((_f = params.filters) === null || _f === void 0 ? void 0 : _f.includes(receiptsFilters_1.ReceiptsFilters.thisYear)))) {
         throw new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_in_pdf_req_params, '');
     }
 }
@@ -118,29 +127,6 @@ function createHtmlFile(receipts, params, student) {
                 rej(new pdfCreationError_1.PdfCreationErrorObj(messageEnums_1.PdfMessages.err_pdf_ejs, err));
             }
             res(htmlFile);
-        });
-    });
-}
-function switchQueryAccordingToParams(params) {
-    return __awaiter(this, void 0, void 0, function () {
-        var queries;
-        return __generator(this, function (_a) {
-            queries = new receiptsMongoQueries_1.ReceiptsMongoQueries();
-            if (!params.filters && !params.dateRange && params.orderBy) {
-                return [2 /*return*/, queries.recsForStudentOrderedBy(params)];
-                // } else if (params.filters && params.dateRange && !params.orderBy) {
-                //   // TODO
-                // } else if (params.filters && !params.dateRange && params.orderBy) {
-                //   // TODO
-                // } else if (params.filters && params.dateRange && params.orderBy) {
-                //   // TODO
-                // } else if (params.filters && !params.dateRange && !params.orderBy) {
-                //   // TODO
-            }
-            else {
-                return [2 /*return*/, queries.recsForStudentWithColProjectionOnly(params)];
-            }
-            return [2 /*return*/];
         });
     });
 }
@@ -185,6 +171,8 @@ function handleError(err, res) {
         return (0, httpResWithErrorHeader_1.sendErrorResponse)(res, 500, err.type);
     }
 }
-function getPdf(req, res) { }
+function getPdf(req, res) {
+    // TODO for all receipts
+}
 exports.getPdf = getPdf;
 //# sourceMappingURL=pdfPrintoutController.js.map

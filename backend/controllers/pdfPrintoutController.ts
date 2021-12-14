@@ -9,6 +9,7 @@ import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
 import { IMongoStudent } from '../models/interfaces/Student';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
+import { ReceiptsFilters } from '../models/receiptsFilters';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from './mongoQueries/receiptsMongoQueries';
 import { StudentMongoQueries } from './mongoQueries/studentstsMongoQueries';
@@ -30,7 +31,8 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     const student = (await new StudentMongoQueries().studentById(
       req.body._studentId
     )) as IMongoStudent;
-    const receipts = await switchQueryAccordingToParams(req.body);
+    const allRecsQueries = new ReceiptsMongoQueries();
+    const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
     const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, 'mega_title');
@@ -43,7 +45,13 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 function verifyReqParams(params: IStudentPdfReqBody) {
   if (
     params.columns.length === 0 ||
-    (params.orderBy && !params.columns.find((c) => c === params.orderBy))
+    (params.orderBy && !params.columns.find((c) => c === params.orderBy)) ||
+    (params.filters?.includes(ReceiptsFilters.dateRange) &&
+      params.filters?.includes(ReceiptsFilters.thisYear)) ||
+    (params.filters?.includes(ReceiptsFilters.dateRange) &&
+      params.filters?.includes(ReceiptsFilters.thisMonth)) ||
+    (params.filters?.includes(ReceiptsFilters.thisMonth) &&
+      params.filters?.includes(ReceiptsFilters.thisYear))
   ) {
     throw new PdfCreationErrorObj(PdfMessages.err_in_pdf_req_params, '');
   }
@@ -72,23 +80,6 @@ function createHtmlFile(
       }
     );
   });
-}
-
-async function switchQueryAccordingToParams(params: IStudentPdfReqBody): Promise<IPdfReceipt[]> {
-  const queries = new ReceiptsMongoQueries();
-  if (!params.filters && !params.dateRange && params.orderBy) {
-    return queries.recsForStudentOrderedBy(params);
-    // } else if (params.filters && params.dateRange && !params.orderBy) {
-    //   // TODO
-    // } else if (params.filters && !params.dateRange && params.orderBy) {
-    //   // TODO
-    // } else if (params.filters && params.dateRange && params.orderBy) {
-    //   // TODO
-    // } else if (params.filters && !params.dateRange && !params.orderBy) {
-    //   // TODO
-  } else {
-    return queries.recsForStudentWithColProjectionOnly(params);
-  }
 }
 
 function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
@@ -135,4 +126,6 @@ function handleError(err: PdfCreationErrorObj, res: Response) {
   }
 }
 
-export function getPdf(req: IPdfRequest, res: Response) {}
+export function getPdf(req: IPdfRequest, res: Response) {
+  // TODO for all receipts
+}

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
+import { DateAdapter } from '@angular/material/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { pairwise, startWith, Subscription } from 'rxjs';
@@ -23,16 +23,23 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   filters = Object.keys(ReceiptsFilters);
   showDateRange = false;
   form: FormGroup;
-  filtersSub: Subscription;
-  valueSub: Subscription;
+
+  private filtersSub: Subscription;
+  private valueSub: Subscription;
+  private transSub: Subscription;
 
   constructor(
     private printoutService: PrintoutService,
     private route: ActivatedRoute,
+    private dateAd: DateAdapter<any>,
     private translateS: TranslateService
   ) {}
 
   ngOnInit() {
+    this.dateAd.setLocale(this.translateS.currentLang);
+    this.transSub = this.translateS.onLangChange.subscribe((ev) => {
+      this.dateAd.setLocale(ev.lang);
+    });
     this.form = this.addFilters(
       this.addOrderBy(this.addColumns(new FormGroup({}), this.columnNames))
     );
@@ -46,6 +53,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.filtersSub.unsubscribe();
     this.valueSub.unsubscribe();
+    this.transSub.unsubscribe();
   }
 
   onGenerate() {

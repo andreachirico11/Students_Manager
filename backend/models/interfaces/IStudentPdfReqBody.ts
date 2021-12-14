@@ -1,12 +1,14 @@
+import { ReceiptsFilters } from '../receiptsFilters';
+
 export interface IStudentPdfReqBody {
   _studentId: string;
   locale: string;
   columns: string[];
   ascending: boolean;
   orderBy?: string;
-  filters?: string[];
+  filters?: ReceiptsFilters[];
   dateRange?: {
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
   };
 }

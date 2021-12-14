@@ -138,7 +138,7 @@
             "thisYear": "Annuali",
             "dateRange": "Intervallo di Date",
             "DATE_RANGES": {
-                "startDate": "Date Inizio",
+                "startDate": "Data Inizio",
                 "endDate": "Data Fine",
                 "dateErr": "Obbligatorio"
             }

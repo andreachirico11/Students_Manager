@@ -112,7 +112,7 @@ describe('PrintoutPageComponent', () => {
       columns: ['number', 'typeOfPayment'],
       _studentId: 'abc',
       locale: 'it',
-      filters: ['thisMonth', 'isPayed'],
+      filters: [ReceiptsFilters.thisMonth, ReceiptsFilters.isPayed],
       orderBy: 'number',
       ascending: true,
     };
@@ -124,7 +124,7 @@ describe('PrintoutPageComponent', () => {
         paymentDate: false,
         typeOfPayment: true,
       },
-      filters: ['thisMonth', 'isPayed'],
+      filters: [ReceiptsFilters.thisMonth, ReceiptsFilters.isPayed],
       orderBy: 'number',
     });
     fixture.detectChanges();
@@ -140,7 +140,7 @@ describe('PrintoutPageComponent', () => {
       columns: ['number', 'typeOfPayment'],
       _studentId: 'abc',
       locale: 'it',
-      filters: ['dateRange', 'isPayed'],
+      filters: [ReceiptsFilters.dateRange, ReceiptsFilters.isPayed],
       orderBy: 'number',
       dateRange: {
         startDate,
@@ -156,7 +156,7 @@ describe('PrintoutPageComponent', () => {
         paymentDate: false,
         typeOfPayment: true,
       },
-      filters: ['dateRange', 'isPayed'],
+      filters: [ReceiptsFilters.dateRange, ReceiptsFilters.isPayed],
       orderBy: 'number',
     });
     fixture.detectChanges();
