@@ -1,7 +1,8 @@
+import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { pairwise, startWith, Subscription } from 'rxjs';
 import { devErrorHandlingAny } from 'src/app/shared/devErrorHandler';
@@ -25,14 +26,14 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   form: FormGroup;
 
   private filtersSub: Subscription;
-  private valueSub: Subscription;
   private transSub: Subscription;
 
   constructor(
     private printoutService: PrintoutService,
     private route: ActivatedRoute,
     private dateAd: DateAdapter<any>,
-    private translateS: TranslateService
+    private translateS: TranslateService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -40,23 +41,63 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.transSub = this.translateS.onLangChange.subscribe((ev) => {
       this.dateAd.setLocale(ev.lang);
     });
-    this.form = this.addFilters(
-      this.addOrderBy(this.addColumns(new FormGroup({}), this.columnNames))
-    );
+    this.form = this.generateForm();
   }
 
   ngAfterViewInit(): void {
     this.filtersSub = this.onFiltersInputChange();
-    this.valueSub = this.onValueChange();
   }
 
   ngOnDestroy() {
     this.filtersSub.unsubscribe();
-    this.valueSub.unsubscribe();
     this.transSub.unsubscribe();
   }
 
   onGenerate() {
+    this.printoutService.getStudentRecsPdf(this.parseFormValueIntoParams()).subscribe((r) => {
+      if (r) {
+        this.onDownloadResponse(r.file, r.title);
+        this.location.back();
+      }
+    });
+  }
+
+  private generateForm(): FormGroup {
+    const f = new FormGroup({});
+    f.addControl('columns', new FormGroup({}, atLeastOneCol));
+    this.columnNames.forEach((colName) => {
+      (f.get('columns') as FormGroup).addControl(colName, new FormControl(true));
+    });
+    f.addControl('filters', new FormControl([]));
+    f.addControl('orderBy', new FormControl(null));
+    f.addControl('ascending', new FormControl(true));
+    return f;
+  }
+
+  private onFiltersInputChange(): Subscription {
+    const filtersCtrl = this.form.get('filters');
+    return filtersCtrl.valueChanges.pipe(startWith([]), pairwise()).subscribe(([prev, actual]) => {
+      const verifyForNewValue = this.hasANewValue(prev, actual);
+      if (verifyForNewValue(ReceiptsFilters.dateRange)) {
+        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisMonth, ReceiptsFilters.thisYear);
+      } else if (verifyForNewValue(ReceiptsFilters.thisMonth)) {
+        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisYear, ReceiptsFilters.dateRange);
+      } else if (verifyForNewValue(ReceiptsFilters.thisYear)) {
+        this.removeValuesFromCtrl(
+          filtersCtrl,
+          ReceiptsFilters.thisMonth,
+          ReceiptsFilters.dateRange
+        );
+      } else if (verifyForNewValue(ReceiptsFilters.isPayed)) {
+        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.notPayed);
+      } else if (verifyForNewValue(ReceiptsFilters.notPayed)) {
+        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.isPayed);
+      }
+      this.checkFiltersForDateRange(filtersCtrl);
+    });
+  }
+
+  private parseFormValueIntoParams(): IStudentPdfReqBody {
     const { filters, orderBy, columns, dateRange, ascending } = this.form.value;
     const params: IStudentPdfReqBody = {
       _studentId: this.route.snapshot.parent.params.id,
@@ -73,63 +114,15 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (orderBy) {
       params.orderBy = orderBy;
     }
-    this.printoutService.getStudentRecsPdf(params).subscribe((r) => {
-      if (r) {
-        this.onDownloadResponse(r.file, r.title);
-      }
-    });
+    return params;
   }
 
-  private addColumns(f: FormGroup, columnNames: string[]) {
-    f.addControl('columns', new FormGroup({}, atLeastOneCol));
-    columnNames.forEach((colName) => {
-      (f.get('columns') as FormGroup).addControl(colName, new FormControl(true));
-    });
-    return f;
-  }
-
-  private addFilters(f: FormGroup): FormGroup {
-    f.addControl('filters', new FormControl([]));
-    return f;
-  }
-
-  private addOrderBy(f: FormGroup): FormGroup {
-    f.addControl('orderBy', new FormControl(null));
-    f.addControl('ascending', new FormControl(true));
-    return f;
-  }
-
-  private onFiltersInputChange(): Subscription {
-    const filtersField = this.form.get('filters');
-    return filtersField.valueChanges.pipe(startWith([]), pairwise()).subscribe(([prev, actual]) => {
-      const verifyForNewValue = this.hasANewValue(prev, actual),
-        filtersCtrl = this.form.get('filters');
-      if (verifyForNewValue(ReceiptsFilters.dateRange)) {
-        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisMonth, ReceiptsFilters.thisYear);
-      } else if (verifyForNewValue(ReceiptsFilters.thisMonth)) {
-        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.thisYear, ReceiptsFilters.dateRange);
-      } else if (verifyForNewValue(ReceiptsFilters.thisYear)) {
-        this.removeValuesFromCtrl(
-          filtersCtrl,
-          ReceiptsFilters.thisMonth,
-          ReceiptsFilters.dateRange
-        );
-      } else if (verifyForNewValue(ReceiptsFilters.isPayed)) {
-        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.notPayed);
-      } else if (verifyForNewValue(ReceiptsFilters.notPayed)) {
-        this.removeValuesFromCtrl(filtersCtrl, ReceiptsFilters.isPayed);
-      }
-    });
-  }
-
-  private onValueChange(): Subscription {
-    return this.form.get('filters').valueChanges.subscribe((newVal: string[]) => {
-      if (newVal.find((v) => v === ReceiptsFilters.dateRange)) {
-        this.addDateRangeGroup(this.form);
-      } else {
-        this.removeDateRangeGroup(this.form);
-      }
-    });
+  private checkFiltersForDateRange(ctr: AbstractControl) {
+    if (ctr.value.find((v) => v === ReceiptsFilters.dateRange)) {
+      this.addDateRangeGroup(this.form);
+    } else {
+      this.removeDateRangeGroup(this.form);
+    }
   }
 
   private hasANewValue(prev: string[], next: string[]): Function {
