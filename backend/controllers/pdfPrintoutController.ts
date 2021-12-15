@@ -35,7 +35,7 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
     const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
-    await sendFile(res, file, 'mega_title');
+    await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);
   } catch (e) {
     handleError(e, res);
@@ -114,6 +114,11 @@ function getParsedTranslations(locale: string) {
   return JSON.parse(
     readFileSync(getFilePathIntoPdfFolder('translations', (locale || 'en') + '.json'), 'utf8')
   );
+}
+
+function getFileTitle(s: IMongoStudent): string {
+  const date = new Date();
+  return `${s.name} ${s.surname} (${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()})`;
 }
 
 function handleError(err: PdfCreationErrorObj, res: Response) {

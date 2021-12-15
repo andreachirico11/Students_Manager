@@ -1,5 +1,6 @@
 {
     "TITLE": "Receipts for the student ",
+    "EMPTY": "No Receipts Founded",
     "HEADERS": {
         "NUMBER": "No.",
         "NAME": "Name",

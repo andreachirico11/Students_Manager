@@ -1,5 +1,6 @@
 {
     "TITLE": "Ricevute dello studente ",
+    "EMPTY": "Nessuna ricevuta trovata",
     "HEADERS": {
         "NUMBER": "No.",
         "NAME": "Nome",

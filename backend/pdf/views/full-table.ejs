@@ -40,6 +40,7 @@
         max-width: 100%;
         white-space: nowrap;
         background-color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
       }
 
       .fl-table td,
@@ -65,10 +66,6 @@
         border-right: 1px solid rgba(0, 0, 0, 0.4);
       }
 
-      .fl-table tbody tr:last-child {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-      }
-
       .fl-table thead th {
         color: #ffffff;
         background: #1565c0;
@@ -80,8 +77,10 @@
     </style>
   </head>
   <body>
-    <% if(student) { %>
-    <h3 class="main-title"><%=translations.TITLE + student.name + student.surname %></h3>
+    <% if(receipts.length === 0) { %>
+    <h3 class="main-title"><%=translations.EMPTY%></h3>
+    <% } else { %> <% if(student) { %>
+    <h3 class="main-title"><%=translations.TITLE + student.name +' ' + student.surname %></h3>
     <% } %>
     <div class="table-wrapper">
       <table class="fl-table">
@@ -123,5 +122,6 @@
         </tbody>
       </table>
     </div>
+    <% } %>
   </body>
 </html>
