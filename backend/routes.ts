@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getPdf, getStudentRecap } from './controllers/pdfPrintoutController';
+import { getPdf, getStudentBlankRec, getStudentRecap } from './controllers/pdfPrintoutController';
 import { deleteReceipt, postReceipt, putReceipt } from './controllers/receiptController';
 import { getStats } from './controllers/statsController';
 import {
@@ -28,6 +28,8 @@ router.delete('/receipts/:id', verifyToken, deleteReceipt);
 
 // @ts-ignore
 router.get('/printout', verifyToken, getPdf);
+// @ts-ignore
+router.get('/blank/:id', verifyToken, getStudentBlankRec);
 router.post('/printout/studentRecap', verifyToken, getStudentRecap);
 
 router.get('/stats', verifyToken, getStats);

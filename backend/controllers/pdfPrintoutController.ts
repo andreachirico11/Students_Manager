@@ -1,5 +1,5 @@
 import { renderFile } from 'ejs';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { readFileSync, unlinkSync } from 'fs';
 import { create, CreateOptions, FileInfo } from 'html-pdf';
 import { join } from 'path';
@@ -38,6 +38,14 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);
+  } catch (e) {
+    handleError(e, res);
+  }
+}
+
+export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
+  try {
+    throw new PdfCreationErrorObj(PdfMessages.err_in_pdf_req_params, '');
   } catch (e) {
     handleError(e, res);
   }
