@@ -47,4 +47,5 @@ export enum PdfMessages {
   'err_pdf_ejs' = 'err_pdf_ejs',
   'err_pdf_sending' = 'err_pdf_sending',
   'err_in_pdf_req_params' = 'err_in_pdf_req_params',
+  'blank_page_not_allowed' = 'blank_page_not_allowed',
 }

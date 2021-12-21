@@ -1,5 +1,5 @@
 import { renderFile } from 'ejs';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { readFileSync, unlinkSync } from 'fs';
 import { create, CreateOptions, FileInfo } from 'html-pdf';
 import { join } from 'path';
@@ -10,6 +10,7 @@ import { IMongoStudent } from '../models/interfaces/Student';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
 import { ReceiptsFilters } from '../models/receiptsFilters';
+import { getEnvVariables } from '../utils/getEnv';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from './mongoQueries/receiptsMongoQueries';
 import { StudentMongoQueries } from './mongoQueries/studentstsMongoQueries';
@@ -33,9 +34,8 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     )) as IMongoStudent;
     const allRecsQueries = new ReceiptsMongoQueries();
     const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
-    const total = req.body.withTotal ? calculateTotal(receipts) : null;
-    const htmlFile = (await createHtmlFile(receipts, req.body, student, total)) as string;
-    const file = (await createPdfFile(htmlFile)) as FileInfo;
+    const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
+    const file = (await createPdfFile(htmlFile, fileOptions)) as FileInfo;
     await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);
   } catch (e) {
@@ -44,8 +44,19 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 }
 
 export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
+  const blankFileName = getEnvVariables().BLANK_TEMPLATE_FILE_NAME;
   try {
-    throw new PdfCreationErrorObj(PdfMessages.err_in_pdf_req_params, '');
+    if (!blankFileName) {
+      throw new PdfCreationErrorObj(PdfMessages.blank_page_not_allowed, '');
+    }
+    const student = (await new StudentMongoQueries().studentById(req.params.id)) as IMongoStudent;
+    const htmlFile = (await createRecBlamkeHtmlFile(student, blankFileName)) as string;
+    const file = (await createPdfFile(htmlFile, {
+      format: 'A4',
+      orientation: 'portrait',
+    })) as FileInfo;
+    await sendFile(res, file, getFileTitle(student));
+    unlinkSync(TEMPORARY_PDF_NAME);
   } catch (e) {
     handleError(e, res);
   }
@@ -102,7 +113,30 @@ function getTodayDate() {
   return new Date().toISOString().split('T')[0].split('-').reverse().join('/');
 }
 
-function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {
+function createRecBlamkeHtmlFile(
+  student: IMongoStudent,
+  fileName: string
+): Promise<string | PdfCreationErrorObj> {
+  return new Promise<string | PdfCreationErrorObj>((res, rej) => {
+    renderFile(
+      getFilePathIntoPdfFolder('views', fileName + '.ejs'),
+      {
+        student,
+      },
+      function (err, htmlFile) {
+        if (err) {
+          rej(new PdfCreationErrorObj(PdfMessages.err_pdf_ejs, err));
+        }
+        res(htmlFile);
+      }
+    );
+  });
+}
+
+function createPdfFile(
+  htmlFile: string,
+  fileOptions: CreateOptions
+): Promise<FileInfo | PdfCreationErrorObj> {
   return new Promise((res, rej) => {
     create(htmlFile as string, fileOptions).toFile(TEMPORARY_PDF_NAME, function (err, file) {
       if (err) {
