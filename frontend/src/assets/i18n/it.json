@@ -150,6 +150,7 @@
                 "endDate": "Data Fine",
                 "dateErr": "Obbligatorio"
             }
-        }
+        },
+        "BLANK": "Genera una Ricevuta Vuota"
     }
 }

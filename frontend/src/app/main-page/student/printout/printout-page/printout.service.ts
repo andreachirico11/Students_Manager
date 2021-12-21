@@ -35,6 +35,26 @@ export class PrintoutService {
       );
   }
 
+  getBlankReceipt(studentId: string) {
+    return this.http
+      .get<Blob>(this.dbUrl + 'blank/' + studentId, {
+        params: this.getParams({ locale: this.translateS.currentLang }),
+        observe: 'response',
+        responseType: 'blob' as 'json',
+      })
+      .pipe(
+        first(),
+        map((res) => ({
+          file: res.body,
+          title: res.headers.get('file-name') ?? 'default title',
+        })),
+        catchError((e) => {
+          devErrorHandling(e);
+          return of(null);
+        })
+      );
+  }
+
   getStudentRecsPdf(body: IStudentPdfReqBody) {
     return this.http
       .post<Blob>(this.dbUrl + 'printout/studentRecap', body, {

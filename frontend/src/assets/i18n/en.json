@@ -151,6 +151,7 @@
                 "endDate": "End Date",
                 "dateErr": "Required"
             }
-        }
+        },
+        "BLANK": "Generate Blank Receipt"
     }
 }

@@ -76,8 +76,8 @@
     </div>
     <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
     <mat-divider></mat-divider>
-    <button mat-stroked-button color="primary">
-      {{ 'PRINTOUT.GENERATE' | translate }}
+    <button mat-stroked-button color="primary" class="blank-page-btn" (click)="onBlankReceipt()">
+      {{ 'PRINTOUT.BLANK' | translate }}
     </button>
   </mat-card-content>
 </mat-card>

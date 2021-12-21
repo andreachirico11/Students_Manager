@@ -62,6 +62,15 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  onBlankReceipt() {
+    this.printoutService.getBlankReceipt(this.route.snapshot.parent.params.id).subscribe((r) => {
+      if (r) {
+        this.onDownloadResponse(r.file, r.title);
+        this.location.back();
+      }
+    });
+  }
+
   private generateForm(): FormGroup {
     const f = new FormGroup({});
     f.addControl('columns', new FormGroup({}, atLeastOneCol));
