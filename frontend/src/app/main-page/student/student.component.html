@@ -20,7 +20,7 @@
       <button mat-stroked-button (click)="onDeleteClick()" color="warn">
         {{ 'STUDENT.ST_ACTION_3' | translate }}
       </button>
-      <button mat-stroked-button routerLink="printout">
+      <button mat-stroked-button (click)="onDownloadNavigation()">
         {{ 'STUDENT.ST_ACTION_4' | translate }}
       </button>
     </mat-action-list>
