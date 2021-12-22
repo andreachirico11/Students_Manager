@@ -120,20 +120,25 @@
     </div>
     <div class="addressee">
       <div class="addressee-content">
-        <h3>gianni pino</h3>
-        <p>via gianni pino 18/</p>
-        <p>16983 wella wella</p>
-        <p class="uppercase">cjhasdcghfhasldbhs</p>
+        <% if (student.parent && student.parent.name && student.parent.surname) { %>
+          <h3><%= student.parent.name + ' ' + student.parent.surname %></h3>
+        <% } %>
+        <% if (student.parent && student.parent.address ) { %>
+          <p><%= student.parent.address %></p>
+        <% } %>
+        <% if (student.parent && student.parent.fiscalCode ) { %>
+          <p class="uppercase"><%= student.parent.fiscalCode %></p>
+        <% } %>
       </div>
     </div>
     <div class="title">
       <div class="title-content">
         <p>
-          Fattura n. 8888
+          Fattura n.__
           <span>del</span>
-          1/02/2222
+          ______
         </p>
-        <h3 class="uppercase">lezione bello</h3>
+        <h3 class="uppercase">lezione <%= student.name %></h3>
       </div>
     </div>
     <div class="payment">
@@ -141,17 +146,17 @@
         <div class="col">
           <span>Compenso</span>
           <span>Euro</span>
-          <span>20</span>
+          <span>___</span>
         </div>
         <div class="col">
           <span>rivalsa inps 4% sul compenso</span>
           <span>Euro</span>
-          <span>20</span>
+          <span>___</span>
         </div>
         <div class="col">
           <span>totale documento</span>
           <span>Euro</span>
-          <span>20</span>
+          <span>___</span>
         </div>
       </div>
     </div>
