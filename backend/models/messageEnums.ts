@@ -25,6 +25,10 @@ export enum StudentMessages {
   'student_not_found' = 'student_not_found',
 }
 
+export enum TeacherMessages {
+  'teacher_not_found' = 'teacher_not_found',
+}
+
 export enum ReceiptMessages {
   'receipt_deleted' = 'receipt_deleted',
   'receipt_updated' = 'receipt_updated',
@@ -48,4 +52,5 @@ export enum PdfMessages {
   'err_pdf_sending' = 'err_pdf_sending',
   'err_in_pdf_req_params' = 'err_in_pdf_req_params',
   'blank_page_not_allowed' = 'blank_page_not_allowed',
+  'teacher_or_student_not_found' = 'teacher_or_student_not_found',
 }

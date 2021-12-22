@@ -7,6 +7,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import { corsController } from './controllers/corsController';
 import { createAdminUser } from './controllers/userController';
+import { TeacherModelBuilder } from './models/teacherModel';
 import { router } from './routes';
 import checkForAutoPing from './utils/autoPingFn';
 

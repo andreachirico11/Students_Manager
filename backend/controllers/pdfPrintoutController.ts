@@ -7,6 +7,7 @@ import { IPdfReceipt } from '../models/interfaces/IPdfReceipt';
 import { IPdfRequest, IPdfStdRecapReq } from '../models/interfaces/IRequests';
 import { IStudentPdfReqBody } from '../models/interfaces/IStudentPdfReqBody';
 import { IMongoStudent } from '../models/interfaces/Student';
+import { ITeacher } from '../models/interfaces/Teacher';
 import { PdfMessages } from '../models/messageEnums';
 import { PdfCreationErrorObj } from '../models/pdfCreationError';
 import { ReceiptsFilters } from '../models/receiptsFilters';
@@ -14,6 +15,7 @@ import { getEnvVariables } from '../utils/getEnv';
 import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from './mongoQueries/receiptsMongoQueries';
 import { StudentMongoQueries } from './mongoQueries/studentstsMongoQueries';
+import { TeacherMongoQueries } from './mongoQueries/teachersMongoQueries';
 
 const TEMPORARY_PDF_NAME = 'temp.pdf';
 
@@ -44,13 +46,17 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 }
 
 export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
-  const blankFileName = getEnvVariables().BLANK_TEMPLATE_FILE_NAME;
+  const teacherIdName = getEnvVariables().TEACHER_ID_NAME;
   try {
-    if (!blankFileName) {
+    if (!teacherIdName) {
       throw new PdfCreationErrorObj(PdfMessages.blank_page_not_allowed, '');
     }
-    const student = (await new StudentMongoQueries().studentById(req.params.id)) as IMongoStudent;
-    const htmlFile = (await createRecBlamkeHtmlFile(student, blankFileName)) as string;
+    const teacher = await new TeacherMongoQueries().teacherByIdName(teacherIdName);
+    const student = await new StudentMongoQueries().studentById(req.params.id);
+    if (!teacher || !student) {
+      throw new PdfCreationErrorObj(PdfMessages.teacher_or_student_not_found, '');
+    }
+    const htmlFile = (await createRecBlamkeHtmlFile(student, teacher)) as string;
     const file = (await createPdfFile(htmlFile, {
       format: 'A4',
       orientation: 'portrait',
@@ -119,13 +125,14 @@ function getTodayDate() {
 
 function createRecBlamkeHtmlFile(
   student: IMongoStudent,
-  fileName: string
+  teacher: ITeacher
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
     renderFile(
-      getFilePathIntoPdfFolder('views', fileName + '.ejs'),
+      getFilePathIntoPdfFolder('views', teacher.idName + '.ejs'),
       {
         student,
+        teacher,
       },
       function (err, htmlFile) {
         if (err) {

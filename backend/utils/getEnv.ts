@@ -6,7 +6,7 @@ export interface IEnvVariables {
   PORT?: string;
   TEST_USER?: string;
   AUTO_PING_URL?: string;
-  BLANK_TEMPLATE_FILE_NAME?: string;
+  TEACHER_ID_NAME?: string;
 }
 
 export function getEnvVariables() {

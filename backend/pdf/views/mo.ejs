@@ -111,11 +111,11 @@
   <body>
     <div class="teacher">
       <div class="teacher-content">
-        <p>gianni pino</p>
-        <p>via marina pino 24/1</p>
-        <p>16fas3 poso</p>
-        <p class="uppercase">c.f. dhfashcshdkc</p>
-        <p class="uppercase">P.IVA hflksajfasfsa</p>
+        <p><%= teacher.name + ' ' + teacher.surname %></p>
+        <p><%= teacher.address %></p>
+        <p><%= teacher.CAP + ' ' + teacher.city %></p>
+        <p class="uppercase">c.f. <%= teacher.fiscalCode %></p>
+        <p class="uppercase">P.IVA <%= teacher.IVA %></p>
       </div>
     </div>
     <div class="addressee">
