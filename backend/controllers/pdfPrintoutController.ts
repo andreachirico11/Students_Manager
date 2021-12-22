@@ -54,6 +54,10 @@ export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
     const file = (await createPdfFile(htmlFile, {
       format: 'A4',
       orientation: 'portrait',
+      border: {
+        top: '0',
+        bottom: '0',
+      },
     })) as FileInfo;
     await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);

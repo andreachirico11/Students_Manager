@@ -4,10 +4,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" cosntent="width=device-width, initial-scale=1.0" />
     <style>
+      html {
+        zoom: .71
+      }
       body {
         font-family: 'Calibri', sans-serif;
-        padding-left: 3cm;
+        padding-left: 2cm;
         padding-top: 2cm;
+        padding-right: 1cm;
         line-height: 0.5cm;
         letter-spacing: 0.5px;
         font-size: 14px;
@@ -39,7 +43,6 @@
       .addressee-content,
       .title-content,
       .payment-content,
-      .payment-content .col,
       footer {
         height: 100%;
         display: flex;
@@ -50,6 +53,10 @@
         margin-bottom: 2.5cm;
         height: 2.6cm;
       }
+      .teacher-content p {
+        margin-bottom: 1mm;
+      }
+      
       .teacher-content p:first-of-type {
         font-size: 16px;
         text-decoration: underline;
@@ -65,12 +72,18 @@
       .addressee-content {
         margin-left: 12.5cm;
       }
+      .addressee-content * {
+        margin-bottom: 5mm;
+      }
       .title {
-        margin-bottom: 2.5cm;
+        margin-bottom: 1.5cm;
         height: 1.6cm;
       }
       .title-content h3 {
         font-weight: 400;
+      }
+      .title-content * {
+        margin-bottom: 5mm;
       }
       .title-content span {
         text-transform: none;
@@ -79,12 +92,17 @@
         margin-bottom: 2cm;
         height: 2.5cm;
       }
-      .payment-content {
-        display: grid;
-        grid-template-columns: 10cm 1.5cm auto;
-        justify-content: left;
+      .payment-content .col span {
+        display: inline-block;
+        margin-bottom: 2mm;
       }
-      .col p:last-child {
+      .col span:first-child {
+        width: 50%;
+      }
+      .col span:nth-child(2) {
+        width: 10%;
+      }
+      .col span:last-child {
         font-weight: 700;
       }
     </style>
@@ -121,19 +139,19 @@
     <div class="payment">
       <div class="payment-content">
         <div class="col">
-          <p>Compenso</p>
-          <p>rivalsa inps 4% sul compenso</p>
-          <p>totale documento</p>
+          <span>Compenso</span>
+          <span>Euro</span>
+          <span>20</span>
         </div>
         <div class="col">
-          <p>Euro</p>
-          <p>Euro</p>
-          <p>Euro</p>
+          <span>rivalsa inps 4% sul compenso</span>
+          <span>Euro</span>
+          <span>20</span>
         </div>
         <div class="col">
-          <p>20</p>
-          <p>20</p>
-          <p>20</p>
+          <span>totale documento</span>
+          <span>Euro</span>
+          <span>20</span>
         </div>
       </div>
     </div>
