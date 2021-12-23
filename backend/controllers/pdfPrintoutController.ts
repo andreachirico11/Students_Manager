@@ -33,7 +33,8 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     )) as IMongoStudent;
     const allRecsQueries = new ReceiptsMongoQueries();
     const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
-    const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
+    const total = req.body.withTotal ? calculateTotal(receipts) : null;
+    const htmlFile = (await createHtmlFile(receipts, req.body, student, total)) as string;
     const file = (await createPdfFile(htmlFile)) as FileInfo;
     await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);
@@ -57,10 +58,15 @@ function verifyReqParams(params: IStudentPdfReqBody) {
   }
 }
 
+function calculateTotal(rs: IPdfReceipt[]): number {
+  return rs.reduce((acc, current) => acc + current.amount, 0);
+}
+
 function createHtmlFile(
   receipts: IPdfReceipt[],
   params: IStudentPdfReqBody,
-  student?: IMongoStudent
+  student?: IMongoStudent,
+  total?: number | null
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
     renderFile(
@@ -71,6 +77,8 @@ function createHtmlFile(
         translations: getParsedTranslations(params.locale),
         student,
         params,
+        total,
+        todayDate: getTodayDate(),
       },
       function (err, htmlFile) {
         if (err) {
@@ -80,6 +88,10 @@ function createHtmlFile(
       }
     );
   });
+}
+
+function getTodayDate() {
+  return new Date().toISOString().split('T')[0].split('-').reverse().join('/');
 }
 
 function createPdfFile(htmlFile: string): Promise<FileInfo | PdfCreationErrorObj> {

@@ -1,5 +1,4 @@
 {
-    "TITLE": "Ricevute dello studente ",
     "EMPTY": "Nessuna ricevuta trovata",
     "HEADERS": {
         "NUMBER": "No.",
@@ -13,5 +12,9 @@
         "money": "Moneta",
         "transfer": "Bonifico",
         "atm": "Bancomat"
+    },
+    "FOOTER": {
+        "DATE": "Data: ",
+        "TOT": "Totale da Pagare: "
     }
 }

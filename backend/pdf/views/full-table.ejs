@@ -23,7 +23,7 @@
 
       .main-title {
         font-weight: 400;
-        text-align: center;
+        text-transform: capitalize;
       }
 
       .table-wrapper {
@@ -74,15 +74,23 @@
       tr.not-payed {
         background-color: rgba(250, 84, 84, 0.3);
       }
+
+      .footer {
+        font-size: 14px;
+      }
+
+      .footer span:last-child {
+        float: right;
+      }
     </style>
   </head>
   <body>
-    <% if(receipts.length === 0) { %>
-    <h3 class="main-title"><%=translations.EMPTY%></h3>
-    <% } else { %> <% if(student) { %>
-    <h3 class="main-title"><%=translations.TITLE + student.name +' ' + student.surname %></h3>
-    <% } %>
     <div class="table-wrapper">
+      <% if(receipts.length === 0) { %>
+      <h3 class="main-title"><%=translations.EMPTY%></h3>
+      <% } else { %> <% if(student) { %>
+      <h3 class="main-title"><%=(student.name + ' ' + student.surname).toLowerCase() %></h3>
+      <% } %>
       <table class="fl-table">
         <thead>
           <tr>
@@ -121,6 +129,13 @@
           <% } %>
         </tbody>
       </table>
+      <p class="footer">
+        <% if (todayDate) { %>
+        <span><%= translations.FOOTER.DATE + todayDate %></span>
+        <% } %> <% if (total) { %>
+        <span><%= translations.FOOTER.TOT + total%></span>
+        <% } %>
+      </p>
     </div>
     <% } %>
   </body>

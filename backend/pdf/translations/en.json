@@ -1,5 +1,4 @@
 {
-    "TITLE": "Receipts for the student ",
     "EMPTY": "No Receipts Founded",
     "HEADERS": {
         "NUMBER": "No.",
@@ -13,5 +12,9 @@
         "money": "Money",
         "transfer": "Transfer",
         "atm": "Atm"
+    },
+    "FOOTER": {
+        "DATE": "Date: ",
+        "TOT": "Total to Pay: "
     }
 }

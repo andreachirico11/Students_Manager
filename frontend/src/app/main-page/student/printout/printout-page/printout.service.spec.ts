@@ -42,6 +42,7 @@ describe('PrintoutService', () => {
       locale: 'it',
       columns: ['a', 'b'],
       ascending: true,
+      withTotal: true,
     };
     service.getStudentRecsPdf(body).subscribe();
     controller
@@ -60,6 +61,7 @@ describe('PrintoutService', () => {
       locale: 'it',
       columns: ['a', 'b'],
       ascending: true,
+      withTotal: true,
     };
     service.getStudentRecsPdf(body).subscribe((result) => {
       expect(result.title).toBe(title);

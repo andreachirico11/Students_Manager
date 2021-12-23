@@ -65,13 +65,18 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+    <div class="printout-form-row">
       <mat-checkbox formControlName="ascending">
         {{ 'PRINTOUT.ORDER.' + (form.get('ascending').value ? 'asc' : 'desc') | translate }}
       </mat-checkbox>
-      <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
-        {{ 'PRINTOUT.GENERATE' | translate }}
-      </button>
+      <mat-checkbox formControlName="withTotal">
+        {{ 'PRINTOUT.WITH_TOTAL' | translate }}
+      </mat-checkbox>
     </div>
+    <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
+      {{ 'PRINTOUT.GENERATE' | translate }}
+    </button>
   </mat-card-content>
 </mat-card>
 <a #downloadAnchor style="display: none"></a>

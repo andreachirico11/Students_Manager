@@ -23,7 +23,7 @@
 
       .main-title {
         font-weight: 400;
-        text-align: center;
+        text-transform: capitalize;
       }
 
       .table-wrapper {
@@ -77,11 +77,19 @@
       tr.not-payed {
         background-color: rgba(0, 0, 0, 0.2);
       }
+
+      .footer {
+        font-size: 14px;
+      }
+
+      .footer span:last-child {
+        float: right;
+      }
     </style>
   </head>
   <body>
-    <h3 class="main-title">Ricevute dello studente Gianni Pino</h3>
     <div class="table-wrapper">
+      <h3 class="main-title">gianni pino</h3>
       <table class="fl-table">
         <thead>
           <tr class="not-payed">
@@ -347,6 +355,10 @@
           </tr>
         </tbody>
       </table>
+      <p class="footer">
+        <span>Data: 12/12/2021</span>
+        <span>Totale da pagare: 474358325</span>
+      </p>
     </div>
   </body>
 </html>

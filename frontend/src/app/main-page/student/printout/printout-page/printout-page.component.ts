@@ -71,6 +71,7 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     f.addControl('filters', new FormControl([]));
     f.addControl('orderBy', new FormControl(null));
     f.addControl('ascending', new FormControl(true));
+    f.addControl('withTotal', new FormControl(true));
     return f;
   }
 
@@ -98,12 +99,13 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private parseFormValueIntoParams(): IStudentPdfReqBody {
-    const { filters, orderBy, columns, dateRange, ascending } = this.form.value;
+    const { filters, orderBy, columns, dateRange, ascending, withTotal } = this.form.value;
     const params: IStudentPdfReqBody = {
       _studentId: this.route.snapshot.parent.params.id,
       locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
       ascending,
+      withTotal,
     };
     if (filters.length > 0) {
       params.filters = filters;

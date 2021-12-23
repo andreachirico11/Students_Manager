@@ -115,6 +115,7 @@ describe('PrintoutPageComponent', () => {
       filters: [ReceiptsFilters.thisMonth, ReceiptsFilters.isPayed],
       orderBy: 'number',
       ascending: true,
+      withTotal: true,
     };
     component.form.patchValue({
       columns: {
@@ -147,6 +148,7 @@ describe('PrintoutPageComponent', () => {
         endDate,
       },
       ascending: true,
+      withTotal: true,
     };
     component.form.patchValue({
       columns: {

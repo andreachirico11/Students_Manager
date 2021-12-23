@@ -4,8 +4,9 @@ export interface IStudentPdfReqBody {
   locale: string;
   _studentId: string;
   columns: string[];
-  orderBy?: string;
+  withTotal: boolean;
   ascending: boolean;
+  orderBy?: string;
   filters?: ReceiptsFilters[];
   dateRange?: {
     startDate: Date;

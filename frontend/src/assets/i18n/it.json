@@ -130,6 +130,7 @@
             "asc": "Ascendente",
             "desc": "Discendente"
         },
+        "WITH_TOTAL": "Con Totale",
         "FILTER_VALUES": {
             "isPayed": "Pagate",
             "notPayed": "Non Pagate",
