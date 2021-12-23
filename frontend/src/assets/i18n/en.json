@@ -23,6 +23,7 @@
         "ST_ACTION_1": "Update note",
         "ST_ACTION_2": "Edit",
         "ST_ACTION_3": "Remove",
+        "ST_ACTION_4": "Download",
         "NOTE_LABEL": "Note",
         "NO_ST_TITLE": "Sorry...",
         "NO_ST_CONTENT": "No student was found",
@@ -43,12 +44,14 @@
             "2": "Payable Total",
             "3": "Actual Month Total"
         },
-        "T_HEAD_1": "Payed",
-        "T_HEAD_2": "No.",
-        "T_HEAD_3": "Total",
-        "T_HEAD_4": "Emission",
-        "T_HEAD_5": "Payment",
-        "T_HEAD_6": "Method"
+        "HEADS": {
+            "isPayed": "Payed",
+            "number": "No.",
+            "amount": "Total",
+            "emissionDate": "Emission",
+            "paymentDate": "Payment",
+            "typeOfPayment": "Method"
+        }
     },
     "RECEIPTS_AC": {
         "BTN_1": "Update",
@@ -118,6 +121,28 @@
             "CONFIRM": "Confirm",
             "DISCARD": "Discard",
             "TITLE": "Number of actions waiting to be executed: "
+        }
+    },
+    "PRINTOUT": {
+        "GENERATE": "Generate Pdf",
+        "FILTERS": "Filters",
+        "ORDERBY": "Order By",
+        "ORDER": {
+            "asc": "Ascending",
+            "desc": "Descending"
+        },
+        "WITH_TOTAL": "With Total",
+        "FILTER_VALUES": {
+            "isPayed": "Payed",
+            "notPayed": "Not Payed",
+            "thisMonth": "This Month",
+            "thisYear": "This Year",
+            "dateRange": "Date Range",
+            "DATE_RANGES": {
+                "startDate": "Start Date",
+                "endDate": "End Date",
+                "dateErr": "Required"
+            }
         }
     }
 }

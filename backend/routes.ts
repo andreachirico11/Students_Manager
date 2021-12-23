@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getPdf, getStudentRecap } from './controllers/pdfPrintoutController';
 import { deleteReceipt, postReceipt, putReceipt } from './controllers/receiptController';
 import { getStats } from './controllers/statsController';
 import {
@@ -24,6 +25,10 @@ router.get('/students', verifyToken, getAllStudents);
 router.post('/receipts/:studentId', verifyToken, postReceipt);
 router.put('/receipts/:receiptId', verifyToken, putReceipt);
 router.delete('/receipts/:id', verifyToken, deleteReceipt);
+
+// @ts-ignore
+router.get('/printout', verifyToken, getPdf);
+router.post('/printout/studentRecap', verifyToken, getStudentRecap);
 
 router.get('/stats', verifyToken, getStats);
 

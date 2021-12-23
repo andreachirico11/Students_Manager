@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, delay, first, map, mapTo, switchMapTo, tap } from 'rxjs/operators';
+import { devErrorHandling } from 'src/app/shared/devErrorHandler';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IStats } from 'src/app/shared/models/IStats';
 import { Parent } from 'src/app/shared/models/Parent';
@@ -40,7 +41,7 @@ export class DataService {
       }),
       mapTo(true),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
         return of(false);
       })
     );
@@ -74,7 +75,7 @@ export class DataService {
         throwError(new Error(''));
       }),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
         return of(null);
       })
     );
@@ -90,7 +91,7 @@ export class DataService {
       }),
       map((res) => (res.isOffline ? res.message : true)),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
         return of(false);
       })
     );
@@ -111,7 +112,7 @@ export class DataService {
       }),
       map((res) => (res.isOffline ? res.message : true)),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
 
         return of(false);
       })
@@ -134,7 +135,7 @@ export class DataService {
         ),
         switchMapTo(this.getStats()),
         catchError((e) => {
-          this.devErrorHandling(e);
+          devErrorHandling(e);
           return of(null);
         })
       );
@@ -164,7 +165,7 @@ export class DataService {
       }),
       mapTo(true),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
         return of(null);
       })
     );
@@ -176,7 +177,7 @@ export class DataService {
       switchMapTo(this.getStats()),
       mapTo(true),
       catchError((e) => {
-        this.devErrorHandling(e);
+        devErrorHandling(e);
         return of(false);
       })
     );
@@ -192,13 +193,6 @@ export class DataService {
       forkJoin(students.map((s) => this.getStudentWithReceipts(s.id)))
         .pipe(delay(3000), first())
         .subscribe();
-    }
-  }
-
-  private devErrorHandling(e: HttpErrorResponse) {
-    if (!environment.production) {
-      console.warn('ERRORRRRRR');
-      console.warn(e.error.message);
     }
   }
 }
