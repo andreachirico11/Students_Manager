@@ -59,7 +59,7 @@ function verifyReqParams(params: IStudentPdfReqBody) {
 }
 
 function calculateTotal(rs: IPdfReceipt[]): number {
-  return rs.reduce((acc, current) => acc + current.amount, 0);
+  return rs.reduce((acc, current) => acc + (current.paymentDate ? 0 : current.amount), 0);
 }
 
 function createHtmlFile(
