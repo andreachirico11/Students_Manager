@@ -23,6 +23,7 @@
         "ST_ACTION_1": "Aggiorna note",
         "ST_ACTION_2": "Modifica",
         "ST_ACTION_3": "Rimuovi",
+        "ST_ACTION_4": "Download",
         "NOTE_LABEL": "Note",
         "NO_ST_TITLE": "Spiacenti...",
         "NO_ST_CONTENT": "Non è stato trovato neanche uno studente",
@@ -43,12 +44,14 @@
             "2": "Totale da Pagare",
             "3": "Totale del Mese"
         },
-        "T_HEAD_1": "Pagato",
-        "T_HEAD_2": "No.",
-        "T_HEAD_3": "Totale",
-        "T_HEAD_4": "Emissione",
-        "T_HEAD_5": "Pagamento",
-        "T_HEAD_6": "Metodo"
+        "HEADS": {
+            "isPayed": "Pagato",
+            "number": "No.",
+            "amount": "Totale",
+            "emissionDate": "Emissione",
+            "paymentDate": "Pagamento",
+            "typeOfPayment": "Metodo"
+        }
     },
     "RECEIPTS_AC": {
         "BTN_1": "Modifica",
@@ -117,6 +120,28 @@
             "CONFIRM": "Conferma",
             "DISCARD": "Elimina",
             "TITLE": "Numero di azioni in attesa di essere eseguite: "
+        }
+    },
+    "PRINTOUT": {
+        "GENERATE": "Genera Pdf",
+        "FILTERS": "Filtri",
+        "ORDERBY": "Ordinati per",
+        "ORDER": {
+            "asc": "Ascendente",
+            "desc": "Discendente"
+        },
+        "WITH_TOTAL": "Con Totale",
+        "FILTER_VALUES": {
+            "isPayed": "Pagate",
+            "notPayed": "Non Pagate",
+            "thisMonth": "Mensili",
+            "thisYear": "Annuali",
+            "dateRange": "Intervallo di Date",
+            "DATE_RANGES": {
+                "startDate": "Data Inizio",
+                "endDate": "Data Fine",
+                "dateErr": "Obbligatorio"
+            }
         }
     }
 }

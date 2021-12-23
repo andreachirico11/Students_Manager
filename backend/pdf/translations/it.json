@@ -1,0 +1,20 @@
+{
+    "EMPTY": "Nessuna ricevuta trovata",
+    "HEADERS": {
+        "NUMBER": "No.",
+        "NAME": "Nome",
+        "TOT": "Totale",
+        "DATE_P": "Data Pagamento",
+        "DATE_EM": "Data Emissione",
+        "METHOD": "Metodo"
+    },
+    "PAYMENTS": {
+        "money": "Moneta",
+        "transfer": "Bonifico",
+        "atm": "Bancomat"
+    },
+    "FOOTER": {
+        "DATE": "Data: ",
+        "TOT": "Totale da Pagare: "
+    }
+}

@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-content [formGroup]="form">
+    <!-- COLUMNS -->
+    <div formGroupName="columns" class="printout-form-row">
+      <mat-checkbox *ngFor="let colName of columnNames" [formControlName]="colName">
+        {{ 'RECEIPTS.HEADS.' + colName | translate }}
+      </mat-checkbox>
+    </div>
+    <!-- RANGES -->
+    <div *ngIf="showDateRange" class="printout-form-row" formGroupName="dateRange">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.startDate' | translate }}</mat-label>
+        <input
+          matInput
+          #startInput
+          formControlName="startDate"
+          [max]="form.get('dateRange.endDate').value"
+          [matDatepicker]="startPicker"
+          (focus)="startInput.blur()"
+          (click)="startPicker.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker
+          [touchUi]="isTouchUiActivate"
+          #startPicker
+          disabled="false"
+        ></mat-datepicker>
+        <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.endDate' | translate }}</mat-label>
+        <input
+          matInput
+          #endInput
+          formControlName="endDate"
+          [min]="form.get('dateRange.startDate').value"
+          [matDatepicker]="endPicker"
+          (focus)="endInput.blur()"
+          (click)="endPicker.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker disabled="false"></mat-datepicker>
+        <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' | translate }}</mat-error>
+      </mat-form-field>
+    </div>
+    <!-- FILTERS -->
+    <div class="printout-form-row">
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.FILTERS' | translate }}</mat-label>
+        <mat-select #filtersSelect formControlName="filters" multiple="true">
+          <mat-option *ngFor="let f of filters" [value]="f">
+            {{ 'PRINTOUT.FILTER_VALUES.' + f | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>{{ 'PRINTOUT.ORDERBY' | translate }}</mat-label>
+        <mat-select formControlName="orderBy">
+          <mat-option
+            *ngFor="let c of columnNames"
+            [value]="c"
+            [disabled]="!form.get('columns').get(c).value"
+          >
+            {{ 'RECEIPTS.HEADS.' + c | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="printout-form-row">
+      <mat-checkbox formControlName="ascending">
+        {{ 'PRINTOUT.ORDER.' + (form.get('ascending').value ? 'asc' : 'desc') | translate }}
+      </mat-checkbox>
+      <mat-checkbox formControlName="withTotal">
+        {{ 'PRINTOUT.WITH_TOTAL' | translate }}
+      </mat-checkbox>
+    </div>
+    <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
+      {{ 'PRINTOUT.GENERATE' | translate }}
+    </button>
+  </mat-card-content>
+</mat-card>
+<a #downloadAnchor style="display: none"></a>

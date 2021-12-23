@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Parent } from 'src/app/shared/models/Parent';
 import { Student } from 'src/app/shared/models/Student';
+import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { AllRegExp } from './allRegExp';
 
 @Component({ template: '' })
@@ -22,7 +23,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
   public formValueChanged = new EventEmitter();
 
   get isTouchUiActivate() {
-    return window.innerWidth < 500 ? true : false;
+    return UtilsService.getIfTouchUiIsActivated();
   }
 
   private valueSub: Subscription;

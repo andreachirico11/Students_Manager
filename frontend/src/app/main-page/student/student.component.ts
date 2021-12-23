@@ -1,9 +1,10 @@
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { switchMap, switchMapTo } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
@@ -29,7 +30,8 @@ export class StudentComponent implements OnInit, OnDestroy {
     private updateDataService: UpdateDataService<Student>,
     private translate: TranslateService,
     private deleteDialog: DeleteConfirmationDialogService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -77,6 +79,14 @@ export class StudentComponent implements OnInit, OnDestroy {
         }, 1500);
       }
     );
+  }
+
+  public onDownloadNavigation() {
+    if (/printout/.test(window.location.href)) {
+      this.location.back();
+    } else {
+      this.router.navigate(['printout'], { relativeTo: this.route });
+    }
   }
 
   private loadStudent(id: string) {
