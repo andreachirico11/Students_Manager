@@ -8,18 +8,12 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$frontend-primary: mat.define-palette(mat.$blue-palette, 800);
-$frontend-accent: mat.define-palette(mat.$green-palette);
-$frontend-warn: mat.define-palette(mat.$red-palette);
 $frontend-theme: mat.define-light-theme(
   (
     color: (
-      primary: $frontend-primary,
-      accent: $frontend-accent,
-      warn: $frontend-warn,
+      primary: mat.define-palette(mat.$blue-palette, 800),
+      accent: mat.define-palette(mat.$green-palette, 800),
+      warn: mat.define-palette(mat.$red-palette, 800),
     ),
   )
 );
@@ -27,9 +21,9 @@ $frontend-theme: mat.define-light-theme(
 $frontend-theme-dark: mat.define-dark-theme(
   (
     color: (
-      primary: $frontend-primary,
-      accent: $frontend-accent,
-      warn: $frontend-warn,
+      primary: mat.define-palette(mat.$blue-palette, 400),
+      accent: mat.define-palette(mat.$green-palette, A700),
+      warn: mat.define-palette(mat.$red-palette, 500),
     ),
   )
 );
