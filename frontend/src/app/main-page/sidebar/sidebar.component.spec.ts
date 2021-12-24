@@ -179,7 +179,7 @@ describe('SidebarComponent', () => {
     })
   );
 
-  fit(
+  it(
     'does visualize stats if data have been provided',
     waitForAsync(() => {
       const fakeS: IStats = {
@@ -193,7 +193,7 @@ describe('SidebarComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(getBadges().length).toBe(385324523);
+        expect(getBadges().length).toBe(3);
       });
     })
   );
