@@ -116,7 +116,7 @@ export class ReceiptsFormComponent extends ComponentGuarded implements OnInit, O
       amount: new FormControl('', [
         Validators.required,
         Validators.min(0),
-        Validators.pattern(AllRegExp.onlyNumbersReg),
+        Validators.pattern(AllRegExp.onlyNumbers),
       ]),
       emissionDate: new FormControl('', Validators.required),
       paymentDate: new FormControl(''),

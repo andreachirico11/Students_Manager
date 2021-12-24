@@ -72,14 +72,14 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
         this.form = new FormGroup({
           name: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersReg),
+            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
           ]),
           surname: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersReg),
+            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
           ]),
-          fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
-          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbersReg)]),
+          fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.fiscalCode)]),
+          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
           address: new FormControl(null),
         });
         break;
@@ -87,18 +87,18 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
         this.form = new FormGroup({
           name: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersReg),
+            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
           ]),
           surname: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersReg),
+            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
           ]),
           isWithRec: new FormControl(false, [Validators.required]),
           dateOfBirth: new FormControl(null),
-          fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.cfReg)]),
-          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbersReg)]),
+          fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.fiscalCode)]),
+          phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
           address: new FormControl(null),
-          schoolClass: new FormControl(null, [Validators.pattern(AllRegExp.schoolClassReg)]),
+          schoolClass: new FormControl(null, [Validators.pattern(AllRegExp.schoolClass)]),
         });
         break;
     }
