@@ -28,7 +28,7 @@
     <mat-card-content>
       <mat-form-field appearance="outline" color="warn">
         <mat-label>{{ 'STUDENT.NOTE_LABEL' | translate }}</mat-label>
-        <textarea matInput [(ngModel)]="student.notes"></textarea>
+        <textarea matInput [(ngModel)]="student.notes" (input)="onNoteinput()"></textarea>
       </mat-form-field>
     </mat-card-content>
   </mat-card>

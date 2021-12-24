@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  flushMicrotasks,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
@@ -180,6 +187,27 @@ describe('StudentComponent', () => {
     updateBtn.click();
     expect(updateMethod).toHaveBeenCalledOnceWith(component.student);
   });
+
+  fit('it should call updatestudent only once in 1 second', fakeAsync(() => {
+    createGetStSpy(student);
+    paramsSubject.next(params);
+    updateComponent();
+    const textarea = getByCss('textarea').nativeElement;
+    const spy = spyOn(dbServ, 'updateStudent').and.callFake(() => of(true));
+    textarea.value = newNoteText;
+    textarea.dispatchEvent(new Event('input'));
+    tick(100);
+    textarea.value = '';
+    textarea.dispatchEvent(new Event('input'));
+    tick(100);
+    textarea.value = newNoteText;
+    textarea.dispatchEvent(new Event('input'));
+    tick(100);
+    flush();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(component['noteUpdateSub']).toBeNull();
+    // si rompe perchè non entra mai nella subscribe del metodo
+  }));
 
   it('should open and automatically close the success badge', fakeAsync(() => {
     createGetStSpy(student);

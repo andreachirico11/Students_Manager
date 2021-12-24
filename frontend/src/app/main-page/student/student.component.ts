@@ -3,8 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, timer } from 'rxjs';
+import { switchMap, switchMapTo, tap, timeout } from 'rxjs/operators';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DeleteConfirmationDialogService } from 'src/app/shared/delete-confirmation-dialog.service';
@@ -19,9 +19,11 @@ import { UpdateDataService } from 'src/app/shared/update-data.service';
 export class StudentComponent implements OnInit, OnDestroy {
   public student: Student = null;
   public isBadgeOpen = false;
-  private paramsSub: Subscription;
   public isLoading = false;
   public noteUpdating: 'updating' | 'fail' | 'success' | 'offline' = null;
+
+  private paramsSub: Subscription;
+  private noteUpdateSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +88,27 @@ export class StudentComponent implements OnInit, OnDestroy {
       this.location.back();
     } else {
       this.router.navigate(['printout'], { relativeTo: this.route });
+    }
+  }
+
+  public onNoteinput() {
+    if (!this.noteUpdateSub) {
+      this.noteUpdateSub = timer(1000)
+        .pipe(
+          tap(() => {
+            this.noteUpdating = 'updating';
+          }),
+          switchMapTo(this.dbService.updateStudent(this.student))
+        )
+        .subscribe(() => {
+          console.log('abc');
+
+          this.noteUpdateSub.unsubscribe();
+          this.noteUpdateSub = null;
+          setTimeout(() => {
+            this.noteUpdating = null;
+          }, 500);
+        });
     }
   }
 
