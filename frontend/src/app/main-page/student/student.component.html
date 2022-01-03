@@ -5,15 +5,6 @@
     </mat-card-header>
 
     <mat-action-list>
-      <button
-        *ngIf="!noteUpdating; else noteUpdatingTemplates"
-        mat-stroked-button
-        (click)="updateNote()"
-        color="primary"
-        vBB
-      >
-        {{ 'STUDENT.ST_ACTION_1' | translate }}
-      </button>
       <button mat-stroked-button (click)="onEditClick()" color="accent">
         {{ 'STUDENT.ST_ACTION_2' | translate }}
       </button>
@@ -26,6 +17,13 @@
     </mat-action-list>
 
     <mat-card-content>
+      <div class="progress-bar-container">
+        <mat-progress-bar
+          *ngIf="isUpdatingNote"
+          mode="indeterminate"
+          color="warn"
+        ></mat-progress-bar>
+      </div>
       <mat-form-field appearance="outline" color="warn">
         <mat-label>{{ 'STUDENT.NOTE_LABEL' | translate }}</mat-label>
         <textarea matInput [(ngModel)]="student.notes" (input)="onNoteinput()"></textarea>
@@ -52,25 +50,5 @@
     </mat-card>
   </ng-template>
 </ng-container>
-
-<ng-template #noteUpdatingTemplates>
-  <div [ngSwitch]="noteUpdating">
-    <div class="note-update-container" *ngSwitchCase="'updating'">
-      <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
-    </div>
-    <div class="note-update-container" *ngSwitchCase="'fail'">
-      <span>{{ 'STUDENT.NOTE_UP_FAIL' | translate }}</span>
-      <mat-icon color="warn">warning</mat-icon>
-    </div>
-    <div class="note-update-container" *ngSwitchCase="'success'">
-      <span>{{ 'STUDENT.NOTE_UP_SUCC' | translate }}</span>
-      <mat-icon color="accent">done</mat-icon>
-    </div>
-    <div class="note-update-container" *ngSwitchCase="'offline'">
-      <span>{{ 'STUDENT.NOTE_UP_OFFLINE' | translate }}</span>
-      <mat-icon color="warn">warning</mat-icon>
-    </div>
-  </div>
-</ng-template>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>

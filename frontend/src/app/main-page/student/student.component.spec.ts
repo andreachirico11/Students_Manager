@@ -157,7 +157,7 @@ describe('StudentComponent', () => {
     paramsSubject.next(params);
     updateComponent();
     const deleteSpy = spyOn(dbServ, 'deleteStudent').and.returnValue(of(true));
-    const deleteBtn = getButtons()[2].nativeElement;
+    const deleteBtn = getButtons()[1].nativeElement;
     deleteBtn.click();
     fixture.detectChanges();
     expect(deleteSpy).toHaveBeenCalled();
@@ -169,23 +169,9 @@ describe('StudentComponent', () => {
     updateComponent();
     spyOn(dbServ, 'deleteStudent').and.returnValue(of(true));
     const routerSpy = spyOn(router, 'navigate');
-    const deleteBtn = getButtons()[2].nativeElement;
+    const deleteBtn = getButtons()[1].nativeElement;
     deleteBtn.click();
     expect(routerSpy).toHaveBeenCalledOnceWith(['']);
-  });
-
-  it('it should update note and send it to db', () => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    const textarea = getByCss('textarea').nativeElement;
-    textarea.value = newNoteText;
-    textarea.dispatchEvent(new Event('input'));
-    expect(component.student.notes).toBe(newNoteText);
-    const updateMethod = spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
-    const updateBtn = getButtons()[0].nativeElement;
-    updateBtn.click();
-    expect(updateMethod).toHaveBeenCalledOnceWith(component.student);
   });
 
   it('it should call update student only once in 1 second', fakeAsync(() => {
@@ -208,55 +194,23 @@ describe('StudentComponent', () => {
     expect(component['noteUpdateSub']).toBeNull();
   }));
 
-  it('should open and automatically close the success badge', fakeAsync(() => {
+  it('displays the progress bar during note update', fakeAsync(() => {
+    const isProgressPresent = () => !!getByCss('mat-progress-bar');
     createGetStSpy(student);
     paramsSubject.next(params);
     updateComponent();
-    spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
-    expect(getByCss('.note-update-container')).toBeNull();
-    const updateBtn = getButtons()[0].nativeElement;
-    updateBtn.click();
+    expect(isProgressPresent()).toBeFalse();
+    const textarea = getByCss('textarea').nativeElement;
+    spyOn(dbServ, 'updateStudent').and.callFake(() => of(true));
+    textarea.value = newNoteText;
+    textarea.dispatchEvent(new Event('input'));
+    tick(1100);
     fixture.detectChanges();
-    expect(getByCss('.note-update-container')).toBeTruthy();
-    tick(1500);
+    expect(isProgressPresent()).toBeTrue();
+    tick(600);
     fixture.detectChanges();
-    expect(getByCss('.note-update-container')).toBeNull();
-  }));
-
-  it('should display the note update load badge', fakeAsync(() => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    const updateBtn = getButtons()[0].nativeElement;
-    updateBtn.click();
-    fixture.detectChanges();
-    expect(getByCss('mat-progress-bar')).toBeTruthy();
-  }));
-
-  it('should display the note update success badge', fakeAsync(() => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    spyOn(dbServ, 'updateStudent').and.returnValue(of(true));
-    const updateBtn = getButtons()[0].nativeElement;
-    updateBtn.click();
-    tick(500);
-    fixture.detectChanges();
-    expect(getByCss('.note-update-container mat-icon').nativeElement.textContent).toBe('done');
-    tick(1000);
-  }));
-
-  it('should display the note update fail badge', fakeAsync(() => {
-    createGetStSpy(student);
-    paramsSubject.next(params);
-    updateComponent();
-    spyOn(dbServ, 'updateStudent').and.returnValue(of(null));
-    const updateBtn = getButtons()[0].nativeElement;
-    updateBtn.click();
-    tick(500);
-    fixture.detectChanges();
-    expect(getByCss('.note-update-container mat-icon').nativeElement.textContent).toBe('warning');
-    tick(1000);
+    flush();
+    expect(isProgressPresent()).toBeFalse();
   }));
 });
 

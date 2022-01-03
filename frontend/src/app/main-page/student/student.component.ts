@@ -20,7 +20,7 @@ export class StudentComponent implements OnInit, OnDestroy {
   public student: Student = null;
   public isBadgeOpen = false;
   public isLoading = false;
-  public noteUpdating: 'updating' | 'fail' | 'success' | 'offline' = null;
+  public isUpdatingNote = false;
 
   private paramsSub: Subscription;
   private noteUpdateSub: Subscription;
@@ -59,30 +59,6 @@ export class StudentComponent implements OnInit, OnDestroy {
     });
   }
 
-  public updateNote() {
-    this.noteUpdating = 'updating';
-    this.dbService.updateStudent(this.student).subscribe(
-      (result) => {
-        if (result === true) {
-          this.noteUpdating = 'success';
-        } else if (typeof result === 'string') {
-          this.noteUpdating = 'offline';
-        } else {
-          this.noteUpdating = 'fail';
-        }
-        setTimeout(() => {
-          this.noteUpdating = null;
-        }, 1500);
-      },
-      () => {
-        this.noteUpdating = 'fail';
-        setTimeout(() => {
-          this.noteUpdating = null;
-        }, 1500);
-      }
-    );
-  }
-
   public onDownloadNavigation() {
     if (/printout/.test(window.location.href)) {
       this.location.back();
@@ -96,7 +72,7 @@ export class StudentComponent implements OnInit, OnDestroy {
       this.noteUpdateSub = timer(1000)
         .pipe(
           tap(() => {
-            this.noteUpdating = 'updating';
+            this.isUpdatingNote = true;
           }),
           switchMapTo(this.dbService.updateStudent(this.student))
         )
@@ -104,7 +80,7 @@ export class StudentComponent implements OnInit, OnDestroy {
           this.noteUpdateSub.unsubscribe();
           this.noteUpdateSub = null;
           setTimeout(() => {
-            this.noteUpdating = null;
+            this.isUpdatingNote = false;
           }, 500);
         });
     }
