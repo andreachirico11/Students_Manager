@@ -101,8 +101,6 @@ export class StudentComponent implements OnInit, OnDestroy {
           switchMapTo(this.dbService.updateStudent(this.student))
         )
         .subscribe(() => {
-          console.log('abc');
-
           this.noteUpdateSub.unsubscribe();
           this.noteUpdateSub = null;
           setTimeout(() => {

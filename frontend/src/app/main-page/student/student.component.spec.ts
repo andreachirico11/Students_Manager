@@ -188,7 +188,7 @@ describe('StudentComponent', () => {
     expect(updateMethod).toHaveBeenCalledOnceWith(component.student);
   });
 
-  fit('it should call updatestudent only once in 1 second', fakeAsync(() => {
+  it('it should call update student only once in 1 second', fakeAsync(() => {
     createGetStSpy(student);
     paramsSubject.next(params);
     updateComponent();
@@ -196,17 +196,16 @@ describe('StudentComponent', () => {
     const spy = spyOn(dbServ, 'updateStudent').and.callFake(() => of(true));
     textarea.value = newNoteText;
     textarea.dispatchEvent(new Event('input'));
-    tick(100);
+    tick(400);
     textarea.value = '';
     textarea.dispatchEvent(new Event('input'));
-    tick(100);
+    tick(400);
     textarea.value = newNoteText;
     textarea.dispatchEvent(new Event('input'));
-    tick(100);
+    tick(400);
     flush();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(component['noteUpdateSub']).toBeNull();
-    // si rompe perchè non entra mai nella subscribe del metodo
   }));
 
   it('should open and automatically close the success badge', fakeAsync(() => {
