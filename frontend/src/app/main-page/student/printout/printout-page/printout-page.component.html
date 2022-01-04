@@ -75,7 +75,8 @@
       </mat-checkbox>
     </div>
     <button mat-stroked-button (click)="onGenerate()" color="primary" [disabled]="form.invalid">
-    <mat-divider></mat-divider>
+      {{ 'PRINTOUT.GENERATE' | translate }}
+    </button>
     <button mat-stroked-button color="primary" class="blank-page-btn" (click)="onBlankReceipt()">
       {{ 'PRINTOUT.BLANK' | translate }}
     </button>
