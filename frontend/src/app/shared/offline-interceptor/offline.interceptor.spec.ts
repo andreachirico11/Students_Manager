@@ -45,6 +45,7 @@ describe('OfflineInterceptor', () => {
   });
 
   it('should get the error without change if connection is established', () => {
+    spyOn<any>(interceptor, 'getMatDialog');
     const status = 500,
       statusText = 'connection';
     switchOnOffline('online');
@@ -65,6 +66,8 @@ describe('OfflineInterceptor', () => {
   it('should get the error without change if the request method is get', () => {
     const status = 500,
       statusText = 'connection';
+    spyOn<any>(interceptor, 'getMatDialog');
+
     switchOnOffline('offline');
     service
       .getReq()
@@ -81,6 +84,7 @@ describe('OfflineInterceptor', () => {
   });
 
   it('should return isOffline in the response without errors and stops the http request', () => {
+    spyOn<any>(interceptor, 'getMatDialog');
     switchOnOffline('offline');
     service.postReq().subscribe((r) => {
       expect(r['isOffline']).toBeTrue();
@@ -89,6 +93,7 @@ describe('OfflineInterceptor', () => {
   });
 
   it('should store post requests and call listen and load method', () => {
+    spyOn<any>(interceptor, 'getMatDialog');
     const listenAndLoadSpy = spyOn<any>(interceptor, 'listenAndLoad');
     switchOnOffline('offline');
     service.postReq().subscribe((r) => {
@@ -99,6 +104,7 @@ describe('OfflineInterceptor', () => {
   });
 
   it('should store the exact number of requests', () => {
+    spyOn<any>(interceptor, 'getMatDialog');
     switchOnOffline('offline');
     forkJoin([1, 2, 3, 4].map(() => service.postReq())).subscribe(() => {
       expect(interceptor['stackOfRequests'].length).toBe(4);
