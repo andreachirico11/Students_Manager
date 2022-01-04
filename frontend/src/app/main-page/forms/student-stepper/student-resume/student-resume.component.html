@@ -1,5 +1,5 @@
 <mat-list *ngIf="student">
-  <div mat-subheader>Student</div>
+  <div mat-subheader>{{ 'STUDENT_INFO.STUDENT' | translate }}</div>
   <mat-list-item>
     <div mat-line>
       {{ 'FORMS.NAME' | translate }}:
@@ -42,6 +42,7 @@
       <b>{{ student.fiscalCode }}</b>
     </div>
   </mat-list-item>
+
   <ng-container *ngIf="student.parent">
     <mat-divider></mat-divider>
     <div mat-subheader>{{ 'STUDENT_INFO.PARENTS' | translate }}</div>
@@ -63,7 +64,6 @@
         <b>{{ student.parent.phoneNumber }}</b>
       </div>
     </mat-list-item>
-
     <mat-list-item *ngIf="student.parent.address">
       <div mat-line>
         {{ 'STUDENT_INFO.ADDRESS' | translate }}:
@@ -76,16 +76,33 @@
         <b>{{ student.parent.fiscalCode }}</b>
       </div>
     </mat-list-item>
-
-    <mat-divider></mat-divider>
-    <button
-      mat-raised-button
-      color="primary"
-      type="button"
-      (click)="okEv.emit()"
-      style="width: 100%"
-    >
-      Ok
-    </button>
   </ng-container>
+
+  <ng-container *ngIf="student.receiptPrice">
+    <mat-divider></mat-divider>
+    <div mat-subheader>{{ 'STUDENT_INFO.RECEIPT_PRICE' | translate }}</div>
+    <mat-list-item>
+      <div mat-line>
+        {{ 'FORMS.PRICE' | translate }}:
+        <b>{{ student.receiptPrice.price }}</b>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>
+        {{ 'FORMS.TAX' | translate }}:
+        <b>{{ student.receiptPrice.tax }}</b>
+      </div>
+    </mat-list-item>
+    <mat-list-item>
+      <div mat-line>
+        {{ 'FORMS.TOTAL' | translate }}:
+        <b>{{ student.receiptPrice.total }}</b>
+      </div>
+    </mat-list-item>
+  </ng-container>
+
+  <mat-divider></mat-divider>
+  <button mat-raised-button color="primary" type="button" (click)="okEv.emit()" style="width: 100%">
+    Ok
+  </button>
 </mat-list>

@@ -13,7 +13,17 @@
       [objectToUpdate]="studentUnderUpdate?.parent"
     ></parent-form>
   </mat-step>
-  <mat-step [label]="labels[2]">
-    <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>
+  <mat-step [label]="labels[2]" state="chat" completed="false">
+    <receipt-price-form
+      (result)="onReceiptFormEv($event)"
+      (formValueChanged)="onFormValueChange()"
+      [objectToUpdate]="studentUnderUpdate?.receiptPrice"
+    ></receipt-price-form>
+  </mat-step>
+  <mat-step [label]="labels[3]">
+    <student-resume
+      [student]="studentUnderUpdate ? studentUnderUpdate : studentCreated"
+      (okEv)="onOk()"
+    ></student-resume>
   </mat-step>
 </mat-stepper>

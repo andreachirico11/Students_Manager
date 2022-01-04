@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
+import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Student } from 'src/app/shared/models/Student';
 import { ObjectComparatorService } from 'src/app/shared/object-comparator/object-comparator.service';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
@@ -75,6 +76,18 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     this.stepper.next();
   }
 
+  onReceiptFormEv(result: any) {
+    const { price, tax, total } = result;
+    if (price && tax && total) {
+      this.studentCreated = {
+        ...this.studentCreated,
+        receiptPrice: new ReceiptPrice(total, tax, price),
+      };
+    }
+    this.stepper.selected.completed = true;
+    this.stepper.next();
+  }
+
   onOk() {
     if (this.studentUnderUpdate) {
       this.updateStudent();
@@ -86,6 +99,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
   onFormValueChange() {
     this.canLeave = false;
   }
+
   private onViewBreakpoint(ifTrue: any, ifFalse: any): Observable<any> {
     return this.breakPointObs.observe('(max-width: 549px)').pipe(
       map((state: BreakpointState) => {
@@ -109,6 +123,9 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
   }
 
   private updateStudent() {
+    if (!this.studentCreated) {
+      return this.navigateHome();
+    }
     this.studentCreated.id = this.studentUnderUpdate.id;
     if (this.objComparatorSrv.areObjEquals(this.studentCreated, this.studentUnderUpdate)) {
       return this.navigateHome();
@@ -180,7 +197,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       schoolClass,
       address,
       '',
-      receiptPrice,
+      receiptPrice || null,
       id
     );
   }

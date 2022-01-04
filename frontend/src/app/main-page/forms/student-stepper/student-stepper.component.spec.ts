@@ -12,11 +12,13 @@ import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { FAKE_DB, getFakeStudents } from 'src/app/shared/fakeInterceptor/fakeDb';
 import { Parent } from 'src/app/shared/models/Parent';
+import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Student } from 'src/app/shared/models/Student';
 import { ObjectComparatorService } from 'src/app/shared/object-comparator/object-comparator.service';
 import { UpdateDataService } from 'src/app/shared/update-data.service';
 import { DataService } from '../../data-service/data.service';
 import { ParentFormComponent } from './parent-form/parent-form.component';
+import { ReceiptPriceFormComponent } from './receipt-price-form/receipt-price-form.component';
 import { StudentFormComponent } from './student-form/student-form.component';
 import { StudentResumeComponent } from './student-resume/student-resume.component';
 import { StudentStepperComponent } from './student-stepper.component';
@@ -39,6 +41,7 @@ describe('StudentStepperComponent', () => {
   let component: StudentStepperComponent;
   let studentForm: StudentFormComponent;
   let parentForm: ParentFormComponent;
+  let receiptPriceForm: ReceiptPriceFormComponent;
   let studentResume: StudentResumeComponent;
   let fixture: ComponentFixture<StudentStepperComponent>;
   let updateDataService: UpdateDataService<Student>;
@@ -58,6 +61,11 @@ describe('StudentStepperComponent', () => {
       ...partialStudent,
     });
   };
+  const fillRecPriceForm = (rp: ReceiptPrice) => {
+    receiptPriceForm.form.patchValue({
+      ...rp,
+    });
+  };
   const fillParentForm = (parent: Parent) => {
     parentForm.form.patchValue({
       ...parent,
@@ -73,6 +81,7 @@ describe('StudentStepperComponent', () => {
         StudentFormComponent,
         ParentFormComponent,
         StudentResumeComponent,
+        ReceiptPriceFormComponent,
       ],
       imports: [
         HttpClientTestingModule,
@@ -120,6 +129,9 @@ describe('StudentStepperComponent', () => {
     fixture.detectChanges();
     studentForm = fixture.debugElement.query(By.directive(StudentFormComponent)).componentInstance;
     parentForm = fixture.debugElement.query(By.directive(ParentFormComponent)).componentInstance;
+    receiptPriceForm = fixture.debugElement.query(
+      By.directive(ReceiptPriceFormComponent)
+    ).componentInstance;
     studentResume = fixture.debugElement.query(
       By.directive(StudentResumeComponent)
     ).componentInstance;
@@ -228,6 +240,54 @@ describe('StudentStepperComponent', () => {
     const addUpdateSpy = spyOn<any>(component, 'onAddOrUpdateResp');
     component.onOk();
     expect(addUpdateSpy).not.toHaveBeenCalled();
+  });
+
+  it("generate a student with null receipt price if the form isn't compiled", () => {
+    const partialS = getPartialStudent(),
+      fakeParent = new Parent(
+        fakeStudent.parent.name,
+        fakeStudent.parent.surname,
+        fakeStudent.parent.phoneNumber,
+        fakeStudent.parent.fiscalCode,
+        fakeStudent.parent.address
+      );
+    fillStudentForm(partialS);
+    studentForm.onSubmit();
+    fillParentForm(fakeParent);
+    parentForm.onSubmit();
+    fixture.detectChanges();
+    const addUpdateSpy = spyOn<any>(component, 'onAddOrUpdateResp');
+    component.onOk();
+    expect(addUpdateSpy).not.toHaveBeenCalledOnceWith({
+      ...partialS,
+      parent: fakeParent,
+    });
+  });
+
+  it('generate a student with correct receipt price if compiled', () => {
+    const partialS = getPartialStudent(),
+      fakeParent = new Parent(
+        fakeStudent.parent.name,
+        fakeStudent.parent.surname,
+        fakeStudent.parent.phoneNumber,
+        fakeStudent.parent.fiscalCode,
+        fakeStudent.parent.address
+      );
+    fillStudentForm(partialS);
+    studentForm.onSubmit();
+    fillParentForm(fakeParent);
+    parentForm.onSubmit();
+    const fakeRecPrice = new ReceiptPrice(1, 2, 3);
+    fillRecPriceForm(fakeRecPrice);
+    receiptPriceForm.onSubmit();
+    fixture.detectChanges();
+    const addUpdateSpy = spyOn<any>(component, 'onAddOrUpdateResp');
+    component.onOk();
+    expect(addUpdateSpy).not.toHaveBeenCalledOnceWith({
+      ...partialS,
+      parent: fakeParent,
+      receiptPrice: fakeRecPrice,
+    });
   });
 
   afterEach(() => {

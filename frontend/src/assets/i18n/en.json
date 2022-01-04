@@ -36,7 +36,9 @@
         "CLASS": "Class",
         "FISCAL": "CF",
         "ADDRESS": "Address",
-        "PARENTS": "Parent"
+        "PARENTS": "Parent",
+        "STUDENT": "Student",
+        "RECEIPT_PRICE": "Receipt Price"
     },
     "RECEIPTS": {
         "TOTALS": {
@@ -82,6 +84,7 @@
         "STEPS": [
             "Student",
             "Parent",
+            "Receipt",
             "Done"
         ],
         "ERRORS": {
