@@ -93,7 +93,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             Validators.required,
             Validators.pattern(AllRegExp.onlyLettersAndSpaces),
           ]),
-          isWithRec: new FormControl(false, [Validators.required]),
+          isWithRec: new FormControl(true),
           dateOfBirth: new FormControl(null),
           fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.fiscalCode)]),
           phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
