@@ -6,17 +6,17 @@ import { Injectable } from '@angular/core';
 export class ObjectComparatorService {
   public areObjEquals(obj1: Object, obj2: Object): boolean {
     for (const prop in obj1) {
-      if (!obj1 || !obj2) {
-        if (obj1 !== obj2) {
-          return false;
-        }
-        continue;
-      }
       if (!obj2.hasOwnProperty(prop)) {
         return false;
       }
       const value1 = obj1[prop],
         value2 = obj2[prop];
+      if (!value1 || !value2) {
+        if (value1 !== value2) {
+          return false;
+        }
+        continue;
+      }
       if (this.areObjects(value1, value2)) {
         if (this.areDates(value1, value2) && !this.areEqualDates(value1, value2)) {
           return false;
