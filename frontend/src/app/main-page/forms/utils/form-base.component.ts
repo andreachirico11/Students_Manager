@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { Parent } from 'src/app/shared/models/Parent';
 import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Student } from 'src/app/shared/models/Student';
+import { otherFieldCompiledComparer } from 'src/app/shared/otherFieldComparerValidator';
 import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { AllRegExp } from './allRegExp';
 
@@ -106,9 +107,18 @@ export class FormBaseComponent<T extends Student | Parent | ReceiptPrice>
         break;
       case 'ReceiptPriceForm':
         this.form = new FormGroup({
-          price: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
-          tax: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
-          total: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+          price: new FormControl(null, [
+            Validators.pattern(AllRegExp.onlyNumbers),
+            otherFieldCompiledComparer(this.form.get('tax'), this.form.get('total')),
+          ]),
+          tax: new FormControl(null, [
+            Validators.pattern(AllRegExp.onlyNumbers),
+            otherFieldCompiledComparer(this.form.get('price'), this.form.get('total')),
+          ]),
+          total: new FormControl(null, [
+            Validators.pattern(AllRegExp.onlyNumbers),
+            otherFieldCompiledComparer(this.form.get('tax'), this.form.get('price')),
+          ]),
         });
         break;
     }

@@ -87,7 +87,8 @@
         "ERRORS": {
             "ONLY_LETTERS": "Solo Lettere",
             "ONLY_NUMBERS": "Solo Numeri",
-            "INVALID_FORMAT": "Formato Invalido"
+            "INVALID_FORMAT": "Formato Invalido",
+            "OTHER_FIELD_COMPILED": "Almeno un altro campo è stato compilato"
         },
         "NEXT": "Avanti",
         "EMPTY_VAL": "Vuoto",

@@ -56,4 +56,14 @@ describe('ReceiptPriceFormComponent', () => {
     total.setValue(1.423);
     expect(total.valid).toBeTrue();
   });
+
+  fit('expects price field to be invalid if at least one of the other formField has been touched and has a value', () => {
+    const { price, tax, total } = getControls();
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(price.valid).toBeTrue();
+    tax.setValue(1);
+    price.markAsTouched();
+    expect(price.invalid).toBeTrue();
+  });
 });

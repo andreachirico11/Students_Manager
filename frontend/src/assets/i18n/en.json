@@ -87,7 +87,8 @@
         "ERRORS": {
             "ONLY_LETTERS": "Only Letters",
             "ONLY_NUMBERS": "Only Numbers",
-            "INVALID_FORMAT": "Invalid format"
+            "INVALID_FORMAT": "Invalid format",
+            "OTHER_FIELD_COMPILED": "At least another field has been compiled"
         },
         "NEXT": "Next",
         "EMPTY_VAL": "None",

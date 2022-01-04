@@ -5,6 +5,9 @@
     <mat-error *ngIf="patternErrorChecker('price')">
       {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
     </mat-error>
+    <mat-error *ngIf="hasOtherFieldCompiledErr('price')">
+      {{ 'FORMS.ERRORS.OTHER_FIELD_COMPILED' | translate }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>{{ 'FORMS.TAX' | translate }}</mat-label>
@@ -12,12 +15,18 @@
     <mat-error *ngIf="patternErrorChecker('tax')">
       {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
     </mat-error>
+    <mat-error *ngIf="hasOtherFieldCompiledErr('tax')">
+      {{ 'FORMS.ERRORS.OTHER_FIELD_COMPILED' | translate }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>{{ 'FORMS.TOTAL' | translate }}</mat-label>
     <input matInput formControlName="total" />
     <mat-error *ngIf="patternErrorChecker('total')">
       {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
+    </mat-error>
+    <mat-error *ngIf="hasOtherFieldCompiledErr('total')">
+      {{ 'FORMS.ERRORS.OTHER_FIELD_COMPILED' | translate }}
     </mat-error>
   </mat-form-field>
   <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
