@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'FORMS.PRICE' | translate }}</mat-label>
+    <input matInput formControlName="price" />
+    <mat-error *ngIf="patternErrorChecker('price')">
+      {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'FORMS.TAX' | translate }}</mat-label>
+    <input matInput formControlName="tax" />
+    <mat-error *ngIf="patternErrorChecker('tax')">
+      {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'FORMS.TOTAL' | translate }}</mat-label>
+    <input matInput formControlName="total" />
+    <mat-error *ngIf="patternErrorChecker('total')">
+      {{ 'FORMS.ERRORS.ONLY_NUMBERS' | translate }}
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    {{ 'FORMS.NEXT' | translate }}
+  </button>
+</form>

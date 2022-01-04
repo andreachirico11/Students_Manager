@@ -5,12 +5,15 @@ import { DateAdapter } from '@angular/material/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { Parent } from 'src/app/shared/models/Parent';
+import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Student } from 'src/app/shared/models/Student';
 import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { AllRegExp } from './allRegExp';
 
 @Component({ template: '' })
-export class FormBaseComponent<T extends Student | Parent> implements OnInit, OnDestroy {
+export class FormBaseComponent<T extends Student | Parent | ReceiptPrice>
+  implements OnInit, OnDestroy
+{
   public form: FormGroup;
 
   @Input()
@@ -30,7 +33,7 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
   private transSub: Subscription;
 
   constructor(
-    @Inject(String) private typeOfForm: 'StudentForm' | 'ParentForm',
+    @Inject(String) private typeOfForm: 'StudentForm' | 'ParentForm' | 'ReceiptPriceForm',
     private dateAd: DateAdapter<any>,
     private tServ: TranslateService
   ) {}
@@ -101,6 +104,13 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
           schoolClass: new FormControl(null, [Validators.pattern(AllRegExp.schoolClass)]),
         });
         break;
+      case 'ReceiptPriceForm':
+        this.form = new FormGroup({
+          price: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+          tax: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+          total: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+        });
+        break;
     }
   }
 
@@ -114,6 +124,15 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
             fiscalCode: this.objectToUpdate.fiscalCode,
             phoneNumber: this.objectToUpdate.phoneNumber,
             address: this.objectToUpdate.address ?? null,
+          });
+        }
+        break;
+      case 'ReceiptPriceForm':
+        if (this.objectToUpdate instanceof ReceiptPrice) {
+          this.form.patchValue({
+            price: this.objectToUpdate.price,
+            tax: this.objectToUpdate.tax,
+            total: this.objectToUpdate.total,
           });
         }
         break;

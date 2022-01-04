@@ -86,10 +86,14 @@
         ],
         "ERRORS": {
             "ONLY_LETTERS": "Only Letters",
+            "ONLY_NUMBERS": "Only Numbers",
             "INVALID_FORMAT": "Invalid format"
         },
         "NEXT": "Next",
-        "EMPTY_VAL": "None"
+        "EMPTY_VAL": "None",
+        "PRICE": "Price",
+        "TAX": "Taxation",
+        "TOTAL": "Total"
     },
     "DIALOG": {
         "YES": "Yes",

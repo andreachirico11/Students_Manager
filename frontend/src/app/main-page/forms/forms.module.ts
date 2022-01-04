@@ -10,6 +10,7 @@ import { TRANSLATE_CONFIG } from 'src/app/shared/translation-utils';
 import { FormsGuard } from './forms.guard';
 import { ReceiptsFormComponent } from './receipts-form/receipts-form.component';
 import { ParentFormComponent } from './student-stepper/parent-form/parent-form.component';
+import { ReceiptPriceFormComponent } from './student-stepper/receipt-price-form/receipt-price-form.component';
 import { StudentFormComponent } from './student-stepper/student-form/student-form.component';
 import { StudentResumeComponent } from './student-stepper/student-resume/student-resume.component';
 import { StudentStepperComponent } from './student-stepper/student-stepper.component';
@@ -49,6 +50,7 @@ const routes: Routes = [
     StudentResumeComponent,
     StudentStepperComponent,
     FormBaseComponent,
+    ReceiptPriceFormComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
