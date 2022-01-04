@@ -72,11 +72,11 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
         this.form = new FormGroup({
           name: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
+            Validators.pattern(AllRegExp.onlyLettersAndSpacesAndApostrophe),
           ]),
           surname: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
+            Validators.pattern(AllRegExp.onlyLettersAndSpacesAndApostrophe),
           ]),
           fiscalCode: new FormControl(null, [Validators.pattern(AllRegExp.fiscalCode)]),
           phoneNumber: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
@@ -87,11 +87,11 @@ export class FormBaseComponent<T extends Student | Parent> implements OnInit, On
         this.form = new FormGroup({
           name: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
+            Validators.pattern(AllRegExp.onlyLettersAndSpacesAndApostrophe),
           ]),
           surname: new FormControl(null, [
             Validators.required,
-            Validators.pattern(AllRegExp.onlyLettersAndSpaces),
+            Validators.pattern(AllRegExp.onlyLettersAndSpacesAndApostrophe),
           ]),
           isWithRec: new FormControl(true),
           dateOfBirth: new FormControl(null),
