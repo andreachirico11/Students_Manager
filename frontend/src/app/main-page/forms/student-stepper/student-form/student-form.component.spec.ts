@@ -48,6 +48,7 @@ describe('StudentFormComponent', () => {
       fakeStudent.schoolClass,
       fakeStudent.address,
       fakeStudent.notes,
+      fakeStudent.receiptPrice,
       fakeStudent.id
     );
 

@@ -25,6 +25,7 @@ describe('SortService', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
     new Student(
@@ -46,6 +47,7 @@ describe('SortService', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
     new Student(
@@ -67,6 +69,7 @@ describe('SortService', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
   ];

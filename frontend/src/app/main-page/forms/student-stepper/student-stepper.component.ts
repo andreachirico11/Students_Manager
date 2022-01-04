@@ -166,6 +166,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       address,
       id,
       isWithRec,
+      receiptPrice,
     } = obj;
     return new Student(
       name,
@@ -179,6 +180,7 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       schoolClass,
       address,
       '',
+      receiptPrice,
       id
     );
   }

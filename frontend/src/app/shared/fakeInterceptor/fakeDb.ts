@@ -33,6 +33,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
       receipts: [],
       isWithRec: true,
+      receiptPrice: null,
     },
     {
       id: 's_2',
@@ -70,6 +71,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
       ],
       isWithRec: true,
+      receiptPrice: null,
       address: 'via gianni gianno',
     },
     {
@@ -89,6 +91,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         phoneNumber: 3453456656,
       },
       address: 'via gianni gianno',
+      receiptPrice: null,
 
       notes:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis delectus quod, rerum velit natus ullam quam? Quisquam qui sint voluptatibus ut, velit laboriosam fuga iste omnis in provident accusamus odit, magnam molestias tempora aspernatur minima, reprehenderit a est? Fugit, similique?',
@@ -216,6 +219,7 @@ function getStudent(i: number): Student {
     getRand(10) + getLongString(1),
     addr,
     getLongString(40),
+    null,
     's_' + randomId()
   );
 }

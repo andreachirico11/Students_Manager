@@ -1,4 +1,5 @@
 import { Parent } from './Parent';
+import { ReceiptPrice } from './ReceiptPrice';
 import { Receipt } from './Receipts';
 
 export class Student {
@@ -14,6 +15,7 @@ export class Student {
     public schoolClass?: string,
     public address?: string,
     public notes?: string,
+    public receiptPrice?: ReceiptPrice,
     public id?: string
   ) {}
 }

@@ -69,6 +69,7 @@ export class DataService {
             r.payload.schoolClass,
             r.payload.address,
             r.payload.notes,
+            r.payload.receiptPrice,
             r.payload.id
           );
         }

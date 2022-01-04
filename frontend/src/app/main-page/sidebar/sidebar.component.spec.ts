@@ -61,6 +61,7 @@ describe('SidebarComponent', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
     new Student(
@@ -82,6 +83,7 @@ describe('SidebarComponent', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
     new Student(
@@ -103,6 +105,7 @@ describe('SidebarComponent', () => {
       '',
       '',
       '',
+      null,
       '1'
     ),
   ];

@@ -48,6 +48,7 @@ describe('StudentComponent', () => {
       '',
       '',
       'notes',
+      null,
       '1'
     ),
     newNoteText = 'new note',
