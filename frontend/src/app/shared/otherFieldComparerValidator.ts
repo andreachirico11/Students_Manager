@@ -1,19 +1,19 @@
-import { AbstractControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
-export function otherFieldCompiledComparer(...otherControls: AbstractControl[]) {
-  return (control: AbstractControl): { [message: string]: boolean } => {
-    if (
-      control.touched &&
-      !control.value &&
-      otherControls.length > 0 &&
-      atLeastOneControlHasBeenCompiled(otherControls)
-    ) {
-      return { otherFieldHasBeenCompiled: true };
+export function checkIfEveryControlIsComipled(...controlnames: string[]) {
+  return (form: FormGroup): null => {
+    const controlsWithoutValues = controlnames
+      .map((name) => form.get(name))
+      .filter((ctrl) => !ctrl.value);
+    if (controlsWithoutValues.length > 0 && controlsWithoutValues.length < controlnames.length) {
+      controlsWithoutValues.forEach((ctrl) => {
+        ctrl.setErrors({ otherFieldHasBeenCompiled: true });
+      });
+    } else {
+      controlsWithoutValues.forEach((ctrl) => {
+        ctrl.setErrors(null);
+      });
     }
     return null;
   };
-}
-
-function atLeastOneControlHasBeenCompiled(ctrls: AbstractControl[]) {
-  return ctrls.some((ctrl) => ctrl.touched && ctrl.value);
 }

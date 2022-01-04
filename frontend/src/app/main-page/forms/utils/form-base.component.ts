@@ -1,5 +1,4 @@
-import { OnDestroy, Output } from '@angular/core';
-import { Component, EventEmitter, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { Parent } from 'src/app/shared/models/Parent';
 import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Student } from 'src/app/shared/models/Student';
-import { otherFieldCompiledComparer } from 'src/app/shared/otherFieldComparerValidator';
+import { checkIfEveryControlIsComipled } from 'src/app/shared/otherFieldComparerValidator';
 import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { AllRegExp } from './allRegExp';
 
@@ -107,28 +106,11 @@ export class FormBaseComponent<T extends Student | Parent | ReceiptPrice>
         break;
       case 'ReceiptPriceForm':
         this.form = new FormGroup({
-          price: new FormControl(null),
-          tax: new FormControl(null),
-          total: new FormControl(null),
+          price: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+          tax: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
+          total: new FormControl(null, [Validators.pattern(AllRegExp.onlyNumbers)]),
         });
-        this.form
-          .get('price')
-          .setValidators([
-            Validators.pattern(AllRegExp.onlyNumbers),
-            otherFieldCompiledComparer(this.form.get('tax'), this.form.get('total')),
-          ]);
-        this.form
-          .get('tax')
-          .setValidators([
-            Validators.pattern(AllRegExp.onlyNumbers),
-            otherFieldCompiledComparer(this.form.get('price'), this.form.get('total')),
-          ]);
-        this.form
-          .get('total')
-          .setValidators([
-            Validators.pattern(AllRegExp.onlyNumbers),
-            otherFieldCompiledComparer(this.form.get('tax'), this.form.get('price')),
-          ]);
+        this.form.setValidators([checkIfEveryControlIsComipled('price', 'tax', 'total')]);
         break;
     }
   }
