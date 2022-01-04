@@ -107,19 +107,28 @@ export class FormBaseComponent<T extends Student | Parent | ReceiptPrice>
         break;
       case 'ReceiptPriceForm':
         this.form = new FormGroup({
-          price: new FormControl(null, [
+          price: new FormControl(null),
+          tax: new FormControl(null),
+          total: new FormControl(null),
+        });
+        this.form
+          .get('price')
+          .setValidators([
             Validators.pattern(AllRegExp.onlyNumbers),
             otherFieldCompiledComparer(this.form.get('tax'), this.form.get('total')),
-          ]),
-          tax: new FormControl(null, [
+          ]);
+        this.form
+          .get('tax')
+          .setValidators([
             Validators.pattern(AllRegExp.onlyNumbers),
             otherFieldCompiledComparer(this.form.get('price'), this.form.get('total')),
-          ]),
-          total: new FormControl(null, [
+          ]);
+        this.form
+          .get('total')
+          .setValidators([
             Validators.pattern(AllRegExp.onlyNumbers),
             otherFieldCompiledComparer(this.form.get('tax'), this.form.get('price')),
-          ]),
-        });
+          ]);
         break;
     }
   }

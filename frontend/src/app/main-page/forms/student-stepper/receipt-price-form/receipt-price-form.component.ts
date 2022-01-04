@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
