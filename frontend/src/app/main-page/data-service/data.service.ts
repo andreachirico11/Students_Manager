@@ -7,6 +7,7 @@ import { devErrorHandling } from 'src/app/shared/devErrorHandler';
 import { IHttpResponse } from 'src/app/shared/models/IHttpResponse';
 import { IStats } from 'src/app/shared/models/IStats';
 import { Parent } from 'src/app/shared/models/Parent';
+import { ReceiptPrice } from 'src/app/shared/models/ReceiptPrice';
 import { Receipt } from 'src/app/shared/models/Receipts';
 import { Student } from 'src/app/shared/models/Student';
 import { environment } from 'src/environments/environment';
@@ -69,7 +70,13 @@ export class DataService {
             r.payload.schoolClass,
             r.payload.address,
             r.payload.notes,
-            r.payload.receiptPrice,
+            r.payload.receiptPrice
+              ? new ReceiptPrice(
+                  r.payload.receiptPrice.total,
+                  r.payload.receiptPrice.tax,
+                  r.payload.receiptPrice.price
+                )
+              : null,
             r.payload.id
           );
         }

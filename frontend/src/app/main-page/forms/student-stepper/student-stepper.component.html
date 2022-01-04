@@ -21,9 +21,6 @@
     ></receipt-price-form>
   </mat-step>
   <mat-step [label]="labels[3]">
-    <student-resume
-      [student]="studentUnderUpdate ? studentUnderUpdate : studentCreated"
-      (okEv)="onOk()"
-    ></student-resume>
+    <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>
   </mat-step>
 </mat-stepper>

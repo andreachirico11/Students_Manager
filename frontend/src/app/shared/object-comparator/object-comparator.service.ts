@@ -6,6 +6,12 @@ import { Injectable } from '@angular/core';
 export class ObjectComparatorService {
   public areObjEquals(obj1: Object, obj2: Object): boolean {
     for (const prop in obj1) {
+      if (!obj1 || !obj2) {
+        if (obj1 !== obj2) {
+          return false;
+        }
+        continue;
+      }
       if (!obj2.hasOwnProperty(prop)) {
         return false;
       }

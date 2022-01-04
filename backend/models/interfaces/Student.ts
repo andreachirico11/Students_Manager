@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { IReceiptPrice } from './IReceiptPrice';
 import { IParent } from './Parent';
 import { IFrontendReceipt, IMongoReceipt, parseToFront as recParser } from './Receipt';
 
@@ -12,6 +13,7 @@ interface IStudentBase {
   parent: IParent;
   address?: string;
   notes?: string;
+  receiptPrice?: IReceiptPrice;
   isWithRec: boolean;
 }
 
@@ -53,5 +55,6 @@ function parser(s: IMongoStudent): IFrontendStudent {
     notes: s.notes,
     receipts,
     isWithRec: s.isWithRec,
+    receiptPrice: s.receiptPrice,
   };
 }

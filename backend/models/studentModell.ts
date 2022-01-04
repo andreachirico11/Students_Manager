@@ -51,6 +51,11 @@ export const StudentModel: Model<IMongoStudent> = model(
         type: String,
       },
     },
+    receiptPrice: {
+      total: { type: Number },
+      tax: { type: Number },
+      price: { type: Number },
+    },
   })
 );
 
