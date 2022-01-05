@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from 'src/app/material.module';
+import { CommaDirective } from 'src/app/shared/comma-directive/comma.directive';
 import { PaymentPipeModule } from 'src/app/shared/paymentType/payment-pipe-module.module';
 import { TRANSLATE_CONFIG } from 'src/app/shared/translation-utils';
 import { FormsGuard } from './forms.guard';
@@ -51,6 +52,7 @@ const routes: Routes = [
     StudentStepperComponent,
     FormBaseComponent,
     ReceiptPriceFormComponent,
+    CommaDirective,
   ],
   imports: [
     RouterModule.forChild(routes),
