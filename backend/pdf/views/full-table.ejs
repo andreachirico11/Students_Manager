@@ -117,7 +117,7 @@
             <% } %> <% if (params.columns.find(p => p === "number")) { %>
             <td><%= rec.number ? rec.number : '' %></td>
             <% } %> <% if (params.columns.find(p => p === "amount")) { %>
-            <td><%= rec.amount ? rec.amount : '' %></td>
+            <td><%= rec.localizedAmount ? rec.localizedAmount : rec.amount ? rec.amount : '' %></td>
             <% } %> <% if (params.columns.find(p => p === "emissionDate")) { %>
             <td><%= rec.emissionDate ? rec.emissionDateString : '' %></td>
             <% } %> <% if (params.columns.find(p => p === "paymentDate")) { %>

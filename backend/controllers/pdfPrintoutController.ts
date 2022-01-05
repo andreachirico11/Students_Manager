@@ -16,6 +16,8 @@ import { sendErrorResponse } from '../utils/httpResWithErrorHeader';
 import { ReceiptsMongoQueries } from './mongoQueries/receiptsMongoQueries';
 import { StudentMongoQueries } from './mongoQueries/studentstsMongoQueries';
 import { TeacherMongoQueries } from './mongoQueries/teachersMongoQueries';
+import { NumberFormat } from 'intl';
+import { ILocalizedReceiptPrice, IReceiptPrice } from '../models/interfaces/IReceiptPrice';
 
 const TEMPORARY_PDF_NAME = 'temp.pdf';
 
@@ -56,7 +58,7 @@ export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
     if (!teacher || !student) {
       throw new PdfCreationErrorObj(PdfMessages.teacher_or_student_not_found, '');
     }
-    const htmlFile = (await createRecBlamkeHtmlFile(student, teacher)) as string;
+    const htmlFile = (await createBlankRecHtmlFile(student, teacher, req.query.locale)) as string;
     const file = (await createPdfFile(htmlFile, {
       format: 'A4',
       orientation: 'portrait',
@@ -87,10 +89,6 @@ function verifyReqParams(params: IStudentPdfReqBody) {
   }
 }
 
-function calculateTotal(rs: IPdfReceipt[]): number {
-  return rs.reduce((acc, current) => acc + (current.paymentDate ? 0 : current.amount), 0);
-}
-
 function createHtmlFile(
   receipts: IPdfReceipt[],
   params: IStudentPdfReqBody,
@@ -101,7 +99,7 @@ function createHtmlFile(
     renderFile(
       getFilePathIntoPdfFolder('views', 'full-table.ejs'),
       {
-        receipts,
+        receipts: parseAmoutsToLocale(receipts, params.locale),
         withStudentName: false,
         translations: getParsedTranslations(params.locale),
         student,
@@ -123,9 +121,10 @@ function getTodayDate() {
   return new Date().toISOString().split('T')[0].split('-').reverse().join('/');
 }
 
-function createRecBlamkeHtmlFile(
+function createBlankRecHtmlFile(
   student: IMongoStudent,
-  teacher: ITeacher
+  teacher: ITeacher,
+  locale: string
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
     renderFile(
@@ -133,6 +132,7 @@ function createRecBlamkeHtmlFile(
       {
         student,
         teacher,
+        localizedReceiptPrice: parseReceiptpriceToLocale(student.receiptPrice, locale),
       },
       function (err, htmlFile) {
         if (err) {
@@ -179,6 +179,33 @@ function getParsedTranslations(locale: string) {
   return JSON.parse(
     readFileSync(getFilePathIntoPdfFolder('translations', (locale || 'en') + '.json'), 'utf8')
   );
+}
+
+function parseAmoutsToLocale(recs: IPdfReceipt[], locale: string): IPdfReceipt[] {
+  const format = NumberFormat(locale).format;
+  return recs.map((r) => ({
+    ...r,
+    localizedAmount: format(r.amount),
+  }));
+}
+
+function parseReceiptpriceToLocale(
+  rp: IReceiptPrice | undefined,
+  locale: string
+): ILocalizedReceiptPrice {
+  if (!rp) {
+    return {
+      price: '',
+      tax: '',
+      total: '',
+    };
+  }
+  const format = NumberFormat(locale).format;
+  return {
+    price: format(rp.price),
+    tax: format(rp.tax),
+    total: format(rp.total),
+  };
 }
 
 function getFileTitle(s: IMongoStudent): string {

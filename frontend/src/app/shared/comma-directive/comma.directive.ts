@@ -36,10 +36,19 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
   }
 
   private modifyFormatAccordingToLocale() {
-    if (this.elRef.nativeElement.value) {
-      this.elRef.nativeElement.value = parseFloat(this.elRef.nativeElement.value).toLocaleString(
-        this.trans.currentLang
-      );
+    const previousVal: string = this.elRef.nativeElement.value;
+    if (previousVal) {
+      this.elRef.nativeElement.value = parseFloat(
+        this.removeAllPointsExceptLast(previousVal.replace(',', '.'))
+      ).toLocaleString(this.trans.currentLang);
     }
+  }
+
+  private removeAllPointsExceptLast(str: string): string {
+    if (!/\./.test(str)) {
+      return str;
+    }
+    const splitted = str.split('.');
+    return splitted.slice(0, -1).join('') + '.' + splitted[splitted.length - 1];
   }
 }

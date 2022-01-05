@@ -146,17 +146,17 @@
         <div class="col">
           <span>Compenso</span>
           <span>Euro</span>
-          <span><%= student.receiptPrice && student.receiptPrice.price ? student.receiptPrice.price : '___'%></span>
+          <span><%= student.receiptPrice && student.receiptPrice.price ? localizedReceiptPrice.price : '___'%></span>
         </div>
         <div class="col">
           <span>rivalsa inps 4% sul compenso</span>
           <span>Euro</span>
-          <span><%= student.receiptPrice && student.receiptPrice.tax ? student.receiptPrice.tax : '___'%></span>
+          <span><%= student.receiptPrice && student.receiptPrice.tax ? localizedReceiptPrice.tax : '___'%></span>
         </div>
         <div class="col">
           <span>totale documento</span>
           <span>Euro</span>
-          <span><%= student.receiptPrice && student.receiptPrice.total ? student.receiptPrice.total : '___'%></span>
+          <span><%= student.receiptPrice && student.receiptPrice.total ? localizedReceiptPrice.total : '___'%></span>
         </div>
       </div>
     </div>
