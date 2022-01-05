@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { StudentResumeComponent } from './student-resume.component';
 
@@ -9,6 +10,7 @@ describe('StudentResumeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StudentResumeComponent],
+      imports: [TranslateModule.forRoot()],
     }).compileComponents();
   });
 

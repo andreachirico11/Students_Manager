@@ -23,6 +23,10 @@ describe('CommaDirective', () => {
     trans: TranslateService,
     directive: CommaDirective;
 
+  const getInputNative = () =>
+    fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement;
+  const getFormControl = () => fixture.componentInstance.form.get('test');
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CommaTestComponent, CommaDirective],
@@ -43,14 +47,23 @@ describe('CommaDirective', () => {
     fixture.detectChanges();
   });
 
-  it('the directive should detect the language change', () => {
-    const updateSpy = spyOn<any>(directive, 'updateInputAccordingToLang');
+  it('after init format view value according to locale', () => {
+    expect(getInputNative().value).toBe('1.34');
     trans.use('it');
-    expect(updateSpy).toHaveBeenCalled();
+    expect(getInputNative().value).toBe('1,34');
   });
 
-  fit('formats input number according to locale', () => {
-    (fixture.debugElement.query(By.css('input')).nativeElement as HTMLInputElement).value = '1.2';
+  it('modify formControl value if the provided one has comma', () => {
+    getInputNative().value = '1.2';
+    getInputNative().dispatchEvent(new Event('input'));
+    expect(getFormControl().value).toBe('1.2');
+    getInputNative().value = '1,2';
+    getInputNative().dispatchEvent(new Event('input'));
+    expect(getFormControl().value).toBe('1.2');
+  });
+
+  afterEach(() => {
+    trans.use('en');
   });
 });
 
@@ -64,6 +77,6 @@ describe('CommaDirective', () => {
 })
 export class CommaTestComponent {
   form = new FormGroup({
-    test: new FormControl(null),
+    test: new FormControl('1.34'),
   });
 }

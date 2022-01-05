@@ -11,27 +11,35 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
 
   constructor(
     private elRef: ElementRef<HTMLInputElement>,
-    private transService: TranslateService,
-    private ctrl: NgControl
+    private ctrl: NgControl,
+    private trans: TranslateService
   ) {}
 
   ngAfterViewInit(): void {
-    this.languageSub = this.transService.onLangChange.subscribe(() => {
-      this.updateInputAccordingToLang();
+    this.languageSub = this.trans.onLangChange.subscribe(() => {
+      this.modifyFormatAccordingToLocale();
     });
-    this.updateInputAccordingToLang();
+    this.modifyFormatAccordingToLocale();
   }
 
   @HostListener('input')
   public onInput() {
-    this.updateInputAccordingToLang();
+    const previousVal: string = this.elRef.nativeElement.value;
+    if (/[,]/.test(previousVal)) {
+      this.ctrl.control.setValue(previousVal.replace(',', '.'), { emitEvent: false });
+      this.elRef.nativeElement.value = previousVal;
+    }
   }
 
   ngOnDestroy(): void {
     this.languageSub.unsubscribe();
   }
 
-  private updateInputAccordingToLang() {
-    this.elRef.nativeElement.innerHTML = 'abc';
+  private modifyFormatAccordingToLocale() {
+    if (this.elRef.nativeElement.value) {
+      this.elRef.nativeElement.value = parseFloat(this.elRef.nativeElement.value).toLocaleString(
+        this.trans.currentLang
+      );
+    }
   }
 }

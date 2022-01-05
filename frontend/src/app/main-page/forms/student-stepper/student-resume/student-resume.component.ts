@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Student } from 'src/app/shared/models/Student';
 
 @Component({
@@ -12,4 +13,6 @@ export class StudentResumeComponent {
   public student: Student;
   @Output()
   public okEv = new EventEmitter();
+
+  constructor(public transServ: TranslateService) {}
 }
