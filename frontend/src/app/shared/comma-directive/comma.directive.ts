@@ -1,4 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
@@ -10,7 +11,8 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
 
   constructor(
     private elRef: ElementRef<HTMLInputElement>,
-    private transService: TranslateService
+    private transService: TranslateService,
+    private ctrl: NgControl
   ) {}
 
   ngAfterViewInit(): void {
@@ -20,16 +22,16 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
     this.updateInputAccordingToLang();
   }
 
-  // @HostListener('input')
-  // public onInput() {
-  //   console.log(this.elRef.nativeElement.value);
-  // }
+  @HostListener('input')
+  public onInput() {
+    this.updateInputAccordingToLang();
+  }
 
   ngOnDestroy(): void {
     this.languageSub.unsubscribe();
   }
 
   private updateInputAccordingToLang() {
-    console.log(this.transService.currentLang);
+    this.elRef.nativeElement.innerHTML = 'abc';
   }
 }
