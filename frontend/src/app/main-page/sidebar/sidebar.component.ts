@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, switchMapTo } from 'rxjs';
 import { DataService } from 'src/app/main-page/data-service/data.service';
 import { ngIfInAnimation } from 'src/app/shared/animations/ngIfInAnimation';
@@ -29,7 +30,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     private dbService: DataService,
     private router: Router,
-    private sortService: SortService
+    private sortService: SortService,
+    public transServ: TranslateService
   ) {}
 
   ngOnInit(): void {

@@ -2,15 +2,15 @@
   <div *ngIf="tableDataSource" class="counters">
     <span>
       <b>{{ 'RECEIPTS.TOTALS.1' | translate }}:</b>
-      {{ getTheChosenTotal('payed') }}€
+      {{ getTheChosenTotal('payed') | number: '':transServ.currentLang }}
     </span>
     <span>
       <b>{{ 'RECEIPTS.TOTALS.2' | translate }}:</b>
-      {{ getTheChosenTotal('unpayed') }}€
+      {{ getTheChosenTotal('unpayed') | number: '':transServ.currentLang }}
     </span>
     <span>
       <b>{{ 'RECEIPTS.TOTALS.3' | translate }}:</b>
-      {{ getTheChosenTotal('monthPayed') }}€
+      {{ getTheChosenTotal('monthPayed') | number: '':transServ.currentLang }}
     </span>
   </div>
   <div class="table-container">
@@ -42,7 +42,9 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'RECEIPTS.HEADS.amount' | translate }}
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.amount | number: '':transServ.currentLang }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="emissionDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>

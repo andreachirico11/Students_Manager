@@ -18,14 +18,22 @@
   </mat-menu>
 </div>
 <div *ngIf="stats" class="statistics" @ngIfInAnimation>
-  <span [matBadge]="stats.yearTotal" matBadgeOverlap="false" matBadgeSize="small">
+  <span
+    [matBadge]="stats.yearTotal | number: '':transServ.currentLang"
+    matBadgeOverlap="false"
+    matBadgeSize="small"
+  >
     {{ 'SIDEBAR.TOTAL' | translate }}
   </span>
-  <span [matBadge]="stats.monthTotal" matBadgeOverlap="false" matBadgeSize="small">
+  <span
+    [matBadge]="stats.monthTotal | number: '':transServ.currentLang"
+    matBadgeOverlap="false"
+    matBadgeSize="small"
+  >
     {{ 'SIDEBAR.MONTH_TOTAL' | translate }}
   </span>
   <span
-    [matBadge]="stats.missingTotal"
+    [matBadge]="stats.missingTotal | number: '':transServ.currentLang"
     matBadgeOverlap="false"
     matBadgeSize="small"
     matBadgeColor="warn"
