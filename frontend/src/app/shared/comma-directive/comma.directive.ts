@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 @Directive({
   selector: '[localeComma]',
 })
-export class CommaDirective implements OnDestroy, AfterViewInit {
+export class CommaDirective implements AfterViewInit, OnDestroy {
   private languageSub: Subscription;
 
   constructor(
@@ -22,6 +22,10 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
     this.modifyFormatAccordingToLocale();
   }
 
+  ngOnDestroy(): void {
+    this.languageSub.unsubscribe();
+  }
+
   @HostListener('input')
   public onInput() {
     const previousVal: string = this.elRef.nativeElement.value;
@@ -31,24 +35,10 @@ export class CommaDirective implements OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnDestroy(): void {
-    this.languageSub.unsubscribe();
-  }
-
   private modifyFormatAccordingToLocale() {
-    const previousVal: string = this.elRef.nativeElement.value;
-    if (previousVal) {
-      this.elRef.nativeElement.value = parseFloat(
-        this.removeAllPointsExceptLast(previousVal.replace(',', '.'))
-      ).toLocaleString(this.trans.currentLang);
+    if (this.ctrl.value) {
+      const localizedSeparator = (1.1).toLocaleString(this.trans.currentLang).split('')[1];
+      this.elRef.nativeElement.value = this.ctrl.value.toString().replace('.', localizedSeparator);
     }
-  }
-
-  private removeAllPointsExceptLast(str: string): string {
-    if (!/\./.test(str)) {
-      return str;
-    }
-    const splitted = str.split('.');
-    return splitted.slice(0, -1).join('') + '.' + splitted[splitted.length - 1];
   }
 }
