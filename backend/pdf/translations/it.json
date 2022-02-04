@@ -15,6 +15,7 @@
     },
     "FOOTER": {
         "DATE": "Data: ",
-        "TOT": "Totale da Pagare: "
+        "TOT_PAY": "Totale Pagato: ",
+        "TOT_PAYed": "Totale da Pagare: "
     }
 }

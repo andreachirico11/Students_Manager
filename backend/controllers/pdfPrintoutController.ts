@@ -38,7 +38,8 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     )) as IMongoStudent;
     const allRecsQueries = new ReceiptsMongoQueries();
     const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
-    const htmlFile = (await createHtmlFile(receipts, req.body, student)) as string;
+    const receiptsTotals = req.body.withTotal ? getTotals(receipts) : null;
+    const htmlFile = (await createHtmlFile(receipts, req.body, student, receiptsTotals)) as string;
     const file = (await createPdfFile(htmlFile, fileOptions)) as FileInfo;
     await sendFile(res, file, getFileTitle(student));
     unlinkSync(TEMPORARY_PDF_NAME);
@@ -89,11 +90,32 @@ function verifyReqParams(params: IStudentPdfReqBody) {
   }
 }
 
+function getTotals(receipts: IPdfReceipt[]): { payed?: number; notPayed?: number } {
+  let payed = 0,
+    notPayed = 0;
+  receipts.forEach((rec) => {
+    if (rec.amount)
+      if (rec.paymentDate) {
+        payed += rec.amount;
+      } else {
+        notPayed += rec.amount;
+      }
+  });
+  const output = {};
+  if (payed > 0) {
+    output['payed'] = payed;
+  }
+  if (notPayed > 0) {
+    output['notPayed'] = notPayed;
+  }
+  return output;
+}
+
 function createHtmlFile(
   receipts: IPdfReceipt[],
   params: IStudentPdfReqBody,
   student?: IMongoStudent,
-  total?: number | null
+  totals?: { payed?: number; notPayed?: number } | null
 ): Promise<string | PdfCreationErrorObj> {
   return new Promise<string | PdfCreationErrorObj>((res, rej) => {
     renderFile(
@@ -104,7 +126,7 @@ function createHtmlFile(
         translations: getParsedTranslations(params.locale),
         student,
         params,
-        total,
+        totals,
         todayDate: getTodayDate(),
       },
       function (err, htmlFile) {

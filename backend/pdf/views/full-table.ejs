@@ -75,8 +75,10 @@
         background-color: rgba(250, 84, 84, 0.3);
       }
 
-      .footer {
+      .footer,
+      .footer-date {
         font-size: 14px;
+        margin-top: 30px;
       }
 
       .footer span:nth-child(2) {
@@ -129,13 +131,20 @@
           <% } %>
         </tbody>
       </table>
+
       <p class="footer">
-        <% if (todayDate) { %>
-        <span><%= translations.FOOTER.DATE + todayDate %></span>
-        <% } %> <% if (total) { %>
-        <span><%= translations.FOOTER.TOT + total%></span>
+        <% if (totals && totals.payed) { %>
+        <span><%= translations.FOOTER.TOT_PAY + totals.payed%></span>
+        <% } %> <% if (totals && totals.notPayed) { %>
+        <span><%= translations.FOOTER.TOT_PAYed + totals.notPayed%></span>
         <% } %>
       </p>
+
+      <% if (todayDate) { %>
+      <p class="footer-date">
+        <span><%= translations.FOOTER.DATE + todayDate %></span>
+      </p>
+      <% } %>
     </div>
     <% } %>
   </body>
