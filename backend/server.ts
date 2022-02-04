@@ -7,24 +7,18 @@ import * as express from 'express';
 import * as mongoose from 'mongoose';
 import { corsController } from './controllers/corsController';
 import { createAdminUser } from './controllers/userController';
-import { TeacherModelBuilder } from './models/teacherModel';
 import { router } from './routes';
 import checkForAutoPing from './utils/autoPingFn';
+import { getEnvVariables } from './utils/getEnv';
 
 checkForAutoPing();
 
-const app = express();
+const app = express(),
+  ENV = getEnvVariables();
 
-const connStr = process.env.MONGO_CONNECTION_STRING;
-let testUser: { password: string; email: string } | null = null;
-if (process.env.TEST_USER) {
-  const [email, password] = process.env.TEST_USER.split(',');
-  testUser = { email, password };
-}
-
-if (connStr) {
+if (ENV.MONGO_CONNECTION_STRING) {
   mongoose
-    .connect(connStr, {
+    .connect(ENV.MONGO_CONNECTION_STRING, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
@@ -39,14 +33,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController);
 app.use('/api', router);
 
-if (testUser) {
-  createAdminUser({
-    email: testUser.email,
-    name: 'admin',
-    password: testUser.password,
-  });
+if (ENV.TEST_USER) {
+  const [email, password] = ENV.TEST_USER.split(',');
+  if (email && password) {
+    createAdminUser({
+      email,
+      name: 'admin',
+      password,
+    });
+  }
 }
 
-app.listen(process.env.PORT ?? 3210, () => {
+app.listen(ENV.PORT ?? 3210, () => {
   console.log('listening');
 });
