@@ -20,7 +20,9 @@ export function getStats(req: IRequest, res: Response) {
                 {
                   $month: '$paymentDate',
                 },
-                11,
+                {
+                  $month: new Date(),
+                },
               ],
             },
             '$amount',
