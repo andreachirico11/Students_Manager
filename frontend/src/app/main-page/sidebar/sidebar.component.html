@@ -44,7 +44,7 @@
 <mat-divider></mat-divider>
 
 <div class="sidebar-container">
-  <mat-selection-list [multiple]="false">
+  <mat-selection-list [multiple]="false" *loadingSpinner="studentsAreLoading" @ngIfInAnimation>
     <mat-list-option
       *ngFor="let student of students"
       [value]="student"

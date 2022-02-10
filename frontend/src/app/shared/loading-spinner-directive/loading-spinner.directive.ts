@@ -3,8 +3,6 @@ import {
   ComponentRef,
   Directive,
   Input,
-  OnChanges,
-  SimpleChanges,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';

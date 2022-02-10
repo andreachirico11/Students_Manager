@@ -18,6 +18,8 @@ import { SortService } from '../forms/utils/sort-service/sort.service';
 export class SidebarComponent implements OnInit, OnDestroy {
   public students: Student[] = [];
   public stats: IStats;
+  public studentsAreLoading = true;
+  public statsAreLoading = true;
 
   @Output()
   public linkPressed = new EventEmitter();
@@ -40,13 +42,21 @@ export class SidebarComponent implements OnInit, OnDestroy {
       order: 'ascending',
     };
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
-      this.actualStudentIdLoaded = '';
-      this.students = newS ?? [];
-      if (this.students.length > 0) {
-        this.changeSortOrder(this.actualSortOptions);
-      }
+      setTimeout(() => {
+        this.actualStudentIdLoaded = '';
+        this.students = newS ?? [];
+        if (this.students.length > 0) {
+          this.changeSortOrder(this.actualSortOptions);
+        }
+        // this.studentsAreLoading = false;
+      }, 2000);
     });
-    this.statSub = this.dbService.statsbObservable.subscribe((s) => (this.stats = s));
+    this.statSub = this.dbService.statsbObservable.subscribe((s) => {
+      setTimeout(() => {
+        this.stats = s;
+        this.statsAreLoading = false;
+      }, 3000);
+    });
     this.dbService.getStudents().pipe(switchMapTo(this.dbService.getStats())).subscribe();
   }
 

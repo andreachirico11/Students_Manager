@@ -43,14 +43,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ConfirmationDialogComponent, DownloadPlaceholderComponent],
-  declarations: [AppComponent, ConfirmationDialogComponent, LoadingSpinnerDirective],
   declarations: [
     AppComponent,
     ConfirmationDialogComponent,
     LoadingSpinnerDirective,
     SpinnerComponent,
+    DownloadPlaceholderComponent,
   ],
+  declarations: [AppComponent, ConfirmationDialogComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

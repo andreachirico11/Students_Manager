@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../material.module';
 import { AuthGuard } from '../shared/auth.guard';
+import { LoadingSpinnerModule } from '../shared/loading-spinner-directive/loading-spinner-directive.module';
 import { TRANSLATE_CONFIG } from '../shared/translation-utils';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { FormsComponent } from './forms/forms.component';
@@ -54,6 +55,7 @@ const routes: Routes = [
     HttpClientModule,
     CommonModule,
     TranslateModule.forChild(TRANSLATE_CONFIG),
+    LoadingSpinnerModule,
   ],
 })
 export class MainPageModule {}

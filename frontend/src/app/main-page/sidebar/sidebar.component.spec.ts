@@ -36,7 +36,7 @@ export class FakeDbService {
 })
 export class FakeAnimation {}
 
-describe('SidebarComponent', () => {
+fdescribe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let routerSpy;
