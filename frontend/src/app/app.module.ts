@@ -23,6 +23,7 @@ import localeIt from '@angular/common/locales/it';
 import localeItExtra from '@angular/common/locales/extra/it';
 import { DownloadPlaceholderComponent } from './shared/download-placeholder/download-placeholder.component';
 import { LoadingSpinnerDirective } from './shared/loading-spinner-directive/loading-spinner.directive';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 registerLocaleData(localeIt, 'it', localeItExtra);
 registerLocaleData(localeIt, 'it-IT', localeItExtra);
@@ -44,6 +45,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [AppComponent, ConfirmationDialogComponent, DownloadPlaceholderComponent],
   declarations: [AppComponent, ConfirmationDialogComponent, LoadingSpinnerDirective],
+  declarations: [
+    AppComponent,
+    ConfirmationDialogComponent,
+    LoadingSpinnerDirective,
+    SpinnerComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

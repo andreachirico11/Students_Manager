@@ -1,36 +1,54 @@
-import { Directive, Input, OnChanges, SimpleChanges, ViewContainerRef } from '@angular/core';
+import {
+  ComponentFactoryResolver,
+  ComponentRef,
+  Directive,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Directive({
   selector: '[loadingSpinner]',
 })
-export class LoadingSpinnerDirective implements OnChanges {
-  @Input('loadingSpinner') set isLoading(isLoading) {
-    if (isLoading) {
-      this.mountSpinner();
+export class LoadingSpinnerDirective {
+  private componentRef: ComponentRef<SpinnerComponent>;
+
+  @Input('loadingSpinner')
+  set config(config: boolean | [boolean, ThemePalette]) {
+    let isLoading: boolean, palette: ThemePalette;
+    if (config instanceof Array) {
+      isLoading = config[0];
+      palette = config[1];
     } else {
-      this.unMountSpinner();
+      isLoading = config;
     }
+    this.toggleSpinnerComponent(isLoading, palette);
   }
 
-  constructor(private host: ViewContainerRef) {}
+  constructor(
+    private host: ViewContainerRef,
+    private template: TemplateRef<any>,
+    private factory: ComponentFactoryResolver
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('change');
-
-    if (changes.isLoading !== undefined) {
-      if (changes.isLoading) {
-        this.mountSpinner();
-      } else {
-        this.unMountSpinner();
+  private toggleSpinnerComponent(isLoading: boolean, palette?: ThemePalette) {
+    if (isLoading) {
+      this.host.clear();
+      this.componentRef = this.host.createComponent(
+        this.factory.resolveComponentFactory(SpinnerComponent)
+      );
+      if (palette) {
+        this.componentRef.instance.palette = palette;
       }
+    } else {
+      if (this.componentRef) {
+        this.componentRef.destroy();
+      }
+      this.host.createEmbeddedView(this.template);
     }
-  }
-
-  private mountSpinner() {
-    console.log('mount');
-  }
-
-  private unMountSpinner() {
-    console.log('mount');
   }
 }
