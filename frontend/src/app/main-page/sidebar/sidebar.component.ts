@@ -42,20 +42,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
       order: 'ascending',
     };
     this.sub = this.dbService.studentDbObservable.subscribe((newS) => {
-      setTimeout(() => {
-        this.actualStudentIdLoaded = '';
-        this.students = newS ?? [];
-        if (this.students.length > 0) {
-          this.changeSortOrder(this.actualSortOptions);
-        }
-        // this.studentsAreLoading = false;
-      }, 2000);
+      this.actualStudentIdLoaded = '';
+      this.students = newS ?? [];
+      if (this.students.length > 0) {
+        this.changeSortOrder(this.actualSortOptions);
+      }
+      this.studentsAreLoading = false;
     });
     this.statSub = this.dbService.statsbObservable.subscribe((s) => {
-      setTimeout(() => {
-        this.stats = s;
-        this.statsAreLoading = false;
-      }, 3000);
+      this.stats = s;
+      this.statsAreLoading = false;
     });
     this.dbService.getStudents().pipe(switchMapTo(this.dbService.getStats())).subscribe();
   }

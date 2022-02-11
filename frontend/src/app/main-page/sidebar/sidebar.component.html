@@ -17,29 +17,31 @@
     <button mat-menu-item (click)="orderOnClick(4)">{{ 'SIDEBAR.ORDER_4' | translate }}</button>
   </mat-menu>
 </div>
-<div *ngIf="stats" class="statistics" @ngIfInAnimation>
-  <span
-    [matBadge]="stats.yearTotal | number: '':transServ.currentLang"
-    matBadgeOverlap="false"
-    matBadgeSize="small"
-  >
-    {{ 'SIDEBAR.TOTAL' | translate }}
-  </span>
-  <span
-    [matBadge]="stats.monthTotal | number: '':transServ.currentLang"
-    matBadgeOverlap="false"
-    matBadgeSize="small"
-  >
-    {{ 'SIDEBAR.MONTH_TOTAL' | translate }}
-  </span>
-  <span
-    [matBadge]="stats.missingTotal | number: '':transServ.currentLang"
-    matBadgeOverlap="false"
-    matBadgeSize="small"
-    matBadgeColor="warn"
-  >
-    {{ 'SIDEBAR.MISSING_TOTAL' | translate }}
-  </span>
+<div class="statistics-container">
+  <div *loadingSpinner="statsAreLoading" @ngIfInAnimation class="statistics">
+    <span
+      [matBadge]="stats.yearTotal | number: '':transServ.currentLang"
+      matBadgeOverlap="false"
+      matBadgeSize="small"
+    >
+      {{ 'SIDEBAR.TOTAL' | translate }}
+    </span>
+    <span
+      [matBadge]="stats.monthTotal | number: '':transServ.currentLang"
+      matBadgeOverlap="false"
+      matBadgeSize="small"
+    >
+      {{ 'SIDEBAR.MONTH_TOTAL' | translate }}
+    </span>
+    <span
+      [matBadge]="stats.missingTotal | number: '':transServ.currentLang"
+      matBadgeOverlap="false"
+      matBadgeSize="small"
+      matBadgeColor="warn"
+    >
+      {{ 'SIDEBAR.MISSING_TOTAL' | translate }}
+    </span>
+  </div>
 </div>
 <mat-divider></mat-divider>
 

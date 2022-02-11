@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
@@ -21,6 +21,7 @@ export class DataService {
   private localStats: IStats = null;
   private studentsSubj = new BehaviorSubject<Student[]>(null);
   private statsSubj = new BehaviorSubject<IStats>(null);
+  private startUpdateSubj = new BehaviorSubject<null>(null);
 
   constructor(private http: HttpClient, private swUpdate: SwUpdate) {}
 
@@ -30,6 +31,10 @@ export class DataService {
 
   public get statsbObservable(): Observable<IStats> {
     return this.statsSubj.asObservable();
+  }
+
+  public get startStudentsUpdateObs(): Observable<null> {
+    return this.startUpdateSubj.asObservable();
   }
 
   public getStudents(): Observable<boolean> {

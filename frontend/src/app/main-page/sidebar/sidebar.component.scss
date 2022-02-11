@@ -11,17 +11,20 @@
 
 .sidebar-container {
   overflow-y: scroll;
-  flex-grow: 1;
+  flex: 1;
 }
 
-.statistics {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.5em;
-  span {
-    width: max-content;
-    margin-bottom: 1em;
-    padding: 0 0.5em;
+.statistics-container {
+  height: 8em;
+  .statistics {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5em;
+    span {
+      width: max-content;
+      margin-bottom: 1em;
+      padding: 0 0.5em;
+    }
   }
 }
