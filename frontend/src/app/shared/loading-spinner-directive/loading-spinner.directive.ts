@@ -1,7 +1,10 @@
 import {
+  AfterViewInit,
   ComponentFactoryResolver,
   ComponentRef,
   Directive,
+  ElementRef,
+  HostBinding,
   Input,
   TemplateRef,
   ViewContainerRef,
