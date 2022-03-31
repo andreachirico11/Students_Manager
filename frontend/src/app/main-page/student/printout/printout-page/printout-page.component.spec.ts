@@ -172,7 +172,7 @@ describe('PrintoutPageComponent', () => {
   });
 
   it('should send a request to service with student id param', () => {
-    const spy = spyOn(printoutService, 'getBlankReceipt');
+    const spy = spyOn(printoutService, 'getBlankReceipt').and.callThrough();
     fixture.debugElement.query(By.css('.blank-page-btn')).nativeElement.click();
     expect(spy).toHaveBeenCalledWith('abc');
   });
