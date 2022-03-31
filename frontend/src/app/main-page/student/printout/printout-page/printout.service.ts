@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { catchError, first, map, of } from 'rxjs';
+import { catchError, first, map, mapTo, Observable, of, Subject, tap } from 'rxjs';
 import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
 import { devErrorHandling, devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
@@ -13,6 +13,11 @@ import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 })
 export class PrintoutService {
   private dbUrl = environment.dbUrl;
+  private _fileReady = new Subject<{ title: string; file: Blob }>();
+
+  get fileReady() {
+    return this._fileReady.asObservable();
+  }
 
   constructor(private http: HttpClient, private translateS: TranslateService) {}
 
@@ -76,23 +81,25 @@ export class PrintoutService {
   }
 
   getAllRecs(body: IPdfRequest) {
-    return of();
-    // return this.http
-    //   .post<Blob>(this.dbUrl + 'analytics/printout', body, {
-    //     observe: 'response',
-    //     responseType: 'blob' as 'json',
-    //   })
-    //   .pipe(
-    //     first(),
-    //     map((res) => ({
-    //       file: res.body,
-    //       title: res.headers.get('file-name') ?? 'default title',
-    //     })),
-    //     catchError((e) => {
-    //       devErrorHandlingPdf(e);
-    //       return of(null);
-    //     })
-    //   );
+    return this.http
+      .post<Blob>(this.dbUrl + 'analytics/printout', body, {
+        observe: 'response',
+        responseType: 'blob' as 'json',
+      })
+      .pipe(
+        first(),
+        tap((res) =>
+          this._fileReady.next({
+            file: res.body,
+            title: res.headers.get('file-name') ?? 'default title',
+          })
+        ),
+        mapTo(true),
+        catchError((e) => {
+          devErrorHandlingPdf(e);
+          return of(false);
+        })
+      );
   }
 
   private getParams(pars: IHttpPdfParams): HttpParams {

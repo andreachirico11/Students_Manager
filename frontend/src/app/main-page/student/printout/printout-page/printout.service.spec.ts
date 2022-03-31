@@ -2,6 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
 import { environment } from 'src/environments/environment';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
@@ -67,6 +68,23 @@ describe('PrintoutService', () => {
       expect(result.title).toBe(title);
     });
     const req = controller.expectOne(environment.dbUrl + 'printout/studentRecap');
+    req.flush(new Blob(), {
+      headers: new HttpHeaders({ 'file-name': title }),
+    });
+  });
+
+  it('should  send the right data trough the subject', () => {
+    const title = 'aaaaaaaaaaaa';
+    const body: IPdfRequest = {
+      locale: 'it',
+      dateStart: new Date(),
+      dateEnd: new Date(),
+    };
+    service.fileReady.subscribe(({ title }) => {
+      expect(title).toBe(title);
+    });
+    service.getAllRecs(body).subscribe();
+    const req = controller.expectOne(environment.dbUrl + 'analytics/printout');
     req.flush(new Blob(), {
       headers: new HttpHeaders({ 'file-name': title }),
     });

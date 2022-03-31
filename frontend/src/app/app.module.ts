@@ -21,6 +21,7 @@ import { indexedDbConfig } from './shared/indexed-db.service';
 import { OfflineInterceptor } from './shared/offline-interceptor/offline.interceptor';
 import localeIt from '@angular/common/locales/it';
 import localeItExtra from '@angular/common/locales/extra/it';
+import { DownloadPlaceholderComponent } from './shared/download-placeholder/download-placeholder.component';
 
 registerLocaleData(localeIt, 'it', localeItExtra);
 registerLocaleData(localeIt, 'it-IT', localeItExtra);
@@ -40,7 +41,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ConfirmationDialogComponent],
+  declarations: [AppComponent, ConfirmationDialogComponent, DownloadPlaceholderComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
