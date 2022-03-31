@@ -9,7 +9,8 @@
                 <mat-label>{{ 'ANALYTICS.DATE_RANGES.startDate' |
                     translate }}</mat-label>
                 <input matInput #startInput [matDatepicker]="startPicker"
-                    (focus)="startInput.blur()" (click)="startPicker.open()" />
+                    [(ngModel)]="dateStart" (focus)="startInput.blur()"
+                    (click)="startPicker.open()" required />
                 <mat-datepicker-toggle matSuffix [for]="startPicker">
                 </mat-datepicker-toggle>
                 <mat-datepicker [touchUi]="isTouchUiActivate" #startPicker
@@ -22,7 +23,8 @@
                 <mat-label>{{ 'ANALYTICS.DATE_RANGES.endDate' |
                     translate }}</mat-label>
                 <input matInput #endInput [matDatepicker]="endPicker"
-                    (focus)="endInput.blur()" (click)="endPicker.open()" />
+                    [(ngModel)]="dateEnd" (focus)="endInput.blur()"
+                    (click)="endPicker.open()" required />
                 <mat-datepicker-toggle matSuffix [for]="endPicker">
                 </mat-datepicker-toggle>
                 <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker
@@ -31,7 +33,8 @@
                     translate }}</mat-error>
             </mat-form-field>
             <!-- [min]="form.get('dateRange.startDate').value" -->
-            <button mat-stroked-button color="primary">
+            <button class="submit" mat-stroked-button color="primary"
+                [disabled]="isButtonDisabled">
                 {{ 'ANALYTICS.GENERATE' | translate }}
             </button>
         </div>

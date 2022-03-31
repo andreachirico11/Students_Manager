@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, first, map, of } from 'rxjs';
+import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
 import { devErrorHandling, devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
 import { environment } from 'src/environments/environment';
@@ -72,6 +73,26 @@ export class PrintoutService {
           return of(null);
         })
       );
+  }
+
+  getAllRecs(body: IPdfRequest) {
+    return of();
+    // return this.http
+    //   .post<Blob>(this.dbUrl + 'analytics/printout', body, {
+    //     observe: 'response',
+    //     responseType: 'blob' as 'json',
+    //   })
+    //   .pipe(
+    //     first(),
+    //     map((res) => ({
+    //       file: res.body,
+    //       title: res.headers.get('file-name') ?? 'default title',
+    //     })),
+    //     catchError((e) => {
+    //       devErrorHandlingPdf(e);
+    //       return of(null);
+    //     })
+    //   );
   }
 
   private getParams(pars: IHttpPdfParams): HttpParams {
