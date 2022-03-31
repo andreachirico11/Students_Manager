@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from '../material.module';
 import { AuthGuard } from '../shared/auth.guard';
 import { TRANSLATE_CONFIG } from '../shared/translation-utils';
+import { AnalyticsComponent } from './analytics/analytics.component';
 import { FormsComponent } from './forms/forms.component';
 import { MainPageComponent } from './main-page.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -17,6 +18,12 @@ const routes: Routes = [
     path: '',
     component: MainPageComponent,
     children: [
+      {
+        path: 'analytics',
+        loadChildren: () => import('./analytics/analytics.module').then((m) => m.AnalyticsModule),
+        component: AnalyticsComponent,
+        data: { delay: 3000 },
+      },
       {
         path: ':id',
         loadChildren: () => import('./student/student.module').then((m) => m.StudentModule),

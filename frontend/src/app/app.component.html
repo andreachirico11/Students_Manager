@@ -3,25 +3,27 @@
     {{ 'APP_COMPONENT.MAIN_TITLE' | translate }}
   </span>
   <div class="controls-container">
+    <button mat-icon-button routerLink="./analytics">
+      <mat-icon>analytics</mat-icon>
+    </button>
     <button mat-icon-button>
-      <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode</mat-icon>
-      <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode</mat-icon>
+      <mat-icon *ngIf="isInDarkMode" (click)="toggleDarkMode(false)">light_mode
+      </mat-icon>
+      <mat-icon *ngIf="!isInDarkMode" (click)="toggleDarkMode(true)">dark_mode
+      </mat-icon>
     </button>
     <ng-container>
       <button mat-icon-button (click)="matLanSelect.open()">
         <mat-icon>language</mat-icon>
       </button>
-      <mat-select
-        #matLanSelect
-        ngModel
-        (ngModelChange)="onLanChange($event)"
-        id="app-component-select"
-      >
+      <mat-select #matLanSelect ngModel (ngModelChange)="onLanChange($event)"
+        id="app-component-select">
         <mat-option value="en">English</mat-option>
         <mat-option value="it">Italiano</mat-option>
       </mat-select>
     </ng-container>
-    <button *ngIf="isLoggedIn" mat-icon-button type="button" (click)="onLogout()">
+    <button *ngIf="isLoggedIn" mat-icon-button type="button"
+      (click)="onLogout()">
       <mat-icon>exit_to_app</mat-icon>
     </button>
   </div>
