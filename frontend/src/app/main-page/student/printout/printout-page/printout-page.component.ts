@@ -8,6 +8,7 @@ import { pairwise, startWith, Subscription } from 'rxjs';
 import { devErrorHandlingAny } from 'src/app/shared/devErrorHandler';
 import { ReceiptsColNames } from 'src/app/shared/models/receiptsColNames';
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
+import { UtilsService } from 'src/app/shared/utils-service/utils-service.service';
 import { atLeastOneCol } from '../atLeastOneCol.validator';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
@@ -24,6 +25,10 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   filters = Object.keys(ReceiptsFilters);
   showDateRange = false;
   form: FormGroup;
+
+  get isTouchUiActivate() {
+    return UtilsService.getIfTouchUiIsActivated();
+  }
 
   private filtersSub: Subscription;
   private transSub: Subscription;

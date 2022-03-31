@@ -1,1 +1,39 @@
-<p>analytics works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{ 'ANALYTICS.DOWNLOAD' |
+            translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="download-row">
+            <mat-form-field appearance="fill">
+                <mat-label>{{ 'ANALYTICS.DATE_RANGES.startDate' |
+                    translate }}</mat-label>
+                <input matInput #startInput [matDatepicker]="startPicker"
+                    (focus)="startInput.blur()" (click)="startPicker.open()" />
+                <mat-datepicker-toggle matSuffix [for]="startPicker">
+                </mat-datepicker-toggle>
+                <mat-datepicker [touchUi]="isTouchUiActivate" #startPicker
+                    disabled="false"></mat-datepicker>
+                <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' |
+                    translate }}</mat-error>
+            </mat-form-field>
+            <!-- [max]="form.get('dateRange.endDate').value" -->
+            <mat-form-field appearance="fill">
+                <mat-label>{{ 'ANALYTICS.DATE_RANGES.endDate' |
+                    translate }}</mat-label>
+                <input matInput #endInput [matDatepicker]="endPicker"
+                    (focus)="endInput.blur()" (click)="endPicker.open()" />
+                <mat-datepicker-toggle matSuffix [for]="endPicker">
+                </mat-datepicker-toggle>
+                <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker
+                    disabled="false"></mat-datepicker>
+                <mat-error>{{ 'ANALYTICS.DATE_RANGES.dateErr' |
+                    translate }}</mat-error>
+            </mat-form-field>
+            <!-- [min]="form.get('dateRange.startDate').value" -->
+            <button mat-stroked-button color="primary">
+                {{ 'ANALYTICS.GENERATE' | translate }}
+            </button>
+        </div>
+    </mat-card-content>
+</mat-card>

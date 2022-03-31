@@ -152,5 +152,14 @@
             }
         },
         "BLANK": "Genera una Ricevuta Vuota"
+    },
+    "ANALYTICS": {
+        "DOWNLOAD": "Download",
+        "DATE_RANGES": {
+            "startDate": "Data Inizio",
+            "endDate": "Data Fine",
+            "dateErr": "Obbligatorio"
+        },
+        "GENERATE": "Genera Pdf"
     }
 }
