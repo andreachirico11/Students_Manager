@@ -1,371 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Printout</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: Roboto;
-      }
-      h2 {
-        text-align: center;
-        font-size: 18px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: white;
-        padding: 30px 0;
-      }
 
-      .main-title {
-        font-weight: 400;
-        text-transform: capitalize;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Printout</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-      .table-wrapper {
-        margin: 10px 70px 70px;
-      }
+    body {
+      font-family: Roboto;
+    }
 
-      .fl-table {
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: normal;
-        border: none;
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 100%;
-        white-space: nowrap;
-        background-color: white;
-      }
+    h2 {
+      text-align: center;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      padding: 30px 0;
+    }
 
-      .fl-table td,
-      .fl-table th {
-        text-align: center;
-        padding: 8px;
-      }
+    .main-title {
+      font-weight: 400;
+      text-transform: capitalize;
+    }
 
-      .fl-table th {
-        border-right: 1px solid #1565c0;
-        border-left: 1px solid #1565c0;
-      }
+    .table-wrapper {
+      margin: 10px 70px 70px;
+    }
 
-      .fl-table td {
-        font-size: 12px;
-      }
+    .table-wrapper.fullScreen {
+      margin: 10px 0;
+    }
 
-      .fl-table td {
-        border-left: 1px solid rgba(0, 0, 0, 0.5);
-      }
+    .fl-table {
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: normal;
+      border: none;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      white-space: nowrap;
+      background-color: white;
+    }
 
-      .fl-table td:last-child {
-        border-right: 1px solid rgba(0, 0, 0, 0.5);
-      }
+    .fl-table td,
+    .fl-table th {
+      text-align: center;
+      padding: 8px;
+    }
 
-      .fl-table tr:last-child {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      }
+    .fl-table th {
+      border-right: 1px solid #1565c0;
+      border-left: 1px solid #1565c0;
+    }
 
-      .fl-table thead th {
-        color: #ffffff;
-        background: #1565c0;
-      }
+    .fl-table td {
+      font-size: 12px;
+    }
 
-      tr.not-payed {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
+    .fl-table td {
+      border-left: 1px solid rgba(0, 0, 0, 0.5);
+    }
 
-      .footer,
-      .footer-date {
-        font-size: 14px;
-        margin-top: 30px;
-      }
+    .fl-table td:last-child {
+      border-right: 1px solid rgba(0, 0, 0, 0.5);
+    }
 
-      .footer span:nth-child(2) {
-        float: right;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="table-wrapper">
-      <h3 class="main-title">gianni pino</h3>
-      <table class="fl-table">
-        <thead>
-          <tr class="not-payed">
-            <th>No.</th>
-            <th>Totale</th>
-            <th>Data Emissione</th>
-            <th>Data Pagamento</th>
-            <th>Metodo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Content 1</td>
-            <td>Content 1</td>
-            <td>Content 1</td>
-            <td>Content 1</td>
-            <td>Content 1</td>
-          </tr>
-          <tr>
-            <td>Content 2</td>
-            <td>Content 2</td>
-            <td>Content 2</td>
-            <td>Content 2</td>
-            <td>Content 2</td>
-          </tr>
-          <tr>
-            <td>Content 3</td>
-            <td>Content 3</td>
-            <td>Content 3</td>
-            <td>Content 3</td>
-            <td>Content 3</td>
-          </tr>
-          <tr>
-            <td>Content 4</td>
-            <td>Content 4</td>
-            <td>Content 4</td>
-            <td>Content 4</td>
-            <td>Content 4</td>
-          </tr>
-          <tr>
-            <td>Content 5</td>
-            <td>Content 5</td>
-            <td>Content 5</td>
-            <td>Content 5</td>
-            <td>Content 5</td>
-          </tr>
-          <tr>
-            <td>Content 6</td>
-            <td>Content 6</td>
-            <td>Content 6</td>
-            <td>Content 6</td>
-            <td>Content 6</td>
-          </tr>
-          <tr>
-            <td>Content 7</td>
-            <td>Content 7</td>
-            <td>Content 7</td>
-            <td>Content 7</td>
-            <td>Content 7</td>
-          </tr>
-          <tr>
-            <td>Content 8</td>
-            <td>Content 8</td>
-            <td>Content 8</td>
-            <td>Content 8</td>
-            <td>Content 8</td>
-          </tr>
-          <tr>
-            <td>Content 9</td>
-            <td>Content 9</td>
-            <td>Content 9</td>
-            <td>Content 9</td>
-            <td>Content 9</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-          <tr>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-            <td>Content 10</td>
-          </tr>
-        </tbody>
-      </table>
+    .fl-table tr:last-child {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    }
 
-      <p class="footer">
-        <span>Totale da pagare: 474358325<</span>
-        <span>Totale pagato: 474358325</span>
-      </p>
+    .fl-table thead th {
+      color: #ffffff;
+      background: #1565c0;
+    }
 
-      <p class="footer-date">
-        <span>Data: 12/12/2021</span>
-      </p>
-    </div>
-  </body>
+    tr.not-payed {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .footer,
+    .footer-date {
+      font-size: 14px;
+      margin-top: 30px;
+    }
+
+    .footer span:nth-child(2) {
+      float: right;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="table-wrapper fullScreen">
+    <h3 class="main-title">gianni pino</h3>
+    <table class="fl-table">
+      <thead>
+        <tr class="not-payed">
+          <th>No.</th>
+          <th>Totale</th>
+          <th>Data Emissione</th>
+          <th>Data Pagamento</th>
+          <th>Metodo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Content 1</td>
+          <td>Content 1</td>
+          <td>Content 1</td>
+          <td>Content 1</td>
+          <td>Content 1</td>
+        </tr>
+        <tr>
+          <td>Content 2</td>
+          <td>Content 2</td>
+          <td>Content 2</td>
+          <td>Content 2</td>
+          <td>Content 2</td>
+        </tr>
+        <tr>
+          <td>Content 3</td>
+          <td>Content 3</td>
+          <td>Content 3</td>
+          <td>Content 3</td>
+          <td>Content 3</td>
+        </tr>
+        <tr>
+          <td>Content 4</td>
+          <td>Content 4</td>
+          <td>Content 4</td>
+          <td>Content 4</td>
+          <td>Content 4</td>
+        </tr>
+        <tr>
+          <td>Content 5</td>
+          <td>Content 5</td>
+          <td>Content 5</td>
+          <td>Content 5</td>
+          <td>Content 5</td>
+        </tr>
+        <tr>
+          <td>Content 6</td>
+          <td>Content 6</td>
+          <td>Content 6</td>
+          <td>Content 6</td>
+          <td>Content 6</td>
+        </tr>
+        <tr>
+          <td>Content 7</td>
+          <td>Content 7</td>
+          <td>Content 7</td>
+          <td>Content 7</td>
+          <td>Content 7</td>
+        </tr>
+        <tr>
+          <td>Content 8</td>
+          <td>Content 8</td>
+          <td>Content 8</td>
+          <td>Content 8</td>
+          <td>Content 8</td>
+        </tr>
+        <tr>
+          <td>Content 9</td>
+          <td>Content 9</td>
+          <td>Content 9</td>
+          <td>Content 9</td>
+          <td>Content 9</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+        <tr>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+          <td>Content 10</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="footer">
+      <span>Totale da pagare: 474358325<< /span>
+          <span>Totale pagato: 474358325</span>
+    </p>
+
+    <p class="footer-date">
+      <span>Data: 12/12/2021</span>
+    </p>
+  </div>
+</body>
+
 </html>

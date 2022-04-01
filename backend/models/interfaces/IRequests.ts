@@ -15,6 +15,14 @@ export interface IPdfRequest extends Omit<IRequest, 'query'> {
   query: IHttpPdfParams;
 }
 
+export interface IPdfReqAllReceipts {
+  body: {
+    locale: string;
+    dateStart: Date;
+    dateEnd: Date;
+  };
+}
+
 export interface IRequest extends Request {
   headers: headersWithAuth;
   params: any;

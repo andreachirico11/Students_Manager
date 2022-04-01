@@ -53,4 +53,5 @@ export enum PdfMessages {
   'err_in_pdf_req_params' = 'err_in_pdf_req_params',
   'blank_page_not_allowed' = 'blank_page_not_allowed',
   'teacher_or_student_not_found' = 'teacher_or_student_not_found',
+  'pdf_receipts_missing_params' = 'pdf_receipts_missing_params',
 }

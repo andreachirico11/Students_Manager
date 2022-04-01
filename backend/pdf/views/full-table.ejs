@@ -1,151 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Printout</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: Roboto;
-      }
-      h2 {
-        text-align: center;
-        font-size: 18px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: white;
-        padding: 30px 0;
-      }
 
-      .main-title {
-        font-weight: 400;
-        text-transform: capitalize;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Printout</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-      .table-wrapper {
-        margin: 10px 70px 70px;
-      }
+    body {
+      font-family: Roboto;
+    }
 
-      .fl-table {
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: normal;
-        border: none;
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 100%;
-        white-space: nowrap;
-        background-color: white;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-      }
+    h2 {
+      text-align: center;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: white;
+      padding: 30px 0;
+    }
 
-      .fl-table td,
-      .fl-table th {
-        text-align: center;
-        padding: 8px;
-      }
+    .main-title {
+      font-weight: 400;
+      text-transform: capitalize;
+    }
 
-      .fl-table th {
-        border-right: 1px solid #1565c0;
-        border-left: 1px solid #1565c0;
-      }
+    .table-wrapper,
+    .footer-wrapper {
+      margin: 10px 70px 70px;
+    }
 
-      .fl-table td {
-        font-size: 12px;
-      }
+    .table-wrapper.fullScreen {
+      margin: 10px 0;
+    }
 
-      .fl-table td {
-        border-left: 1px solid rgba(0, 0, 0, 0.4);
-      }
+    .fl-table {
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: normal;
+      border: none;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      white-space: nowrap;
+      background-color: white;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    }
 
-      .fl-table td:last-child {
-        border-right: 1px solid rgba(0, 0, 0, 0.4);
-      }
+    .fl-table td,
+    .fl-table th {
+      text-align: center;
+      padding: 8px;
+    }
 
-      .fl-table thead th {
-        color: #ffffff;
-        background: #1565c0;
-      }
+    .fl-table th {
+      border-right: 1px solid #1565c0;
+      border-left: 1px solid #1565c0;
+    }
 
-      tr.not-payed {
-        background-color: rgba(250, 84, 84, 0.3);
-      }
+    .fl-table td {
+      font-size: 12px;
+    }
 
-      .footer,
-      .footer-date {
-        font-size: 14px;
-        margin-top: 30px;
-      }
+    .fl-table td {
+      border-left: 1px solid rgba(0, 0, 0, 0.4);
+    }
 
-      .footer span:nth-child(2) {
-        float: right;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="table-wrapper">
-      <% if(receipts.length === 0) { %>
-      <h3 class="main-title"><%=translations.EMPTY%></h3>
-      <% } else { %> <% if(student) { %>
-      <h3 class="main-title"><%=(student.name + ' ' + student.surname).toLowerCase() %></h3>
-      <% } %>
-      <table class="fl-table">
-        <thead>
-          <tr>
-            <% if (withStudentName) { %>
-            <th><%= translations.HEADERS.NAME %></th>
-            <% } %> <% if (params.columns.find(p => p === "number")) { %>
-            <th><%= translations.HEADERS.NUMBER %></th>
-            <% } %> <% if (params.columns.find(p => p === "amount")) { %>
-            <th><%= translations.HEADERS.TOT %></th>
-            <% } %> <% if (params.columns.find(p => p === "emissionDate")) { %>
-            <th><%= translations.HEADERS.DATE_EM %></th>
-            <% } %> <% if (params.columns.find(p => p === "paymentDate")) { %>
-            <th><%= translations.HEADERS.DATE_P %></th>
-            <% } %> <% if (params.columns.find(p => p === "typeOfPayment")) { %>
-            <th><%= translations.HEADERS.METHOD %></th>
-            <% } %>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(let rec of receipts) { %>
-          <tr class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
-            <% if (withStudentName) { %>
-            <td><%= rec.studentName %></td>
-            <% } %> <% if (params.columns.find(p => p === "number")) { %>
-            <td><%= rec.number ? rec.number : '' %></td>
-            <% } %> <% if (params.columns.find(p => p === "amount")) { %>
-            <td><%= rec.localizedAmount ? rec.localizedAmount : rec.amount ? rec.amount : '' %></td>
-            <% } %> <% if (params.columns.find(p => p === "emissionDate")) { %>
-            <td><%= rec.emissionDate ? rec.emissionDateString : '' %></td>
-            <% } %> <% if (params.columns.find(p => p === "paymentDate")) { %>
-            <td><%= rec.paymentDate ? rec.paymentDateString : '' %></td>
-            <% } %> <% if (params.columns.find(p => p === "typeOfPayment")) { %>
-            <td><%= rec.typeOfPayment ? translations.PAYMENTS[rec.typeOfPayment] : '' %></td>
-            <% } %>
-          </tr>
+    .fl-table td:last-child {
+      border-right: 1px solid rgba(0, 0, 0, 0.4);
+    }
+
+    .fl-table thead th {
+      color: #ffffff;
+      background: #1565c0;
+    }
+
+    tr.not-payed {
+      background-color: rgba(250, 84, 84, 0.3);
+    }
+
+    .footer,
+    .footer-date {
+      font-size: 14px;
+      margin-top: 30px;
+    }
+
+    .footer span:nth-child(2) {
+      float: right;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="table-wrapper <%= fullScreen ? 'fullScreen' : ''%>">
+    <% if(receipts.length===0) { %>
+      <h3 class="main-title">
+        <%=translations.EMPTY%>
+      </h3>
+      <% } else { %>
+        <% if(student) { %>
+          <h3 class="main-title">
+            <%=(student.name + ' ' + student.surname).toLowerCase() %>
+          </h3>
           <% } %>
-        </tbody>
-      </table>
+            <% if(intervalTitle) { %>
+              <h3 class="main-title">
+                <%= intervalTitle %>
+              </h3>
+              <% } %>
+                <table class="fl-table">
+                  <thead>
+                    <tr>
+                      <% if (withStudentName) { %>
+                        <th>
+                          <%= translations.HEADERS.NAME %>
+                        </th>
+                        <% } %>
+                          <% if (printAllCols || columns.find(p=> p ===
+                            "number")) {
+                            %>
+                            <th>
+                              <%= translations.HEADERS.NUMBER %>
+                            </th>
+                            <% } %>
+                              <% if (printAllCols || columns.find(p=> p ===
+                                "amount")) { %>
+                                <th>
+                                  <%= translations.HEADERS.TOT %>
+                                </th>
+                                <% } %>
+                                  <% if (printAllCols || columns.find(p=> p ===
+                                    "emissionDate")) { %>
+                                    <th>
+                                      <%= translations.HEADERS.DATE_EM %>
+                                    </th>
+                                    <% } %>
+                                      <% if (printAllCols || columns.find(p=> p
+                                        ===
+                                        "paymentDate")) { %>
+                                        <th>
+                                          <%= translations.HEADERS.DATE_P %>
+                                        </th>
+                                        <% } %>
+                                          <% if (printAllCols ||
+                                            columns.find(p=> p
+                                            === "typeOfPayment")) { %>
+                                            <th>
+                                              <%= translations.HEADERS.METHOD %>
+                                            </th>
+                                            <% } %>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(let rec of receipts) { %>
+                      <tr
+                        class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
+                        <% if (withStudentName) { %>
+                          <td>
+                            <%= rec.studentName %>
+                          </td>
+                          <% } %>
+                            <% if (printAllCols || columns.find(p=> p ===
+                              "number"))
+                              { %>
+                              <td>
+                                <%= rec.number ? rec.number : '' %>
+                              </td>
+                              <% } %>
+                                <% if (printAllCols || columns.find(p=> p ===
+                                  "amount")) { %>
+                                  <td>
+                                    <%= rec.localizedAmount ?
+                                      rec.localizedAmount : rec.amount ?
+                                      rec.amount : '' %>
+                                  </td>
+                                  <% } %>
+                                    <% if (printAllCols || columns.find(p=> p
+                                      ===
+                                      "emissionDate")) { %>
+                                      <td>
+                                        <%= rec.emissionDate ?
+                                          rec.emissionDateString : '' %>
+                                      </td>
+                                      <% } %>
+                                        <% if (printAllCols || columns.find(p=>
+                                          p
+                                          === "paymentDate")) { %>
+                                          <td>
+                                            <%= rec.paymentDate ?
+                                              rec.paymentDateString : '' %>
+                                          </td>
+                                          <% } %>
+                                            <% if (printAllCols ||
+                                              columns.find(p=>
+                                              p === "typeOfPayment")) { %>
+                                              <td>
+                                                <%= rec.typeOfPayment ?
+                                                  translations.PAYMENTS[rec.typeOfPayment]
+                                                  : '' %>
+                                              </td>
+                                              <% } %>
+                      </tr>
+                      <% } %>
+                  </tbody>
+                </table>
 
-      <p class="footer">
-        <% if (totals && totals.payed) { %>
-        <span><%= translations.FOOTER.TOT_PAY + totals.payed%></span>
-        <% } %> <% if (totals && totals.notPayed) { %>
-        <span><%= translations.FOOTER.TOT_PAYed + totals.notPayed%></span>
-        <% } %>
-      </p>
+                <% if(fullScreen) { %>
+                  <div class="footer-wrapper">
+                    <% } %>
 
-      <% if (todayDate) { %>
-      <p class="footer-date">
-        <span><%= translations.FOOTER.DATE + todayDate %></span>
-      </p>
-      <% } %>
-    </div>
-    <% } %>
-  </body>
+                      <p class="footer">
+                        <% if (totals && totals.payed) { %>
+                          <span>
+                            <%= translations.FOOTER.TOT_PAY + totals.payed%>
+                          </span>
+                          <% } %>
+                            <% if (totals && totals.notPayed) { %>
+                              <span>
+                                <%= translations.FOOTER.TOT_PAYed +
+                                  totals.notPayed%>
+                              </span>
+                              <% } %>
+                      </p>
+
+                      <% if (todayDate) { %>
+                        <p class="footer-date">
+                          <span>
+                            <%= translations.FOOTER.DATE + todayDate %>
+                          </span>
+                        </p>
+                        <% } %>
+
+
+                          <% if(fullScreen) { %>
+                  </div>
+                  <% } %>
+
+
+  </div>
+  <% } %>
+</body>
+
 </html>

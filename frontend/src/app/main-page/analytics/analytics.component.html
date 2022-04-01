@@ -10,7 +10,7 @@
                     translate }}</mat-label>
                 <input matInput #startInput [matDatepicker]="startPicker"
                     [(ngModel)]="dateStart" (focus)="startInput.blur()"
-                    (click)="startPicker.open()" required />
+                    (click)="startPicker.open()" required [max]="dateEnd" />
                 <mat-datepicker-toggle matSuffix [for]="startPicker">
                 </mat-datepicker-toggle>
                 <mat-datepicker [touchUi]="isTouchUiActivate" #startPicker
@@ -24,7 +24,7 @@
                     translate }}</mat-label>
                 <input matInput #endInput [matDatepicker]="endPicker"
                     [(ngModel)]="dateEnd" (focus)="endInput.blur()"
-                    (click)="endPicker.open()" required />
+                    (click)="endPicker.open()" required [min]="dateStart" />
                 <mat-datepicker-toggle matSuffix [for]="endPicker">
                 </mat-datepicker-toggle>
                 <mat-datepicker [touchUi]="isTouchUiActivate" #endPicker

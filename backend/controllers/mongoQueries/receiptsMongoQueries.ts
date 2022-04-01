@@ -7,21 +7,15 @@ import { ReceiptsColNames } from '../../models/receiptsColNames';
 import { ReceiptsFilters } from '../../models/receiptsFilters';
 
 export class ReceiptsMongoQueries {
-  get allReceipts(): Promise<IPdfReceipt[]> {
-    // TODO refactor
-    return ReceiptModel.aggregate([
+  allReceiptsFilteredByDate(dateStart: Date, dateEnd: Date): Promise<IPdfReceipt[]> {
+    const aggregatePipeline: any[] = [
+      this.matchByDateRange(new Date(dateStart), new Date(dateEnd)),
       this.lookupForStudetInfo(),
-      {
-        $unwind: '$studentInfo',
-      },
-      {
-        $addFields: {
-          studentName: this.concatStudentName('studentInfo'),
-          paymentDateString: this.dateToString(ReceiptsColNames.paymentDate),
-          emissionDateString: this.dateToString(ReceiptsColNames.emissionDate),
-        },
-      },
-    ]).catch((e) => {
+      this.unwindStudentInfo(),
+      this.addFields(true, true, true),
+      this.sortBy(ReceiptsColNames.emissionDate, true),
+    ];
+    return ReceiptModel.aggregate(aggregatePipeline).catch((e) => {
       throw this.errHandling(e);
     });
   }
@@ -62,6 +56,26 @@ export class ReceiptsMongoQueries {
         foreignField: '_id',
         as: 'studentInfo',
       },
+    };
+  }
+
+  private addFields(
+    studentName?: boolean,
+    emissionDateString?: boolean,
+    paymentDateString?: boolean
+  ) {
+    const fields: { studentName?: any; emissionDateString?: any; paymentDateString?: any } = {};
+    if (studentName) {
+      fields.studentName = this.concatStudentName('studentInfo');
+    }
+    if (emissionDateString) {
+      fields.emissionDateString = this.dateToString(ReceiptsColNames.emissionDate);
+    }
+    if (paymentDateString) {
+      fields.paymentDateString = this.dateToString(ReceiptsColNames.paymentDate);
+    }
+    return {
+      $addFields: fields,
     };
   }
 
@@ -121,11 +135,11 @@ export class ReceiptsMongoQueries {
     return { $match: matchObj };
   }
 
-  private matchByDateRange(startDateRange: Date, endDateRange: Date) {
+  private matchByDateRange(lowerDateLimit: Date, upperDateLimit: Date) {
     const startCondition = {};
-    startCondition[ReceiptsColNames.emissionDate] = { $gte: startDateRange };
+    startCondition[ReceiptsColNames.emissionDate] = { $gt: lowerDateLimit };
     const stopCondition = {};
-    stopCondition[ReceiptsColNames.emissionDate] = { $lt: endDateRange };
+    stopCondition[ReceiptsColNames.emissionDate] = { $lt: upperDateLimit };
     return {
       $match: {
         $and: [startCondition, stopCondition],
@@ -135,6 +149,12 @@ export class ReceiptsMongoQueries {
 
   private dateToString(dateFieldName: string) {
     return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
+  }
+
+  private unwindStudentInfo() {
+    return {
+      $unwind: '$studentInfo',
+    };
   }
 
   private errHandling(err: any) {

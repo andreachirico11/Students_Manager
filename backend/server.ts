@@ -16,18 +16,6 @@ checkForAutoPing();
 const app = express(),
   ENV = getEnvVariables();
 
-if (ENV.MONGO_CONNECTION_STRING) {
-  mongoose
-    .connect(ENV.MONGO_CONNECTION_STRING, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then((x) => {
-      console.log('connected');
-    })
-    .catch((e) => console.log('error in connection:', e));
-}
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsController);
@@ -45,5 +33,16 @@ if (ENV.TEST_USER) {
 }
 
 app.listen(ENV.PORT ?? 3210, () => {
-  console.log('listening');
+  console.log('listening on port:', ENV.PORT ?? 3210);
+  if (ENV.MONGO_CONNECTION_STRING) {
+    mongoose
+      .connect(ENV.MONGO_CONNECTION_STRING, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then((x) => {
+        console.log('connected to database');
+      })
+      .catch((e) => console.log('error in connection:', e));
+  }
 });
