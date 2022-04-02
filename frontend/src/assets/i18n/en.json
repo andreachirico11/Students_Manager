@@ -161,6 +161,10 @@
             "endDate": "End Date",
             "dateErr": "Required"
         },
+        "REMOVE_IF_NO_VAL": {
+            "false": "Receipts without numer are excluded",
+            "true": "Receipts without numer aren included"
+        },
         "GENERATE": "Generate Pdf"
     }
 }

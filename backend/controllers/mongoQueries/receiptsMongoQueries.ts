@@ -7,13 +7,30 @@ import { ReceiptsColNames } from '../../models/receiptsColNames';
 import { ReceiptsFilters } from '../../models/receiptsFilters';
 
 export class ReceiptsMongoQueries {
+  allReceiptsFilteredByDateAndNumberPresence(
+    dateStart: Date,
+    dateEnd: Date
+  ): Promise<IPdfReceipt[]> {
+    const aggregatePipeline: any[] = [
+      this.matchByNumberExistence(),
+      this.matchByDateRange(new Date(dateStart), new Date(dateEnd)),
+      this.lookupForStudetInfo(),
+      this.unwindStudentInfo(),
+      this.addFields(true, true, true),
+      this.sortBy('asc', ReceiptsColNames.emissionDate, ReceiptsColNames.number),
+    ];
+    return ReceiptModel.aggregate(aggregatePipeline).catch((e) => {
+      throw this.errHandling(e);
+    });
+  }
+
   allReceiptsFilteredByDate(dateStart: Date, dateEnd: Date): Promise<IPdfReceipt[]> {
     const aggregatePipeline: any[] = [
       this.matchByDateRange(new Date(dateStart), new Date(dateEnd)),
       this.lookupForStudetInfo(),
       this.unwindStudentInfo(),
       this.addFields(true, true, true),
-      this.sortBy(ReceiptsColNames.emissionDate, true),
+      this.sortBy('asc', ReceiptsColNames.emissionDate, ReceiptsColNames.number),
     ];
     return ReceiptModel.aggregate(aggregatePipeline).catch((e) => {
       throw this.errHandling(e);
@@ -31,7 +48,7 @@ export class ReceiptsMongoQueries {
     aggregatePipeline.push(this.projectDesiredColumns(params.columns));
     aggregatePipeline.push(this.addStringifiedDateFields());
     if (params.orderBy) {
-      aggregatePipeline.push(this.sortBy(params.orderBy, params.ascending));
+      aggregatePipeline.push(this.sortBy(params.ascending ? 'asc' : 'desc', params.orderBy));
     }
     return ReceiptModel.aggregate(aggregatePipeline).catch((e) => {
       throw this.errHandling(e);
@@ -123,16 +140,26 @@ export class ReceiptsMongoQueries {
     };
   }
 
-  private sortBy(fieldName: string, inAScendingOrder: boolean) {
-    const sortObj = {};
-    sortObj[fieldName] = inAScendingOrder ? 1 : -1;
-    return { $sort: sortObj };
+  private sortBy(order: 'asc' | 'desc', ...fields: string[]) {
+    const $sort = {};
+    fields.forEach((field) => {
+      $sort[field] = order === 'asc' ? 1 : -1;
+    });
+    return { $sort };
   }
 
   private matchByPaymentExistence(isPayed: boolean) {
     const matchObj = {};
     matchObj[ReceiptsColNames.paymentDate] = isPayed ? { $ne: null } : { $eq: null };
     return { $match: matchObj };
+  }
+
+  private matchByNumberExistence() {
+    return {
+      $match: {
+        number: { $ne: null },
+      },
+    };
   }
 
   private matchByDateRange(lowerDateLimit: Date, upperDateLimit: Date) {

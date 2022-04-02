@@ -19,8 +19,6 @@ import { PrintoutService } from './printout.service';
   styleUrls: ['./printout-page.component.scss'],
 })
 export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('downloadAnchor', { read: ElementRef })
-  downloader: ElementRef<HTMLAnchorElement>;
   columnNames = Object.keys(ReceiptsColNames).filter((c) => c !== ReceiptsColNames._studentId);
   filters = Object.keys(ReceiptsFilters);
   showDateRange = false;
@@ -61,7 +59,6 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   onGenerate() {
     this.printoutService.getStudentRecsPdf(this.parseFormValueIntoParams()).subscribe((r) => {
       if (r) {
-        this.onDownloadResponse(r.file, r.title);
         this.location.back();
       }
     });
@@ -70,7 +67,6 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
   onBlankReceipt() {
     this.printoutService.getBlankReceipt(this.route.snapshot.parent.params.id).subscribe((r) => {
       if (r) {
-        this.onDownloadResponse(r.file, r.title);
         this.location.back();
       }
     });
@@ -169,21 +165,5 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private getActiveColumns(columnObj: Object): string[] {
     return Object.keys(columnObj).filter((key) => columnObj[key]);
-  }
-
-  private onDownloadResponse(blob: Blob, title: string) {
-    let objUrl: string;
-    try {
-      objUrl = URL.createObjectURL(blob);
-      this.downloader.nativeElement.href = objUrl;
-      this.downloader.nativeElement.download = title;
-      this.downloader.nativeElement.click();
-      this.downloader.nativeElement.href = null;
-      this.downloader.nativeElement.download = null;
-      URL.revokeObjectURL(objUrl);
-    } catch (error) {
-      URL.revokeObjectURL(objUrl);
-      devErrorHandlingAny(error);
-    }
   }
 }

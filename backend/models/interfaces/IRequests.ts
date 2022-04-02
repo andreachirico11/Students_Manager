@@ -20,6 +20,7 @@ export interface IPdfReqAllReceipts {
     locale: string;
     dateStart: Date;
     dateEnd: Date;
+    removeIfWithoutNumer: boolean;
   };
 }
 

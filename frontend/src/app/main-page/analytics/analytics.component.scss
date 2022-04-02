@@ -1,11 +1,14 @@
 .download-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-rows: auto auto;
+  margin-top: 2em;
   > * {
     width: auto;
   }
   mat-form-field,
-  button {
+  button,
+  mat-checkbox {
     margin: 0.5em 1em;
   }
   button {
@@ -14,5 +17,11 @@
   mat-form-field {
     margin-bottom: 0;
     margin-top: 0;
+  }
+  ::ng-deep.mat-checkbox-layout {
+    white-space: unset;
+    .mat-checkbox-label {
+      line-height: 20px;
+    }
   }
 }

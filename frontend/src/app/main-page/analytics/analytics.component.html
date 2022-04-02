@@ -18,7 +18,6 @@
                 <mat-error>{{ 'PRINTOUT.FILTER_VALUES.DATE_RANGES.dateErr' |
                     translate }}</mat-error>
             </mat-form-field>
-            <!-- [max]="form.get('dateRange.endDate').value" -->
             <mat-form-field appearance="fill">
                 <mat-label>{{ 'ANALYTICS.DATE_RANGES.endDate' |
                     translate }}</mat-label>
@@ -32,7 +31,9 @@
                 <mat-error>{{ 'ANALYTICS.DATE_RANGES.dateErr' |
                     translate }}</mat-error>
             </mat-form-field>
-            <!-- [min]="form.get('dateRange.startDate').value" -->
+            <mat-checkbox [(ngModel)]="removeIfWithoutNumer">
+                {{ 'ANALYTICS.REMOVE_IF_NO_VAL' | translate }}
+            </mat-checkbox>
             <button class="submit" mat-stroked-button color="primary"
                 type="button" (click)="onSubmit()"
                 [disabled]="isButtonDisabled">

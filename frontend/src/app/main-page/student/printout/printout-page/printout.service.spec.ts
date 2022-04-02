@@ -24,18 +24,6 @@ describe('PrintoutService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should correctly add locale params', () => {
-    trans.use('it');
-    service.getPdf().subscribe();
-    controller
-      .expectOne((req) => {
-        expect(req.params.has('locale')).toBeTruthy();
-        expect(req.params.get('locale')).toBe(trans.currentLang);
-        return true;
-      })
-      .flush(new Blob());
-  });
-
   it('should send a basic student request', () => {
     const title = 'aaaaaaaaaaaa';
     const body: IStudentPdfReqBody = {
@@ -55,30 +43,13 @@ describe('PrintoutService', () => {
       .flush(new Blob());
   });
 
-  it('should retrieve file title from request', () => {
-    const title = 'aaaaaaaaaaaa';
-    const body: IStudentPdfReqBody = {
-      _studentId: 'abc',
-      locale: 'it',
-      columns: ['a', 'b'],
-      ascending: true,
-      withTotal: true,
-    };
-    service.getStudentRecsPdf(body).subscribe((result) => {
-      expect(result.title).toBe(title);
-    });
-    const req = controller.expectOne(environment.dbUrl + 'printout/studentRecap');
-    req.flush(new Blob(), {
-      headers: new HttpHeaders({ 'file-name': title }),
-    });
-  });
-
   it('should  send the right data trough the subject', () => {
     const title = 'aaaaaaaaaaaa';
     const body: IPdfRequest = {
       locale: 'it',
       dateStart: new Date(),
       dateEnd: new Date(),
+      removeIfWithoutNumer: false,
     };
     service.fileReady.subscribe(({ title }) => {
       expect(title).toBe(title);

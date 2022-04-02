@@ -160,6 +160,7 @@
             "endDate": "Data Fine",
             "dateErr": "Obbligatorio"
         },
+        "REMOVE_IF_NO_VAL": "Solo ricevute con il numero",
         "GENERATE": "Genera Pdf"
     }
 }

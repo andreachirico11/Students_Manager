@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, first, map, mapTo, Observable, of, Subject, tap } from 'rxjs';
@@ -21,88 +21,53 @@ export class PrintoutService {
 
   constructor(private http: HttpClient, private translateS: TranslateService) {}
 
-  getPdf() {
-    return this.http
-      .get<{ file: Blob; title: string }>(this.dbUrl + 'printout', {
-        params: this.getParams({ locale: this.translateS.currentLang }),
-        observe: 'response',
-        responseType: 'blob' as 'json',
-      })
-      .pipe(
-        first(),
-        map((res) => ({
-          file: res.body,
-          title: res.headers.get('file-name') ?? 'default title',
-        })),
-        catchError((e) => {
-          devErrorHandling(e);
-          return of(null);
-        })
-      );
-  }
-
   getBlankReceipt(studentId: string) {
-    return this.http
-      .get<Blob>(this.dbUrl + 'blank/' + studentId, {
+    return this.handleBlobResponse(
+      this.http.get<Blob>(this.dbUrl + 'blank/' + studentId, {
         params: this.getParams({ locale: this.translateS.currentLang }),
         observe: 'response',
         responseType: 'blob' as 'json',
       })
-      .pipe(
-        first(),
-        map((res) => ({
-          file: res.body,
-          title: res.headers.get('file-name') ?? 'default title',
-        })),
-        catchError((e) => {
-          devErrorHandling(e);
-          return of(null);
-        })
-      );
+    );
   }
 
   getStudentRecsPdf(body: IStudentPdfReqBody) {
-    return this.http
-      .post<Blob>(this.dbUrl + 'printout/studentRecap', body, {
-        observe: 'response',
-        responseType: 'blob' as 'json',
-      })
-      .pipe(
-        first(),
-        map((res) => ({
-          file: res.body,
-          title: res.headers.get('file-name') ?? 'default title',
-        })),
-        catchError((e) => {
-          devErrorHandlingPdf(e);
-          return of(null);
-        })
-      );
+    return this.handlePdfPostReq(this.dbUrl + 'printout/studentRecap', body);
   }
 
   getAllRecs(body: IPdfRequest) {
-    return this.http
-      .post<Blob>(this.dbUrl + 'analytics/printout', body, {
+    return this.handlePdfPostReq(this.dbUrl + 'analytics/printout', body);
+  }
+
+  private handlePdfPostReq(url: string, body: IPdfReqBody) {
+    return this.handleBlobResponse(
+      this.http.post<Blob>(url, body, {
         observe: 'response',
         responseType: 'blob' as 'json',
       })
-      .pipe(
-        first(),
-        tap((res) =>
-          this._fileReady.next({
-            file: res.body,
-            title: res.headers.get('file-name') ?? 'default title',
-          })
-        ),
-        mapTo(true),
-        catchError((e) => {
-          devErrorHandlingPdf(e);
-          return of(false);
+    );
+  }
+
+  private handleBlobResponse(response: Observable<HttpResponse<Blob>>) {
+    return response.pipe(
+      first(),
+      tap((res) =>
+        this._fileReady.next({
+          file: res.body,
+          title: res.headers.get('file-name') ?? 'default title',
         })
-      );
+      ),
+      mapTo(true),
+      catchError((e) => {
+        devErrorHandlingPdf(e);
+        return of(false);
+      })
+    );
   }
 
   private getParams(pars: IHttpPdfParams): HttpParams {
     return Object.keys(pars).reduce((acc, key) => acc.append(key, pars[key]), new HttpParams());
   }
 }
+
+type IPdfReqBody = IStudentPdfReqBody | IPdfRequest;

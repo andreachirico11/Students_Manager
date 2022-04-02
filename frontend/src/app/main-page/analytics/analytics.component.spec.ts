@@ -61,6 +61,7 @@ describe('AnalyticsComponent', () => {
     trans.use('it');
     component.dateEnd = d2;
     component.dateStart = d1;
+    component.removeIfWithoutNumer = true;
     fixture.detectChanges();
     const spy = spyOn(printoutService, 'getAllRecs').and.callThrough();
     component.onSubmit();
@@ -68,6 +69,7 @@ describe('AnalyticsComponent', () => {
       locale: 'it',
       dateStart: d1,
       dateEnd: d2,
+      removeIfWithoutNumer: true,
     });
   });
 });
