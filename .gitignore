@@ -5,3 +5,4 @@ run-db(run as admin).bat
 frontend/package-lock.json
 backend/package-lock.json
 backend/compiled
+.node-version

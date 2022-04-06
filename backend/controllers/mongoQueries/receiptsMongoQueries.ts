@@ -175,7 +175,9 @@ export class ReceiptsMongoQueries {
   }
 
   private dateToString(dateFieldName: string) {
-    return { $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName } };
+    return {
+      $dateToString: { format: '%d-%m-%Y', date: '$' + dateFieldName, timezone: '+02:00' },
+    };
   }
 
   private unwindStudentInfo() {
