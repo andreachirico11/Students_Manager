@@ -83,7 +83,11 @@ export async function getStudentBlankRec(req: IPdfRequest, res: Response) {
     if (!teacher || !student) {
       throw new PdfCreationErrorObj(PdfMessages.teacher_or_student_not_found, '');
     }
-    const htmlFile = (await createBlankRecHtmlFile(student, teacher, req.query.locale)) as string;
+    const htmlFile = (await createBlankRecHtmlFile(
+      student,
+      teacher,
+      req.query.locale || 'en'
+    )) as string;
     const file = (await createPdfFile(htmlFile, {
       format: 'A4',
       orientation: 'portrait',

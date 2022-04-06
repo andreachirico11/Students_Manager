@@ -112,7 +112,6 @@ export class PrintoutPageComponent implements OnInit, OnDestroy, AfterViewInit {
     const { filters, orderBy, columns, dateRange, ascending, withTotal } = this.form.value;
     const params: IStudentPdfReqBody = {
       _studentId: this.route.snapshot.parent.params.id,
-      locale: this.translateS.currentLang,
       columns: this.getActiveColumns({ ...columns }),
       ascending,
       withTotal,

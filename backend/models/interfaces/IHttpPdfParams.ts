@@ -1,3 +1,3 @@
 export interface IHttpPdfParams {
-  locale: string;
+  locale?: string;
 }

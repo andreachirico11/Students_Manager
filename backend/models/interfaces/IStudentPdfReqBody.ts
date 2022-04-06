@@ -1,8 +1,8 @@
 import { ReceiptsFilters } from '../receiptsFilters';
+import { IHttpPdfParams } from './IHttpPdfParams';
 
-export interface IStudentPdfReqBody {
+export interface IStudentPdfReqBody extends IHttpPdfParams {
   _studentId: string;
-  locale: string;
   columns: string[];
   ascending: boolean;
   withTotal: boolean;

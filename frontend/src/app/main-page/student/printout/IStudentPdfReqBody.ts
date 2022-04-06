@@ -1,7 +1,7 @@
 import { ReceiptsFilters } from 'src/app/shared/models/receiptsFilters';
+import { IHttpPdfParams } from './IHttpPdfParams';
 
-export interface IStudentPdfReqBody {
-  locale: string;
+export interface IStudentPdfReqBody extends IHttpPdfParams {
   _studentId: string;
   columns: string[];
   withTotal: boolean;

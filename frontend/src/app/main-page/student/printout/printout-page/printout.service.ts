@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { catchError, first, map, mapTo, Observable, of, Subject, tap } from 'rxjs';
 import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
-import { devErrorHandling, devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
+import { devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
 import { environment } from 'src/environments/environment';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 
@@ -41,7 +41,7 @@ export class PrintoutService {
 
   private handlePdfPostReq(url: string, body: IPdfReqBody) {
     return this.handleBlobResponse(
-      this.http.post<Blob>(url, body, {
+      this.http.post<Blob>(url, this.addClientInfoToBody(body), {
         observe: 'response',
         responseType: 'blob' as 'json',
       })
@@ -67,6 +67,18 @@ export class PrintoutService {
 
   private getParams(pars: IHttpPdfParams): HttpParams {
     return Object.keys(pars).reduce((acc, key) => acc.append(key, pars[key]), new HttpParams());
+  }
+
+  private addClientInfoToBody(body: IPdfReqBody): IPdfReqBody {
+    const output: IPdfReqBody = {
+      ...body,
+      locale: this.translateS.currentLang,
+    };
+    return output;
+  }
+
+  private get currentTimezone() {
+    return new Date().getTimezoneOffset();
   }
 }
 
