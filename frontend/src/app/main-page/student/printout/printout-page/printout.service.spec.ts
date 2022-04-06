@@ -26,9 +26,9 @@ describe('PrintoutService', () => {
 
   it('should send a basic student request', () => {
     const title = 'aaaaaaaaaaaa';
+    trans.use('it');
     const body: IStudentPdfReqBody = {
       _studentId: 'abc',
-      locale: 'it',
       columns: ['a', 'b'],
       ascending: true,
       withTotal: true,
@@ -37,7 +37,10 @@ describe('PrintoutService', () => {
     controller
       .expectOne((req) => {
         expect(req.body).toBeTruthy();
-        expect(req.body).toEqual(body);
+        expect(req.body).toEqual({
+          ...body,
+          locale: 'it',
+        });
         return true;
       })
       .flush(new Blob());

@@ -57,61 +57,48 @@ describe('PrintoutPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(
-    'should show dateFields when daterange is selected',
-    waitForAsync(() => {
-      expect(areDateRangesVisibles()).toBeFalse();
-      component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
-      component.form.updateValueAndValidity();
-      fixture.detectChanges();
-      expect(areDateRangesVisibles()).toBeTrue();
-    })
-  );
+  it('should show dateFields when daterange is selected', waitForAsync(() => {
+    expect(areDateRangesVisibles()).toBeFalse();
+    component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
+    component.form.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(areDateRangesVisibles()).toBeTrue();
+  }));
 
-  it(
-    'should hide dateFields when daterange is deselected',
-    waitForAsync(() => {
-      component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
-      component.form.updateValueAndValidity();
-      fixture.detectChanges();
-      expect(areDateRangesVisibles()).toBeTrue();
-      component.form.get('filters').setValue([]);
-      component.form.updateValueAndValidity();
-      fixture.detectChanges();
-      expect(areDateRangesVisibles()).toBeFalse();
-    })
-  );
+  it('should hide dateFields when daterange is deselected', waitForAsync(() => {
+    component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
+    component.form.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(areDateRangesVisibles()).toBeTrue();
+    component.form.get('filters').setValue([]);
+    component.form.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(areDateRangesVisibles()).toBeFalse();
+  }));
 
-  it(
-    'should hide dateFields when thisYear is selected',
-    waitForAsync(() => {
-      component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
-      component.form.updateValueAndValidity();
-      fixture.detectChanges();
-      expect(areDateRangesVisibles()).toBeTrue();
-      component.form.get('filters').setValue([ReceiptsFilters.thisYear]);
-      component.form.updateValueAndValidity();
-      fixture.detectChanges();
-      expect(areDateRangesVisibles()).toBeFalse();
-    })
-  );
+  it('should hide dateFields when thisYear is selected', waitForAsync(() => {
+    component.form.get('filters').setValue([ReceiptsFilters.dateRange]);
+    component.form.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(areDateRangesVisibles()).toBeTrue();
+    component.form.get('filters').setValue([ReceiptsFilters.thisYear]);
+    component.form.updateValueAndValidity();
+    fixture.detectChanges();
+    expect(areDateRangesVisibles()).toBeFalse();
+  }));
 
-  it(
-    'should remove thisYear when thisMonth is selected',
-    waitForAsync(() => {
-      component.form.get('filters').setValue([ReceiptsFilters.thisYear]);
-      component.form.updateValueAndValidity();
-      component.form.get('filters').setValue([ReceiptsFilters.thisMonth]);
-      component.form.updateValueAndValidity();
-      expect(component.form.get('filters').value).toEqual([ReceiptsFilters.thisMonth]);
-    })
-  );
+  it('should remove thisYear when thisMonth is selected', waitForAsync(() => {
+    component.form.get('filters').setValue([ReceiptsFilters.thisYear]);
+    component.form.updateValueAndValidity();
+    component.form.get('filters').setValue([ReceiptsFilters.thisMonth]);
+    component.form.updateValueAndValidity();
+    expect(component.form.get('filters').value).toEqual([ReceiptsFilters.thisMonth]);
+  }));
 
   it('should send the correct data', () => {
     const data: IStudentPdfReqBody = {
       columns: ['number', 'typeOfPayment'],
       _studentId: 'abc',
-      locale: 'it',
       filters: [ReceiptsFilters.thisMonth, ReceiptsFilters.isPayed],
       orderBy: 'number',
       ascending: true,
@@ -140,7 +127,6 @@ describe('PrintoutPageComponent', () => {
     const data: IStudentPdfReqBody = {
       columns: ['number', 'typeOfPayment'],
       _studentId: 'abc',
-      locale: 'it',
       filters: [ReceiptsFilters.dateRange, ReceiptsFilters.isPayed],
       orderBy: 'number',
       dateRange: {
