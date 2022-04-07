@@ -3,9 +3,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
+import { TimezoneHelperService } from 'src/app/shared/timezone-helper/timezone-helper.service';
 import { environment } from 'src/environments/environment';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 import { PrintoutService } from './printout.service';
+
+const getTimezoneOffset = () => new TimezoneHelperService().currentTimezone;
 
 describe('PrintoutService', () => {
   let service: PrintoutService, controller: HttpTestingController, trans: TranslateService;
@@ -40,6 +43,7 @@ describe('PrintoutService', () => {
         expect(req.body).toEqual({
           ...body,
           locale: 'it',
+          timezoneOffset: getTimezoneOffset(),
         });
         return true;
       })

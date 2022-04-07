@@ -5,6 +5,7 @@ import { catchError, first, map, mapTo, Observable, of, Subject, tap } from 'rxj
 import { IPdfRequest } from 'src/app/main-page/analytics/IPdfRequest';
 import { IHttpPdfParams } from 'src/app/main-page/student/printout/IHttpPdfParams';
 import { devErrorHandlingPdf } from 'src/app/shared/devErrorHandler';
+import { TimezoneHelperService } from 'src/app/shared/timezone-helper/timezone-helper.service';
 import { environment } from 'src/environments/environment';
 import { IStudentPdfReqBody } from '../IStudentPdfReqBody';
 
@@ -19,7 +20,11 @@ export class PrintoutService {
     return this._fileReady.asObservable();
   }
 
-  constructor(private http: HttpClient, private translateS: TranslateService) {}
+  constructor(
+    private http: HttpClient,
+    private translateS: TranslateService,
+    private timezoneHelper: TimezoneHelperService
+  ) {}
 
   getBlankReceipt(studentId: string) {
     return this.handleBlobResponse(
@@ -73,12 +78,9 @@ export class PrintoutService {
     const output: IPdfReqBody = {
       ...body,
       locale: this.translateS.currentLang,
+      timezoneOffset: this.timezoneHelper.currentTimezone,
     };
     return output;
-  }
-
-  private get currentTimezone() {
-    return new Date().getTimezoneOffset();
   }
 }
 

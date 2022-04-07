@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';
 import { IHttpPdfParams } from './IHttpPdfParams';
+import { IPdfReqAllReceiptsBody } from './IPdfReqAllReceiptsBody';
 import { IStudentPdfReqBody } from './IStudentPdfReqBody';
 
 export interface IBackendRequest<T> extends IRequest {
@@ -16,12 +17,7 @@ export interface IPdfRequest extends Omit<IRequest, 'query'> {
 }
 
 export interface IPdfReqAllReceipts {
-  body: {
-    locale: string;
-    dateStart: Date;
-    dateEnd: Date;
-    removeIfWithoutNumer: boolean;
-  };
+  body: IPdfReqAllReceiptsBody;
 }
 
 export interface IRequest extends Request {

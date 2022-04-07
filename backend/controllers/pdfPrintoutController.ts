@@ -29,13 +29,13 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
     const student = (await new StudentMongoQueries().studentById(
       req.body._studentId
     )) as IMongoStudent;
-    const allRecsQueries = new ReceiptsMongoQueries();
+    const allRecsQueries = new ReceiptsMongoQueries(req.body.timezoneOffset);
     const receipts = await allRecsQueries.receiptsForStudentWithParams(req.body);
     const receiptsTotals = req.body.withTotal ? getTotals(receipts) : null;
     const htmlFile = (await createHtmlFileForStudentRecap(
       receipts,
       req.body.columns,
-      req.body.locale,
+      req.body.locale || 'en',
       student,
       receiptsTotals
     )) as string;
@@ -53,7 +53,7 @@ export async function getAllRecs(req: IPdfReqAllReceipts, res: Response) {
     if (!dateEnd || !dateStart) {
       throw new PdfCreationErrorObj(PdfMessages.pdf_receipts_missing_params, '');
     }
-    const allRecsQueries = new ReceiptsMongoQueries();
+    const allRecsQueries = new ReceiptsMongoQueries(req.body.timezoneOffset);
     const filteredReceipts = await (removeIfWithoutNumer
       ? allRecsQueries.allReceiptsFilteredByDateAndNumberPresence(dateStart, dateEnd)
       : allRecsQueries.allReceiptsFilteredByDate(dateStart, dateEnd));
