@@ -177,9 +177,9 @@ export class ReceiptsMongoQueries {
 
   private matchByDateRange(lowerDateLimit: Date, upperDateLimit: Date) {
     const startCondition = {};
-    startCondition[ReceiptsColNames.emissionDate] = { $gt: lowerDateLimit };
+    startCondition[ReceiptsColNames.emissionDate] = { $gte: lowerDateLimit };
     const stopCondition = {};
-    stopCondition[ReceiptsColNames.emissionDate] = { $lt: upperDateLimit };
+    stopCondition[ReceiptsColNames.emissionDate] = { $lte: upperDateLimit };
     return {
       $match: {
         $and: [startCondition, stopCondition],

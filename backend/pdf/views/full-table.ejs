@@ -52,6 +52,13 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.4);
     }
 
+    .fl-table.fullScreen,
+    .main-title.fullScreen {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 90%;
+    }
+
     .fl-table td,
     .fl-table th {
       text-align: center;
@@ -100,21 +107,21 @@
 <body>
   <div class="table-wrapper <%= fullScreen ? 'fullScreen' : ''%>">
     <% if(receipts.length===0) { %>
-      <h3 class="main-title">
+      <h3 class="main-title  <%= fullScreen ? 'fullScreen' : ''%>">
         <%=translations.EMPTY%>
       </h3>
       <% } else { %>
         <% if(student) { %>
-          <h3 class="main-title">
+          <h3 class="main-title <%= fullScreen ? 'fullScreen' : ''%>">
             <%=(student.name + ' ' + student.surname).toLowerCase() %>
           </h3>
           <% } %>
             <% if(intervalTitle) { %>
-              <h3 class="main-title">
+              <h3 class="main-title <%= fullScreen ? 'fullScreen' : ''%>">
                 <%= intervalTitle %>
               </h3>
               <% } %>
-                <table class="fl-table">
+                <table class="fl-table <%= fullScreen ? 'fullScreen' : ''%>">
                   <thead>
                     <tr>
                       <% if (withStudentName) { %>
@@ -162,7 +169,7 @@
                       <tr
                         class="<%= !rec.paymentDateString ? 'not-payed' : '' %>">
                         <% if (withStudentName) { %>
-                          <td>
+                          <td style="text-align: left;">
                             <%= rec.studentName %>
                           </td>
                           <% } %>
