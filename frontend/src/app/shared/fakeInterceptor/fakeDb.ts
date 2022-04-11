@@ -55,7 +55,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       receipts: [
         {
           id: 'r_2',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 13,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -63,7 +63,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_3',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 14,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -98,7 +98,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
       receipts: [
         {
           id: 'r_1',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 1,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -106,7 +106,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_2',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 2,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -114,7 +114,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_3',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 3,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -122,7 +122,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_4',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 4,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -130,7 +130,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_5',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 5,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -138,7 +138,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_6',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 6,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -146,7 +146,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_7',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 7,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -154,7 +154,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_1',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 8,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -162,7 +162,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_1',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 9,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -170,7 +170,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_1',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 10,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -178,7 +178,7 @@ export let FAKE_DB: { user: IUser[]; students: Student[] } = {
         },
         {
           id: 'r_1',
-          number: 'asdfsadf',
+          number: 1111,
           amount: 11,
           emissionDate: new Date(),
           paymentDate: new Date(),
@@ -249,7 +249,7 @@ function getReceipt(i: number): Receipt {
   return new Receipt(
     getRand(30),
     generateRandomDOB(),
-    getRand(300) + '',
+    getRand(300),
     i % 2 === 0 ? 'money' : i % 3 === 0 ? 'transfer' : 'atm',
     new Date(),
     'r_' + randomId()

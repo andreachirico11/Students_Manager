@@ -5,7 +5,7 @@ export const ReceiptModel: Model<IMongoReceipt> = model(
   'Receipt',
   new Schema({
     number: {
-      type: String,
+      type: Number,
     },
     amount: {
       type: Number,

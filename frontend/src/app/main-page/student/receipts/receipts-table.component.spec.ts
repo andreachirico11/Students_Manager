@@ -22,7 +22,7 @@ describe('ReceiptsTableComponent', () => {
   let dataS: DataService;
 
   const fakeFirstRecId = 'fake',
-    fakeFirstRecNumber = '1111';
+    fakeFirstRecNumber = 1111;
   const fakeFirstRec: Receipt = new Receipt(
     50,
     new Date(),
@@ -34,32 +34,30 @@ describe('ReceiptsTableComponent', () => {
   const fakeRec = [fakeFirstRec, ...FAKE_DB.students.find((s) => s.receipts.length > 0).receipts];
   const paginatorMaxNumberOfRow = 10;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ReceiptsActionsComponent, ReceiptsTableComponent],
-        imports: [
-          CommonModule,
-          MaterialModule,
-          BrowserAnimationsModule,
-          HttpClientTestingModule,
-          RouterModule.forRoot([]),
-          TranslateModule.forRoot(),
-          PaymentPipeModule,
-        ],
-        providers: [
-          {
-            provide: MatDialog,
-            useClass: MockMatDialog,
-          },
-          {
-            provide: SwUpdate,
-            useValue: {},
-          },
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ReceiptsActionsComponent, ReceiptsTableComponent],
+      imports: [
+        CommonModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        RouterModule.forRoot([]),
+        TranslateModule.forRoot(),
+        PaymentPipeModule,
+      ],
+      providers: [
+        {
+          provide: MatDialog,
+          useClass: MockMatDialog,
+        },
+        {
+          provide: SwUpdate,
+          useValue: {},
+        },
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReceiptsTableComponent);
@@ -81,7 +79,7 @@ describe('ReceiptsTableComponent', () => {
 
   it('should display correctly firs row data', () => {
     expect(fixture.debugElement.queryAll(By.css('td'))[1].nativeElement.textContent).toBe(
-      fakeFirstRecNumber
+      fakeFirstRecNumber + ''
     );
   });
 

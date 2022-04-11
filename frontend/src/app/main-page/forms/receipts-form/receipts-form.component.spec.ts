@@ -42,7 +42,7 @@ describe('ReceiptsFormComponent', () => {
       return _queryParams;
     },
   };
-  const r = new Receipt(1, new Date(), 'xzfadfa', 'atm', new Date());
+  const r = new Receipt(1, new Date(), 1234, 'atm', new Date());
 
   beforeEach(async () => {
     routerSpy = jasmine.createSpy('navigate');
@@ -263,7 +263,7 @@ describe('ReceiptsFormComponent', () => {
     fixture.detectChanges();
     expect(component.rForm.value.typeOfPayment).toBe(r.typeOfPayment, 'internal');
     const numberInput = getInputs()[0];
-    expect(numberInput.nativeElement.value).toBe(r.number, 'view');
+    expect(numberInput.nativeElement.value).toBe(r.number + '', 'view');
     const select: MatSelect = fixture.debugElement.query(By.directive(MatSelect)).componentInstance;
     expect(select.value).toBe(r.typeOfPayment, 'select');
   });

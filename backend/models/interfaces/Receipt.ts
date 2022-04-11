@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { TypeOfPayment } from './TypeOfPayment';
 
 export interface IReceipt {
-  number: string;
+  number: number;
   amount: number;
   emissionDate: Date;
   paymentDate: Date;
