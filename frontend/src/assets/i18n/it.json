@@ -161,6 +161,7 @@
             "dateErr": "Obbligatorio"
         },
         "REMOVE_IF_NO_VAL": "Solo ricevute con il numero",
+        "REMOVE_IF_WITH_VAL": "Solo ricevute senza il numero",
         "GENERATE": "Genera Pdf"
     }
 }

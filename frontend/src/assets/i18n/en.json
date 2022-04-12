@@ -162,6 +162,7 @@
             "dateErr": "Required"
         },
         "REMOVE_IF_NO_VAL": "Only receipts with number",
+        "REMOVE_IF_WITH_VAL": "Only receipts without number",
         "GENERATE": "Generate Pdf"
     }
 }

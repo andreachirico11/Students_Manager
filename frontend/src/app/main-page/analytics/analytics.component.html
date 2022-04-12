@@ -31,9 +31,16 @@
                 <mat-error>{{ 'ANALYTICS.DATE_RANGES.dateErr' |
                     translate }}</mat-error>
             </mat-form-field>
-            <mat-checkbox [(ngModel)]="removeIfWithoutNumer">
-                {{ 'ANALYTICS.REMOVE_IF_NO_VAL' | translate }}
-            </mat-checkbox>
+            <div class="checkboxes">
+                <mat-checkbox [(ngModel)]="removeIfWithoutNumber"
+                    (ngModelChange)="removeIfWithNumber = false">
+                    {{ 'ANALYTICS.REMOVE_IF_NO_VAL' | translate }}
+                </mat-checkbox>
+                <mat-checkbox [(ngModel)]="removeIfWithNumber"
+                    (ngModelChange)="removeIfWithoutNumber = false">
+                    {{ 'ANALYTICS.REMOVE_IF_WITH_VAL' | translate }}
+                </mat-checkbox>
+            </div>
             <button class="submit" mat-stroked-button color="primary"
                 type="button" (click)="onSubmit()"
                 [disabled]="isButtonDisabled">

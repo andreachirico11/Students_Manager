@@ -13,7 +13,8 @@ import { PrintoutService } from '../student/printout/printout-page/printout.serv
 export class AnalyticsComponent implements OnInit, OnDestroy {
   dateStart: Date = null;
   dateEnd: Date = null;
-  removeIfWithoutNumer = true;
+  removeIfWithoutNumber = true;
+  removeIfWithNumber = false;
 
   get isTouchUiActivate() {
     return UtilsService.getIfTouchUiIsActivated();
@@ -48,7 +49,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         locale: this.translate.currentLang,
         dateStart: this.dateStart,
         dateEnd: this.dateEnd,
-        removeIfWithoutNumer: this.removeIfWithoutNumer,
+        removeIfWithoutNumber: this.removeIfWithoutNumber,
+        removeIfWithNumber: this.removeIfWithNumber,
       })
       .subscribe();
   }

@@ -18,7 +18,7 @@ export function getStats(req: IRequest, res: Response) {
             {
               $eq: [
                 {
-                  $month: '$paymentDate',
+                  $month: '$emissionDate',
                 },
                 {
                   $month: new Date(),

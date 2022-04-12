@@ -4,5 +4,6 @@ export interface IPdfReqAllReceiptsBody extends IHttpPdfParams {
   locale: string;
   dateStart: Date;
   dateEnd: Date;
-  removeIfWithoutNumer: boolean;
+  removeIfWithoutNumber: boolean;
+  removeIfWithNumber: boolean;
 }

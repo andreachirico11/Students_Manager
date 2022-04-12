@@ -48,14 +48,16 @@ export async function getStudentRecap(req: IPdfStdRecapReq, res: Response) {
 }
 
 export async function getAllRecs(req: IPdfReqAllReceipts, res: Response) {
-  const { locale, dateEnd, dateStart, removeIfWithoutNumer } = req.body;
+  const { locale, dateEnd, dateStart, removeIfWithoutNumber, removeIfWithNumber } = req.body;
   try {
     if (!dateEnd || !dateStart) {
       throw new PdfCreationErrorObj(PdfMessages.pdf_receipts_missing_params, '');
     }
     const allRecsQueries = new ReceiptsMongoQueries(req.body.timezoneOffset);
-    const filteredReceipts = await (removeIfWithoutNumer
+    const filteredReceipts = await (removeIfWithoutNumber
       ? allRecsQueries.allReceiptsFilteredByDateAndNumberPresence(dateStart, dateEnd)
+      : removeIfWithNumber
+      ? allRecsQueries.allReceiptsFilteredByDateAndNumberAbsence(dateStart, dateEnd)
       : allRecsQueries.allReceiptsFilteredByDate(dateStart, dateEnd));
     const intervalTitle = getDateIntervalFiletitle(dateStart, dateEnd);
     const htmlFile = (await createHtmlFileForReceipts(

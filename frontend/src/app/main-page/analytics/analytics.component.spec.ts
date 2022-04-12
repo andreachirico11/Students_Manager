@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -61,7 +62,7 @@ describe('AnalyticsComponent', () => {
     trans.use('it');
     component.dateEnd = d2;
     component.dateStart = d1;
-    component.removeIfWithoutNumer = true;
+    component.removeIfWithoutNumber = true;
     fixture.detectChanges();
     const spy = spyOn(printoutService, 'getAllRecs').and.callThrough();
     component.onSubmit();
@@ -69,7 +70,20 @@ describe('AnalyticsComponent', () => {
       locale: 'it',
       dateStart: d1,
       dateEnd: d2,
-      removeIfWithoutNumer: true,
+      removeIfWithoutNumber: true,
+      removeIfWithNumber: false,
     });
+  });
+
+  it('check that pressing a checkbox the other is adjusted properly', () => {
+    const checkboxes = fixture.debugElement.queryAll(By.directive(MatCheckbox));
+    checkboxes[1].nativeElement.querySelector('.mat-checkbox-input').click();
+    fixture.detectChanges();
+    expect(component.removeIfWithNumber).toBeTrue();
+    expect(component.removeIfWithoutNumber).toBeFalse();
+    checkboxes[0].nativeElement.querySelector('.mat-checkbox-input').click();
+    fixture.detectChanges();
+    expect(component.removeIfWithNumber).toBeFalse();
+    expect(component.removeIfWithoutNumber).toBeTrue();
   });
 });

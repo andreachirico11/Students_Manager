@@ -37,6 +37,23 @@ export class ReceiptsMongoQueries {
     });
   }
 
+  allReceiptsFilteredByDateAndNumberAbsence(
+    dateStart: Date,
+    dateEnd: Date
+  ): Promise<IPdfReceipt[]> {
+    const aggregatePipeline: any[] = [
+      this.matchByNumberUnexistence(),
+      this.matchByDateRange(new Date(dateStart), new Date(dateEnd)),
+      this.lookupForStudetInfo(),
+      this.unwindStudentInfo(),
+      this.addFields(true, true, true),
+      this.sortBy('asc', ReceiptsColNames.emissionDate, ReceiptsColNames.number),
+    ];
+    return ReceiptModel.aggregate(aggregatePipeline).catch((e) => {
+      throw this.errHandling(e);
+    });
+  }
+
   allReceiptsFilteredByDate(dateStart: Date, dateEnd: Date): Promise<IPdfReceipt[]> {
     const aggregatePipeline: any[] = [
       this.matchByDateRange(new Date(dateStart), new Date(dateEnd)),
@@ -171,6 +188,14 @@ export class ReceiptsMongoQueries {
     return {
       $match: {
         number: { $ne: null },
+      },
+    };
+  }
+
+  private matchByNumberUnexistence() {
+    return {
+      $match: {
+        number: { $eq: null },
       },
     };
   }

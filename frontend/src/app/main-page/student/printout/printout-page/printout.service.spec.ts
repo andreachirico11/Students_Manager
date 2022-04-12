@@ -56,7 +56,8 @@ describe('PrintoutService', () => {
       locale: 'it',
       dateStart: new Date(),
       dateEnd: new Date(),
-      removeIfWithoutNumer: false,
+      removeIfWithoutNumber: false,
+      removeIfWithNumber: false,
     };
     service.fileReady.subscribe(({ title }) => {
       expect(title).toBe(title);
