@@ -1,24 +1,19 @@
-<mat-stepper [orientation]="orientation$ | async" [style.padding]="padding$ | async">
+<mat-stepper [orientation]="orientation$ | async"
+  [style.padding]="padding$ | async" linear="true">
   <mat-step [label]="labels[0]" state="phone" completed="false">
-    <student-form
-      (result)="onStudentFormEv($event)"
+    <student-form (result)="onStudentFormEv($event)"
       (formValueChanged)="onFormValueChange()"
-      [objectToUpdate]="studentUnderUpdate"
-    ></student-form>
+      [objectToUpdate]="studentUnderUpdate"></student-form>
   </mat-step>
   <mat-step [label]="labels[1]" state="chat" completed="false">
-    <parent-form
-      (result)="onParentFormEv($event)"
+    <parent-form (result)="onParentFormEv($event)"
       (formValueChanged)="onFormValueChange()"
-      [objectToUpdate]="studentUnderUpdate?.parent"
-    ></parent-form>
+      [objectToUpdate]="studentUnderUpdate?.parent"></parent-form>
   </mat-step>
   <mat-step [label]="labels[2]" state="chat" completed="false">
-    <receipt-price-form
-      (result)="onReceiptFormEv($event)"
+    <receipt-price-form (result)="onReceiptFormEv($event)"
       (formValueChanged)="onFormValueChange()"
-      [objectToUpdate]="studentUnderUpdate?.receiptPrice"
-    ></receipt-price-form>
+      [objectToUpdate]="studentUnderUpdate?.receiptPrice"></receipt-price-form>
   </mat-step>
   <mat-step [label]="labels[3]">
     <student-resume [student]="studentCreated" (okEv)="onOk()"></student-resume>

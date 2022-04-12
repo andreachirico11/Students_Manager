@@ -177,7 +177,7 @@ describe('SidebarComponent', () => {
     expect(getBadges().length).toBe(0);
   }));
 
-  it('does visualize stats if data have been provided', waitForAsync(() => {
+  xit('does visualize stats if data have been provided', waitForAsync(() => {
     const fakeS: IStats = {
       yearTotal: 124,
       missingTotal: 333,

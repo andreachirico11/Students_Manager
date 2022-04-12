@@ -1,10 +1,10 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { Parent } from 'src/app/shared/models/Parent';
@@ -20,7 +20,7 @@ import { ComponentGuarded } from '../utils/guard-base.component';
   templateUrl: './student-stepper.component.html',
   styleUrls: ['./student-stepper.component.scss'],
 })
-export class StudentStepperComponent extends ComponentGuarded implements OnInit {
+export class StudentStepperComponent extends ComponentGuarded implements OnInit, OnDestroy {
   public studentCreated: Student = null;
   public studentUnderUpdate: Student = null;
   public labels: string[] = [];
@@ -33,6 +33,8 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
 
   @ViewChild(MatStepper)
   private stepper: MatStepper;
+
+  private translateSub: Subscription;
 
   constructor(
     dialog: MatDialog,
@@ -54,6 +56,12 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
       this.collectStudentToUpdate(studentToUpdateId);
     }
     this.getTranslations();
+  }
+
+  ngOnDestroy(): void {
+    if (this.translateSub) {
+      this.translateSub.unsubscribe();
+    }
   }
 
   onStudentFormEv(result: any) {
@@ -119,7 +127,10 @@ export class StudentStepperComponent extends ComponentGuarded implements OnInit 
     this.translate
       .get('FORMS.STEPS')
       .pipe(first())
-      .subscribe((res) => (this.labels = res));
+      .subscribe((r) => (this.labels = r));
+    this.translateSub = this.translate.onLangChange.subscribe(() => {
+      this.labels = this.translate.instant('FORMS.STEPS');
+    });
   }
 
   private updateStudent() {
