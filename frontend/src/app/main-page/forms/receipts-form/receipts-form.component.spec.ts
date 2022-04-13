@@ -205,8 +205,8 @@ describe('ReceiptsFormComponent', () => {
     const { number, amount, emissionDate, paymentDate, typeOfPayment } = component.rForm.controls;
     number.setValue(111);
     amount.setValue(222);
-    emissionDate.setValue(new Date());
-    paymentDate.setValue(new Date());
+    emissionDate.setValue(new Date('11-07-1994'));
+    paymentDate.setValue(new Date('11-07-1994'));
     typeOfPayment.setValue(1);
     component.rForm.markAsTouched();
     component.rForm.markAsDirty();
