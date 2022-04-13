@@ -1,49 +1,20 @@
-import { IRequest } from '../models/interfaces/IRequests';
-import { IStats } from '../models/interfaces/IStats';
+import { IStatsRequest } from '../models/interfaces/IRequests';
 import { generateHttpRes } from '../utils/httpRespGenerator';
 import { Response } from 'express';
 import { StatsError, StatsMessage } from '../models/messageEnums';
-import { ReceiptModel } from '../models/receiptModel';
+import { StatsMongoQueries } from './mongoQueries/statsMongoQueries';
 
-export function getStats(req: IRequest, res: Response) {
-  ReceiptModel.aggregate()
-    .group({
-      _id: null,
-      yearTotal: {
-        $sum: '$amount',
-      },
-      monthTotal: {
-        $sum: {
-          $cond: [
-            {
-              $eq: [
-                {
-                  $month: '$emissionDate',
-                },
-                {
-                  $month: new Date(),
-                },
-              ],
-            },
-            '$amount',
-            0,
-          ],
-        },
-      },
-      missingTotal: {
-        $sum: {
-          $cond: [
-            {
-              $eq: ['$paymentDate', null],
-            },
-            '$amount',
-            0,
-          ],
-        },
-      },
-    })
+export function getStats(req: IStatsRequest, res: Response) {
+  new StatsMongoQueries(parseTimezone(req.query.timezoneOffset)).yearTotalMonthTotalMissingTotal
     .then((result) => {
       return generateHttpRes(res, 200, StatsMessage.stats_correctly_generated, result[0]);
     })
     .catch(() => generateHttpRes(res, 500, StatsError.error_during_stats_generation));
+}
+
+function parseTimezone(timezone: string) {
+  if (/\-/.test(timezone)) {
+    return timezone;
+  }
+  return timezone.replace(' ', '+');
 }

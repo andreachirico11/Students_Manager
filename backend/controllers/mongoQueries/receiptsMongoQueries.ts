@@ -5,21 +5,9 @@ import { PdfCreationErrorObj } from '../../models/pdfCreationError';
 import { ReceiptModel } from '../../models/receiptModel';
 import { ReceiptsColNames } from '../../models/receiptsColNames';
 import { ReceiptsFilters } from '../../models/receiptsFilters';
+import { QueriesWithTimezone } from './queriesWithTimezone';
 
-export class ReceiptsMongoQueries {
-  private _timezoneOffset: string;
-  private set timezoneOffset(strOffset: string | undefined) {
-    if (strOffset && new RegExp(/[+-]\d\d:\d\d/, 'g').test(strOffset)) {
-      this._timezoneOffset = strOffset;
-    } else {
-      this._timezoneOffset = '+00:00';
-    }
-  }
-
-  constructor(timezoneOffset?: string) {
-    this.timezoneOffset = timezoneOffset;
-  }
-
+export class ReceiptsMongoQueries extends QueriesWithTimezone {
   allReceiptsFilteredByDateAndNumberPresence(
     dateStart: Date,
     dateEnd: Date
@@ -217,7 +205,7 @@ export class ReceiptsMongoQueries {
       $dateToString: {
         format: '%d-%m-%Y',
         date: '$' + dateFieldName,
-        timezone: this._timezoneOffset,
+        timezone: this.timezoneOffset,
       },
     };
   }

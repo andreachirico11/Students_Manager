@@ -34,6 +34,7 @@ router.delete('/receipts/:id', verifyToken, deleteReceipt);
 router.get('/blank/:id', verifyToken, getStudentBlankRec);
 router.post('/printout/studentRecap', verifyToken, getStudentRecap);
 
+// @ts-ignore
 router.get('/stats', verifyToken, getStats);
 
 router.post('/analytics/printout', verifyToken, getAllRecs);

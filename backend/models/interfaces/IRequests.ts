@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';
 import { IHttpPdfParams } from './IHttpPdfParams';
+import { IHttpStatsParams } from './IHttpStatsParams';
 import { IPdfReqAllReceiptsBody } from './IPdfReqAllReceiptsBody';
 import { IStudentPdfReqBody } from './IStudentPdfReqBody';
 
@@ -27,4 +28,8 @@ export interface IRequest extends Request {
 
 interface headersWithAuth extends IncomingHttpHeaders {
   'auth-token': string;
+}
+
+export interface IStatsRequest extends Omit<IRequest, 'query'> {
+  query: IHttpStatsParams;
 }
