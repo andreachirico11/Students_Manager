@@ -33,6 +33,7 @@
 - <a href="https://nodejs.org/en/">Node Js</a> and <a href="https://www.mongodb.com/">Mongo Db</a>
 - Dark/Light mode
 - Multilingual
+- Generates Pdf
 
 ## Installation
 
