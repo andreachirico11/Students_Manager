@@ -21,7 +21,7 @@
 
 <br>
 
-![screenshot](./sample.gif)
+![screenshot](./sample.png)
 
 ## Key Features
 
